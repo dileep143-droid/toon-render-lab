@@ -1,4 +1,4 @@
-name: toon
+﻿name: toon
 on:
   workflow_dispatch:
     inputs:
@@ -34,7 +34,7 @@ jobs:
           mkdir -p pack functional && unzip -q pack.zip -d pack
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
       - name: Toon before/after (${{ matrix.who }})
-        run: ./blender/blender -b -noaudio --python toon_test.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.strength || '1.0' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|COVER|SKIP|SHOT|REPORT|DONE|PROP|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-3000 | tail -n 200
+        run: ./blender/blender -b -noaudio --python toon_test.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.strength || '1.0' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|COVER|SKIP|SHOT|WALK|REPORT|DONE|PROP|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-3000 | tail -n 200
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: "toon-${{ matrix.who }}", path: out, retention-days: 7, if-no-files-found: ignore }
