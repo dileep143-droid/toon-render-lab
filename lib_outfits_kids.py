@@ -29,10 +29,10 @@ OUTFITS = {
     "baby_romper": {"who": ["baby", "toddler"], "pieces": ["one-piece romper: body + short sleeves + legs to the knee", "front snaps"],
                     "colours": {"romper": (0.55, 0.78, 0.95), "stripe": (0.98, 0.98, 0.98), "snap": (0.98, 0.85, 0.3)},
                     "accessories": ["kaajal_dot", "black_thread_anklet"], "footwear": "barefoot", "cover": "knee", "core": ["romper_top", "romper_legs"]},
-    "baby_frock": {"who": ["baby girl", "toddler girl"], "pieces": ["frock bodice with puff sleeves", "flared skirt below the knee", "bloomers", "sash", "collar"],
+    "baby_frock": {"who": ["baby girl", "toddler girl"], "pieces": ["frock bodice with puff sleeves", "flared skirt below the knee", "bloomers", "sash"],
                    "colours": {"frock": (0.98, 0.5, 0.65), "dots": (1.0, 1.0, 1.0), "sash": (0.98, 0.9, 0.35), "bloomers": (0.99, 0.95, 0.96), "collar": (1, 1, 1)},
                    "accessories": ["kaajal_dot", "small_bangles", "black_thread_anklet"], "footwear": "barefoot", "cover": "knee", "core": ["frock_bodice", "frock_skirt", "bloomers"]},
-    "toddler_kurta_shorts": {"who": ["toddler boy"], "pieces": ["short kurta (mid-thigh)", "knee shorts", "collar", "buttons"],
+    "toddler_kurta_shorts": {"who": ["toddler boy"], "pieces": ["short kurta (mid-thigh)", "knee shorts", "buttons"],
                              "colours": {"kurta": (0.98, 0.85, 0.35), "shorts": (0.3, 0.45, 0.7), "button": (0.75, 0.55, 0.25)},
                              "accessories": ["kaajal_dot", "nazar_bracelet", "black_thread_anklet"], "footwear": "barefoot", "cover": "knee", "core": ["kurta", "kurta_tail", "shorts"]},
     "toddler_shirt_shorts": {"who": ["toddler boy"], "pieces": ["half-sleeve checked shirt", "knee shorts"],
@@ -63,8 +63,8 @@ def _opts(outfit, opts):
 def kaajal_dot(B, side=1):
     """tiny black kaajal (nazar) dot on the cheek - side=1 is the character's left cheek"""
     ex = abs(B.bh["eye.L"].x) if "eye.L" in B.bh else 0.02 * B.Hs
-    z = B.ze - 0.3 * (B.ze - B.zn)
-    p = B.surf(side * 1.1 * ex, z, "front")
+    z = B.ze - 0.45 * (B.ze - B.zn)
+    p = B.surf(side * 1.25 * ex, z, "front")
     if p is None: return None
     r = max(0.0025, 0.0045 * B.Hs / 1.6)
     return rigid(B, "kaajal_dot", solid("kaajal", (0.02, 0.02, 0.02), 0.6), lambda bm: _ball(bm, p + Vector((0, -0.0004, 0)), r, (1, 0.25, 1), sub=2), "head")
@@ -116,10 +116,28 @@ def woollen_cap(B, colour, pompom):
     cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
     rx = max(abs(p.x) for p in pts); ry = (max(p.y for p in pts) - min(p.y for p in pts)) / 2
     h = max(0.02, B.zt - z0)
-    cloud = [B.co[i] for i in B.body_idx if B.part[i] == "head" and B.co[i].z > z0] + [p for p in B.hair_pts if p.z > z0]
-    s = max([math.sqrt((p.x / rx) ** 2 + ((p.y - cy) / ry) ** 2 + ((p.z - z0) / h) ** 2) for p in cloud] + [1.0])
-    e = 0.007
+    head = [B.co[i] for i in B.body_idx if B.part[i] == "head" and B.co[i].z > z0]
+    ell = lambda p, a, b, c: math.sqrt((p.x / a) ** 2 + ((p.y - cy) / b) ** 2 + ((p.z - z0) / c) ** 2)
+    s = max([ell(p, rx, ry, h) for p in head] + [1.0])
+    e = 0.006 + 0.012 * Hs / 1.0 * (1 if B.hair_pts else 0.3)   # room for (squashed) hair
     rx, ry, h = rx * s + e, ry * s + e, h * s + e
+    # "cap hair": hair that would poke through the cap is pulled inside it (edits the hair proxy's rest shape)
+    Mi = B.h.matrix_world.inverted(); squashed = 0
+    for ob in set(B.rig.children_recursive) | set(B.h.children_recursive):
+        if ob.type != "MESH" or ob == B.h or ob.get("outfit_piece"): continue
+        nm = ob.name.lower()
+        if not (LO._otype(ob) == "Hair" or "hair" in nm or any(w in nm for w in ("long01", "short0", "bob0", "braid0", "ponytail", "afro"))): continue
+        M = Mi @ ob.matrix_world; Minv = M.inverted()
+        for v in ob.data.vertices:
+            p = M @ v.co
+            if p.z < z0 - 0.01 * Hs: continue
+            k = ell(p, rx, ry, h) if p.z >= z0 else math.sqrt((p.x / rx) ** 2 + ((p.y - cy) / ry) ** 2)
+            if k > 0.93:
+                c0 = Vector((0, cy, min(p.z, z0) if p.z < z0 else z0))
+                q = c0 + (p - c0) * (0.93 / k)
+                v.co = Minv @ q; squashed += 1
+        ob.data.update()
+    print("OUTFIT cap hair squashed verts", squashed)
     rings = []
     for k in range(10):   # top -> bottom
         phi = R(86 - 86 * k / 9)
@@ -138,7 +156,7 @@ def _build(B, outfit, C, o):
     if outfit == "jhabla":
         G.append(bottoms(B, "nappy", fabric("nappy", C["nappy"], 0.85, 0.3), B.zw + 0.01 * Hs, leg_t=0.2, style="shorts", offset=0.012, ease=0.016))
         pat = {"kind": "dots", "c2": C["print"], "scale": 0.03 * Hs, "r": 0.18}
-        G.append(top(B, "jhabla_top", fabric("jhabla", C["jhabla"], 0.75, 0.3, pattern=pat), B.zh - 0.02 * Hs, sleeve_t=0.22, neck_depth=0.02 * Hs,
+        G.append(top(B, "jhabla_top", fabric("jhabla", C["jhabla"], 0.75, 0.3, pattern=pat), B.zh - 0.02 * Hs, sleeve_t=0.22, neck_depth=0.02 * Hs, neck_angle=25,
                      offset=0.009, loose=0.008, sleeve_loose=0.4, clear=0.007))
         rings = skirt_rings(B, B.zh, B.zk - 0.06 * Hs, flare=1.3, ease=0.022, top_ease=0.014)
         G.append(lathe(B, "jhabla_tail", fabric("jhabla_tail", C["jhabla"], 0.75, 0.3, pattern=pat, border={"c": C["print"], "mode": "v_hi", "w": 0.05}, coord="uv"),
@@ -150,36 +168,31 @@ def _build(B, outfit, C, o):
                            wfun=lambda co: B.kd_weights(co, ("torso",), drop=("arm",))))
     elif outfit == "baby_romper":
         pat = {"kind": "stripes", "c2": C["stripe"], "scale": 0.02 * Hs, "lw": 0.3, "dir": "h"}
-        G.append(bottoms(B, "romper_legs", fabric("romper_legs", C["romper"], 0.75, 0.3, pattern=pat), B.zw + 0.02 * Hs, leg_t=0.58, style="shorts", offset=0.01, ease=0.014))
-        G.append(top(B, "romper_top", fabric("romper", C["romper"], 0.75, 0.3, pattern=pat), B.zx + 0.01 * Hs, sleeve_t=0.24, neck_depth=0.018 * Hs,
+        G.append(bottoms(B, "romper_legs", fabric("romper_legs", C["romper"], 0.75, 0.3, pattern=pat), B.zw + 0.02 * Hs, leg_t=0.68, style="shorts", offset=0.01, ease=0.014))
+        G.append(top(B, "romper_top", fabric("romper", C["romper"], 0.75, 0.3, pattern=pat), B.zx + 0.01 * Hs, sleeve_t=0.24, neck_depth=0.018 * Hs, neck_angle=25,
                      offset=0.008, sleeve_loose=0.25, clear=0.007))
         G.append(buttons(B, B.zn - 0.03 * Hs, B.zw, 4, C["snap"], name="romper_snaps"))
     elif outfit == "baby_frock":
         G.append(bottoms(B, "bloomers", fabric("bloomers", C["bloomers"], 0.8, 0.3), B.zw + 0.01 * Hs, leg_t=0.32, style="shorts", offset=0.01, ease=0.018))
         pat = {"kind": "dots", "c2": C["dots"], "scale": 0.03 * Hs, "r": 0.25}
-        G.append(top(B, "frock_bodice", fabric("baby_frock", C["frock"], 0.6, 0.5, pattern=pat), B.zw - 0.02 * Hs, sleeve_t=0.2, neck_depth=0.02 * Hs,
+        G.append(top(B, "frock_bodice", fabric("baby_frock", C["frock"], 0.6, 0.5, pattern=pat), B.zw - 0.02 * Hs, sleeve_t=0.2, neck_depth=0.02 * Hs, neck_angle=25,
                      offset=0.008, sleeve_loose=0.45, clear=0.007))
         rings = skirt_rings(B, B.zw + 0.005 * Hs, B.zk - 0.05 * Hs, flare=1.6, ease=0.016)
         G.append(lathe(B, "frock_skirt", fabric("baby_frock_skirt", C["frock"], 0.6, 0.5, pattern=pat, border={"c": C["dots"], "mode": "v_hi", "w": 0.06}, coord="uv"),
                        rings, segs=120, pleats=20, amp=0.06))
-        G.append(waistband(B, B.zw + 0.005 * Hs, fabric("baby_sash", C["sash"], 0.6, 0.6), h=0.025 * Hs, ease=0.014, name="sash"))
-        try: G.append(collar(B, fabric("baby_frock_collar", C["collar"], 0.6, 0.3), h=0.01 * Hs, open_front=0.2))
-        except Exception as ex: print("OUTFIT WARN kid collar", repr(ex)[:200])
+        G.append(waistband(B, B.zw + 0.022 * Hs, fabric("baby_sash", C["sash"], 0.6, 0.6), h=0.025 * Hs, ease=0.014, name="sash"))
+        # no collar: lib_outfits.collar() sits on the neck ring, which on a toddler's short neck flares up under the chin
     elif outfit == "toddler_kurta_shorts":
         G.append(bottoms(B, "shorts", fabric("toddler_shorts", C["shorts"], 0.7, 0.3), B.zw + 0.01 * Hs, leg_t=0.58, style="shorts", offset=0.009, ease=0.014, clear=0.006))
-        G.append(top(B, "kurta", fabric("toddler_kurta", C["kurta"], 0.65, 0.35), B.zh - 0.02 * Hs, sleeve_t=0.3, neck_depth=0.012 * Hs, offset=0.008,
+        G.append(top(B, "kurta", fabric("toddler_kurta", C["kurta"], 0.65, 0.35), B.zh - 0.02 * Hs, sleeve_t=0.3, neck_depth=0.012 * Hs, neck_angle=25, offset=0.008,
                      sleeve_loose=0.25, loose=0.005, clear=0.007))
         rings = skirt_rings(B, B.zh, B.zx - 0.5 * (B.zx - B.zk), flare=1.12, ease=0.02, top_ease=0.012)
         G.append(lathe(B, "kurta_tail", fabric("toddler_kurta_tail", C["kurta"], 0.65, 0.35), rings, segs=96))
-        try: G.append(collar(B, fabric("toddler_kurta_collar", C["kurta"], 0.65, 0.3), h=0.012 * Hs, open_front=0.25))
-        except Exception as ex: print("OUTFIT WARN kid collar", repr(ex)[:200])
         G.append(buttons(B, B.zn - 0.025 * Hs, B.zc - 0.02 * Hs, 3, C["button"]))
     elif outfit == "toddler_shirt_shorts":
         sm = fabric("toddler_shirt", C["shirt"], 0.6, 0.3, pattern={"kind": "checks", "c2": C["check"], "scale": 0.016 * Hs})
         G.append(bottoms(B, "shorts", fabric("toddler_knee_shorts", C["shorts"], 0.7, 0.3), B.zw + 0.008 * Hs, leg_t=0.58, style="shorts", offset=0.009, ease=0.014, clear=0.006))
-        G.append(top(B, "shirt", sm, B.zh - 0.03 * Hs, sleeve_t=0.27, neck_depth=0.014 * Hs, offset=0.008, sleeve_loose=0.25, clear=0.007))
-        try: G.append(collar(B, fabric("toddler_collar", C["shirt"], 0.6, 0.3)))
-        except Exception as ex: print("OUTFIT WARN kid collar", repr(ex)[:200])
+        G.append(top(B, "shirt", sm, B.zh - 0.03 * Hs, sleeve_t=0.27, neck_depth=0.014 * Hs, neck_angle=25, offset=0.008, sleeve_loose=0.25, clear=0.007))
         G.append(buttons(B, B.zn - 0.03 * Hs, B.zw + 0.02 * Hs, 4, (0.95, 0.95, 0.92)))
     elif outfit == "woollen_set":
         lm = fabric("leggings", C["leggings"], 0.95, 0.6, pattern={"kind": "stripes", "c2": tuple(c * 0.85 for c in C["leggings"]), "scale": 0.005, "lw": 0.5})
