@@ -120,6 +120,7 @@ class Body:
             elif (ot == "Eyes" or "eye" in nm) and "brow" not in nm and "lash" not in nm:
                 self.eye_objs.append(o)
         # limb cross-sections every 5 % along the axis: centroid + 90th-percentile radius about it
+        self.skirt_tops = []
         self.limb_r, self.limb_c = {}, {}
         for key in self.axes:
             a, b = self.axes[key]; d = (b - a); L = d.length; d = d / L
@@ -380,7 +381,7 @@ def _register(B, o, extra=0.0):
     B.add_collider(vs, [tuple(p.vertices) for p in me.polygons])
 
 # ----------------------------------------------------------------------------------------------- garment builders
-def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=0.004, thick=0.004, min_island=0.03, post_smooth=0):
+def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=0.004, thick=0.004, min_island=0.03, post_smooth=0, hull_pts=None):
     """offset copy of the body region where keep(i) is True; cuts = [(sel(i), plane_co, plane_no)] remove the + side"""
     bm = bmesh.new(); bm.from_mesh(B.me)
     src = bm.verts.layers.int.new("src")
@@ -412,6 +413,14 @@ def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=
     _clean_islands(bm, min_island)
     for _ in range(2):
         push_out(bm.verts, B.bvh(), clear)
+    if hull_pts:   # fill concavities (toes) by pushing out to the convex hull of the given points
+        hb = bmesh.new()
+        for p in hull_pts: hb.verts.new(p)
+        bmesh.ops.convex_hull(hb, input=hb.verts[:])
+        hb.normal_update(); hbvh = BVHTree.FromBMesh(hb); hb.free()
+        for _ in range(2): push_out(bm.verts, hbvh, offset)
+        bmesh.ops.smooth_vert(bm, verts=bm.verts[:], factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+        push_out(bm.verts, hbvh, offset * 0.8)
     bm.normal_update()
     weights = [dict(B.w[v[src]]) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick)
@@ -531,6 +540,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
     for _ in range(2): push_out(bm.verts, bv, clear)
     bm.normal_update()   # faces are built facing outward (radial); no per-face flipping
     rxh = max(rr[2] for rr in rings)
+    if wfun is None: B.skirt_tops.append(z0)
     weights = [(wfun or (lambda co: _skirt_weights(B, z0, z1, co.x, co.z, rxh)))(v.co) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick)
     _register(B, o)
@@ -882,7 +892,7 @@ OUTFITS = {
                     "colours": {"shirt": (0.55, 0.75, 0.9), "lungi": (0.12, 0.3, 0.65), "check": (0.95, 0.95, 0.9), "check2": (0.85, 0.2, 0.2)},
                     "accessories": [], "footwear": "chappal", "cover": "knee", "notes": ""},
     "banian_dhoti_farmer": {"who": ["man", "elder"], "pieces": ["banian (vest)", "knee-length dhoti", "gamcha on shoulder", "pagdi (option)"],
-                            "colours": {"banian": (0.97, 0.97, 0.95), "dhoti": (0.96, 0.94, 0.86), "border": (0.2, 0.45, 0.25), "pagdi": (0.95, 0.95, 0.92)},
+                            "colours": {"banian": (0.97, 0.97, 0.95), "dhoti": (0.96, 0.94, 0.86), "border": (0.2, 0.45, 0.25), "pagdi": (0.98, 0.58, 0.16)},
                             "accessories": ["gamcha", "pagdi"], "footwear": "barefoot", "cover": "knee", "options": {"pagdi": True}, "notes": ""},
     "school_uniform_boy": {"who": ["boy"], "pieces": ["white shirt", "navy shorts (or trousers=True)", "belt", "tie (option)", "socks + shoes"],
                            "colours": {"shirt": (0.97, 0.97, 0.97), "shorts": (0.1, 0.14, 0.35), "tie": (0.75, 0.1, 0.15), "belt": (0.1, 0.1, 0.1)},
@@ -973,7 +983,9 @@ def _sweater(B, kind="cardigan", colour=None):
     """knitted layer over whatever is already on (cardigan = open front with buttons, pullover = closed, crew neck)"""
     Hs = B.Hs; col = colour or ((0.55, 0.15, 0.2) if kind == "cardigan" else (0.2, 0.35, 0.6))
     km = fabric(f"sweater_{kind}", col, 0.9, 0.6, pattern={"kind": "stripes", "c2": tuple(c * 0.8 for c in col), "scale": 0.006 * Hs / 1.6, "lw": 0.5})
-    o = top(B, f"sweater_{kind}", km, B.zh - 0.05 * Hs, sleeve_t=0.9, neck_depth=(0.08 if kind == "cardigan" else 0.02) * Hs, neck_angle=70 if kind == "cardigan" else 50,
+    hem = B.zh - 0.05 * Hs
+    if B.skirt_tops: hem = max(hem, max(B.skirt_tops) + 0.012 * Hs)   # end above any skirt / kurta tail already on
+    o = top(B, f"sweater_{kind}", km, hem, sleeve_t=0.9, neck_depth=(0.08 if kind == "cardigan" else 0.02) * Hs, neck_angle=70 if kind == "cardigan" else 50,
             offset=0.012, sleeve_loose=0.3, clear=0.009, thick=0.007)
     out = [o]
     if kind == "cardigan": out.append(buttons(B, B.zc - 0.02 * Hs, B.zh - 0.06 * Hs, 4, (0.9, 0.85, 0.7), name="sweater_buttons"))
@@ -1206,7 +1218,12 @@ def _dhoti(B, C, leg_t=0.9):
     hem = B.axis_point("leg", 1, leg_t).z
     pm = fabric("dhoti_pleats", C["dhoti"], 0.75, 0.3, pattern={"kind": "stripes", "c2": tuple(c * 0.86 for c in C["dhoti"]), "scale": 0.125, "lw": 0.35, "dir": "h"},
                 border={"c": C["border"], "mode": "v_edges", "w": 0.07}, coord="uv")
-    pts = [B.surf(0.0, B.zh - 0.04 * Hs, "front"), B.surf(0.0, B.zx, "front"), B.surf(0.0, (B.zx + hem) / 2, "front"), B.surf(0.0, hem + 0.01 * Hs, "front")]
+    def front_mid(z):   # centre front between the two dhoti legs (a ray at x=0 would slip between them)
+        dx = abs(B.c_at("leg", 1, max(0.0, (B.zh - z) / max(1e-4, B.zh - B.za))).x) * 0.6
+        ps = [q for q in (B.surf(dx, z, "front"), B.surf(-dx, z, "front"), B.surf(0.0, z, "front")) if q is not None]
+        if not ps: return None
+        q = min(ps, key=lambda q: q.y); return Vector((0.0, q.y - 0.004 * Hs, z))
+    pts = [front_mid(B.zh - 0.04 * Hs), front_mid(B.zx), front_mid((B.zx + hem) / 2), front_mid(hem + 0.01 * Hs)]
     G.append(drape(B, "dhoti_pleats", pm, [p for p in pts if p], [0.09 * Hs, 0.1 * Hs, 0.1 * Hs, 0.09 * Hs], clear=0.006, thick=0.005))
     return G
 
@@ -1285,7 +1302,7 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 def keep(i, sd=sd):
                     return B.side[i] == sd and B.part[i] == "leg" and (any(b.startswith(("foot", "toe")) for b in B.w[i]) or B.t[i] > 0.93)
                 A, F = B.axes[("leg", sd)]; d = (F - A).normalized()
-                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.008, smooth=40,
+                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.007, smooth=8, hull_pts=[p for p in foot if p.z < B.za + 0.01 * B.Hs],
                           cuts=[(lambda i: True, A + (F - A) * 0.955, -d)], clear=0.005, thick=0.005, min_island=0.2)
                 low = [p for p in foot if p.z < 0.02 * B.Hs]
                 hull = _hull(sorted({(round(p.x, 3), round(p.y, 3)) for p in low}))
