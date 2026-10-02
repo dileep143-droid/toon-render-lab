@@ -493,8 +493,9 @@ def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004,
     a0, a1 = -math.pi / 2 + gap, 1.5 * math.pi - gap
     c0, prof0 = _neck_profile(B, B.zn + 0.004 * B.Hs, 40, a0, a1, pad)
     rows = []
-    for k, (zz, sc_) in enumerate(((zb, 1.06), (zb + 0.4 * h, 1.0), (zb + h, 0.985), (zb + h + 0.002, 0.97))):
-        rows.append([Vector((r * sc_ * math.cos(a), c0.y + r * sc_ * math.sin(a), zz)) for a, r in prof0])
+    for k, (zz, sc_) in enumerate(((zb, 1.03), (zb + 0.4 * h, 1.0), (zb + h, 1.0), (zb + h + 0.002, 0.985))):
+        ck, pk = _neck_profile(B, max(zz, B.zn + 0.004 * B.Hs), 40, a0, a1, pad)   # the neck at this row's height
+        rows.append([Vector((r * sc_ * math.cos(a), ck.y + r * sc_ * math.sin(a), zz)) for a, r in pk])
     bm, G = _grid(rows, lambda r, c: (c / 39 * 0.3, r / 3))
     push_out(bm.verts, B.bvh(), 0.002)
     weights = [B.kd_weights(v.co, ("torso", "head"), drop=("arm",)) for v in bm.verts]
@@ -524,6 +525,15 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
     for _ in range(3):
         push_out([v for row in G[3:] for v in row], B.bvh(), 0.003)
         bmesh.ops.smooth_vert(bm, verts=[v for row in G[4:] for v in row], factor=0.4, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    bv = B.bvh()
+    for it in range(4):   # lay the fall on the shirt / shoulders: every fall vertex is pulled onto the surface below it
+        for k, row in enumerate(G[4:]):
+            for v in row:
+                loc, nrm, _, d = bv.find_nearest(v.co, 0.15)
+                if loc is None: continue
+                want = loc + nrm * (0.0025 + 0.001 * k)
+                v.co = v.co.lerp(want, 0.7 if it < 3 else 1.0)
+        if it < 3: bmesh.ops.smooth_vert(bm, verts=[v for row in G[4:] for v in row], factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     push_out(bm.verts, B.bvh(), 0.002)
     weights = [B.kd_weights(v.co, ("torso", "head"), drop=("arm",)) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick); _register(B, o)
@@ -1871,8 +1881,8 @@ def float_report(h, garments, parts=DETAIL_PARTS, float_mm=5.0):
     (posed skin + every other garment). p90 / max gap in mm and the share of its vertices more than float_mm away.
     A collar or pocket that 'floats' shows a high p90 here."""
     co = posed_coords(h); B = _BODIES.get(h.name); Mi = h.matrix_world.inverted()
-    def mesh_of(g):
-        sol = [(m, m.show_viewport) for m in g.modifiers if m.type == "SOLIDIFY"]
+    def mesh_of(g, thick=False):
+        sol = [] if thick else [(m, m.show_viewport) for m in g.modifiers if m.type == "SOLIDIFY"]
         for m, _ in sol: m.show_viewport = False
         bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
         ev = g.evaluated_get(dg); me = ev.to_mesh(); M = g.matrix_world
@@ -1881,14 +1891,14 @@ def float_report(h, garments, parts=DETAIL_PARTS, float_mm=5.0):
         for m, s_ in sol: m.show_viewport = s_
         return V, P
     gs = [g for g in garments if g is not None and g.name in bpy.data.objects and g.type == "MESH"]
-    meshes = {g.name: mesh_of(g) for g in gs}
+    meshes = {g.name: mesh_of(g) for g in gs}; solid_ = {g.name: mesh_of(g, True) for g in gs}
     bpy.context.view_layer.update()
     base_V = [co[i] for i in range(len(co))]; base_P = list(B.body_polys) if B else [tuple(p.vertices) for p in h.data.polygons]
     out = {}
     for g in gs:
         if not any(w in g.name.lower() for w in parts): continue
         V, P = list(base_V), list(base_P)
-        for n, (gv, gp) in meshes.items():
+        for n, (gv, gp) in solid_.items():   # the surfaces under the piece, including their cloth thickness
             if n == g.name or not gp: continue
             o_ = len(V); V += gv; P += [tuple(k + o_ for k in p) for p in gp]
         bvh = BVHTree.FromPolygons(V, P)
