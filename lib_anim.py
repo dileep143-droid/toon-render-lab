@@ -1086,6 +1086,9 @@ VISEMES = {
     "G": {"mouthRollLower": 0.6, **_both("mouthUpperUp", 0.2), "jawOpen": 0.06},                   # F V
     "H": {"jawOpen": 0.3, "tongueOut": 0.15},                                                      # L
 }
+# MPFB "visemes01" pack (Microsoft viseme shape keys, verified names on MPFB 2.0.x): Rhubarb shape -> key
+VISEMES_MS = {"X": {}, "A": {"p_b_m_21": 1.0}, "B": {"y_iy_ih_ix_06": 0.9, "s_z_15": 0.3}, "C": {"ey_eh_uh_04": 1.0}, "D": {"aa_02": 1.0},
+              "E": {"ao_03": 0.8, "er_05": 0.3}, "F": {"w_uw_07": 1.0}, "G": {"f_v_18": 1.0}, "H": {"l_14": 1.0}}
 _JAW = {"X": 0, "A": 0, "B": 0.15, "C": 0.45, "D": 0.8, "E": 0.45, "F": 0.15, "G": 0.08, "H": 0.4}
 
 _DEV = {  # Devanagari -> mouth shape
@@ -1130,22 +1133,23 @@ def talk(rig, frame, text=None, cues=None, rhubarb_json=None, rate=13.0, strengt
     sc = bpy.context.scene; fps = sc.render.fps / sc.render.fps_base
     if rhubarb_json: cues = rhubarb_cues(rhubarb_json)
     if cues is None: cues = text_to_cues(text or "", fps, rate)
-    has_face = bool(rig.face_keys())
-    every = set(n for v in VISEMES.values() for n in v)
+    fk = rig.face_keys(); has_face = bool(fk)
+    table = VISEMES_MS if _norm("aa_02") in fk and _norm("p_b_m_21") in fk else VISEMES   # prefer MPFB's own visemes
+    every = set(n for v in table.values() for n in v)
     last = frame
     rnd = random.Random(len(cues))
     for i, (t0, t1, s) in enumerate(cues):
         f = frame + int(round(t0 * fps))
         if has_face:
-            w = {n: 0.0 for n in every}; w.update({k: v * strength for k, v in VISEMES.get(s, {}).items()})
+            w = {n: 0.0 for n in every}; w.update({k: v * strength for k, v in table.get(s, {}).items()})
             _face_keys(rig, w, f)
-        if rig.has("jaw"):
+        if rig.has("jaw") and not has_face:
             rig.apply({"jaw": {"lift": -14 * _JAW.get(s, 0) * strength}}, f, layer=True)
         if head_bob and rig.has("head") and s == "D" and rnd.random() < 0.35:
             rig.apply({"head": {"fwd": 5}}, f, layer=True); rig.apply({"head": {}}, f + 4, layer=True)
         last = frame + int(round(t1 * fps))
     if has_face: _face_keys(rig, {n: 0.0 for n in every}, last + 1)
-    if rig.has("jaw"): rig.apply({"jaw": {}}, last + 1, layer=True)
+    if rig.has("jaw") and not has_face: rig.apply({"jaw": {}}, last + 1, layer=True)
     return last
 
 
