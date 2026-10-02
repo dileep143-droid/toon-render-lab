@@ -60,7 +60,7 @@ def save_blend(path):
     bpy.ops.wm.save_as_mainfile(filepath=path, compress=True, copy=True)
 
 # ---------------- props ----------------
-MODS = next((f.split("=", 1)[1].split(",") for f in flags if f.startswith("--mods=")), ["lib_props", "lib_props2", "lib_props3"])
+MODS = next((f.split("=", 1)[1].split(",") for f in flags if f.startswith("--mods=")), ["lib_props", "lib_props2", "lib_props3", "lib_props4"])
 for modname in (MODS if "props" in ONLY else ()):
     try:
         LP = importlib.import_module(modname)
