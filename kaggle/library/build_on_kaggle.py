@@ -2,7 +2,8 @@
 Code comes from the public repo dileep143-droid/toon-render-lab. Output: /kaggle/working/library (+ library.zip)."""
 import os, subprocess, json, shutil, glob, urllib.request
 W = "/kaggle/working"; os.chdir(W)
-ONLY = "props"          # which parts to build this run: props / cast / animals (comma-separated)
+ONLY = "props"          # props / cast / animals
+MODS = "lib_props4"
 def sh(c, t=3600):
     print(">>", c[:300], flush=True); r = subprocess.run(c, shell=True, capture_output=True, text=True, timeout=t)
     print(r.stdout[-4000:], r.stderr[-2500:], flush=True); return r.returncode
@@ -25,7 +26,7 @@ for cand in glob.glob("/kaggle/input/*/out") + glob.glob("/kaggle/input/*"):
     if glob.glob(os.path.join(cand, "*.glb")): huny = cand; break
 print("HUNYUAN INPUT", huny or "none", flush=True)
 shutil.rmtree("library", ignore_errors=True)
-sh(f"./blender/blender -b -noaudio --python repo/build_library.py -- library pack functional cartoon {huny} --only={ONLY} 2>&1 | grep -E 'PROP OK|CAST OK|ANIMAL OK|LIBRARY DONE|Error|Traceback|line [0-9]|refusing|fail' | tail -n 300", 10800)
+sh(f"./blender/blender -b -noaudio --python repo/build_library.py -- library pack functional cartoon {huny} --only={ONLY} --mods={MODS} 2>&1 | grep -E 'PROP OK|CAST OK|ANIMAL OK|LIBRARY DONE|Error|Traceback|line [0-9]|refusing|fail' | tail -n 300", 10800)
 sh("cd library && zip -qr ../library.zip . && cd .. && du -sh library library.zip")
 try:
     cat = json.load(open("library/catalogue.json"))
