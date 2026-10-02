@@ -1,0 +1,13 @@
+{
+  "id": "mani7673/sonpur-episode-render",
+  "title": "sonpur-episode-render",
+  "code_file": "run_episode.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["mani7673/sonpur-episodes"],
+  "competition_sources": [],
+  "kernel_sources": []
+}
