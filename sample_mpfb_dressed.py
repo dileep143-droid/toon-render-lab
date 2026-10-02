@@ -97,7 +97,20 @@ except Exception: traceback.print_exc()
 add("eyes", ["high-poly"])
 add("eyebrows", ["eyebrow010", "eyebrow001"])
 add("eyelashes", ["eyelashes01"])
-add("hair", ["braid01", "ponytail01", "long01"])
+add("hair", ["long01", "ponytail01"])
+# warm wheatish skin: multiply every skin base colour (the young_asian_female texture is very pale)
+def warm(mat, rgb=(0.92, 0.72, 0.56)):
+    nt = mat.node_tree
+    for b in [n for n in nt.nodes if n.bl_idname == "ShaderNodeBsdfPrincipled"]:
+        inp = b.inputs["Base Color"]
+        mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = "RGBA"; mix.blend_type = "MULTIPLY"; mix.inputs[0].default_value = 1.0
+        mix.inputs[7].default_value = (*[c ** 2.2 for c in rgb], 1)
+        if inp.is_linked:
+            s = inp.links[0].from_socket; nt.links.remove(inp.links[0]); nt.links.new(s, mix.inputs[6])
+        else: mix.inputs[6].default_value = inp.default_value
+        nt.links.new(mix.outputs[2], inp)
+for m_ in {s.material for s in h.material_slots if s.material}:
+    if m_.use_nodes: warm(m_); print("WARMED", m_.name)
 DRESSED = 0
 def add_cloth(name):
     global DRESSED
@@ -169,4 +182,57 @@ if rig is not None and not done:
         names = [b.name for b in pb]
         print("FACE BONES", [n for n in names if any(w in n.lower() for w in ("lip", "mouth", "cheek", "eyelid", "jaw", "oris", "levator"))][:60])
     except Exception: traceback.print_exc()
+# ================= EXPRESSIONS: find MPFB's own face systems =================
+import json
+fsmod = mod("faceservice"); anim = mod("animationservice")
+for m_ in (fsmod, anim):
+    for n, obj in vars(m_).items():
+        if inspect.isclass(obj) and obj.__module__ == m_.__name__:
+            for fn in [x for x in dir(obj) if not x.startswith("_")]:
+                try: print("API", obj.__name__, fn, inspect.signature(getattr(obj, fn)))
+                except Exception: print("API", obj.__name__, fn)
+ext_dir = os.path.dirname(mpfb_mod.__file__) if (mpfb_mod := importlib.import_module(base)) else ""
+for pat in ("**/*expression*", "**/*.mhpose", "**/*face*", "**/*viseme*", "**/*.bvh"):
+    hits = sorted(glob.glob(os.path.join(ext_dir, "data", pat), recursive=True))
+    print("DATA", pat, len(hits), [os.path.relpath(x, ext_dir) for x in hits[:15]])
+
+def all_keys():
+    out = {}
+    for o in [h] + [c for c in h.children if c.type == "MESH"]:
+        if o.data.shape_keys:
+            for k in o.data.shape_keys.key_blocks: out.setdefault(k.name, []).append(k)
+    return out
+
+# 1) try every FaceService function that loads face units / visemes onto the basemesh
+FSc = next((obj for n, obj in vars(fsmod).items() if inspect.isclass(obj) and obj.__module__ == fsmod.__name__), None)
+if FSc:
+    for fn in [x for x in dir(FSc) if not x.startswith("_") and any(w in x.lower() for w in ("load", "face", "viseme", "unit", "add"))]:
+        f = getattr(FSc, fn)
+        for args in ((h,), (h, True), ()):
+            try: r = f(*args); print("CALLED", fn, len(args), "->", str(r)[:120]); break
+            except Exception as ex: print("call fail", fn, len(args), repr(ex)[:160])
+ks = all_keys()
+print("KEYS NOW", len(ks), sorted(ks)[:120])
+
+def set_keys(words, val):
+    hit = [n for n in ks if any(w in n.lower() for w in words)]
+    for n in hit:
+        for k in ks[n]: k.value = val
+    return hit
+def clear_keys():
+    for lst in ks.values():
+        for k in lst:
+            if k.name != "Basis" and not k.name.startswith("$md"): k.value = 0.0
+tests = {
+    "smile": ["mouthsmile", "smile", "lip-corner-up", "lips-corner-up", "mouth-corner-up", "cheekraise", "cheek-up"],
+    "blink": ["eyeblink", "blink", "eye-close", "eyelid-down", "eyesclosed"],
+    "surprise": ["browinnerup", "browouterup", "eyewide", "jawopen", "brow-up", "eyes-wide"],
+    "viseme_aa": ["viseme_aa", "_aa", "aa"],
+    "viseme_oh": ["viseme_o", "_oh", "oh"],
+}
+for name, words in tests.items():
+    clear_keys(); hit = set_keys(words, 1.0); bpy.context.view_layer.update()
+    print("EXPR", name, hit[:10])
+    if hit: shot(f"expr_{name}.png", *FACE)
+clear_keys()
 print("DRESSED DONE")
