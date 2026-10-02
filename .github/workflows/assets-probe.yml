@@ -1,0 +1,14 @@
+name: assets-probe
+on:
+  workflow_dispatch: {}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch CC0 cartoon packs and list them
+        run: |
+          pip install -q gdown
+          python3 fetch_cartoon_assets.py cartoon
+          du -sh cartoon/* || true
