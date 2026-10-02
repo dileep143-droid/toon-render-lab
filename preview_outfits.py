@@ -115,6 +115,10 @@ def cams_for(h, rig, neck=True):
         B = LO.body_of(h, rig); zn = B.zn + rig.location.z; Dn = 0.5 * H; tn = Vector((0, B.bh["neck01"].y, zn + 0.02 * H))
         for name, ang in (("neck_front", 0.0), ("neck_q34", -38.0)):
             a = R(ang); out[name] = (tn + Vector((Dn * math.sin(-a), -Dn * math.cos(a), 0.03 * H)), tn)
+        sh = B.bh["upperarm01.R"] + Vector((0, 0, rig.location.z - 0.03 * H))   # right shoulder + armpit, from front-right
+        out["shoulder"] = (sh + Vector((-0.32 * H, -0.32 * H, 0.04 * H)), sh)
+        tw = Vector((0, B.bh["spine03"].y, B.zw + rig.location.z))               # waist / waistband, from the front-left
+        out["waist"] = (tw + Vector((0.2 * H, -0.5 * H, 0.03 * H)), tw)
     return out
 
 def look(cam, frm, to, lens=50):
@@ -156,12 +160,15 @@ for who, outfit, opts in PLAN:
             rig.location.z = 0; LO.set_pose(rig, pose); bpy.context.view_layer.update(); ground_feet(h, rig)
             cams = cams_for(h, rig, neck=(pose == "apose" and views != "base"))
             if views in ("base", "body"):
-                keepv = {"base": ("front",), "body": ("front", "neck_front") if pose == "apose" else ("q34",)}[views]
+                keepv = {"base": ("front",), "body": ("front", "neck_front", "shoulder", "waist") if pose == "apose" else ("q34",)}[views]
                 cams = {k: v for k, v in cams.items() if k in keepv}
             H_ = max(0.9, h.dimensions.z); extra = {"back": Vector((0, 1.75 * H_, H_ * 0.55)), "left": Vector((1.75 * H_, 0, H_ * 0.55)), "right": Vector((-1.75 * H_, 0, H_ * 0.55))}
             cov = LO.coverage(h, rig, {**{k: v[0] for k, v in cams.items()}, **extra}, level=LO.OUTFITS[outfit].get("cover", "knee"))
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
+            if pose == "apose":
+                rep["fit_mm"] = LO.fit_report(h, rig, G)
+                print("FIT", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in rep["fit_mm"].items()})
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             if pose == "walk":
                 print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"], v.get("worst")) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})
@@ -176,7 +183,7 @@ for who, outfit, opts in PLAN:
                         for o in hidden: o.hide_render = False
                     continue
                 look(cam, frm, to)
-                if view.startswith("neck"): sc.render.resolution_x, sc.render.resolution_y = 512, 512
+                if view.startswith("neck") or view in ("shoulder", "waist"): sc.render.resolution_x, sc.render.resolution_y = 512, 512
                 else: sc.render.resolution_x, sc.render.resolution_y = 512, 768
                 sc.render.filepath = os.path.join(OUT, f"{key}_{pose}_{view}.png")
                 bpy.ops.render.render(write_still=True); print("SHOT", key, pose, view)
