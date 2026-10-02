@@ -1,0 +1,8 @@
+ShibaInu.blend and Deer.blend are unmodified files from the "Ultimate Animated Animals" pack
+by Quaternius (quaternius.com), released under CC0 1.0 (public domain dedication).
+Credit (not required, but given): "Quaternius (quaternius.com), CC0".
+Source: https://quaternius.com/packs/ultimateanimatedanimals.html (public Google Drive folder, fetched with fetch_cartoon_assets.py)
+
+lib_animals.py turns them into our original characters at load time:
+  SHERU  <- ShibaInu (recoloured, cartoon eyes/brows/smile, jaw bone, extra actions)
+  CHAMKI <- Deer     (goat: horns, beard, tail tuft, brown-and-white patches, cartoon face, jaw bone, extra actions)
