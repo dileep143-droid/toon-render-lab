@@ -110,7 +110,7 @@ def nazar_bracelet(B, side=-1):
 
 def woollen_cap(B, colour, pompom):
     """dome cap over the head (and any hair) down to the eyebrows, with a rolled brim and a pompom"""
-    Hs = B.Hs; z0 = B.ze + 0.18 * (B.zt - B.ze)
+    Hs = B.Hs; z0 = B.ze + 0.32 * (B.zt - B.ze)   # brim (z0 - 0.024 Hs) stays above the eyebrows
     pts = [B.co[i] for i in B.body_idx if B.part[i] == "head" and abs(B.co[i].z - z0) < 0.012 * Hs]   # head only: hair is squashed under the cap
     if len(pts) < 4: return None
     cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
