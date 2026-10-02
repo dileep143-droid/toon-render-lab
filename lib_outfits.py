@@ -119,25 +119,35 @@ class Body:
                 self.hair_pts += [mw @ v.co for v in ev.data.vertices]
             elif (ot == "Eyes" or "eye" in nm) and "brow" not in nm and "lash" not in nm:
                 self.eye_objs.append(o)
-        self.limb_r = {}
+        # limb cross-sections every 5 % along the axis: centroid + 90th-percentile radius about it
+        self.limb_r, self.limb_c = {}, {}
         for key in self.axes:
             a, b = self.axes[key]; d = (b - a); L = d.length; d = d / L
-            tab = [0.0] * 21
+            bins = [[] for _ in range(21)]
             for i in self.body_idx:
                 if self.part[i] != key[0] or self.side[i] != key[1]: continue
                 t = self.t[i]
-                if -0.05 <= t <= 1.05:
-                    k = min(20, max(0, int(round(t * 20))))
-                    v = self.co[i] - a; r = (v - d * v.dot(d)).length
-                    tab[k] = max(tab[k], r)
+                if -0.03 <= t <= 1.03: bins[min(20, max(0, int(round(t * 20))))].append(self.co[i])
+            rt, ct = [0.0] * 21, [None] * 21
             for k in range(21):
-                if tab[k] == 0: tab[k] = tab[k - 1] if k else 0.03
-            self.limb_r[key] = tab
+                ps = bins[k]
+                if len(ps) < 6: continue
+                c = sum(ps, Vector()) / len(ps)
+                rs = sorted(((p - c) - d * (p - c).dot(d)).length for p in ps)
+                rt[k] = rs[min(len(rs) - 1, int(0.9 * len(rs)))]; ct[k] = c
+            for k in range(21):
+                if ct[k] is None:
+                    j = min((j for j in range(21) if ct[j] is not None), key=lambda j: abs(j - k))
+                    ct[k] = a + d * L * (k / 20) + (ct[j] - (a + d * L * (j / 20))); rt[k] = rt[j]
+            self.limb_r[key], self.limb_c[key] = rt, ct
 
     # --- helpers
     def r_at(self, limb, side, t):
         tab = self.limb_r[(limb, side)]; x = max(0, min(20, t * 20)); k = int(x); f = x - k
         return tab[k] if k >= 20 else tab[k] * (1 - f) + tab[k + 1] * f
+    def c_at(self, limb, side, t):
+        tab = self.limb_c[(limb, side)]; x = max(0, min(20, t * 20)); k = int(x); f = x - k
+        return tab[k].copy() if k >= 20 else tab[k] * (1 - f) + tab[k + 1] * f
     def axis_point(self, limb, side, t):
         a, b = self.axes[(limb, side)]; return a + (b - a) * t
     def bvh(self):
@@ -149,13 +159,16 @@ class Body:
         return self._bvh
     def add_collider(self, verts, polys):
         self.col.append((verts, polys)); self._bvh = None
-    def ring(self, z, ease=0.0, dz=None, parts=("torso", "leg"), extra=()):
+    def ring(self, z, ease=0.0, dz=None, parts=("torso", "leg"), extra=(), cy=None, xmax=None):
         """ellipse (cy, rx, ry) around x=0 containing the body slice at height z"""
         dz = dz or 0.006 * self.Hs
         pts = [(self.co[i].x, self.co[i].y) for i in self.body_idx if self.part[i] in parts and abs(self.co[i].z - z) < dz]
         pts += [(p.x, p.y) for p in extra if abs(p.z - z) < dz]
+        if xmax is not None: pts = [p for p in pts if abs(p[0]) < xmax]
         if len(pts) < 4: return None
-        ys = [p[1] for p in pts]; cy = (min(ys) + max(ys)) / 2
+        ys = [p[1] for p in pts]
+        if cy is None: cy = (min(ys) + max(ys)) / 2
+        else: ys = ys + [2 * cy - y for y in ys]
         rx = max(abs(p[0]) for p in pts) + 1e-4; ry = (max(ys) - min(ys)) / 2 + 1e-4
         s = max(math.sqrt((p[0] / rx) ** 2 + ((p[1] - cy) / ry) ** 2) for p in pts)
         return cy, rx * s + ease, ry * s + ease
@@ -290,10 +303,13 @@ def push_out(verts, bvh, clear):
         if sd < clear: v.co = v.co + nrm * (clear - sd)
 
 def orient_outward(bm, bvh):
-    bm.normal_update()
+    """flip the whole sheet if most of its faces point into the body (keeps winding consistent)"""
+    bm.normal_update(); bad = 0
     for f in bm.faces:
         c = f.calc_center_median(); loc, nrm, _, _ = bvh.find_nearest(c)
-        if loc is not None and f.normal.dot(nrm) < 0: f.normal_flip()
+        if loc is not None and f.normal.dot(nrm) < 0: bad += 1
+    if bad > len(bm.faces) / 2:
+        for f in bm.faces: f.normal_flip()
     bm.normal_update()
 
 def _clean_islands(bm, min_frac=0.03):
@@ -343,6 +359,11 @@ def _finish(B, bm, name, mat, weights, thick=0.004, tag="outfit_piece", extra_ma
             if bn not in groups: groups[bn] = o.vertex_groups.new(name=bn)
             groups[bn].add([vi], x, "REPLACE")
     am = o.modifiers.new("Armature", "ARMATURE"); am.object = B.rig; am.use_vertex_groups = True
+    src_am = next((m for m in B.h.modifiers if m.type == "ARMATURE"), None)
+    if src_am is not None:   # deform exactly like the body (MPFB may use preserve-volume / DQS)
+        for k in ("use_deform_preserve_volume", "use_bone_envelopes", "use_multi_modifier"):
+            try: setattr(am, k, getattr(src_am, k))
+            except Exception: pass
     if thick:
         so = o.modifiers.new("thick", "SOLIDIFY"); so.thickness = thick; so.offset = 1.0; so.use_quality_normals = True
     o[tag] = 1
@@ -391,9 +412,10 @@ def _tube_fn(B, limb, rfun, t0=0.12, t1=0.3):
     def f(v, i):
         if B.part[i] != limb: return
         s = B.side[i]; a, b = B.axes[(limb, s)]; d = (b - a); Ln = d.length; d = d / Ln
-        rel = v.co - a; t = rel.dot(d) / Ln
+        t = (v.co - a).dot(d) / Ln
         w = _smoothstep(t0, t1, t)
         if w <= 0: return
+        rel = v.co - B.c_at(limb, s, t)
         rad = rel - d * rel.dot(d); r = rad.length
         if r < 1e-6: return
         want = rfun(s, t)
@@ -423,8 +445,8 @@ def top(B, name, mat, hem_z, sleeve_t=0.25, neck_depth=None, neck_angle=55, offs
         cuts.append(((lambda s: (lambda i: B.part[i] == "arm" and B.side[i] == s))(sd), A + (W - A) * st, d))
     tube = None
     if sleeve_loose > 0 and not sleeveless:
-        rmax = {sd: max(B.limb_r[("arm", sd)][2:10]) for sd in (1, -1)}
-        tube = _tube_fn(B, "arm", lambda s, t: rmax[s] * (1.0 + sleeve_loose) - 0.25 * rmax[s] * max(0, t - 0.3), 0.08, 0.25)
+        rref = {sd: B.r_at("arm", sd, 0.3) for sd in (1, -1)}
+        tube = _tube_fn(B, "arm", lambda s, t: max(B.r_at("arm", s, t) + 0.004, rref[s] * (1.0 + sleeve_loose) * (1 - 0.3 * max(0, t - 0.3))), 0.12, 0.3)
     off = (lambda i: offset + loose * _smoothstep(B.zc, B.zw, B.co[i].z)) if loose else offset
     return shell(B, name, mat, keep, offset=off, cuts=cuts, tube=tube, clear=clear, thick=thick)
 
@@ -442,22 +464,21 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
         cuts.append(((lambda s: (lambda i: B.part[i] == "leg" and B.side[i] == s))(sd), A + (F - A) * leg_t, d))
     r = lambda s, t: B.r_at("leg", s, t)
     if style == "straight":      # pyjama / trousers: falls straight from the thigh
-        rf = lambda s, t: max(r(s, t) + ease, (r(s, 0.3) + ease) * (1.0 - 0.28 * max(0, t - 0.3) / 0.7))
+        rf = lambda s, t: max(r(s, t) + ease, (r(s, 0.35) + ease) * (1.0 - 0.22 * max(0, t - 0.35) / 0.65))
     elif style == "salwar":      # balloon legs, tight cuff at the ankle
-        rf = lambda s, t: max(r(s, t) + ease, (r(s, 0.3) * 1.35 + ease) * (1 - _smoothstep(0.7, 0.93, t) * 0.55))
-    elif style == "dhoti":       # very loose wrapped legs, slight flare at the hem
-        rf = lambda s, t: max(r(s, t) + ease, r(s, 0.28) * (1.35 + 0.25 * t) + ease)
+        rf = lambda s, t: max(r(s, t) + ease, (r(s, 0.35) * 1.3 + ease) * (1 - _smoothstep(0.72, 0.94, t) * 0.5))
+    elif style == "dhoti":       # loose wrapped legs, slight flare at the hem
+        rf = lambda s, t: max(r(s, t) + ease, r(s, 0.35) * (1.2 + 0.2 * t) + ease)
     elif style == "shorts":
-        rf = lambda s, t: max(r(s, t) + ease, r(s, 0.25) + ease * 1.5)
+        rf = lambda s, t: max(r(s, t) + ease, r(s, 0.3) + ease * 1.3)
     else: rf = lambda s, t: r(s, t) + ease
-    tube = _tube_fn(B, "leg", rf, 0.10 if style != "dhoti" else 0.06, 0.32)
+    tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34)
     return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick)
 
 def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
     """pelvis at the waist -> thighs -> shins at the hem; left/right split by x"""
-    s = max(0.0, min(1.0, (B.zh - z) / max(1e-4, B.zh - min(z_hem, B.zk))))
-    legw = 0.9 * _smoothstep(0.0, 0.75, s) * stiff
-    shin = 0.45 * _smoothstep(B.zk, B.za, z) if z < B.zk else 0.0
+    legw = 0.97 * _smoothstep(B.zh + 0.01 * B.Hs, B.zx - 0.3 * (B.zx - B.zk), z) * stiff
+    shin = 0.5 * _smoothstep(B.zk, B.za, z) if z < B.zk else 0.0
     wl = 1.0 / (1.0 + math.exp(-x / (0.22 * rx_hip)))
     ws = {"spine05": (1 - legw) * 0.5}
     for side, f in (("L", wl), ("R", 1 - wl)):
@@ -497,7 +518,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
             lp[uv].uv = (ii / segs * circ, (z0 - zs[rr]) / max(1e-6, z0 - z1))
     bv = B.bvh()
     for _ in range(2): push_out(bm.verts, bv, clear)
-    orient_outward(bm, bv)
+    bm.normal_update()   # faces are built facing outward (radial); no per-face flipping
     rxh = max(rr[2] for rr in rings)
     weights = [(wfun or (lambda co: _skirt_weights(B, z0, z1, co.x, co.z, rxh)))(v.co) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick)
@@ -506,24 +527,36 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
 
 def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=None):
     """measured rings: snug at the waist, widest at the hips, then a straight / flared fall to the hem"""
-    step = step or 0.018 * B.Hs; rings = []; z = z_top
-    best = None
-    while z > B.zx - 0.02 * B.Hs and z > z_hem:
-        rg = B.ring(z, ease if z < z_top - 0.01 * B.Hs else (top_ease if top_ease is not None else ease))
-        if rg:
-            if best:   # never narrower than above once past the waist->hip turn
-                if z < B.zw - 0.02 * B.Hs: rg = (rg[0], max(rg[1], best[1]), max(rg[2], best[2]))
-            rings.append((z, *rg)); best = rg if (best is None or z < B.zw) else best
+    step = step or 0.015 * B.Hs
+    # 1) measured section: waist -> widest hip (searched between the crotch and the waist)
+    meas, z = [], z_top
+    while z > B.zx - 0.01 * B.Hs and z > z_hem:
+        rg = B.ring(z, ease)
+        if rg: meas.append((z, *rg))
         z -= step
-    if not rings: rings = [(z_top, *B.ring(B.zh, ease))]
-    zl, cy, rx, ry = rings[-1]
-    # thighs below the crotch must fit inside: take the widest of the leg slices down to the hem
-    leg_need = [B.ring(zz, ease) for zz in [zl - k * step for k in range(1, 12)] if zz > z_hem]
-    rx = max([rx] + [g[1] for g in leg_need if g]); ry = max([ry] + [g[2] for g in leg_need if g])
-    n = max(3, int((zl - z_hem) / step))
-    for k in range(1, n + 1):
-        f = k / n; zz = zl + (z_hem - zl) * f; kk = 1 + (flare - 1) * f
-        rings.append((zz, cy, rx * kk, ry * kk))
+    if not meas: meas = [(z_top, *B.ring(B.zh, ease))]
+    lower = [k for k, m in enumerate(meas) if m[0] <= B.zw]
+    kmax = max(lower, key=lambda k: meas[k][2] + meas[k][3]) if lower else len(meas) - 1
+    rings = []
+    for k in range(kmax + 1):
+        z, cy, rx, ry = meas[k]
+        if rings and z < B.zw:   # never narrower than above once past the waist
+            rx, ry = max(rx, rings[-1][2]), max(ry, rings[-1][3])
+        rings.append((z, cy, rx, ry))
+    zH, cy, rxH, ryH = rings[-1]
+    if zH <= z_hem + step: return rings
+    # 2) smooth A-line from the hip to the hem that still contains the legs (A-pose legs spread outwards)
+    zs = []; z = zH - step
+    while z > z_hem: zs.append(z); z -= step
+    zs.append(z_hem)
+    need = [(z, B.ring(z, ease, cy=cy)) for z in zs]
+    rxe, rye = rxH * flare, ryH * flare
+    prof = lambda z, a, e: a + (e - a) * (((zH - z) / (zH - z_hem)) ** 0.85)
+    for _ in range(60):
+        bad = [g for z, g in need if g and (g[1] > prof(z, rxH, rxe) or g[2] > prof(z, ryH, rye))]
+        if not bad: break
+        rxe *= 1.03; rye *= 1.03
+    for z in zs: rings.append((z, cy, prof(z, rxH, rxe), prof(z, ryH, rye)))
     return rings
 
 def drape(B, name, mat, anchors, width, clear=0.008, n=7, m=7, thick=0.003, iters=4, drop=("arm",), wparts=("torso", "head", "leg")):
@@ -605,11 +638,10 @@ def bangles(B, colours=((0.9, 0.1, 0.15), GOLD, (0.1, 0.5, 0.2)), count=3, gold_
     out = []
     for sd in (1, -1):
         A, W = B.axes[("arm", sd)]; d = (W - A).normalized(); s = "L" if sd > 0 else "R"
-        r0 = B.r_at("arm", sd, 0.93) + 0.006 * B.Hs / 1.6
         mats = [solid(f"bangle{k}", GOLD if gold_only else colours[k % len(colours)], 0.3, 0.8 if (gold_only or colours[k % len(colours)] == GOLD) else 0.1) for k in range(count)]
         for k in range(count):
-            c = A + (W - A) * (0.86 + 0.035 * k)
-            out.append(rigid(B, f"bangle{s}{k}", mats[k], lambda bm, c=c, d=d: _torus(bm, c, d, r0 + 0.002 * k, 0.0022 * B.Hs / 1.6, 28, 6), f"lowerarm02.{s}"))
+            t = 0.9 + 0.03 * k; c = B.c_at("arm", sd, t); r0 = B.r_at("arm", sd, t) + 0.006 * B.Hs / 1.6
+            out.append(rigid(B, f"bangle{s}{k}", mats[k], lambda bm, c=c, d=d, r0=r0: _torus(bm, c, d, r0, 0.0022 * B.Hs / 1.6, 28, 6), f"lowerarm02.{s}"))
     return out
 
 def payal(B):
@@ -617,7 +649,7 @@ def payal(B):
     out = []; m = solid("payal_silver", SILVER, 0.25, 1.0)
     for sd in (1, -1):
         A, F = B.axes[("leg", sd)]; d = (F - A).normalized(); s = "L" if sd > 0 else "R"
-        c = A + (F - A) * 0.955; r0 = B.r_at("leg", sd, 0.955) + 0.004 * B.Hs / 1.6
+        c = B.c_at("leg", sd, 0.93); r0 = B.r_at("leg", sd, 0.93) + 0.004 * B.Hs / 1.6
         def build(bm, c=c, d=d, r0=r0):
             _torus(bm, c, d, r0, 0.0014 * B.Hs / 1.6, 32, 6)
             t1 = d.orthogonal().normalized(); t2 = d.cross(t1)
@@ -701,23 +733,23 @@ def glasses(B, colour=(0.2, 0.12, 0.08)):
 
 def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
     """village turban: wrapped bands from the forehead to above the crown"""
-    z0 = B.ze + 0.22 * (B.zt - B.ze); z1 = B.zt + 0.06 * B.Hs / 1.6
-    rings = []; n = 12
-    base = None
+    s = B.Hs / 1.6
+    z0 = B.ze + 0.2 * (B.zt - B.ze); z1 = B.zt + 0.035 * s
+    rings = []; n = 14; prev = (B.bh["head"].y, 0.075 * s, 0.09 * s)
     for k in range(n + 1):
-        z = z0 + (z1 - z0) * k / n
-        pts = _head_pts(B, min(z, B.zt - 0.01 * B.Hs), 0.012 * B.Hs)
-        if pts:
+        f = k / n; z = z0 + (z1 - z0) * f
+        pts = _head_pts(B, min(z, B.zt - 0.02 * s), 0.008 * B.Hs)
+        if len(pts) > 8:
             cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
-            rx = max(abs(p.x) for p in pts); ry = (max(p.y for p in pts) - min(p.y for p in pts)) / 2
-            base = base or (cy, rx, ry)
-        cy, rx, ry = base if base else (B.bh["head"].y, 0.06, 0.07)
-        bulge = 1.12 + 0.06 * math.sin(math.pi * k / n)
-        dome = 1 - _smoothstep(0.65, 1.0, k / n) * 0.55
-        rings.append((z, cy, rx * bulge * dome + 0.008 * B.Hs / 1.6, ry * bulge * dome + 0.008 * B.Hs / 1.6))
+            prev = (cy, max(abs(p.x) for p in pts), (max(p.y for p in pts) - min(p.y for p in pts)) / 2)
+        cy, rx, ry = prev
+        bulge = 1.0 + 0.1 * math.sin(math.pi * min(1.0, f * 1.25))
+        dome = math.sqrt(max(0.04, 1 - _smoothstep(0.62, 1.0, f) * 0.96))
+        pad = 0.011 * s
+        rings.append((z, cy - 0.004 * s * f, (rx * bulge + pad) * dome, (ry * bulge + pad) * dome))
     rings.reverse()
-    m = fabric("pagdi", colour, 0.7, 0.4, pattern={"kind": "stripes", "c2": band, "scale": 0.022 * B.Hs / 1.6, "lw": 0.18, "dir": "h"}, coord="uv")
-    return lathe(B, "pagdi", m, rings, segs=64, pleats=9, amp=0.04, clear=0.0, thick=0.003, wfun=lambda co: {"head": 1.0}, close_top=True)
+    m = fabric("pagdi", colour, 0.7, 0.4, pattern={"kind": "stripes", "c2": band, "scale": 0.17, "lw": 0.12, "dir": "h"}, coord="uv")
+    return lathe(B, "pagdi", m, rings, segs=64, pleats=7, amp=0.05, clear=0.003, thick=0.003, wfun=lambda co: {"head": 1.0}, close_top=True)
 
 def topi(B, colour=(0.97, 0.97, 0.95)):
     """Gandhi topi: white boat-shaped cap"""
@@ -741,10 +773,10 @@ def gamcha(B, colours=((0.85, 0.12, 0.12), (0.97, 0.95, 0.9)), side=-1):
 
 def collar(B, mat, h=None, open_front=0.35, ease=0.006, name="collar"):
     Hs = B.Hs; h = h or 0.018 * Hs
-    rg = B.ring(B.zn - 0.004 * Hs, ease + 0.004 * Hs / 1.6, parts=("torso", "head"))
+    rg = B.ring(B.zn + 0.006 * Hs, ease + 0.006 * Hs / 1.6, parts=("head",), xmax=0.06 * Hs)
     if rg is None: return None
     cy, rx, ry = rg
-    rings = [(B.zn + h, cy, rx * 1.12, ry * 1.1), (B.zn + h * 0.3, cy, rx * 1.02, ry * 1.02), (B.zn - 0.012 * Hs, cy, rx * 1.05, ry * 1.08)]
+    rings = [(B.zn + h, cy, rx * 1.1, ry * 1.08), (B.zn + h * 0.3, cy, rx * 1.02, ry * 1.02), (B.zn - 0.008 * Hs, cy, rx * 1.12, ry * 1.12)]
     return lathe(B, name, mat, rings, segs=48, clear=0.003, thick=0.003, open_front=open_front,
                  wfun=lambda co: B.kd_weights(co, ("torso", "head"), drop=("arm",)))
 
@@ -780,7 +812,7 @@ def _pallu_anchors(B, kind="nivi"):
             seq = [P(sd * 0.55 * sw, B.zw - 0.03 * Hs, "back"), P(sd * 0.6 * sw, B.zc, "back"), P(sd * 0.62 * sw, B.zn + 0.02 * Hs, "top", y=yL),
                    P(sd * 0.45 * sw, B.zub + 0.3 * (B.zn - B.zub), "front")]
             out.append([p for p in seq if p is not None])
-        mid = P(0.0, B.zub - 0.01 * Hs, "front")
+        mid = P(0.0, B.zw + 0.15 * (B.zub - B.zw), "front")
         return out[0] + ([mid] if mid else []) + out[1][::-1]
     if kind == "tie":
         return [p for p in (P(0, B.zn - 0.012 * Hs, "front"), P(0, B.zc, "front"), P(0, B.zw + 0.02 * Hs, "front")) if p is not None]
@@ -1018,14 +1050,14 @@ def _build(B, outfit, C, o):
     elif outfit in ("saree_village", "teacher_saree", "saree_elder"):
         G += _saree(B, C, o, pallu_w=0.15 if outfit == "teacher_saree" else 0.17, elder=outfit == "saree_elder")
     elif outfit == "salwar_kameez_dupatta":
-        km = fabric("kameez", C["kameez"], 0.6, 0.4, pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.03 * Hs / 1.6, "r": 0.12})
+        km = fabric("kameez", C["kameez"], 0.6, 0.4, pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.035 * Hs / 1.6, "r": 0.22})
         G.append(bottoms(B, "salwar", fabric("salwar", C["salwar"], 0.7, 0.3), B.zw + 0.01 * Hs, leg_t=0.95, style="salwar", offset=0.008))
         G.append(top(B, "kameez", km, B.zh - 0.02 * Hs, sleeve_t=0.68, neck_depth=0.035 * Hs, offset=0.007, sleeve_loose=0.15))
         rings = skirt_rings(B, B.zw, B.zk - 0.04 * Hs, flare=1.12, ease=0.016)
         G.append(lathe(B, "kameez_tail", fabric("kameez_tail", C["kameez"], 0.6, 0.4, border={"c": C["trim"], "mode": "v_hi", "w": 0.06, "zari": True},
-                                                  pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.03 * Hs / 1.6, "r": 0.12}, coord="uv"), rings, segs=96))
+                                                  pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.035 * Hs / 1.6, "r": 0.22}, coord="uv"), rings, segs=96))
         G.append(drape(B, "dupatta", fabric("dupatta", C["dupatta"], 0.6, 0.6, border={"c": C["trim"], "mode": "v_edges", "w": 0.08, "zari": True}, coord="uv"),
-                       _pallu_anchors(B, "dupatta"), 0.1 * Hs, clear=0.009))
+                       _pallu_anchors(B, "dupatta"), 0.065 * Hs, clear=0.009))
     elif outfit in ("kurta_pyjama", "shopkeeper", "dhoti_kurta"):
         kz = {"kurta_pyjama": B.zk + 0.0 * Hs, "shopkeeper": B.zx - 0.45 * (B.zx - B.zk), "dhoti_kurta": B.zx - 0.4 * (B.zx - B.zk)}[outfit]
         if outfit == "dhoti_kurta":
@@ -1087,7 +1119,7 @@ def _build(B, outfit, C, o):
         fc = tuple(c * 0.62 for c in C["frock"]) if wet else C["frock"]
         dc = tuple(c * 0.75 for c in C["dots"]) if wet else C["dots"]
         rough, sh = (0.22, 0.1) if wet else (0.6, 0.5)
-        pat = {"kind": "dots", "c2": dc, "scale": 0.025 * B.Hs / 1.2, "r": 0.15}
+        pat = {"kind": "dots", "c2": dc, "scale": 0.03 * B.Hs / 1.2, "r": 0.27}
         G.append(top(B, "frock_bodice", fabric("frock", fc, rough, sh, pattern=pat), B.zw - 0.02 * Hs, sleeve_t=0.2, neck_depth=0.02 * Hs, offset=0.007,
                      sleeve_loose=0.15 if wet else 0.35))
         rings = skirt_rings(B, B.zw + 0.005 * Hs, B.zk - 0.06 * Hs, flare=1.25 if wet else 1.55, ease=0.014)
@@ -1164,8 +1196,7 @@ def _dhoti(B, C, leg_t=0.9):
     hem = B.axis_point("leg", 1, leg_t).z
     pm = fabric("dhoti_pleats", C["dhoti"], 0.75, 0.3, border={"c": C["border"], "mode": "v_edges", "w": 0.1}, coord="uv")
     pts = [B.surf(0.0, B.zw, "front"), B.surf(0.0, B.zx + 0.02 * Hs, "front"), B.surf(0.0, (B.zx + hem) / 2, "front"), B.surf(0.0, hem + 0.06 * Hs, "front")]
-    G.append(drape(B, "dhoti_pleats", pm, [p for p in pts if p], [0.07 * Hs, 0.08 * Hs, 0.07 * Hs, 0.06 * Hs], clear=0.005, thick=0.004))
-    G.append(waistband(B, B.zw + 0.006 * Hs, fabric("dhoti_waist", C["dhoti"], 0.75, 0.3), h=0.025 * Hs, ease=0.014, name="dhoti_waist"))
+    G.append(drape(B, "dhoti_pleats", pm, [p for p in pts if p], [0.09 * Hs, 0.1 * Hs, 0.1 * Hs, 0.09 * Hs], clear=0.006, thick=0.005))
     return G
 
 def _socks(B):
@@ -1243,7 +1274,7 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 def keep(i, sd=sd):
                     return B.side[i] == sd and B.part[i] == "leg" and (any(b.startswith(("foot", "toe")) for b in B.w[i]) or B.t[i] > 0.93)
                 A, F = B.axes[("leg", sd)]; d = (F - A).normalized()
-                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.006, smooth=6,
+                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.007, smooth=14,
                           cuts=[(lambda i: True, A + (F - A) * 0.955, -d)], clear=0.005, thick=0.005, min_island=0.2)
                 low = [p for p in foot if p.z < 0.02 * B.Hs]
                 hull = _hull(sorted({(round(p.x, 3), round(p.y, 3)) for p in low}))
@@ -1288,7 +1319,7 @@ def set_pose(rig, pose="apose", amount=1.0):
     bpy.context.view_layer.update()
     if pose == "walk":
         a = amount
-        for bn, ax, d in (("upperleg01.L", "X", -20), ("upperleg01.R", "X", 16), ("lowerleg01.R", "X", 28), ("lowerleg01.L", "X", 6),
+        for bn, ax, d in (("upperleg01.L", "X", -18), ("upperleg01.R", "X", 14), ("lowerleg01.R", "X", 24), ("lowerleg01.L", "X", 6),
                           ("foot.R", "X", -10), ("upperarm01.L", "Y", 28), ("upperarm01.R", "Y", -28), ("upperarm01.L", "X", 16),
                           ("upperarm01.R", "X", -16), ("lowerarm01.L", "X", -12), ("lowerarm01.R", "X", -22)):
             _rot(rig, bn, ax, d * a)
@@ -1308,13 +1339,20 @@ def posed_coords(h):
 def required_vertices(B, level="knee"):
     ztop = B.zn - 0.36 * (B.zn - B.zw)
     tleg = 0.35 if level == "shorts" else 0.5
-    return [i for i in B.body_idx if (B.part[i] == "torso" and B.co[i].z < ztop) or (B.part[i] == "leg" and B.t[i] < tleg)]
+    def armw(i): return sum(x for b, x in B.w[i].items() if family(b) == "arm")
+    # torso skin (below the neckline zone, excluding the under-arm skin) + hips + legs down to the knee
+    return [i for i in B.body_idx if (B.part[i] == "torso" and B.co[i].z < ztop and armw(i) < 0.15) or (B.part[i] == "leg" and B.t[i] < tleg)]
 
 def coverage(h, rig, cam_locs, level="knee", step=2):
-    """for each camera location: fraction of required skin vertices that the camera can see directly (must be ~0)"""
+    """for each camera location: fraction of required skin vertices that the camera can see directly (must be ~0).
+    A sample counts as exposed when the first thing the camera ray hits is the body AND the hit lies on required skin
+    (a hand or arm resting in front of covered cloth is not an exposure)."""
     B = body_of(h, rig)
-    req = required_vertices(B, level)[::step]
+    full = required_vertices(B, level); req = full[::step]; reqset = set(full)
     co = posed_coords(h)
+    kd = KDTree(len(B.body_idx))
+    for i in B.body_idx: kd.insert(co[i], i)
+    kd.balance()
     sc = bpy.context.scene; dg = bpy.context.evaluated_depsgraph_get()
     out = {}
     for name, cam in cam_locs.items():
@@ -1324,10 +1362,12 @@ def coverage(h, rig, cam_locs, level="knee", step=2):
             hit, loc, nrm, idx, obj, mat = sc.ray_cast(dg, cam, d, distance=dist + 0.01)
             if not hit:
                 exposed.append(i); continue
-            if obj is not None and obj.name == h.name and (loc - p).length < 0.02:
-                exposed.append(i)
+            if obj is not None and obj.name == h.name:
+                _, j, _ = kd.find(loc)
+                if j in reqset: exposed.append(i)
         out[name] = {"required": len(req), "exposed": len(exposed), "frac": len(exposed) / max(1, len(req)),
-                     "exposed_z": sorted(round(co[i].z, 2) for i in exposed)[:12]}
+                     "exposed_z": sorted(round(co[i].z, 2) for i in exposed)[:12],
+                     "exposed_bones": sorted({max(B.w[i], key=B.w[i].get) for i in exposed if B.w[i]})[:10]}
     return out
 
 def penetration(h, garments):
