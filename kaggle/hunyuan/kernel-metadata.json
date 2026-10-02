@@ -1,0 +1,13 @@
+{
+  "id": "mani7673/sonpur-hunyuan-props",
+  "title": "sonpur-hunyuan-props",
+  "code_file": "hunyuan_props.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
