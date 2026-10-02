@@ -116,8 +116,37 @@ def warm(mat, rgb=(0.92, 0.72, 0.56)):
             s = inp.links[0].from_socket; nt.links.remove(inp.links[0]); nt.links.new(s, mix.inputs[6])
         else: mix.inputs[6].default_value = inp.default_value
         nt.links.new(mix.outputs[2], inp)
-for m_ in {s.material for s in h.material_slots if s.material}:
-    if m_.use_nodes: warm(m_); print("WARMED", m_.name)
+def tint_tree(nt, rgb, fac, label, depth=0, seen=None):
+    """put a colour MIX after every colour texture (diffuse/albedo/base), also inside node groups"""
+    seen = seen if seen is not None else set()
+    if nt.name in seen: return 0
+    seen.add(nt.name); n_done = 0
+    for n in list(nt.nodes):
+        if n.bl_idname == "ShaderNodeGroup" and n.node_tree: n_done += tint_tree(n.node_tree, rgb, fac, label, depth + 1, seen)
+        if n.bl_idname == "ShaderNodeTexImage" and n.image:
+            nm = n.image.name.lower()
+            if any(w in nm for w in ("normal", "nor", "rough", "spec", "bump", "sss_value", "ao", "alpha", "trans")) and not any(w in nm for w in ("diffuse", "albedo", "color", "colour", "basecolor")): continue
+            links = [l for l in n.outputs["Color"].links]
+            if not links: continue
+            mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = "RGBA"; mix.blend_type = label; mix.inputs[0].default_value = fac
+            mix.inputs[7].default_value = (*[c ** 2.2 for c in rgb], 1)
+            nt.links.new(n.outputs["Color"], mix.inputs[6])
+            for l in links:
+                to = l.to_socket; nt.links.remove(l); nt.links.new(mix.outputs[2], to)
+            print("TINT", label, nt.name, n.image.name); n_done += 1
+    return n_done
+skin_mats = {s.material for s in h.material_slots if s.material}
+for m_ in skin_mats:
+    if m_.use_nodes:
+        c = tint_tree(m_.node_tree, (0.86, 0.64, 0.48), 1.0, "MULTIPLY")      # pale texture x warm = wheatish
+        if c == 0: warm(m_)
+        print("SKIN NODES", m_.name, [n.bl_idname for n in m_.node_tree.nodes][:12])
+for o in bpy.data.objects:
+    if o.type == "MESH" and any(w in o.name.lower() for w in ("long01", "hair", "eyebrow")):
+        for s in o.material_slots:
+            if s.material and s.material.use_nodes:
+                c = tint_tree(s.material.node_tree, (0.05, 0.04, 0.035), 0.85, "MIX")   # brown -> near-black, keeps strand detail
+                print("HAIR", o.name, s.material.name, c)
 DRESSED = 0
 def add_cloth(name):
     global DRESSED
@@ -149,7 +178,7 @@ else:
 FACE = ((0, -0.75, headz + 0.02), (R(90), 0, 0), 110)   # tight on the face only
 shot("face_neutral.png", *FACE)
 # ---- smile trials with the default rig's face bones (oris = mouth ring, levator = lip raisers) ----
-if rig is not None:
+if False and rig is not None:   # bone smile trials retired: the face-unit shape keys work
     pb = rig.pose.bones
     def reset():
         for b in pb: b.rotation_mode = "XYZ"; b.rotation_euler = (0, 0, 0); b.location = (0, 0, 0)
