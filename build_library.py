@@ -96,6 +96,10 @@ if "cast" in ONLY:
                 base_clothes = ("female_casualsuit01", "shoes01") if fem else ("male_casualsuit01", "shoes02")
                 h, rig = MC.make_child(gender=0.0 if fem else 1.0, age=MC.age_macro(member["age"]), skin=member["skin"], hair=member["hair"],
                                        clothes=base_clothes, skin_rgb=tuple(member["skin_rgb"]), weight=member.get("weight", 0.5))
+                try:   # cartoon look (lib_toon): proportions change the body shape, so BEFORE dressing
+                    import lib_toon as LT
+                    LT.toonify(h, rig, skin_rgb=tuple(member["skin_rgb"]), outline=member.get("toon_outline", False))
+                except Exception as e2: LT = None; print("toon fail", cid, repr(e2)[:200]); traceback.print_exc()
                 kid_mod = member.get("outfit_module")
                 if kid_mod:   # babies / toddlers: their own outfit module (dress_kid builds accessories + footwear itself)
                     KM = importlib.import_module(kid_mod)
@@ -118,6 +122,9 @@ if "cast" in ONLY:
                 if hasattr(LO, "footwear") and not kid_mod:
                     try: LO.footwear(h, rig, "chappal")
                     except Exception as e2: print("footwear fail", cid, repr(e2)[:200])
+                if LT is not None:
+                    try: LT.toonify_scene()   # flatter cloth shading to match the toon skin
+                    except Exception as e2: print("toon scene fail", cid, repr(e2)[:200])
                 MC.set_face(h, mouthSmileLeft=0.35, mouthSmileRight=0.35)
                 rig["cast_id"] = cid; rig["name_hi"] = member["name_hi"]
                 save_blend(os.path.join(d, cid + ".blend"))
