@@ -5,6 +5,32 @@ import bpy, math, random
 
 R = math.radians
 _MATS = {}
+STYLE = {"mode": "flat"}      # "flat" = drawing look (emission + ink lines); "shaded" = 3D kids-show look (sunlight, shadows)
+
+def setup_shaded(fast=False, frames=240, fps=24):
+    """Infobells-style look: Eevee, warm sun with soft shadows, sky ambient light, no ink lines."""
+    STYLE["mode"] = "shaded"
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    sc = bpy.context.scene
+    for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
+        try: sc.render.engine = eng; break
+        except Exception: pass
+    try: sc.eevee.taa_render_samples = 32 if fast else 64
+    except Exception: pass
+    for prop in ("use_gtao", "use_soft_shadows", "use_shadows"):
+        try: setattr(sc.eevee, prop, True)
+        except Exception: pass
+    sc.render.resolution_x, sc.render.resolution_y = (640, 360) if fast else (1280, 720)
+    sc.render.fps = fps; sc.frame_start, sc.frame_end = 1, frames
+    sc.render.image_settings.file_format = "PNG"
+    sc.render.use_freestyle = False
+    try: sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Punchy"
+    except Exception: sc.view_settings.view_transform = "Standard"
+    w = bpy.data.worlds.new("sky"); sc.world = w; w.use_nodes = True
+    bg = w.node_tree.nodes["Background"]; bg.inputs[0].default_value = (0.55, 0.75, 1.0, 1); bg.inputs[1].default_value = 0.9
+    sun_d = bpy.data.lights.new("sun", "SUN"); sun_d.energy = 4.0; sun_d.color = (1.0, 0.93, 0.82); sun_d.angle = R(6)
+    sun = bpy.data.objects.new("sun_light", sun_d); sc.collection.objects.link(sun); sun.rotation_euler = (R(48), R(8), R(35))
+    return sc
 
 def setup_scene(fast=False, frames=240, fps=24):
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -28,8 +54,15 @@ def mat(name, rgb):
     if name in _MATS: return _MATS[name]
     m = bpy.data.materials.new(name); m.use_nodes = True; nt = m.node_tree; nt.nodes.clear()
     lin = tuple(c ** 2.2 for c in rgb)        # palette is written as screen colours; Blender wants linear values
-    e = nt.nodes.new("ShaderNodeEmission"); e.inputs["Color"].default_value = (*lin, 1); e.inputs["Strength"].default_value = 1
-    o = nt.nodes.new("ShaderNodeOutputMaterial"); nt.links.new(e.outputs["Emission"], o.inputs["Surface"])
+    o = nt.nodes.new("ShaderNodeOutputMaterial")
+    if STYLE["mode"] == "shaded":
+        b = nt.nodes.new("ShaderNodeBsdfPrincipled"); b.inputs["Base Color"].default_value = (*lin, 1); b.inputs["Roughness"].default_value = 0.62
+        try: b.inputs["Specular IOR Level"].default_value = 0.3
+        except Exception: pass
+        nt.links.new(b.outputs["BSDF"], o.inputs["Surface"])
+    else:
+        e = nt.nodes.new("ShaderNodeEmission"); e.inputs["Color"].default_value = (*lin, 1); e.inputs["Strength"].default_value = 1
+        nt.links.new(e.outputs["Emission"], o.inputs["Surface"])
     _MATS[name] = m; return m
 
 C = dict(  # the village palette: warm, earthy, friendly
