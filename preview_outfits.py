@@ -1,4 +1,4 @@
-﻿"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
+"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
 A-pose and in a walking pose, plus a JSON report (garment vertex counts, coverage, penetration).
 SAFETY: coverage (no required skin visible from the camera) is asserted before every render; failing views are skipped.
 Run: blender -b --python preview_outfits.py -- <mpfb_pack_dir> <functional_dir> <out_dir> [who,...] [outfit,...]"""
@@ -102,7 +102,7 @@ for who, outfit, opts in PLAN:
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             if pose == "walk":
-                print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"]) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})
+                print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"], v.get("worst")) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})
             for view, (frm, to) in cams.items():
                 if cov[view]["frac"] > TOL:
                     print("SKIP", key, pose, view, "exposed", cov[view]["exposed"], "of", cov[view]["required"]); rep.setdefault("skipped", []).append(f"{pose}_{view}")
