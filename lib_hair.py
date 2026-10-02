@@ -638,7 +638,7 @@ def _style_volumes(F, style, mat, opts):
             root = Vector((sd * F.rx * 0.78, fc["ear_y"] + 0.35 * F.ry, F.f2z(-0.55)))
             ph = F.phi_at(math.atan2(root.x, -(root.y - F.cy)), root.z)
             shx = sd * max(0.55 * B.sw, F.rx * 0.95)
-            l1, _ = F.surf_from(Vector((shx, B.bh["neck01"].y + 0.01, B.zn + 0.5)), Vector((0, 0, -1)))
+            l1, _ = F.surf_from(Vector((shx, B.bh["neck01"].y + 0.01, B.zn + 0.3 * (F.ze - B.zn))), Vector((0, 0, -1)))
             l2, _ = F.surf_from(Vector((sd * 0.62 * B.sw, -3, B.zc + 0.02 * B.Hs)), Vector((0, 1, 0)))
             r0 = 0.0125 * s * (1.25 if style == "side_braid" else 1.0)
             p1 = (l1 + Vector((0, 0, r0 + 0.006 * s))) if l1 is not None else root + Vector((0, -0.02, -0.08)) * s
