@@ -1568,6 +1568,7 @@ def _build(B, outfit, C, o):
         G.append(top(B, "frock_bodice", fabric("frock", fc, rough, 0.6, pattern=pat), B.zw - 0.02 * Hs, sleeve_t=0.2, neck_depth=0.02 * Hs, offset=0.007,
                      puff=0.15 if wet else 0.55))
         rings = skirt_rings(B, B.zw + 0.005 * Hs, B.zk - 0.05 * Hs, flare=1.25 if wet else 1.75, ease=0.012)
+        G.append(underlayer(B, "frock_bloomers", fc, leg_t=0.4))   # short inner bloomers: no thigh shows in a stride
         G.append(lathe(B, "frock_skirt", fabric("frock_skirt", fc, rough, 0.6, pattern={**pat, "scale": 0.055}, border={"c": dc, "mode": "v_hi", "w": 0.05}, coord="uv"),
                        rings, segs=120, pleats=40, amp0=0.025, amp=0.01, sim={"frames": 40, "bend": 0.25 if not wet else 0.15, "mass": 0.2 if not wet else 0.35, "pin_rows": 2}))
         G.append(waistband(B, B.zw + 0.005 * Hs, fabric("sash", _darker(C["sash"], 0.7) if wet else C["sash"], 0.4, 0.6), h=0.02 * Hs, ease=0.012, name="sash"))
