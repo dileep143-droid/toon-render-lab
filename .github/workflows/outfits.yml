@@ -34,7 +34,8 @@ jobs:
           mkdir -p pack functional && unzip -q pack.zip -d pack
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
       - name: Outfit previews (${{ matrix.who }})
-        run: ./blender/blender -b -noaudio --python preview_outfits.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.outfits || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "OUTFIT|COVER|SKIP|SHOT|REPORT|WARN|DONE|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-2500 | tail -n 300
+        env: { OUTFIT_DEBUG_GARMENTS: "1" }
+        run: ./blender/blender -b -noaudio --python preview_outfits.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.outfits || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "OUTFIT|COVER|DEFORM|SKIP|SHOT|REPORT|WARN|DONE|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-2500 | tail -n 300
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: "outfits-${{ matrix.who }}", path: out, retention-days: 7, if-no-files-found: ignore }
