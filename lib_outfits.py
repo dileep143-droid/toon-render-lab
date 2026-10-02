@@ -1424,11 +1424,11 @@ def _dhoti(B, C, leg_t=0.9):
     Hs = B.Hs; s = Hs / 1.6; G = []
     hem = B.axis_point("leg", 1, leg_t).z
     dm = fabric("dhoti", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "z_lo", "w": hem + 0.03 * Hs})
-    G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.01, ease=0.016))
+    G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.008, ease=0.016))
     pm = fabric("dhoti_pleats", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "v_edges", "w": 0.1}, coord="uv")
     G.append(pleat_fan(B, "dhoti_pleats", pm, B.zw, hem + 0.012 * Hs, 0.06 * s, 0.1 * s, n=6, depth=0.01 * s))
     G.append(pleat_fan(B, "dhoti_back_tuck", pm, B.zw, B.zx - 0.05 * Hs, 0.07 * s, 0.045 * s, n=4, depth=0.008 * s, side="back"))
-    G.append(waistband(B, B.zw + 0.01 * Hs, fabric("dhoti_roll", C["dhoti"], 0.85, 0.4), h=0.02 * Hs, ease=0.01, name="dhoti_roll"))
+    G.append(waistband(B, B.zw + 0.01 * Hs, fabric("dhoti_roll", C["dhoti"], 0.85, 0.4), h=0.02 * Hs, ease=0.007, name="dhoti_roll"))
     return G
 
 def _gender(B, o):
@@ -1704,7 +1704,7 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                     for i in range(len(hull)):
                         j = (i + 1) % len(hull); bm.faces.new((vb[i], vb[j], vt[j], vt[i]))
                     for p in strap: _ball(bm, p, 0.0042 * sc_, (1.0, 1.0, 0.55))
-                    for k in range(4): _ball(bm, Vector((post.x, post.y, top + (pz - top) * k / 3)), 0.0028 * sc_)
+                    # no vertical toe post: MPFB toes are one fused mesh, so a post between the toes always sits inside the foot
                 o = rigid(B, f"chappal{s}", solid("chappal", col, 0.6), build, f"foot.{s}")
                 out.append(o)
             else:
