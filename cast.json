@@ -1,7 +1,7 @@
-{
+﻿{
   "_note": "Sonpur ki Toli cast. age in years -> MPFB age macro in build_library.py. outfit names come from lib_outfits.OUTFITS. weight 0..1 (0.5 average).",
   "main": [
-    {"id": "gudiya",   "name_hi": "गुड़िया",   "age": 9,  "gender": "f", "weight": 0.5,  "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "braid01",   "outfit": "langa_voni",            "extras": ["bindi", "bangles", "gajra"], "role": "brave kind leader"},
+    {"id": "gudiya",   "name_hi": "गुड़िया",   "age": 9,  "gender": "f", "weight": 0.5,  "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "ponytail01",   "outfit": "langa_voni",            "extras": ["bindi", "bangles", "gajra"], "role": "brave kind leader"},
     {"id": "raju",     "name_hi": "राजू भैया", "age": 13, "gender": "m", "weight": 0.5,  "skin": "young_asian_male",   "skin_rgb": [0.84, 0.62, 0.46], "hair": "short02",   "outfit": "kurta_pyjama",          "extras": ["gamcha"], "role": "cousin, thinks he is cool"},
     {"id": "chhotu",   "name_hi": "छोटू",      "age": 6,  "gender": "m", "weight": 0.6,  "skin": "young_asian_male",   "skin_rgb": [0.85, 0.62, 0.46], "hair": "short04",   "outfit": "school_uniform_boy",    "extras": [], "role": "tiny, always hungry"},
     {"id": "pinky",    "name_hi": "पिंकी",     "age": 8,  "gender": "f", "weight": 0.45, "skin": "young_asian_female", "skin_rgb": [0.88, 0.67, 0.52], "hair": "ponytail01","outfit": "frock_girl",            "extras": ["glasses"], "role": "know-it-all"},
@@ -11,7 +11,7 @@
     {"id": "lallan",   "name_hi": "लल्लन हलवाई","age": 40, "gender": "m", "weight": 0.9,  "skin": "middleage_asian_male","skin_rgb": [0.83, 0.6, 0.44], "hair": "short02",   "outfit": "banian_dhoti_farmer",   "extras": ["gamcha"], "role": "dramatic sweet-shop owner"}
   ],
   "extras": [
-    {"id": "meenakshi",   "name_hi": "मीनाक्षी",     "age": 8,  "gender": "f", "weight": 0.45, "skin": "young_asian_female", "skin_rgb": [0.8, 0.57, 0.42], "hair": "braid01",    "outfit": "pattu_pavadai",       "extras": ["gajra", "bindi"], "role": "new friend from Tamil Nadu"},
+    {"id": "meenakshi",   "name_hi": "मीनाक्षी",     "age": 8,  "gender": "f", "weight": 0.45, "skin": "young_asian_female", "skin_rgb": [0.8, 0.57, 0.42], "hair": "ponytail01",    "outfit": "pattu_pavadai",       "extras": ["gajra", "bindi"], "role": "new friend from Tamil Nadu"},
     {"id": "maa",         "name_hi": "माँ",          "age": 34, "gender": "f", "weight": 0.55, "skin": "young_asian_female", "skin_rgb": [0.85, 0.63, 0.47], "hair": "long01",     "outfit": "saree_village",       "extras": ["bindi", "bangles"], "role": "mother"},
     {"id": "kisan_papa",  "name_hi": "किसान पापा",   "age": 38, "gender": "m", "weight": 0.55, "skin": "young_asian_male",   "skin_rgb": [0.8, 0.58, 0.42],  "hair": "short02",    "outfit": "banian_dhoti_farmer", "extras": ["gamcha", "pagdi"], "role": "farmer father"},
     {"id": "police_didi", "name_hi": "पुलिस दीदी",   "age": 30, "gender": "f", "weight": 0.5,  "skin": "young_asian_female", "skin_rgb": [0.84, 0.62, 0.46], "hair": "ponytail01", "outfit": "police_didi",         "extras": [], "role": "helps lost kids at the mela"},
@@ -25,7 +25,7 @@
     {"id": "stranger",    "name_hi": "अजनबी",        "age": 35, "gender": "m", "weight": 0.6,  "skin": "young_asian_male",   "skin_rgb": [0.82, 0.6, 0.44],  "hair": "short02",    "outfit": "lungi_shirt",         "extras": [], "role": "stranger offering sweets (safety lesson)"},
     {"id": "kallu_mistri", "name_hi": "कल्लू मिस्त्री चाचा", "age": 45, "gender": "m", "weight": 0.6, "skin": "middleage_asian_male", "skin_rgb": [0.8, 0.58, 0.42], "hair": "short02", "outfit": "lungi_shirt", "extras": ["gamcha"], "role": "fixes the school tap"},
     {"id": "chhotu_grown", "name_hi": "बड़ा छोटू (सपना)", "age": 25, "gender": "m", "weight": 0.6, "skin": "young_asian_male", "skin_rgb": [0.85, 0.62, 0.46], "hair": "short04", "outfit": "kurta_pyjama", "extras": [], "role": "grown-up Chhotu in an imagined shot (ep 14)"},
-    {"id": "classmate_girl1", "name_hi": "सहपाठी 1", "age": 8, "gender": "f", "weight": 0.5, "skin": "young_asian_female", "skin_rgb": [0.82, 0.6, 0.44], "hair": "braid01", "outfit": "school_uniform_girl", "extras": [], "role": "background classmate"},
+    {"id": "classmate_girl1", "name_hi": "सहपाठी 1", "age": 8, "gender": "f", "weight": 0.5, "skin": "young_asian_female", "skin_rgb": [0.82, 0.6, 0.44], "hair": "ponytail01", "outfit": "school_uniform_girl", "extras": [], "role": "background classmate"},
     {"id": "classmate_girl2", "name_hi": "सहपाठी 2", "age": 9, "gender": "f", "weight": 0.5, "skin": "young_asian_female", "skin_rgb": [0.87, 0.66, 0.5], "hair": "bob01", "outfit": "frock_girl", "extras": [], "role": "background classmate"},
     {"id": "classmate_boy1", "name_hi": "सहपाठी 3", "age": 8, "gender": "m", "weight": 0.5, "skin": "young_asian_male", "skin_rgb": [0.83, 0.6, 0.44], "hair": "short01", "outfit": "school_uniform_boy", "extras": [], "role": "background classmate"},
     {"id": "classmate_boy2", "name_hi": "सहपाठी 4", "age": 10, "gender": "m", "weight": 0.55, "skin": "young_asian_male", "skin_rgb": [0.86, 0.63, 0.47], "hair": "short03", "outfit": "kurta_pyjama", "extras": [], "role": "background classmate"},
