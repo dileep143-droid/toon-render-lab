@@ -1,10 +1,16 @@
 name: outfits
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      outfits: { description: "comma list of outfits or all", required: false, default: "all" }
 jobs:
   outfits:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        who: [girl, boy, woman, man, elder]
     steps:
       - uses: actions/checkout@v4
       - name: Libraries
@@ -27,12 +33,8 @@ jobs:
           curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
           mkdir -p pack functional && unzip -q pack.zip -d pack
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
-      - name: Probe
-        if: ${{ hashFiles('outfit_probe.py') != '' }}
-        run: ./blender/blender -b -noaudio --python outfit_probe.py -- pack functional 2>&1 | grep -E "PROBE|Error|Traceback|line [0-9]" | cut -c1-6000 | tail -n 200
-      - name: Outfit previews
-        if: ${{ hashFiles('preview_outfits.py') != '' }}
-        run: ./blender/blender -b -noaudio --python preview_outfits.py -- pack functional out 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "OUTFIT|COVER|SKIP|SHOT|REPORT|WARN|DONE|Error|Traceback|line [0-9]|refusing|Exception" | tail -n 300
+      - name: Outfit previews (${{ matrix.who }})
+        run: ./blender/blender -b -noaudio --python preview_outfits.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.outfits || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "OUTFIT|COVER|SKIP|SHOT|REPORT|WARN|DONE|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-2500 | tail -n 300
       - uses: actions/upload-artifact@v4
         if: always()
-        with: { name: outfits, path: out, retention-days: 7, if-no-files-found: ignore }
+        with: { name: "outfits-${{ matrix.who }}", path: out, retention-days: 7, if-no-files-found: ignore }
