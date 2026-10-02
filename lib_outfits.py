@@ -1,4 +1,4 @@
-"""lib_outfits.py - procedural Indian village OUTFITS for any MPFB / MakeHuman character (child, adult, elder; male or female).
+﻿"""lib_outfits.py - procedural Indian village OUTFITS for any MPFB / MakeHuman character (child, adult, elder; male or female).
 
 How fitting works
   * upper garments / trousers are an offset COPY of the character's own body (rest shape, macros baked): the garment
@@ -344,6 +344,8 @@ def smooth_path(pts, n=6):
 
 def _finish(B, bm, name, mat, weights, thick=0.004, tag="outfit_piece", extra_mats=()):
     """bm -> object parented like the basemesh, with vertex groups (weights: list of dicts per vertex) + Armature (+ Solidify)"""
+    for lay in list(bm.verts.layers.deform.values()):   # drop weights inherited from the basemesh copy (their group indices are the body's)
+        bm.verts.layers.deform.remove(lay)
     me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
     try:
         me.use_auto_texspace = False; me.texspace_location = (0, 0, 1); me.texspace_size = (1, 1, 1)
@@ -378,7 +380,7 @@ def _register(B, o, extra=0.0):
     B.add_collider(vs, [tuple(p.vertices) for p in me.polygons])
 
 # ----------------------------------------------------------------------------------------------- garment builders
-def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=0.004, thick=0.004, min_island=0.03):
+def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=0.004, thick=0.004, min_island=0.03, post_smooth=0):
     """offset copy of the body region where keep(i) is True; cuts = [(sel(i), plane_co, plane_no)] remove the + side"""
     bm = bmesh.new(); bm.from_mesh(B.me)
     src = bm.verts.layers.int.new("src")
@@ -393,6 +395,8 @@ def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=
         v.co = v.co + v.normal * (offset(v[src]) if callable(offset) else offset)
     if tube:
         for v in bm.verts: tube(v, v[src])
+    for _ in range(post_smooth):
+        bmesh.ops.smooth_vert(bm, verts=bm.verts[:], factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     for sel, co, no in cuts:
         faces = [f for f in bm.faces if all(sel(v[src]) for v in f.verts)]
         if not faces: continue
@@ -473,7 +477,7 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
         rf = lambda s, t: max(r(s, t) + ease, r(s, 0.3) + ease * 1.3)
     else: rf = lambda s, t: r(s, t) + ease
     tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34)
-    return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick)
+    return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick, post_smooth=4)
 
 def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
     """pelvis at the waist -> thighs -> shins at the hem; left/right split by x"""
@@ -531,7 +535,7 @@ def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=Non
     # 1) measured section: waist -> widest hip (searched between the crotch and the waist)
     meas, z = [], z_top
     while z > B.zx - 0.01 * B.Hs and z > z_hem:
-        rg = B.ring(z, ease)
+        rg = B.ring(z, top_ease if (top_ease is not None and not meas) else ease)
         if rg: meas.append((z, *rg))
         z -= step
     if not meas: meas = [(z_top, *B.ring(B.zh, ease))]
@@ -734,7 +738,7 @@ def glasses(B, colour=(0.2, 0.12, 0.08)):
 def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
     """village turban: wrapped bands from the forehead to above the crown"""
     s = B.Hs / 1.6
-    z0 = B.ze + 0.2 * (B.zt - B.ze); z1 = B.zt + 0.035 * s
+    z0 = B.ze + 0.2 * (B.zt - B.ze); z1 = B.zt + 0.07 * s
     rings = []; n = 14; prev = (B.bh["head"].y, 0.075 * s, 0.09 * s)
     for k in range(n + 1):
         f = k / n; z = z0 + (z1 - z0) * f
@@ -744,7 +748,7 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
             prev = (cy, max(abs(p.x) for p in pts), (max(p.y for p in pts) - min(p.y for p in pts)) / 2)
         cy, rx, ry = prev
         bulge = 1.0 + 0.1 * math.sin(math.pi * min(1.0, f * 1.25))
-        dome = math.sqrt(max(0.04, 1 - _smoothstep(0.62, 1.0, f) * 0.96))
+        dome = math.sqrt(max(0.04, 1 - _smoothstep(0.7, 1.0, f) * 0.96))
         pad = 0.011 * s
         rings.append((z, cy - 0.004 * s * f, (rx * bulge + pad) * dome, (ry * bulge + pad) * dome))
     rings.reverse()
@@ -1053,7 +1057,7 @@ def _build(B, outfit, C, o):
         km = fabric("kameez", C["kameez"], 0.6, 0.4, pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.035 * Hs / 1.6, "r": 0.22})
         G.append(bottoms(B, "salwar", fabric("salwar", C["salwar"], 0.7, 0.3), B.zw + 0.01 * Hs, leg_t=0.95, style="salwar", offset=0.008))
         G.append(top(B, "kameez", km, B.zh - 0.02 * Hs, sleeve_t=0.68, neck_depth=0.035 * Hs, offset=0.007, sleeve_loose=0.15))
-        rings = skirt_rings(B, B.zw, B.zk - 0.04 * Hs, flare=1.12, ease=0.016)
+        rings = skirt_rings(B, B.zh, B.zk - 0.04 * Hs, flare=1.12, ease=0.016, top_ease=0.01)
         G.append(lathe(B, "kameez_tail", fabric("kameez_tail", C["kameez"], 0.6, 0.4, border={"c": C["trim"], "mode": "v_hi", "w": 0.06, "zari": True},
                                                   pattern={"kind": "dots", "c2": (0.98, 0.95, 0.85), "scale": 0.035 * Hs / 1.6, "r": 0.22}, coord="uv"), rings, segs=96))
         G.append(drape(B, "dupatta", fabric("dupatta", C["dupatta"], 0.6, 0.6, border={"c": C["trim"], "mode": "v_edges", "w": 0.08, "zari": True}, coord="uv"),
@@ -1066,7 +1070,7 @@ def _build(B, outfit, C, o):
             G.append(bottoms(B, "pyjama", fabric("pyjama", C["pyjama"], 0.7, 0.3), B.zw + 0.01 * Hs, leg_t=0.96, style="straight", offset=0.008))
         km = fabric("kurta", C["kurta"], 0.65, 0.35)
         G.append(top(B, "kurta", km, B.zh - 0.02 * Hs, sleeve_t=0.9, neck_depth=0.012 * Hs, offset=0.007, sleeve_loose=0.18, loose=0.004))
-        rings = skirt_rings(B, B.zw, kz, flare=1.1, ease=0.018)
+        rings = skirt_rings(B, B.zh, kz, flare=1.1, ease=0.018, top_ease=0.01)
         G.append(lathe(B, "kurta_tail", fabric("kurta_tail", C["kurta"], 0.65, 0.35), rings, segs=96))
         G.append(collar(B, fabric("kurta_collar", C["kurta"], 0.65, 0.3), h=0.014 * Hs, open_front=0.25))
         G.append(buttons(B, B.zn - 0.025 * Hs, B.zc - 0.02 * Hs, 3, C.get("button", (0.75, 0.6, 0.3))))
@@ -1152,7 +1156,7 @@ def _build(B, outfit, C, o):
         G.append(collar(B, fabric("vet_collar", C["shirt"], 0.6, 0.3)))
         cm = fabric("doctor_coat", C["coat"], 0.55, 0.3)
         G.append(top(B, "coat", cm, B.zh - 0.06 * Hs, sleeve_t=0.88, neck_depth=0.07 * Hs, neck_angle=72, offset=0.012, sleeve_loose=0.3, clear=0.008, thick=0.005))
-        rings = skirt_rings(B, B.zw + 0.02 * Hs, B.zk - 0.03 * Hs, flare=1.12, ease=0.03)
+        rings = skirt_rings(B, B.zh, B.zk - 0.03 * Hs, flare=1.12, ease=0.03, top_ease=0.02)
         G.append(lathe(B, "coat_tail", fabric("doctor_coat_tail", C["coat"], 0.55, 0.3, coord="uv"), rings, segs=96, open_front=0.1, clear=0.008, thick=0.005))
         G.append(collar(B, fabric("coat_lapel", C["coat"], 0.55, 0.3), h=0.022 * Hs, open_front=0.55, ease=0.03, name="coat_lapel"))
         G.append(buttons(B, B.zc - 0.04 * Hs, B.zh - 0.05 * Hs, 3, (0.85, 0.85, 0.85), name="coat_buttons"))
@@ -1165,7 +1169,7 @@ def _build(B, outfit, C, o):
         G.append(bottoms(B, "pyjama", fabric("night_pyjama", C["pyjama"], 0.75, 0.3, pattern={"kind": "stripes", "c2": C["stripe"], "scale": 0.02 * Hs / 1.6, "lw": 0.3}),
                          B.zw + 0.01 * Hs, leg_t=0.96, style="straight", offset=0.008))
         G.append(top(B, "nightshirt", nm, B.zh - 0.02 * Hs, sleeve_t=0.92, neck_depth=0.02 * Hs, offset=0.007, sleeve_loose=0.25, loose=0.005))
-        rings = skirt_rings(B, B.zw, B.zk - 0.05 * Hs, flare=1.12, ease=0.02)
+        rings = skirt_rings(B, B.zh, B.zk - 0.05 * Hs, flare=1.12, ease=0.02, top_ease=0.01)
         G.append(lathe(B, "nightshirt_tail", fabric("nightshirt_tail", C["nightshirt"], 0.75, 0.3,
                                                      pattern={"kind": "stripes", "c2": C["stripe"], "scale": 0.02 * Hs / 1.6, "lw": 0.3}, coord="uv"), rings, segs=96))
         G.append(buttons(B, B.zn - 0.025 * Hs, B.zc - 0.03 * Hs, 3, (0.95, 0.95, 0.95)))
@@ -1194,8 +1198,9 @@ def _dhoti(B, C, leg_t=0.9):
     dm = fabric("dhoti", C["dhoti"], 0.75, 0.3, border={"c": C["border"], "mode": "z_lo", "w": B.axis_point("leg", 1, leg_t).z + 0.035 * Hs, "stripe": False})
     G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.01, ease=0.02))
     hem = B.axis_point("leg", 1, leg_t).z
-    pm = fabric("dhoti_pleats", C["dhoti"], 0.75, 0.3, border={"c": C["border"], "mode": "v_edges", "w": 0.1}, coord="uv")
-    pts = [B.surf(0.0, B.zw, "front"), B.surf(0.0, B.zx + 0.02 * Hs, "front"), B.surf(0.0, (B.zx + hem) / 2, "front"), B.surf(0.0, hem + 0.06 * Hs, "front")]
+    pm = fabric("dhoti_pleats", C["dhoti"], 0.75, 0.3, pattern={"kind": "stripes", "c2": tuple(c * 0.86 for c in C["dhoti"]), "scale": 0.125, "lw": 0.35, "dir": "h"},
+                border={"c": C["border"], "mode": "v_edges", "w": 0.07}, coord="uv")
+    pts = [B.surf(0.0, B.zw, "front"), B.surf(0.0, B.zx + 0.02 * Hs, "front"), B.surf(0.0, (B.zx + hem) / 2, "front"), B.surf(0.0, hem + 0.01 * Hs, "front")]
     G.append(drape(B, "dhoti_pleats", pm, [p for p in pts if p], [0.09 * Hs, 0.1 * Hs, 0.1 * Hs, 0.09 * Hs], clear=0.006, thick=0.005))
     return G
 
