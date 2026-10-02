@@ -1391,6 +1391,11 @@ def penetration(h, garments):
             if src is not None and B is not None and k < len(g.data.vertices) and k % 3 == 0:
                 s_ = src.data[k].value
                 errs.append(((Mi @ p - g.data.vertices[k].co) - (Mi @ co[s_] - B.co[s_])).length)
+                if errs[-1] >= max(errs):
+                    gv = g.data.vertices[k]
+                    worst = {"k": k, "src": s_, "err_mm": round(1000 * errs[-1], 1), "g_rest": [round(x, 3) for x in gv.co], "b_rest": [round(x, 3) for x in B.co[s_]],
+                             "g_w": {g.vertex_groups[e.group].name: round(e.weight, 3) for e in gv.groups}, "b_w": {b: round(x, 3) for b, x in B.w[s_].items()},
+                             "g_posed": [round(x, 3) for x in Mi @ p], "b_posed": [round(x, 3) for x in Mi @ co[s_]]}
         ev.to_mesh_clear()
         for m, s in sol: m.show_viewport = s
         res[g.name] = {"verts": n, "inside": inside, "frac": round(inside / max(1, n), 4)}
