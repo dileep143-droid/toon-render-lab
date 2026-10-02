@@ -504,9 +504,9 @@ def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004,
         out.append(buttons(B, B.zn - 0.004 * B.Hs, B.zn - 0.012 * B.Hs - 0.035 * s * (buttons_n - 1), buttons_n, btn_colour, name=name + "_buttons", r=0.0035))
     return out
 
-def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=0.9, rounded=False, name="collar", pad=0.003, thick=0.003):
+def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False, name="collar", pad=0.003, thick=0.0035):
     """turn-down shirt collar: stand + a fall that folds over and lies on the shoulders, pointed (or rounded) front ends"""
-    s = B.Hs / 1.6; stand = stand or 0.016 * s; fall = fall or 0.04 * s
+    s = B.Hs / 1.6; stand = stand or 0.02 * s; fall = fall or 0.052 * s
     zb = B.zn - 0.006 * B.Hs
     a0, a1 = -math.pi / 2 + gap, 1.5 * math.pi - gap
     n = 44
@@ -679,7 +679,7 @@ def top(B, name, mat, hem_z, sleeve_t=0.25, neck_depth=None, neck_angle=55, offs
         p = B.part[i]; z = B.co[i].z
         if p == "torso": return z > hem_z - 0.04 * Hs and (top_z is None or z < top_z + 0.04 * Hs)
         if p == "leg": return z > hem_z - 0.04 * Hs and B.t[i] < 0.3
-        if p == "arm": return (top_z is None or z < top_z + 0.04 * Hs) and (B.t[i] < st + 0.06 and not sleeveless or (sleeveless and B.t[i] < 0.06))
+        if p == "arm": return (top_z is None or z < top_z + 0.04 * Hs) and (B.t[i] < st + 0.06 and not sleeveless or (sleeveless and B.t[i] < 0.2))
         if p == "head":   # the neck base: kept so the neckline is the clean cut plane, not the ragged neck-weight boundary
             return B.zn - 0.06 * Hs < z < B.zn + 0.03 * Hs and abs(B.co[i].x) < 0.07 * Hs and not any(b in ("head", "jaw") for b in B.w[i] if B.w[i][b] > 0.3)
         return False
@@ -701,7 +701,13 @@ def top(B, name, mat, hem_z, sleeve_t=0.25, neck_depth=None, neck_angle=55, offs
     if top_z is not None: cuts.append((lambda i: B.part[i] in ("torso", "head", "arm"), Vector((0, 0, top_z)), Vector((0, 0, 1))))
     for sd in (1, -1):
         A, W = B.axes[("arm", sd)]; d = (W - A).normalized()
-        cuts.append(((lambda s: (lambda i: B.part[i] == "arm" and B.side[i] == s))(sd), A + (W - A) * st, d))
+        if sleeveless:   # clean curved armhole: a slanted plane per side, only above the chest
+            zlim = B.zc - 0.1 * Hs
+            cuts.append(((lambda s: (lambda i: B.side[i] == s and B.part[i] in ("torso", "arm", "head") and B.co[i].z > zlim))(sd),
+                         Vector((sd * 0.8 * A.x * sd, A.y, A.z)), Vector((sd, 0, 0.6)).normalized()))
+            cuts.append(((lambda s: (lambda i: B.part[i] == "arm" and B.side[i] == s))(sd), A + (W - A) * 0.05, d))
+        else:
+            cuts.append(((lambda s: (lambda i: B.part[i] == "arm" and B.side[i] == s))(sd), A + (W - A) * st, d))
     tube = None
     if puff > 0 and not sleeveless:   # puff sleeve: gathered at the shoulder and at the band
         rref = {sd: B.r_at("arm", sd, 0.15) for sd in (1, -1)}
@@ -1032,44 +1038,45 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
         cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
         return cy, max(abs(p.x) for p in pts), (max(p.y for p in pts) - min(p.y for p in pts)) / 2
     base = head_ring(z0) or (B.bh["head"].y, 0.075 * s, 0.09 * s)
-    bm = bmesh.new(); bw, bt = 0.026 * s, 0.011 * s          # band width (height) and thickness
-    nb = 7; seg, cs = 64, 10
+    # 1) the turban body: a soft rounded wrap from the forehead to above the crown (no gaps, nothing of the head shows through)
+    bm = bmesh.new(); zt = B.zt + 0.055 * s; n_r = 14; prof = []
+    for k in range(n_r + 1):
+        f = k / n_r; z = z0 + (zt - z0) * f
+        hr = head_ring(min(z, B.zt - 0.01 * s)) or base
+        pad = 0.016 * s * (1 + 0.6 * math.sin(math.pi * min(1.0, f * 1.2)))
+        dome = math.sqrt(max(0.0, 1 - _smoothstep(0.62, 1.0, f) ** 1.6))
+        prof.append((z, hr[0], (max(hr[1], base[1] * 0.85) + pad) * max(dome, 0.12), (max(hr[2], base[2] * 0.85) + pad) * max(dome, 0.12)))
+    seg = 64; rows = []
+    for z, cy, rx, ry in prof:
+        rows.append([bm.verts.new((rx * math.cos(2 * math.pi * i / seg), cy + ry * math.sin(2 * math.pi * i / seg), z)) for i in range(seg)])
+    for r in range(len(rows) - 1):
+        for i in range(seg):
+            bm.faces.new((rows[r][i], rows[r][(i + 1) % seg], rows[r + 1][(i + 1) % seg], rows[r + 1][i])).smooth = True
+    cpt = bm.verts.new((0, prof[-1][1], prof[-1][0] + 0.003 * s))
+    for i in range(seg): bm.faces.new((rows[-1][i], rows[-1][(i + 1) % seg], cpt)).smooth = True
+    # 2) wide flat cloth bands wound over it at alternating slants (the visible wrapping)
+    bw, bt = 0.04 * s, 0.006 * s; nb = 5; cs = 8
+    def prof_at(z):
+        z = max(prof[0][0], min(prof[-1][0], z)); k = min(n_r - 1, int((z - prof[0][0]) / (prof[-1][0] - prof[0][0]) * n_r)); return prof[k]
     for k in range(nb):
-        f = k / (nb - 1)
-        z = z0 + 0.012 * s + f * (B.zt - z0 + 0.02 * s)
-        hr = head_ring(z) or base
-        cy, rx, ry = hr
-        grow = 1.0 + 0.12 * math.sin(math.pi * min(1.0, 0.25 + f * 0.9))
-        rx = (max(rx, base[1] * (1 - 0.55 * f ** 2.2)) + 0.013 * s) * grow; ry = (max(ry, base[2] * (1 - 0.55 * f ** 2.2)) + 0.013 * s) * grow
-        tilt = R(13 if k % 2 else -11) * (1 - 0.5 * f); roll = R(6 if k % 3 == 0 else -4)
-        Mt = Matrix.Rotation(tilt, 3, "X") @ Matrix.Rotation(roll, 3, "Y")
+        f = 0.1 + 0.62 * k / (nb - 1); zc_ = z0 + (zt - z0) * f
+        _, cy, rx, ry = prof_at(zc_)
+        tilt = R(15 if k % 2 else -13); Mt = Matrix.Rotation(tilt, 3, "X") @ Matrix.Rotation(R(4 if k % 2 else -5), 3, "Y")
         ring = []
         for i in range(seg):
             a = 2 * math.pi * i / seg
-            c = Vector((rx * math.cos(a), ry * math.sin(a), 0)); rad = Vector((math.cos(a) / rx, math.sin(a) / ry, 0)).normalized()
-            twist = 0.25 * math.sin(3 * a + k)
-            up = Vector((0, 0, 1)); side = rad * math.cos(twist) + up * math.sin(twist); upv = up * math.cos(twist) - rad * math.sin(twist)
+            local = Mt @ Vector((math.cos(a), math.sin(a), 0)); zz = zc_ + local.z * ry
+            _, cy2, rx2, ry2 = prof_at(zz)
+            c = Vector((rx2 * math.cos(a), cy2 + ry2 * math.sin(a), zz)); rad = Vector((math.cos(a) / max(rx2, 1e-4), math.sin(a) / max(ry2, 1e-4), 0)).normalized()
             row = []
             for j in range(cs):
                 b = 2 * math.pi * j / cs
-                p = c + side * (bt * 0.5 * math.cos(b)) + upv * (bw * 0.5 * math.sin(b))
-                row.append(bm.verts.new(Vector((0, cy, z)) + Mt @ p))
+                row.append(bm.verts.new(c + rad * (bt * (0.6 + 0.5 * math.cos(b))) + Vector((0, 0, 1)) * (bw * 0.5 * math.sin(b))))
             ring.append(row)
         for i in range(seg):
             for j in range(cs):
                 fc = bm.faces.new((ring[i][j], ring[(i + 1) % seg][j], ring[(i + 1) % seg][(j + 1) % cs], ring[i][(j + 1) % cs]))
-                fc.material_index = k % 2; fc.smooth = True
-    # soft crown filling the top, and a short tucked tail at the back
-    top = head_ring(B.zt - 0.03 * s) or base
-    zc = B.zt + 0.012 * s
-    crown = [(zc + 0.012 * s, top[0], 0.02 * s, 0.02 * s), (zc, top[0], top[1] * 0.75 + 0.01 * s, top[2] * 0.75 + 0.01 * s), (zc - 0.03 * s, top[0], top[1] + 0.012 * s, top[2] + 0.012 * s)]
-    vs = []
-    for z, cy, rx, ry in crown:
-        vs.append([bm.verts.new((rx * math.cos(2 * math.pi * i / 32), cy + ry * math.sin(2 * math.pi * i / 32), z)) for i in range(32)])
-    cpt = bm.verts.new((0, crown[0][1], crown[0][0] + 0.004 * s))
-    for i in range(32): bm.faces.new((cpt, vs[0][i], vs[0][(i + 1) % 32])).smooth = True
-    for r in range(2):
-        for i in range(32): bm.faces.new((vs[r][i], vs[r + 1][i], vs[r + 1][(i + 1) % 32], vs[r][(i + 1) % 32])).smooth = True
+                fc.material_index = 1; fc.smooth = True
     m1 = fabric("pagdi", colour, 0.8, 0.5); m2 = fabric("pagdi_fold", tuple(min(1.0, c * 0.86) for c in colour), 0.8, 0.5)
     bm.normal_update()
     return _finish(B, bm, "pagdi", m1, [{"head": 1.0}] * len(bm.verts), thick=0, extra_mats=(m2,))
@@ -1097,7 +1104,7 @@ def gamcha(B, colours=((0.85, 0.12, 0.12), (0.97, 0.95, 0.9)), side=-1):
 def collar(B, mat, style="turn", name="collar", **k):
     """style: 'band' (mandarin), 'turn' (shirt, pointed), 'peterpan' (rounded flat)"""
     if style == "band": return collar_band(B, mat, name=name, **k)
-    if style == "peterpan": return collar_turn(B, mat, stand=0.004 * B.Hs / 1.6, fall=k.pop("fall", 0.034 * B.Hs / 1.6), rounded=True, gap=k.pop("gap", 0.12), name=name, **k)
+    if style == "peterpan": return collar_turn(B, mat, stand=0.005 * B.Hs / 1.6, fall=k.pop("fall", 0.05 * B.Hs / 1.6), rounded=True, gap=k.pop("gap", 0.12), name=name, **k)
     return collar_turn(B, mat, name=name, **k)
 
 def buttons(B, z_from, z_to, n=5, colour=(0.95, 0.95, 0.92), x=0.0, name="buttons", r=0.0042):
@@ -1135,16 +1142,16 @@ def _pallu_anchors(B, kind="nivi"):
         mid = P(0.0, B.zw + 0.15 * (B.zub - B.zw), "front")
         return out[0] + ([mid] if mid else []) + out[1][::-1]
     if kind == "tie":
-        return [p for p in (P(0, B.zn - 0.012 * Hs, "front"), P(0, B.zc, "front"), P(0, B.zw + 0.02 * Hs, "front")) if p is not None]
+        return [p for p in (P(0, B.zn - 0.03 * Hs, "front"), P(0, B.zc, "front"), P(0, B.zw + 0.02 * Hs, "front")) if p is not None]
     return []
 
-def head_pallu(B, mat):
+def head_pallu(B, mat, border=None):
     """saree end pulled over the head: an offset copy of the back/top of the head (over the hair), open face"""
     Hs = B.Hs; hy = B.bh["head"].y
     def keep(i):
         if B.part[i] != "head": return False
         c = B.co[i]
-        return c.z > B.ze - 0.02 * Hs and (c.y > hy - 0.01 * Hs or c.z > B.ze + 0.55 * (B.zt - B.ze))
+        return (c.y > hy + 0.005 * Hs and c.z > B.ze - 0.035 * Hs) or c.z > B.ze + 0.45 * (B.zt - B.ze)   # crown + back of the head; ears and face stay free
     hair_extent = 0.0
     if B.hair_pts:   # make room for the hair
         hb = BVHTree.FromPolygons([B.co[i] for i in range(len(B.co))], B.body_polys)
@@ -1153,8 +1160,17 @@ def head_pallu(B, mat):
                 loc, n, _, d = hb.find_nearest(p)
                 if loc is not None and (p - loc).dot(n) > 0: hair_extent = max(hair_extent, min(d, 0.045 * Hs / 1.6))
     off = hair_extent + 0.006 * Hs / 1.6
-    o = shell(B, "head_pallu", mat, keep, offset=off, smooth=4, cuts=[], clear=0.003, thick=0.003, min_island=0.2)
-    return o
+    o = shell(B, "head_pallu", mat, keep, offset=off, smooth=10, cuts=[], clear=0.003, thick=0.003, min_island=0.2)
+    out = [o]
+    if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), r=0.003 * Hs / 1.6))
+    # the cloth falls from the back of the head over the nape to the upper back
+    s = Hs / 1.6
+    vel = [B.surf(0.0, B.ze + 0.01 * Hs, "back"), B.surf(0.0, B.zn + 0.02 * Hs, "back"), B.surf(0.0, B.zc, "back")]
+    vel = [p for p in vel if p is not None]
+    if len(vel) >= 2:
+        if B.hair_pts: vel[0] = vel[0] + Vector((0, off, 0))
+        out.append(drape(B, "head_pallu_veil", mat, vel, [0.09 * Hs, 0.12 * Hs, 0.15 * Hs], clear=0.006, thick=0.003, m=9, pleats=0.004 * s, wparts=("torso", "head")))
+    return out
 
 # ----------------------------------------------------------------------------------------------- outfits
 OUTFITS = {
@@ -1362,7 +1378,7 @@ def _shirt(B, C, key, name="shirt", hem=None, sleeve=0.28, pattern=None, pocket=
     out = [top(B, name, mat, hem if hem is not None else B.zh - 0.03 * Hs, sleeve_t=sleeve, neck_depth=0.01 * Hs, offset=0.006, sleeve_loose=0.15)]
     z_end = (hem if hem is not None else B.zh - 0.03 * Hs) + 0.01 * Hs
     out.append(placket(B, fabric(name + "_placket", placket_c or _darker(C[key], 0.93), 0.8, 0.4), B.zn - 0.012 * Hs, z_end, name=name + "_placket"))
-    out += collar(B, fabric(name + "_collar", C[key], 0.8, 0.4, pattern=pattern), style=collar_style, name=name + "_collar")
+    out += collar(B, fabric(name + "_collar", C[key], 0.8, 0.4, border={"c": _darker(C[key], 0.84), "mode": "v_hi", "w": 0.07}, coord="uv"), style=collar_style, name=name + "_collar")
     out.append(buttons(B, B.zn - 0.045 * Hs, z_end + 0.02 * Hs, buttons_n, btn, name=name + "_buttons", r=0.0034))
     if pocket:
         out.append(patch(B, fabric(name + "_pocket", C[key], 0.8, 0.4, pattern=pattern, border={"c": _darker(C[key], 0.8), "mode": "v_hi", "w": 0.12}),
@@ -1378,7 +1394,7 @@ def _kurta(B, C, key="kurta", name="kurta", hem_z=None, pattern=None, collar_sty
     rings = skirt_rings(B, B.zh, kz, flare=1.0, ease=0.012, top_ease=0.008)
     out.append(lathe(B, name + "_tail", fabric(name + "_tail", C[key], 0.8, 0.45, pattern=pattern, coord="uv" if pattern is None or pattern.get("kind") != "stripes" else "uv"),
                      rings, segs=96, slits=(R(14), B.zh - 0.03 * Hs), sim=SKIRT_SIM))
-    out += collar(B, fabric(name + "_collar", C[key], 0.8, 0.45), style=collar_style, name=name + "_collar")
+    out += collar(B, fabric(name + "_collar", C[key], 0.8, 0.45, border={"c": _darker(C[key], 0.84), "mode": "v_hi", "w": 0.1}, coord="uv"), style=collar_style, name=name + "_collar")
     out.append(placket(B, fabric(name + "_placket", _darker(C[key], 0.94), 0.8, 0.45), B.zn - 0.006 * Hs, B.zn - 0.006 * Hs - 0.12 * s, name=name + "_placket"))
     out.append(buttons(B, B.zn - 0.02 * Hs, B.zn - 0.006 * Hs - 0.1 * s, 3, C.get("button", (0.8, 0.65, 0.35)), name=name + "_buttons", r=0.0034))
     return out
@@ -1400,7 +1416,7 @@ def _saree(B, C, o, pallu_w=0.09, elder=False):
                 pattern=pat)
     w = pallu_w * Hs
     G.append(drape(B, "pallu", pm, _pallu_anchors(B, "nivi"), [w * 1.1, w, w * 0.9, w * 0.75, w * 1.2, w * 1.6, w * 1.8, w * 1.9], clear=0.008, m=9, pleats=0.005 * s))
-    if o.get("head_pallu"): G.append(head_pallu(B, fabric("head_pallu", C["saree"], 0.8, 0.5)))
+    if o.get("head_pallu"): G += head_pallu(B, fabric("head_pallu", C["saree"], 0.8, 0.5), border=C["border"])
     return G
 
 def _dhoti(B, C, leg_t=0.9):
@@ -1846,3 +1862,46 @@ def _public(fn):
 for _n in ("bindi", "bangles", "payal", "necklace", "earrings", "gajra", "glasses", "pagdi", "topi", "gamcha", "nightcap", "hair_ribbon", "cardboard_badge", "head_pallu"):
     if _n in globals(): globals()[_n] = _public(globals()[_n])
 anklets = payal
+
+
+# ----------------------------------------------------------------------------------------------- fit measurement
+FIT_LIMITS_MM = {"shoulder": 8, "upper_back": 8, "chest": 10, "waist": 8, "upper_arm": 12}
+
+def fit_report(h, rig, garments=None):
+    """skin -> nearest garment (inner surface) distance per region, in mm (mean / p90 / max) over the body
+    vertices that are covered by something within 6 cm. Use in the A-pose."""
+    B = body_of(h, rig); co = posed_coords(h); Mi = h.matrix_world.inverted()
+    objs = [g for g in (garments or [o for o in bpy.data.objects if o.get("outfit_piece")]) if g is not None and g.name in bpy.data.objects
+            and any(m.type == "SOLIDIFY" for m in g.modifiers)]
+    V, P = [], []
+    for g in objs:
+        sol = [(m, m.show_viewport) for m in g.modifiers if m.type == "SOLIDIFY"]
+        for m, _ in sol: m.show_viewport = False
+        bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
+        ev = g.evaluated_get(dg); me = ev.to_mesh(); M = g.matrix_world; o_ = len(V)
+        V += [M @ v.co for v in me.vertices]; P += [tuple(k + o_ for k in p.vertices) for p in me.polygons]
+        ev.to_mesh_clear()
+        for m, s_ in sol: m.show_viewport = s_
+    bpy.context.view_layer.update()
+    if not P: return {}
+    bvh = BVHTree.FromPolygons(V, P); ys = B.bh["spine01"].y; Hs = B.Hs
+    def wsum(i, pre): return sum(x for b, x in B.w[i].items() if b.startswith(pre))
+    regions = {
+        "shoulder": lambda i: B.part[i] in ("torso", "arm") and wsum(i, ("clavicle", "shoulder01")) > 0.3 and B.co[i].z > B.zc,
+        "upper_back": lambda i: B.part[i] == "torso" and B.co[i].y > ys + 0.02 * Hs and B.zc < B.co[i].z < B.zn - 0.03 * Hs,
+        "chest": lambda i: B.part[i] == "torso" and B.co[i].y < ys - 0.02 * Hs and B.zub < B.co[i].z < B.zn - 0.06 * Hs,
+        "waist": lambda i: B.part[i] == "torso" and abs(B.co[i].z - B.zw) < 0.015 * Hs,
+        "upper_arm": lambda i: B.part[i] == "arm" and 0.1 < B.t[i] < 0.22,
+    }
+    out = {}
+    for name, sel in regions.items():
+        ds = []
+        for i in B.body_idx[::2]:
+            if not sel(i): continue
+            loc, nrm, _, d = bvh.find_nearest(co[i], 0.06)
+            if loc is not None: ds.append(d * 1000)
+        if len(ds) < 5: continue
+        ds.sort()
+        out[name] = {"n": len(ds), "mean": round(sum(ds) / len(ds), 1), "p90": round(ds[int(0.9 * (len(ds) - 1))], 1), "max": round(ds[-1], 1),
+                     "limit": FIT_LIMITS_MM[name], "ok": sum(ds) / len(ds) <= FIT_LIMITS_MM[name]}
+    return out
