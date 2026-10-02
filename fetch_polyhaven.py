@@ -20,7 +20,8 @@ for mid, info in models.items():
     if "nature" in cats and any(w in name for w in ("tree", "shrub", "bush", "rock", "boulder", "grass", "fern", "plant", "dead")):
         want.append(mid)
 print("NATURE candidates", len(want), want[:40])
-pref = [m for m in want if any(w in m for w in ("tree", "shrub", "bush"))][:6] + [m for m in want if any(w in m for w in ("rock", "boulder"))][:3] + [m for m in want if "grass" in m][:2]
+indian_trees = [m for m in ("island_tree_01", "island_tree_02", "island_tree_03", "jacaranda_tree") if m in want]   # palms + a flowering tree
+pref = indian_trees + [m for m in want if any(w in m for w in ("shrub", "bush"))][:3] +[m for m in want if any(w in m for w in ("rock", "boulder"))][:3] + [m for m in want if "grass" in m][:2]
 for mid in pref:
     try:
         g = get(f"https://api.polyhaven.com/files/{mid}")["gltf"]["1k"]["gltf"]
