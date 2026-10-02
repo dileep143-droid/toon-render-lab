@@ -125,7 +125,7 @@ def tint_tree(nt, rgb, fac, label, depth=0, seen=None):
         if n.bl_idname == "ShaderNodeGroup" and n.node_tree: n_done += tint_tree(n.node_tree, rgb, fac, label, depth + 1, seen)
         if n.bl_idname == "ShaderNodeTexImage" and n.image:
             nm = n.image.name.lower()
-            if any(w in nm for w in ("normal", "nor", "rough", "spec", "bump", "sss_value", "ao", "alpha", "trans")) and not any(w in nm for w in ("diffuse", "albedo", "color", "colour", "basecolor")): continue
+            if any(w in nm for w in ("normal", "nor", "rough", "spec", "bump", "sss", "ao", "alpha", "trans")) and not any(w in nm for w in ("diffuse", "albedo", "color", "colour", "basecolor")): continue
             links = [l for l in n.outputs["Color"].links]
             if not links: continue
             mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = "RGBA"; mix.blend_type = label; mix.inputs[0].default_value = fac
@@ -136,10 +136,10 @@ def tint_tree(nt, rgb, fac, label, depth=0, seen=None):
             print("TINT", label, nt.name, n.image.name); n_done += 1
     return n_done
 skin_mats = {s.material for s in h.material_slots if s.material}
+SEEN = set()   # the skin node group is shared by body, ears, lips...: tint it only ONCE
 for m_ in skin_mats:
     if m_.use_nodes:
-        c = tint_tree(m_.node_tree, (0.86, 0.64, 0.48), 1.0, "MULTIPLY")      # pale texture x warm = wheatish
-        if c == 0: warm(m_)
+        c = tint_tree(m_.node_tree, (0.86, 0.64, 0.48), 1.0, "MULTIPLY", seen=SEEN)      # pale texture x warm = wheatish
         print("SKIN NODES", m_.name, [n.bl_idname for n in m_.node_tree.nodes][:12])
 for o in bpy.data.objects:
     if o.type == "MESH" and any(w in o.name.lower() for w in ("long01", "hair", "eyebrow")):
