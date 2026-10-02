@@ -1,0 +1,172 @@
+name: fx-anim-check
+# Checks lib_fx / lib_anim / lib_camera / demo_fx on Blender 4.2 LTS (headless):
+#  1) every FX function builds + bakes (smoke test), 2) demo_fx with primitive dolls (stills + 48-frame sequence),
+#  3) a DRESSED MPFB child: bone map, face units (expressions, talk, blink), cycles, mocap retarget (if BVH fetched).
+on:
+  workflow_dispatch: {}
+
+jobs:
+  fx:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+      - name: FX smoke test (all lib_fx functions, bake, 2 stills)
+        run: |
+          mkdir -p out/smoke
+          cat > /tmp/smoke.py <<'EOF'
+          import bpy, sys, os, math, traceback
+          sys.path.insert(0, os.getcwd())
+          bpy.ops.wm.read_factory_settings(use_empty=True)
+          import lib_fx as FX, lib_camera as CAM
+          from mathutils import Vector
+          sc = bpy.context.scene; sc.frame_start, sc.frame_end = 1, 40
+          cam = CAM.camera((0, -14, 3), target=(0, 0, 0.8), lens=22); CAM.light_preset("noon")
+          FX.ground_collider(visible=True, size=100)
+          head = FX.new_obj("head", FX.mesh_sphere(0.15, 16, 10, "hm"), None, (0, 0, 1.4), FX.fxmat("skin", (0.8, 0.6, 0.45), fade=False))
+          goat = FX.goat_standin((3, 2, 0)); jal = FX.new_obj("jal", FX.mesh_cyl(0.03, 0.4, 12, name="j"), None, (-3, 0, 1), FX.fxmat("laddoo", "laddoo", fade=False))
+          a = FX.empty("a", (-4, 0, 1)); b = FX.empty("b", (-4, 0, 1)); FX.key(b, "location", 20, (-3, 0, 1.2))
+          T = {
+           "falling": lambda: FX.falling_objects("laddoo", (-5, 0, 1.5), 5), "books": lambda: FX.falling_objects("book", (-5, 1, 1.5), 3, count=3),
+           "bucket": lambda: FX.falling_objects("bucket", (-6, 1, 1.5), 3, count=1), "stack": lambda: FX.toppling_stack((5, 0, 0), 4, frame=10),
+           "ball": lambda: FX.ball_bounce((-2, -2, 0), 1), "rbball": lambda: FX.rb_ball((-1, -2, 2)), "flag": lambda: FX.flag((1, 3, 0)),
+           "line": lambda: FX.clothes_line((-2, 4, 0)), "ghost": lambda: FX.ghost_sheet(goat, 1), "net": lambda: FX.net_drop(jal, 1),
+           "splash": lambda: FX.water_splash((0, -2, 0), 5), "meta": lambda: FX.water_splash((1, -3, 0), 5, mode="meta", count=6),
+           "psplash": lambda: FX.water_splash((2, -3, 0), 5, mode="particles"), "pour": lambda: FX.bucket_pour((-1, 0, 1.2), 3, 30),
+           "mud": lambda: FX.mud_splat((2, -2, 0), 5), "puddle": lambda: FX.puddle((3, -1, 0), ripple_every=8), "rain": lambda: FX.rain(area=8, f0=1, f1=40, rate=100),
+           "drips": lambda: FX.drips([(4, -2, 1.5)], 1, 40), "dust": lambda: FX.dust_puff((0, -1, 0), 5), "steam": lambda: FX.steam((1, 0, 0.5), 1, 40),
+           "smoke": lambda: FX.smoke_wisps((2, 0, 0.5), 1, 40), "flame": lambda: FX.flame((0, -3, 0.3), 1, 40, diya=True), "sparkles": lambda: FX.sparkles((0, 0, 2), 5),
+           "leaves": lambda: FX.falling_leaves((0, 2, 0), 1, 40, count=5), "confetti": lambda: FX.confetti((1, 1, 0.5), 5, 20), "gulal": lambda: FX.gulal_cloud((-1, 1, 1), 5),
+           "balloons": lambda: FX.balloons((2, 1, 0.8), 1, 2), "stretch": lambda: FX.stretch_object(jal, 5, 15), "sticky": lambda: FX.sticky_string(a, b, 2, 20),
+           "hook": lambda: FX.hook_stretch(FX.new_obj("rope", FX.mesh_cyl(0.02, 1, 8, name="rp"), None, (-6, -2, 1)), 2, 10),
+           "stars": lambda: FX.impact_stars(head, 2, 40), "sweat": lambda: FX.sweat_drops(head, 5), "tears": lambda: FX.tears(head, 5, 40),
+           "mark": lambda: FX.mark("?", head, 5, 30), "hearts": lambda: FX.hearts(head, 5), "anger": lambda: FX.anger_vein(head, 5, 30),
+           "speed": lambda: FX.speed_lines(head, 2, 40), "focus": lambda: FX.focus_lines(20, 30), "bubble": lambda: FX.thought_bubble(head, 5, 35, text="laddoo"),
+           "zzz": lambda: FX.zzz(head, 1, 40), "shake": lambda: FX.camera_shake(cam, 10, 20), "zoom": lambda: FX.zoom_punch(cam, 25),
+           "squash": lambda: FX.squash_stretch(jal, 30, "boing"), "jitter": lambda: FX.shake_object(goat, 5, 15),
+           "ants": lambda: FX.ant_line([(-3, -4, 0), (0, -4, 0), (3, -4.5, 0)], 1, 40, wave_index=2), "sparrows": lambda: FX.sparrows((4, 3, 0), 1, 40, fly_frame=20),
+           "flies": lambda: FX.flies(head, 1, 40), "butterfly": lambda: FX.butterfly([(0, -4, 1), (1, -3, 1.4), (2, -3, 1)], 1, 40, land_frame=35),
+           "wet": lambda: FX.surface_state(goat, "wet", frame=10), "mudstate": lambda: FX.surface_state(head, "mud"), "rainbow": lambda: FX.surface_state(jal, "rainbow"),
+           "flush": lambda: FX.color_flush(head, 10, ("green", "purple", "green")), "bite": lambda: FX.chewed_variant(FX.new_obj("slipper", FX.mesh_box(0.1, 0.26, 0.02, "sl"), None, (-5, -3, 0.01), FX.fxmat("red", "red", fade=False))),
+           "smell": lambda: FX.smell_lines((-1, -1, 0.5), head, 2, 40), "rumble": lambda: FX.tummy_rumble((0, -1, 0), 2, 40), "straw": lambda: FX.straw_burst((3, 0, 0), 5),
+           "strawhair": lambda: FX.straw_in_hair(head), "paper": lambda: FX.paper_flutter((-2, -1, 1), 5), "glow": lambda: FX.ghost_glow(goat.children[0], 1, 40), "glint": lambda: FX.glint(head, 10),
+           "screentext": lambda: FX.screen_text("DAY 1", 2, 30, cam, box="red"), "chalk": lambda: FX.self_writing("1. paratha", (0, 4, 1.5), 2, 30),
+           "lightning": lambda: FX.lightning([10, 25], bolt_at=(4, 6, 0)), "plant": lambda: FX.plant_growth((-4, 2, 0), 2, 35), "foam": lambda: FX.foam_blobs(head, 5),
+           "kite": lambda: FX.kite((5, -2, 1.0), 1, 40), "break": lambda: FX.break_apart(FX.new_obj("matka", FX.mesh_sphere(0.2, 16, 10, "mk"), None, (5, -3, 0.2), FX.fxmat("clay", "clay", fade=False)), 10),
+           "handoff": lambda: FX.handoff(FX.new_obj("glasses", FX.mesh_box(0.12, 0.02, 0.04, "gl"), None, (0, 0, 1.55)), [(1, head), (20, goat)]),
+           "arc": lambda: FX.launch_arc(FX.new_obj("coin", FX.mesh_cyl(0.02, 0.004, 12, name="cn"), None, (1, -4, 0.5)), 5, 20, (1.5, -4, 0.0), 1.0, spin=3),
+           "breath": lambda: FX.sleeping_breath(goat, 1, 40, zzz_target=goat), "lantern": lambda: CAM.lantern((0, 2, 1.2)), "bulbs": lambda: CAM.festival_bulbs([(-3, 5, 2), (0, 5, 1.6), (3, 5, 2)]),
+           "dream": lambda: CAM.dream_look(cam, 30, 40), "night": lambda: CAM.crossfade("noon", "golden", 1, 40),
+          }
+          bad = []
+          for k, fn in T.items():
+              try: fn()
+              except Exception: bad.append(k); traceback.print_exc()
+          print("SMOKE built", len(T) - len(bad), "of", len(T), "FAILED:", bad)
+          FX.bake_all(1, 40)
+          FX.eevee((480, 270), 8)
+          for f in (12, 30):
+              sc.frame_set(f); sc.render.filepath = f"out/smoke/smoke_{f:03d}.png"; bpy.ops.render.render(write_still=True)
+          print("SMOKE DONE", bpy.app.version_string)
+          EOF
+          ./blender/blender -b -noaudio --python /tmp/smoke.py 2>&1 | grep -E "SMOKE|FX BAKED|Error|Traceback|line [0-9]" | tail -n 60
+      - name: Demo scene with primitive dolls (stills + 48-frame sequence)
+        run: ./blender/blender -b -noaudio --python demo_fx.py -- out/demo_doll --kind=doll --seq 2>&1 | grep -E "CHARACTERS|FX BAKED|STILLS|SEQUENCE|DEMO|Error|Traceback|line [0-9]" | tail -n 40
+      - name: Get MPFB2 (CC0 output) from the Blender extensions site
+        run: |
+          python3 - <<'EOF'
+          import json, urllib.request
+          d = json.load(urllib.request.urlopen("https://extensions.blender.org/api/v1/extensions/", timeout=60))
+          items = d.get("data", d)
+          e = next(x for x in items if x.get("id") == "mpfb")
+          print("MPFB", e.get("version"), e.get("license"), e.get("blender_version_min"))
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab fx)"}
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+      - name: MakeHuman CC0 system assets + face units / visemes
+        run: |
+          mkdir -p pack functional
+          for u in \
+            "https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
+            "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
+            "https://download.tuxfamily.org/makehuman/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip"; do
+            if curl -fsSL --retry 2 -A "Mozilla/5.0" -o pack.zip "$u" || curl -fsSLk -A "Mozilla/5.0" -o pack.zip "$u"; then echo "PACK from $u"; break; fi
+          done
+          unzip -q pack.zip -d pack
+          for p in faceunits01 visemes01; do
+            curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip "https://files2.makehumancommunity.org/functional/$p.zip" \
+              || curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip "https://files.makehumancommunity.org/functional/$p.zip"
+          done
+      - name: Mocap (CC licence-checked BVH set)
+        run: |
+          if [ -f fetch_mocap.py ]; then python3 fetch_mocap.py || echo "MOCAP FETCH FAILED"; fi
+          ls -la mocap 2>/dev/null | head -n 30 || true
+      - name: Dressed MPFB child - bone map, faces, cycles, mocap retarget
+        run: |
+          mkdir -p out/mpfb
+          cat > /tmp/mpfb_check.py <<'EOF'
+          import bpy, sys, os, math, glob, traceback
+          sys.path.insert(0, os.getcwd())
+          import mpfb_child as MC
+          MC.install_packs("pack", "functional")
+          for o in list(bpy.data.objects): bpy.data.objects.remove(o, do_unlink=True)   # (factory reset would unload MPFB)
+          import lib_fx as FX, lib_anim as A, lib_camera as CAM
+          from mathutils import Vector
+          sc = bpy.context.scene; sc.frame_start, sc.frame_end = 1, 200
+          rig, info = A.make_character("mpfb", name="kid", loc=(0, 0, 0))
+          print("MPFB KIND", info["kind"])
+          A.assert_no_undressed_humans()
+          print("MPFB MAP", {k: v for k, v in rig.map.items()})
+          ks = sorted(set(k.name for o in rig.meshes if o.data.shape_keys for k in o.data.shape_keys.key_blocks))
+          print("MPFB FACEKEYS", len(ks), [k for k in ks if not k.startswith("$md")][:120])
+          CAM.light_preset("noon"); FX.ground_collider(visible=True, cloth=False)
+          cam = CAM.camera((0, -3, 0.8), target=(0, 0, 0.6), lens=40)
+          FX.eevee((360, 400), 16)
+          headp = A.follower(rig, "head")
+          def shot(name, f, face=False):
+              sc.frame_set(f); bpy.context.view_layer.update(); p = headp.matrix_world.translation
+              if face: cam.location = p + Vector((0, -0.55, 0.02)); CAM.look_at(cam, p); cam.data.lens = 60
+              else: cam.location = Vector((1.6, -2.4, 0.75)) + rig.arm.matrix_world.translation * 0; CAM.look_at(cam, rig.arm.matrix_world.translation + Vector((0, 0, 0.55))); cam.data.lens = 35
+              sc.render.filepath = f"out/mpfb/{name}.png"; bpy.ops.render.render(write_still=True)
+          f = 2
+          for e in ("neutral", "happy", "laugh", "sad", "angry", "scared", "surprised", "shy", "proud", "sleepy", "disgust", "shout", "dizzy", "wink"):
+              n = A.expression(rig, e, f, f + 1, blend=1); print("EXPR", e, "keys set", n); f += 4
+          for i, e in enumerate(("neutral", "happy", "laugh", "sad", "angry", "scared", "surprised", "shy", "proud", "sleepy", "disgust", "shout", "dizzy", "wink")):
+              shot(f"face_{e}", 2 + 4 * i, face=True)
+          last = A.talk(rig, 70, "namaste dadi! mujhe bhookh lagi hai.")
+          print("TALK until", last); shot("talk_a", 74, True); shot("talk_b", 78, True)
+          A.expression(rig, "neutral", 100)
+          w, _ = A.walk(rig, 100, 2, move=True); shot("walk_a", 106); shot("walk_b", 112)
+          print("WALK slide", A.foot_slide_report(rig, 100, w, "L"))
+          s = A.slip(rig, w + 2, dust=False); shot("slip_mid", w + 9); shot("slip_end", w + 30)
+          bvh = sorted(glob.glob("mocap/*.bvh"))
+          print("BVH files", bvh)
+          for path in bvh[:3]:
+              try:
+                  rig2, _ = A.make_character("mpfb", name="mocap_kid", loc=(3, 0, 0))
+                  src = A.load_bvh(path)
+                  print("BVH bones", [b.name for b in src.data.bones][:30])
+                  lastf = A.retarget(src, rig2, f0=1, step=1, in_place=True)
+                  nm = os.path.splitext(os.path.basename(path))[0]
+                  for k, ff in enumerate((1, max(2, lastf // 3), max(3, 2 * lastf // 3))):
+                      sc.frame_set(ff); bpy.context.view_layer.update()
+                      cam.location = Vector((4.6, -2.4, 0.75)); CAM.look_at(cam, Vector((3, 0, 0.55))); cam.data.lens = 35
+                      sc.render.filepath = f"out/mpfb/mocap_{nm}_{k}.png"; bpy.ops.render.render(write_still=True)
+                  print("RETARGET OK", nm, lastf)
+                  for o in [o for o in bpy.data.objects if o.name.startswith("mocap_kid") or o.parent and o.parent.name.startswith("mocap_kid")]:
+                      o.hide_render = True
+              except Exception:
+                  traceback.print_exc(); print("RETARGET FAIL", path)
+          print("MPFB CHECK DONE", bpy.app.version_string)
+          EOF
+          ./blender/blender -b -noaudio --python /tmp/mpfb_check.py 2>&1 | grep -E "MPFB|EXPR|TALK|WALK|BVH|RETARGET|RIG|FACE|Error|Traceback|line [0-9]|refusing" | tail -n 120
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: fx-check, path: out, retention-days: 7 }
