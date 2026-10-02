@@ -38,6 +38,7 @@ PLAN = [
     ("elder", "saree_elder", {}),
 ]
 TOL = 0.002   # max fraction of required skin samples a camera may see
+DEBUG_GARMENTS = os.environ.get("OUTFIT_DEBUG_GARMENTS") == "1"   # failing views: render the clothes alone, never the body
 
 def scene_setup():
     sc = bpy.context.scene
@@ -87,6 +88,8 @@ for who, outfit, opts in PLAN:
         h.name = f"{who}_body"
         sc, cam = scene_setup()
         G = LO.dress(h, rig, outfit, char=who, **opts)
+        am = next((m for m in h.modifiers if m.type == "ARMATURE"), None)
+        print("OUTFIT armature", key, am and (am.use_deform_preserve_volume, am.use_bone_envelopes), [m.type for m in h.modifiers])
         rep["build_s"] = round(time.time() - t0, 1); rep["height_m"] = round(h.dimensions.z, 3)
         rep["garments"] = {g.name: eval_verts(g) for g in G}
         LO_objs = [o.name for o in bpy.data.objects if o.get("outfit_piece") or o.get("outfit_foot")]
@@ -98,9 +101,18 @@ for who, outfit, opts in PLAN:
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
+            if pose == "walk":
+                print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"]) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})
             for view, (frm, to) in cams.items():
                 if cov[view]["frac"] > TOL:
-                    print("SKIP", key, pose, view, "exposed", cov[view]["exposed"], "of", cov[view]["required"]); rep.setdefault("skipped", []).append(f"{pose}_{view}"); continue
+                    print("SKIP", key, pose, view, "exposed", cov[view]["exposed"], "of", cov[view]["required"]); rep.setdefault("skipped", []).append(f"{pose}_{view}")
+                    if DEBUG_GARMENTS:   # diagnostic: the GARMENTS ONLY (no character in the frame at all)
+                        hidden = [o for o in bpy.data.objects if o.type == "MESH" and not (o.get("outfit_piece") or o.get("outfit_foot")) and o.name != "ground" and not o.hide_render]
+                        for o in hidden: o.hide_render = True
+                        look(cam, frm, to); sc.render.filepath = os.path.join(OUT, f"{key}_{pose}_{view}_GARMENTS_ONLY.png")
+                        bpy.ops.render.render(write_still=True)
+                        for o in hidden: o.hide_render = False
+                    continue
                 look(cam, frm, to)
                 sc.render.filepath = os.path.join(OUT, f"{key}_{pose}_{view}.png")
                 bpy.ops.render.render(write_still=True); print("SHOT", key, pose, view)
