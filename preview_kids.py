@@ -57,8 +57,8 @@ def scene_setup():
     cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam
     return sc, cam
 
-def views(H, cx=0.0):
-    D = 1.9 * H; tgt = Vector((cx, 0, H * 0.5)); z = H * 0.55
+def views(H, cx=0.0, zf=0.55):
+    D = 1.9 * H; tgt = Vector((cx, 0, H * 0.5)); z = H * zf
     v = {"front": Vector((cx, -D, z)), "q34": Vector((cx + D * math.sin(R(38)), -D * math.cos(R(38)), z)),
          "back": Vector((cx, D, z)), "left": Vector((cx + D, 0, z)), "right": Vector((cx - D, 0, z))}
     return v, tgt
@@ -114,7 +114,7 @@ if WHO in KIDS:
         print("REPORT", key, json.dumps(rep)[:1500])
         json.dump(REPORT, open(os.path.join(OUT, f"report_{WHO}.json"), "w"), indent=1)
 elif WHO == "carry":
-    for mode, side, kid, outfit in (("hip", "left", "boy3", "toddler_kurta_shorts"), ("arms", "left", "baby1", "baby_romper")):   # a lying baby needs closed legs (an open smock shows up the hem from the feet)
+    for mode, side, kid, outfit in (("hip", "left", "boy3", "toddler_kurta_shorts"), ("arms", "left", "baby1", "woollen_set")):   # a lying baby needs closed legs (smock / wide romper legs show skin from the feet end)
         if ONLY and outfit not in ONLY: continue
         key = f"carry_{mode}_{kid}_{outfit}"; rep = REPORT[key] = {}; t0 = time.time()
         try:
@@ -129,7 +129,7 @@ elif WHO == "carry":
             KO.carry_baby(mrig, rig, side=side, mode=mode)
             bpy.context.view_layer.update()
             H = mh.dimensions.z * 1.02
-            cams, tgt = views(H)
+            cams, tgt = views(H, zf=0.85)   # adult eye level: a camera below a child on the hip looks up its shorts
             ok, cov = safe([(h, rig, "knee"), (mh, mrig, "knee")], cams)
             rep["coverage"] = cov; print("COVER", key, ok, json.dumps(cov)[:1500])
             if not ok:
