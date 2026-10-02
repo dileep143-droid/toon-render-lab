@@ -80,7 +80,7 @@ if cp.data.color_attributes:
 cp.data.materials.clear(); cp.data.materials.append(m)
 for poly in cp.data.polygons: poly.use_smooth = True
 # level: try tilts and keep the one with the smallest height whose centre of mass sits high (seat on top, legs down)
-vs = [v.co.copy() for v in cp.data.vertices[::7]]
+vs = [v.co.copy() for v in list(cp.data.vertices)[::7]]
 best = None
 for rx in range(-40, 41, 2):
     for ry in range(-40, 41, 2):
