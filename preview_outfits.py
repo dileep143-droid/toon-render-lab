@@ -167,6 +167,9 @@ for who, outfit, opts in PLAN:
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
             rep["fit_mm" if pose == "apose" else f"fit_mm_{pose}"] = fr = LO.fit_report(h, rig, G)
             print("FIT" if pose == "apose" else "FITWALK", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in fr.items()})
+            if pose == "apose":
+                rep["float_mm"] = fl = LO.float_report(h, G)
+                print("FITFLOAT", key, {k: (v["p90"], v["max"], v["float_frac"]) for k, v in fl.items()})
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             if pose == "walk":
                 print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"], v.get("worst")) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})

@@ -1853,6 +1853,45 @@ def penetration(h, garments):
     return res
 
 
+DETAIL_PARTS = ("collar", "lapel", "placket", "piping", "pocket", "flap", "epaulette", "badge", "waistband", "roll", "belt")
+
+def float_report(h, garments, parts=DETAIL_PARTS, float_mm=5.0):
+    """detail pieces (collars, lapels, plackets, pockets, piping ...): how far each one sits OFF the surface under it
+    (posed skin + every other garment). p90 / max gap in mm and the share of its vertices more than float_mm away.
+    A collar or pocket that 'floats' shows a high p90 here."""
+    co = posed_coords(h); B = _BODIES.get(h.name); Mi = h.matrix_world.inverted()
+    def mesh_of(g):
+        sol = [(m, m.show_viewport) for m in g.modifiers if m.type == "SOLIDIFY"]
+        for m, _ in sol: m.show_viewport = False
+        bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
+        ev = g.evaluated_get(dg); me = ev.to_mesh(); M = g.matrix_world
+        V = [Mi @ (M @ v.co) for v in me.vertices]; P = [tuple(p.vertices) for p in me.polygons]
+        ev.to_mesh_clear()
+        for m, s_ in sol: m.show_viewport = s_
+        return V, P
+    gs = [g for g in garments if g is not None and g.name in bpy.data.objects and g.type == "MESH"]
+    meshes = {g.name: mesh_of(g) for g in gs}
+    bpy.context.view_layer.update()
+    base_V = [co[i] for i in range(len(co))]; base_P = list(B.body_polys) if B else [tuple(p.vertices) for p in h.data.polygons]
+    out = {}
+    for g in gs:
+        if not any(w in g.name.lower() for w in parts): continue
+        V, P = list(base_V), list(base_P)
+        for n, (gv, gp) in meshes.items():
+            if n == g.name or not gp: continue
+            o_ = len(V); V += gv; P += [tuple(k + o_ for k in p) for p in gp]
+        bvh = BVHTree.FromPolygons(V, P)
+        ds = []
+        for v in meshes[g.name][0][::2]:
+            r = bvh.find_nearest(v, 0.1)
+            ds.append(1000 * (r[3] if r[0] is not None else 0.1))
+        if not ds: continue
+        ds.sort()
+        out[g.name] = {"p90": round(ds[int(0.9 * (len(ds) - 1))], 1), "max": round(ds[-1], 1),
+                       "float_frac": round(sum(1 for d in ds if d > float_mm) / len(ds), 3)}
+    return out
+
+
 # ----------------------------------------------------------------------------------------------- public accessory calls
 def _public(fn):
     """accessories accept either the internal Body or (basemesh, rig) - e.g. villager.make_villager(extras=[...]) calls f(h, rig)"""
