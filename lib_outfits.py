@@ -679,22 +679,26 @@ def top(B, name, mat, hem_z, sleeve_t=0.25, neck_depth=None, neck_angle=55, offs
         p = B.part[i]; z = B.co[i].z
         if p == "torso": return z > hem_z - 0.04 * Hs and (top_z is None or z < top_z + 0.04 * Hs)
         if p == "leg": return z > hem_z - 0.04 * Hs and B.t[i] < 0.3
-        if p == "arm": return B.t[i] < st + 0.06 and not sleeveless or (sleeveless and B.t[i] < 0.06)
+        if p == "arm": return (top_z is None or z < top_z + 0.04 * Hs) and (B.t[i] < st + 0.06 and not sleeveless or (sleeveless and B.t[i] < 0.06))
+        if p == "head":   # the neck base: kept so the neckline is the clean cut plane, not the ragged neck-weight boundary
+            return B.zn - 0.06 * Hs < z < B.zn + 0.03 * Hs and abs(B.co[i].x) < 0.07 * Hs and not any(b in ("head", "jaw") for b in B.w[i] if B.w[i][b] > 0.3)
         return False
-    yf = min((B.co[i].y for i in B.body_idx if B.part[i] == "torso" and abs(B.co[i].z - (B.zn - nd)) < 0.01 * Hs and abs(B.co[i].x) < 0.03 * Hs), default=-0.05)
+    # front of the BODY at the neckline height (ray from the front; the neck front is weighted to neck bones, so a torso-only search finds the back)
+    _hit = B.body_bvh().ray_cast(Vector((0, -3, B.zn - nd)), Vector((0, 1, 0)), 6.0)[0]
+    yf = _hit.y if _hit is not None else min((B.co[i].y for i in B.body_idx if B.part[i] in ("torso", "head") and abs(B.co[i].z - (B.zn - nd)) < 0.01 * Hs and abs(B.co[i].x) < 0.03 * Hs), default=-0.05)
     a = R(neck_angle)
     tl = lambda i: B.part[i] in ("torso", "leg")
     cuts = [(tl, Vector((0, 0, hem_z)), Vector((0, 0, -1)))]
     if neck == "v":   # V: one plane per side, applied to that side's front half only
         ymid = B.bh["spine01"].y
-        cuts.append((lambda i: B.part[i] == "torso", Vector((0, yf, B.zn - 0.35 * nd)), Vector((0, -math.sin(R(40)), math.cos(R(40))))))
+        cuts.append((lambda i: B.part[i] in ("torso", "head"), Vector((0, yf, B.zn - 0.35 * nd)), Vector((0, -math.sin(R(40)), math.cos(R(40))))))
         for sd in (1, -1):
-            cuts.append(((lambda s: (lambda i: B.part[i] == "torso" and B.side[i] == s and B.co[i].y < ymid))(sd),
+            cuts.append(((lambda s: (lambda i: B.part[i] in ("torso", "head") and B.side[i] == s and B.co[i].y < ymid))(sd),
                          Vector((0, yf, B.zn - nd)), Vector((-sd * v_slope, 0, 1)).normalized()))
     else:
-        cuts.append((lambda i: B.part[i] == "torso", Vector((0, yf, B.zn - nd)), Vector((0, -math.sin(a), math.cos(a)))))
-    cuts.append((lambda i: B.part[i] == "torso", Vector((0, 0, B.zn + 0.004 * Hs - back_depth)), Vector((0, 0.15 if back_depth else 0, 1)).normalized()))
-    if top_z is not None: cuts.append((lambda i: B.part[i] == "torso", Vector((0, 0, top_z)), Vector((0, 0, 1))))
+        cuts.append((lambda i: B.part[i] in ("torso", "head"), Vector((0, yf, B.zn - nd)), Vector((0, -math.sin(a), math.cos(a)))))
+    cuts.append((lambda i: B.part[i] in ("torso", "head"), Vector((0, 0, B.zn + 0.004 * Hs - back_depth)), Vector((0, 0.15 if back_depth else 0, 1)).normalized()))
+    if top_z is not None: cuts.append((lambda i: B.part[i] in ("torso", "head", "arm"), Vector((0, 0, top_z)), Vector((0, 0, 1))))
     for sd in (1, -1):
         A, W = B.axes[("arm", sd)]; d = (W - A).normalized()
         cuts.append(((lambda s: (lambda i: B.part[i] == "arm" and B.side[i] == s))(sd), A + (W - A) * st, d))
@@ -791,7 +795,11 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
         bm.verts.ensure_lookup_table()
         pin = [1.0 if v.co.z >= zpin - 1e-5 else (0.4 if v.co.z >= rings[min(pr + 1, len(rings) - 1)][0] - 1e-5 else 0.0) for v in bm.verts]
         if cloth_settle(B, bm, pin, **sim):
+            low = [v for v in bm.verts if v.co.z < B.zx]
             for _ in range(2): push_out(bm.verts, B.bvh(), clear)
+            for _ in range(2): push_out(low, B.body_bvh(), 0.016 * B.Hs / 1.6)   # room for the thighs when walking
+            bmesh.ops.smooth_vert(bm, verts=low, factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=False)
+            push_out(low, B.body_bvh(), 0.014 * B.Hs / 1.6)
     bm.normal_update()   # faces are built facing outward (radial); no per-face flipping
     rxh = max(rr[2] for rr in rings)
     if wfun is None and z1 < B.zh: B.skirt_tops.append(z0)   # real skirts / tails only (not belts or sashes)
