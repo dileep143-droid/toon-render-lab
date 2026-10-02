@@ -1,4 +1,4 @@
-﻿"""lib_outfits.py - procedural Indian village OUTFITS for any MPFB / MakeHuman character (child, adult, elder; male or female).
+"""lib_outfits.py - procedural Indian village OUTFITS for any MPFB / MakeHuman character (child, adult, elder; male or female).
 
 How fitting works
   * upper garments / trousers are an offset COPY of the character's own body (rest shape, macros baked): the garment
@@ -1320,7 +1320,7 @@ def set_pose(rig, pose="apose", amount=1.0):
     if pose == "walk":
         a = amount
         for bn, ax, d in (("upperleg01.L", "X", -18), ("upperleg01.R", "X", 14), ("lowerleg01.R", "X", 24), ("lowerleg01.L", "X", 6),
-                          ("foot.R", "X", -10), ("upperarm01.L", "Y", 28), ("upperarm01.R", "Y", -28), ("upperarm01.L", "X", 16),
+                          ("foot.R", "X", -10), ("upperarm01.L", "Y", 14), ("upperarm01.R", "Y", -14), ("upperarm01.L", "X", 16),
                           ("upperarm01.R", "X", -16), ("lowerarm01.L", "X", -12), ("lowerarm01.R", "X", -22)):
             _rot(rig, bn, ax, d * a)
 
@@ -1384,11 +1384,16 @@ def penetration(h, garments):
         bpy.context.view_layer.update()
         dg = bpy.context.evaluated_depsgraph_get(); ev = g.evaluated_get(dg); me = ev.to_mesh()
         mw = g.matrix_world; inside = 0; n = len(me.vertices)
-        for v in me.vertices:
+        Mi = h.matrix_world.inverted(); src = g.data.attributes.get("src"); errs = []
+        for k, v in enumerate(me.vertices):
             p = mw @ v.co; loc, nrm, _, d = bvh.find_nearest(p)
             if loc is not None and (p - loc).dot(nrm) < -0.002: inside += 1
+            if src is not None and B is not None and k < len(g.data.vertices) and k % 3 == 0:
+                s_ = src.data[k].value
+                errs.append(((Mi @ p - g.data.vertices[k].co) - (Mi @ co[s_] - B.co[s_])).length)
         ev.to_mesh_clear()
         for m, s in sol: m.show_viewport = s
         res[g.name] = {"verts": n, "inside": inside, "frac": round(inside / max(1, n), 4)}
+        if errs: res[g.name]["deform_err_mean_mm"] = round(1000 * sum(errs) / len(errs), 1); res[g.name]["deform_err_max_mm"] = round(1000 * max(errs), 1)
     bpy.context.view_layer.update()
     return res
