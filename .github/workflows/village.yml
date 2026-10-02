@@ -1,0 +1,22 @@
+name: village-free
+on:
+  workflow_dispatch: {}
+
+jobs:
+  village:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Poly Haven CC0 sky + nature models
+        run: python3 fetch_polyhaven.py ph
+      - name: Blender 4.2 LTS
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+      - name: Build the village and render stills
+        run: ./blender/blender -b -noaudio --python village_free.py -- ph assets/props/charpai_owner.obj out 2>&1 | grep -E "SKY|PROTO|gltf fail|CHARPAI|SHOT|DONE|Error|Traceback|line [0-9]" | tail -n 60
+      - uses: actions/upload-artifact@v4
+        with: { name: village-free, path: out, retention-days: 7 }
