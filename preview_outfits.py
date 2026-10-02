@@ -44,13 +44,15 @@ PLAN = [
 BODY_OUTFIT = {"girl_6y": "frock_girl", "boy_6y": "shirt_shorts_boy", "girl_9y": "pattu_pavadai", "girl_9y_dark": "school_uniform_girl", "boy_10y": "school_uniform_boy",
                "boy_10y_heavy": "kurta_pyjama", "girl_13y": "langa_voni", "boy_13y": "kurta_pyjama", "woman_25y": "salwar_kameez_dupatta", "woman_35y_heavy": "saree_village",
                "man_28y": "lungi_shirt", "man_40y_heavy": "shopkeeper", "man_45y_thin": "banian_dhoti_farmer", "woman_45y": "teacher_saree", "man_50y": "dhoti_kurta",
-               "elder_woman_70y": "saree_elder", "elder_man_70y": "nightwear", "elder_man_75y_heavy": "dhoti_kurta"}
+               "elder_woman_70y": "saree_elder", "elder_man_70y": "nightwear", "elder_man_75y_heavy": "dhoti_kurta",
+               "boy_8y_fat": "kurta_pyjama", "girl_10y_fat": "frock_girl", "woman_40y_fat": "saree_village", "man_45y_fat": "lungi_shirt", "man_50y_fat_bald": "dhoti_kurta",
+               "elder_woman_72y_fat": "saree_elder", "man_60y_bald": "banian_dhoti_farmer"}
 try:
     _bl = [b for b in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "bodies.json"), encoding="utf-8-sig"))["bodies"] if b["age"] >= 6]
 except Exception as ex:
     print("OUTFIT WARN no bodies.json", ex); _bl = []
 for k_, b in enumerate(_bl):
-    grp = "bodies_a" if k_ < (len(_bl) + 1) // 2 else "bodies_b"
+    grp = ("bodies_a", "bodies_b", "bodies_c")[min(2, 3 * k_ // max(1, len(_bl)))]
     CAST[b["id"]] = dict(gender=0.0 if b["gender"] == "f" else 1.0, age=MC.age_macro(b["age"]), skin=first("skins", [b["skin"], "young_asian_female" if b["gender"] == "f" else "young_asian_male"]),
                          hair=first("hair", [b["hair"], "short02"]), mc={"weight": b.get("weight", 0.5), "height": b.get("height", 0.5), "skin_rgb": tuple(b["skin_rgb"])}, group=grp)
     PLAN.append((b["id"], "base_layer", {"gender": b["gender"], "_views": "base"}))
