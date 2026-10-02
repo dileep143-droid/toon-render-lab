@@ -412,7 +412,7 @@ def _make(sp, name, loc=(0, 0, 0), rot_z=0.0, size=1.0):
     arm["species"] = sp; root["species"] = sp
     # head follower for FX (zzz, stars, hearts ...)
     hf = bpy.data.objects.new(name + "_head", None); coll.objects.link(hf); hf.empty_display_size = 0.05
-    hb = arm.data.bones["Head"]
+    hb = arm.data.bones["Head"]; arm["head_obj"] = hf.name
     arm.data.pose_position = "REST"; bpy.context.view_layer.update()
     _parent_bone(hf, arm, "Head", Matrix.Translation(arm.matrix_world @ (hb.head_local.lerp(hb.tail_local, 0.3) + Vector((0, 0, 0.25)))))
     arm.data.pose_position = "POSE"
@@ -434,7 +434,7 @@ def make_sheru(loc=(0, 0, 0), rot_z=0.0, name="Sheru", size=1.0):
 
 def head_of(rig):
     """an Empty following the head (target for lib_fx effects: zzz, impact_stars, hearts, sweat ...)"""
-    return bpy.data.objects.get(rig.name[:-4] + "_head") if rig.name.endswith("_rig") else None
+    return bpy.data.objects.get(rig.get("head_obj", rig.name[:-4] + "_head"))
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -871,13 +871,16 @@ def _build_actions(sp, arm):
             _keyP(arm, f, fn(f), bones)
         _assign(arm, None)
     lids = ("Lid.L", "Lid.R", "Brow.L", "Brow.R")
-    only(pre + "blink", 6, lambda t: _face(arm, _rest(arm), None, lid=(0, 0.6, 1, 1, 0.5, 0.1, 0)[t]), lids)
+    only(pre + "blink", 6, lambda t: _face(arm, _rest(arm), None, lid=(0, 0.6, 1, 1, 0.5, 0.1, 0)[t]), ("Lid.L", "Lid.R"))
     only(pre + "wag", 8, lambda t: (lambda P: (_rot(arm, P, "Tail1", yaw=28 * _osc(t, 8)), _rot(arm, P, "Tail2", yaw=18 * _osc(t, 8, -0.15)), P)[-1])(_rest(arm)),
          ("Tail1", "Tail2", "Tail3"))
     only(pre + "ear_flick", 8, lambda t: (lambda P: (_rot(arm, P, "Ear1.L", pitch=30 * math.sin(math.pi * t / 8)), P)[-1])(_rest(arm)), ("Ear1.L",))
     only(pre + "chew_face", 16, lambda t: chew(t), ("Jaw",))
     for e in EXPR:
-        only(pre + "expr_" + e, 10, lambda t, e=e: _face(arm, _rest(arm), e), FACE_BONES, 10)
+        st = EXPR[e]; keep = ["Lid.L", "Lid.R", "Brow.L", "Brow.R", "Smile"]      # never fight the body action's jaw / eyes
+        if st.get("jaw", 0) > 0: keep.append("Jaw")
+        if "look" in st or "eye" in st: keep += ["Eye.L", "Eye.R"]
+        only(pre + "expr_" + e, 10, lambda t, e=e: _face(arm, _rest(arm), e), tuple(keep), 10)
     arm["_built"] = 1
 
 
@@ -966,9 +969,16 @@ def blink(rig, frame):
 
 
 def blink_loop(rig, f0, f1, seed=0, min_gap=50, max_gap=120):
+    """random blinks; skips frames where a sleep / lie_down / wake_sniff / roll_over play is running (eyes stay shut)"""
     rnd = random.Random(seed); f = f0 + rnd.randint(10, 40)
+    asleep = []
+    for p in json.loads(rig.get("_plays", "[]")):
+        if any(k in p["a"] for k in ("_sleep", "_lie_down", "_wake_sniff", "_expr_asleep")):
+            a = bpy.data.actions[p["a"]]; asleep.append((p["s"] - 8, p["s"] + (a.frame_range[1] - a.frame_range[0]) * p["n"] / p["v"] + 8))
     while f < f1:
-        blink(rig, f); f += rnd.randint(min_gap, max_gap)
+        if not any(a <= f <= b for a, b in asleep):
+            blink(rig, f)
+        f += rnd.randint(min_gap, max_gap)
 
 
 def wag(rig, f0, f1, speed=1.0):
