@@ -39,7 +39,7 @@ jobs:
           done
           ls -la pack.zip && unzip -q pack.zip -d pack && ls pack | head
       - name: Dressed child with expressions
-        run: ./blender/blender -b -noaudio --python sample_mpfb_dressed.py -- out pack 2>&1 | grep -vE "^Fra:|Sample [0-9]|^\s*$" | grep -E "SIG|SERVICE|USER|PACK|LIST|FILES|RIG|SKIN|ADDED|NO |fail|OBJECTS|SHAPEKEYS|FACE|FS fn|DONE|Error|Traceback|line [0-9]|rescan" | tail -n 150
+        run: ./blender/blender -b -noaudio --python sample_mpfb_dressed.py -- out pack 2>&1 | grep -vE "^Fra:|Sample [0-9]|^\s*$" | grep -E "SIG|SERVICE|USER|PACK|LIST|FILES|RIG|SKIN|ADDED|NO |fail|OBJECTS|SHAPEKEYS|FACE|FS fn|DONE|API|DATA|CALLED|call fail|KEYS NOW|EXPR|WARMED|Error|Traceback|line [0-9]|rescan" | tail -n 150
       - uses: actions/upload-artifact@v4
         with: { name: mpfb-child, path: out, retention-days: 7 }
 
