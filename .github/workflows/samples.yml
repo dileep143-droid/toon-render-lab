@@ -27,8 +27,18 @@ jobs:
           EOF
           ls -la mpfb.zip
           ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
-      - name: Make two children and render
-        run: ./blender/blender -b -noaudio --python sample_mpfb_child.py -- out 2>&1 | grep -vE "^Fra:|Sample [0-9]" | tail -n 80
+      - name: MakeHuman CC0 system assets (skins, eyes, eyebrows, hair, clothes)
+        run: |
+          mkdir -p pack
+          for u in \
+            "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
+            "http://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
+            "https://download.tuxfamily.org/makehuman/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip"; do
+            if curl -fsSL -A "Mozilla/5.0" -o pack.zip "$u"; then echo "PACK from $u"; break; fi
+          done
+          ls -la pack.zip && unzip -q pack.zip -d pack && ls pack | head
+      - name: Dressed child with expressions
+        run: ./blender/blender -b -noaudio --python sample_mpfb_dressed.py -- out pack 2>&1 | grep -vE "^Fra:|Sample [0-9]|^\s*$" | grep -E "SIG|SERVICE|USER|PACK|LIST|FILES|RIG|SKIN|ADDED|NO |fail|OBJECTS|SHAPEKEYS|FACE|FS fn|DONE|Error|Traceback|line [0-9]|rescan" | tail -n 150
       - uses: actions/upload-artifact@v4
         with: { name: mpfb-child, path: out, retention-days: 7 }
 
