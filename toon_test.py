@@ -99,15 +99,31 @@ for mode in ("before", "after"):
             for view in ("front", "face"):
                 look(cam, *cams[view]); sc.render.filepath = os.path.join(OUT, f"{key}_{view}_nooutline.png")
                 bpy.ops.render.render(write_still=True); print("SHOT", key, view, "nooutline")
-        # debug: where does the BODY show through? body skin -> bright green (character stays fully dressed)
-        gm = bpy.data.materials.new("dbg_green"); gm.use_nodes = True
-        gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0, 1, 0, 1)
-        old = [s.material for s in h.material_slots]
-        for s in h.material_slots: s.material = gm
-        look(cam, Vector((0.05 * H, -0.75 * H, H * 0.62)), Vector((0, 0, H * 0.62)), 60)
-        sc.render.filepath = os.path.join(OUT, f"{key}_chest_greenbody.png"); bpy.ops.render.render(write_still=True)
-        for s, m in zip(h.material_slots, old): s.material = m
+        if os.environ.get("TOON_DEBUG") == "1":   # debug: body skin -> bright green, to see where the BODY shows (still fully dressed)
+            gm = bpy.data.materials.new("dbg_green"); gm.use_nodes = True
+            gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0, 1, 0, 1)
+            old = [s.material for s in h.material_slots]
+            for s in h.material_slots: s.material = gm
+            look(cam, Vector((0.05 * H, -0.75 * H, H * 0.62)), Vector((0, 0, H * 0.62)), 60)
+            sc.render.filepath = os.path.join(OUT, f"{key}_chest_greenbody.png"); bpy.ops.render.render(write_still=True)
+            for s, m in zip(h.material_slots, old): s.material = m
         rep["pen"] = {g: round(v["frac"], 4) for g, v in LO.penetration(h, G).items()}
+        # WALK pose: proves the warped REST bones deform the warped body + garments correctly
+        rig.location.z = 0; LO.set_pose(rig, "walk"); bpy.context.view_layer.update(); ground_feet(h, rig)
+        covw = LO.coverage(h, rig, cov_cams, level=LO.OUTFITS[c["outfit"]].get("cover", "knee"))
+        rep["coverage_walk"] = {k: round(v["frac"], 4) for k, v in covw.items()}
+        pw = LO.penetration(h, G)
+        rep["pen_walk"] = {g: round(v["frac"], 4) for g, v in pw.items() if v["frac"] > 0.005}
+        rep["deform_walk"] = {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm")) for g, v in pw.items() if "deform_err_mean_mm" in v}
+        print("WALK", key, json.dumps({k: rep[k] for k in ("coverage_walk", "pen_walk", "deform_walk")}, default=str)[:2500])
+        if all(v["frac"] <= TOL for v in covw.values()):
+            if mode == "after":
+                for o in bpy.data.objects:
+                    m = o.modifiers.get(LT.OUTLINE_MOD) if o.type == "MESH" else None
+                    if m: m.show_render = True
+            look(cam, *cams["front"][:2], 50); sc.render.filepath = os.path.join(OUT, f"{key}_walk_front.png")
+            bpy.ops.render.render(write_still=True); print("SHOT", key, "walk_front")
+        else: print("SKIP", key, "walk coverage failed")
     except Exception as ex:
         rep["error"] = repr(ex)[:400]; print("TOON ERROR", key, repr(ex)[:300]); traceback.print_exc()
     print("REPORT", key, json.dumps(rep, default=str)[:2500])
