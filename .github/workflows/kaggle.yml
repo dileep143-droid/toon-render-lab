@@ -7,7 +7,7 @@ name: kaggle
 on:
   workflow_dispatch:
     inputs:
-      action:     { description: "build | status | sync | list", default: "status" }
+      action:     { description: "build | status | sync | list | check", default: "status" }
       kernel_dir: { description: "kaggle/library or kaggle/cast or kaggle/hunyuan", default: "kaggle/library" }
       only:       { description: "build: props | cast | animals", default: "props" }
       mods:       { description: "build: prop modules, e.g. lib_props4 or lib_props,lib_props2", default: "lib_props,lib_props2,lib_props3,lib_props4" }
@@ -55,6 +55,9 @@ jobs:
             echo "$s" | grep -qE 'RUNNING|QUEUED' || break; sleep 60
           done
           python3 kaggle/sync_library.py ${{ steps.k.outputs.ref }} ${{ inputs.dataset }} work
+      - name: Check story needs against the database (read-only)
+        if: inputs.action == 'check'
+        run: python3 kaggle/check_needs.py ${{ inputs.dataset }} work
       - name: List
         if: inputs.action == 'list'
         run: kaggle kernels list --mine; kaggle datasets list --mine
