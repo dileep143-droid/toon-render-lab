@@ -16,6 +16,7 @@ jobs:
         run: |
           pip install -q gradio_client pillow
           python3 make_object_pictures.py pictures
+          cp sample_inputs/*.png pictures/ 2>/dev/null || true
           ls -la pictures
       - name: TripoSR (MIT) on CPU
         run: |
