@@ -167,6 +167,8 @@ jobs:
           print("MPFB CHECK DONE", bpy.app.version_string)
           EOF
           ./blender/blender -b -noaudio --python /tmp/mpfb_check.py 2>&1 | grep -E "MPFB|EXPR|TALK|WALK|BVH|RETARGET|RIG|FACE|Error|Traceback|line [0-9]|refusing" | tail -n 120
+      - name: Demo scene with dressed MPFB children (default path; packs were installed by the step above)
+        run: ./blender/blender -b -noaudio --python demo_fx.py -- out/demo_mpfb --kind=mpfb 2>&1 | grep -E "CHARACTERS|RIG|MPFB|FACE|FX BAKED|STILLS|DEMO|Error|Traceback|line [0-9]|refusing" | tail -n 40
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: fx-check, path: out, retention-days: 7 }
