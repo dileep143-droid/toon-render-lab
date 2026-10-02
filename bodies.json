@@ -1,0 +1,33 @@
+{
+  "_note": "Body library: every kind of villager body. Bodies are stored WITHOUT a story outfit, wearing only a plain base layer (vest/shorts or simple slip-dress) so they are never undressed; any outfit from lib_outfits / lib_outfits_kids replaces it when a story needs it. age in years; weight/height 0..1 (0.5 = average); skin = MPFB skin name; skin_rgb = wheatish tint.",
+  "bodies": [
+    {"id": "baby_1y",        "age": 1,  "gender": "m", "weight": 0.55, "height": 0.5, "skin": "young_asian_male",   "skin_rgb": [0.87, 0.66, 0.5],  "hair": "short01"},
+    {"id": "toddler_girl_2y","age": 2,  "gender": "f", "weight": 0.55, "height": 0.5, "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "bob01"},
+    {"id": "toddler_boy_3y", "age": 3,  "gender": "m", "weight": 0.55, "height": 0.5, "skin": "young_asian_male",   "skin_rgb": [0.84, 0.62, 0.46], "hair": "short04"},
+    {"id": "girl_6y",        "age": 6,  "gender": "f", "weight": 0.5,  "height": 0.5, "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "ponytail01"},
+    {"id": "boy_6y",         "age": 6,  "gender": "m", "weight": 0.6,  "height": 0.45,"skin": "young_asian_male",   "skin_rgb": [0.85, 0.62, 0.46], "hair": "short04"},
+    {"id": "girl_9y",        "age": 9,  "gender": "f", "weight": 0.5,  "height": 0.5, "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "long01"},
+    {"id": "girl_9y_dark",   "age": 9,  "gender": "f", "weight": 0.45, "height": 0.5, "skin": "young_asian_female", "skin_rgb": [0.78, 0.55, 0.4],  "hair": "ponytail01"},
+    {"id": "boy_10y",        "age": 10, "gender": "m", "weight": 0.5,  "height": 0.5, "skin": "young_asian_male",   "skin_rgb": [0.83, 0.61, 0.45], "hair": "short01"},
+    {"id": "boy_10y_heavy",  "age": 10, "gender": "m", "weight": 0.85, "height": 0.45,"skin": "young_asian_male",   "skin_rgb": [0.84, 0.62, 0.46], "hair": "short02"},
+    {"id": "girl_13y",       "age": 13, "gender": "f", "weight": 0.5,  "height": 0.55,"skin": "young_asian_female", "skin_rgb": [0.85, 0.63, 0.47], "hair": "long01"},
+    {"id": "boy_13y",        "age": 13, "gender": "m", "weight": 0.5,  "height": 0.6, "skin": "young_asian_male",   "skin_rgb": [0.84, 0.62, 0.46], "hair": "short02"},
+    {"id": "woman_25y",      "age": 25, "gender": "f", "weight": 0.5,  "height": 0.5, "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "long01"},
+    {"id": "woman_35y_heavy","age": 35, "gender": "f", "weight": 0.7,  "height": 0.45,"skin": "young_asian_female", "skin_rgb": [0.84, 0.61, 0.45], "hair": "ponytail01"},
+    {"id": "man_28y",        "age": 28, "gender": "m", "weight": 0.5,  "height": 0.55,"skin": "young_asian_male",   "skin_rgb": [0.82, 0.6, 0.44],  "hair": "short02"},
+    {"id": "man_40y_heavy",  "age": 40, "gender": "m", "weight": 0.9,  "height": 0.5, "skin": "middleage_asian_male","skin_rgb": [0.83, 0.6, 0.44], "hair": "short02"},
+    {"id": "man_45y_thin",   "age": 45, "gender": "m", "weight": 0.35, "height": 0.55,"skin": "middleage_asian_male","skin_rgb": [0.8, 0.58, 0.42], "hair": "short03"},
+    {"id": "woman_45y",      "age": 45, "gender": "f", "weight": 0.6,  "height": 0.45,"skin": "middleage_asian_female","skin_rgb": [0.84, 0.61, 0.45],"hair": "bob01"},
+    {"id": "man_50y",        "age": 50, "gender": "m", "weight": 0.6,  "height": 0.5, "skin": "middleage_asian_male","skin_rgb": [0.82, 0.6, 0.44],  "hair": "short03"},
+    {"id": "elder_woman_70y","age": 70, "gender": "f", "weight": 0.55, "height": 0.4, "skin": "old_asian_female",   "skin_rgb": [0.84, 0.62, 0.47], "hair": "bob02"},
+    {"id": "elder_man_70y",  "age": 70, "gender": "m", "weight": 0.45, "height": 0.45,"skin": "old_asian_male",     "skin_rgb": [0.8, 0.58, 0.43],  "hair": "short01"},
+    {"id": "boy_8y_fat",     "age": 8,  "gender": "m", "weight": 1.0,  "height": 0.4, "skin": "young_asian_male",   "skin_rgb": [0.85, 0.63, 0.47], "hair": "short01"},
+    {"id": "girl_10y_fat",   "age": 10, "gender": "f", "weight": 1.0,  "height": 0.45,"skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "ponytail01"},
+    {"id": "woman_40y_fat",  "age": 40, "gender": "f", "weight": 1.0,  "height": 0.4, "skin": "middleage_asian_female","skin_rgb": [0.84, 0.61, 0.45],"hair": "bob01"},
+    {"id": "man_45y_fat",    "age": 45, "gender": "m", "weight": 1.0,  "height": 0.45,"skin": "middleage_asian_male","skin_rgb": [0.83, 0.6, 0.44], "hair": "short02"},
+    {"id": "man_50y_fat_bald","age": 50,"gender": "m", "weight": 1.0,  "height": 0.5, "skin": "middleage_asian_male","skin_rgb": [0.82, 0.6, 0.44], "hair": "bald"},
+    {"id": "man_60y_bald",   "age": 60, "gender": "m", "weight": 0.55, "height": 0.45,"skin": "old_asian_male",     "skin_rgb": [0.8, 0.58, 0.43],  "hair": "bald"},
+    {"id": "elder_woman_72y_fat","age": 72,"gender": "f","weight": 1.0, "height": 0.35,"skin": "old_asian_female",   "skin_rgb": [0.84, 0.62, 0.47], "hair": "bob02"},
+    {"id": "elder_man_75y_heavy","age": 75,"gender": "m","weight": 0.75,"height": 0.4, "skin": "old_asian_male",     "skin_rgb": [0.82, 0.6, 0.45],  "hair": "short01"}
+  ]
+}
