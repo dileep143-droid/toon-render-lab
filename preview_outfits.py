@@ -1,4 +1,4 @@
-"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
+﻿"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
 A-pose and in a walking pose, plus a JSON report (garment vertex counts, coverage, penetration).
 SAFETY: coverage (no required skin visible from the camera) is asserted before every render; failing views are skipped.
 Run: blender -b --python preview_outfits.py -- <mpfb_pack_dir> <functional_dir> <out_dir> [who,...] [outfit,...]"""
@@ -26,6 +26,8 @@ CAST = {
     "boy":   dict(gender=1.0, age=0.16875, skin=first("skins", ["young_asian_male"]), hair=first("hair", ["short02", "short01"])),
     "woman": dict(gender=0.0, age=0.5, skin=first("skins", ["middleage_asian_female", "young_asian_female"]), hair=first("hair", ["braid01", "ponytail01", "bob02", "long01"])),
     "man":   dict(gender=1.0, age=0.55, skin=first("skins", ["middleage_asian_male", "young_asian_male"]), hair=first("hair", ["short02", "short04", "short01"])),
+    "teen":  dict(gender=0.0, age=0.25, skin=first("skins", ["young_asian_female"]), hair=first("hair", ["braid01", "ponytail01", "long01"]), macros={"height": 0.8, "weight": 0.45}),
+    "heavy": dict(gender=1.0, age=0.6, skin=first("skins", ["middleage_asian_male", "young_asian_male"]), hair=first("hair", ["short02", "short04"]), macros={"weight": 0.95, "muscle": 0.4}),
     "elder": dict(gender=0.0, age=0.85, skin=first("skins", ["old_asian_female", "old_caucasian_female", "middleage_asian_female", "young_asian_female"]), hair=first("hair", ["ponytail01", "bob01"])),
 }
 PLAN = [
@@ -33,12 +35,42 @@ PLAN = [
     ("girl", "school_uniform_girl", {}), ("girl", "salwar_kameez_dupatta", {}), ("girl", "frock_girl", {"sweater": "cardigan", "hair_ribbon": True, "cardboard_badge": True, "_tag": "frock_sweater"}),
     ("boy", "kurta_pyjama", {}), ("boy", "school_uniform_boy", {}), ("boy", "shirt_shorts_boy", {}), ("boy", "school_uniform_boy", {"trousers": True, "sweater": "pullover", "_tag": "school_boy_trousers_sweater"}),
     ("woman", "saree_village", {}), ("woman", "teacher_saree", {}), ("woman", "police_didi", {}), ("woman", "salwar_kameez_dupatta", {}), ("woman", "vet_coat", {}),
-    ("man", "dhoti_kurta", {}), ("man", "lungi_shirt", {}), ("man", "banian_dhoti_farmer", {}), ("man", "shopkeeper", {}), ("man", "kurta_pyjama", {"topi": True}),
+    ("man", "dhoti_kurta", {}), ("man", "lungi_shirt", {}), ("man", "banian_dhoti_farmer", {}), ("man", "shopkeeper", {}), ("man", "kurta_pyjama", {"topi": True, "_sweater_after": "pullover", "_tag": "kurta_pyjama_topi_sweater"}),
+    ("teen", "langa_voni", {}), ("teen", "saree_village", {}), ("heavy", "kurta_pyjama", {}), ("heavy", "lungi_shirt", {}), ("heavy", "dhoti_kurta", {}),
     ("man", "nightwear", {"nightcap": True}), ("man", "vet_coat", {}),
     ("elder", "saree_elder", {}),
 ]
 TOL = 0.002   # max fraction of required skin samples a camera may see
 DEBUG_GARMENTS = os.environ.get("OUTFIT_DEBUG_GARMENTS") == "1"   # failing views: render the clothes alone, never the body
+
+def make_person(c):
+    """mpfb_child.make_child for the standard cast; a local copy with extra macros (height / weight) for body-shape tests"""
+    clothes = ("female_casualsuit01" if c["gender"] < 0.5 else "male_casualsuit01", "shoes01")
+    if "macros" not in c:
+        return MC.make_child(gender=c["gender"], age=c["age"], skin=c["skin"], hair=c["hair"], clothes=clothes, faces=False)
+    macros = {"gender": c["gender"], "age": c["age"], "muscle": 0.5, "weight": 0.55, "proportions": 0.5, "height": 0.5, "cupsize": 0.5, "firmness": 0.5,
+              "race": {"african": 0.15, "asian": 0.55, "caucasian": 0.30}}
+    macros.update(c["macros"])
+    h = MC.HS.create_human(macro_detail_dict=macros, feet_on_ground=True, scale=0.1)
+    rig = MC.HS.add_builtin_rig(h, "default")
+    sk = MC._file("skins", c["skin"])
+    if sk: MC.HS.set_character_skin(sk, h, skin_type="ENHANCED_SSS")
+    for kind, base, at in (("eyes", "high-poly", "eyes"), ("eyebrows", "eyebrow010", "eyebrows"), ("eyelashes", "eyelashes01", "eyelashes"), ("hair", c["hair"], "Hair")):
+        f = MC._file(kind, base)
+        if f: MC.HS.add_mhclo_asset(f, h, asset_type=at)
+    dressed = 0
+    for cl in clothes:
+        f = MC._file("clothes", cl)
+        if f: MC.HS.add_mhclo_asset(f, h, asset_type="Clothes"); dressed += 1
+    if not dressed: raise RuntimeError("no clothes: refusing to continue")
+    seen = set()
+    for s in h.material_slots:
+        if s.material and s.material.use_nodes: MC._tint_tree(s.material.node_tree, (0.86, 0.64, 0.48), 1.0, "MULTIPLY", seen)
+    for o in bpy.data.objects:
+        if o.type == "MESH" and o.parent in (h, rig) and any(w in o.name.lower() for w in (c["hair"].lower(), "eyebrow")):
+            for s in o.material_slots:
+                if s.material and s.material.use_nodes: MC._tint_tree(s.material.node_tree, (0.05, 0.04, 0.035), 0.85, "MIX", set())
+    return h, rig
 
 def scene_setup():
     sc = bpy.context.scene
@@ -77,17 +109,18 @@ REPORT = {}
 for who, outfit, opts in PLAN:
     if WHO and who not in WHO: continue
     if ONLY and outfit not in ONLY: continue
-    opts = dict(opts); tag = opts.pop("_tag", outfit); key = f"{who}_{tag}"
+    opts = dict(opts); tag = opts.pop("_tag", outfit); key = f"{who}_{tag}"; sweater_after = opts.pop("_sweater_after", None)
     rep = REPORT[key] = {"who": who, "outfit": outfit, "opts": opts}
     t0 = time.time()
     try:
         bpy.ops.wm.read_factory_settings(use_empty=True)
         c = CAST[who]
-        h, rig = MC.make_child(gender=c["gender"], age=c["age"], skin=c["skin"], hair=c["hair"],
-                               clothes=("female_casualsuit01" if c["gender"] < 0.5 else "male_casualsuit01", "shoes01"), faces=False)
+        h, rig = make_person(c)
         h.name = f"{who}_body"
         sc, cam = scene_setup()
         G = LO.dress(h, rig, outfit, char=who, **opts)
+        if sweater_after:   # standalone layer call with a cold cache (as in a later story scene)
+            LO._BODIES.clear(); G += LO.sweater(h, rig, sweater_after)
         am = next((m for m in h.modifiers if m.type == "ARMATURE"), None)
         print("OUTFIT armature", key, am and (am.use_deform_preserve_volume, am.use_bone_envelopes), [m.type for m in h.modifiers])
         rep["build_s"] = round(time.time() - t0, 1); rep["height_m"] = round(h.dimensions.z, 3)
@@ -97,7 +130,8 @@ for who, outfit, opts in PLAN:
         for pose in ("apose", "walk"):
             rig.location.z = 0; LO.set_pose(rig, pose); bpy.context.view_layer.update(); ground_feet(h, rig)
             cams = cams_for(h)
-            cov = LO.coverage(h, rig, {k: v[0] for k, v in cams.items()}, level=LO.OUTFITS[outfit].get("cover", "knee"))
+            H_ = max(0.9, h.dimensions.z); extra = {"back": Vector((0, 1.75 * H_, H_ * 0.55)), "left": Vector((1.75 * H_, 0, H_ * 0.55)), "right": Vector((-1.75 * H_, 0, H_ * 0.55))}
+            cov = LO.coverage(h, rig, {**{k: v[0] for k, v in cams.items()}, **extra}, level=LO.OUTFITS[outfit].get("cover", "knee"))
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
