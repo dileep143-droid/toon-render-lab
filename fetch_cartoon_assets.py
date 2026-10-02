@@ -3,7 +3,7 @@ Run: python fetch_cartoon_assets.py <dest>       (needs: pip install gdown)"""
 import os, re, sys, subprocess, urllib.request, zipfile, collections
 DEST = sys.argv[1] if len(sys.argv) > 1 else "cartoon"; os.makedirs(DEST, exist_ok=True)
 H = {"User-Agent": "Mozilla/5.0 (toon-render-lab; CC0 assets with credit)"}
-QUATERNIUS = ["ultimateanimatedanimals", "farmanimal", "ultimatenature", "stylizednaturemegakit"]
+QUATERNIUS = sys.argv[2].split(",") if len(sys.argv) > 2 else ["ultimateanimatedanimals", "farmanimal"]
 KENNEY = {"nature-kit": "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip"}
 for p in QUATERNIUS:
     try:
@@ -12,7 +12,7 @@ for p in QUATERNIUS:
         print("QPACK", p, links)
         if not links: continue
         out = os.path.join(DEST, p); os.makedirs(out, exist_ok=True)
-        r = subprocess.run(["gdown", "--folder", "--remaining-ok", "-q", links[0], "-O", out], capture_output=True, text=True, timeout=1500)
+        r = subprocess.run(["gdown", "--folder", "-q", links[0], "-O", out], capture_output=True, text=True, timeout=1500)
         print("gdown", p, r.returncode, r.stderr[-400:])
     except Exception as ex: print("QPACK fail", p, repr(ex)[:300])
 for name, url in KENNEY.items():
