@@ -1394,6 +1394,6 @@ def penetration(h, garments):
         ev.to_mesh_clear()
         for m, s in sol: m.show_viewport = s
         res[g.name] = {"verts": n, "inside": inside, "frac": round(inside / max(1, n), 4)}
-        if errs: res[g.name]["deform_err_mean_mm"] = round(1000 * sum(errs) / len(errs), 1); res[g.name]["deform_err_max_mm"] = round(1000 * max(errs), 1)
+        if errs: res[g.name]["deform_err_mean_mm"] = round(1000 * sum(errs) / len(errs), 1); res[g.name]["deform_err_max_mm"] = round(1000 * max(errs), 1); res[g.name]["worst"] = worst
     bpy.context.view_layer.update()
     return res
