@@ -878,6 +878,43 @@ def push_glasses(rig, frame, side="R"):
     return _layer(rig, frame, frame + 20, [f"arm_{side}", f"forearm_{side}", f"hand_{side}", "head"], keys)
 
 
+GESTURES = {   # held arm/head poses (layered); 'R' = character's right hand
+    "salute":      {"arm_R": {"aim": (0.35, 0.85, 0.35)}, "forearm_R": {"fwd": 150, "out": -60}, "hand_R": {"fwd": -10}, "head": {"fwd": -4}},
+    "namaste":     {"arm_L": {"aim": (0.55, 0.45, -0.7)}, "arm_R": {"aim": (0.55, 0.45, -0.7)}, "forearm_L": {"fwd": 115, "out": -55},
+                    "forearm_R": {"fwd": 115, "out": -55}, "hand_L": {"fwd": -70}, "hand_R": {"fwd": -70}, "head": {"fwd": 12}, "spine": {"fwd": 6}},
+    "shh":         {"arm_R": {"aim": (0.8, 0.15, -0.4)}, "forearm_R": {"fwd": 150, "out": -50}, "hand_R": {"fwd": -30}, "head": {"fwd": 4}},
+    "cover_ears":  {"arm_L": {"aim": (0.1, 1, 0.25)}, "arm_R": {"aim": (0.1, 1, 0.25)}, "forearm_L": {"fwd": 10, "out": -150}, "forearm_R": {"fwd": 10, "out": -150},
+                    "head": {"fwd": 8}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}},
+    "hold_nose":   {"arm_R": {"aim": (0.85, 0.1, -0.25)}, "forearm_R": {"fwd": 150, "out": -55}, "head": {"fwd": -6, "turn": -10}, "spine": {"fwd": -6}},
+    "thumbs_up":   {"arm_R": {"aim": (0.75, 0.35, -0.55)}, "forearm_R": {"fwd": 90, "out": -20}, "hand_R": {"twist": 80}},
+    "scratch_head": {"arm_R": {"aim": (0.2, 0.75, 0.6)}, "forearm_R": {"fwd": 140, "out": -70}, "head": {"out": -10}},
+    "cross_arms":  {"arm_L": {"aim": (0.35, 0.3, -0.9)}, "arm_R": {"aim": (0.35, 0.3, -0.9)}, "forearm_L": {"fwd": 100, "out": -80},
+                    "forearm_R": {"fwd": 90, "out": -85}, "spine": {"fwd": -4}, "head": {"fwd": -5}},
+    "finger_wag":  {"arm_R": {"aim": (0.6, 0.3, -0.7)}, "forearm_R": {"fwd": 120, "out": -10}},
+    "think_chin":  {"arm_R": {"aim": (0.6, 0.2, -0.75)}, "forearm_R": {"fwd": 150, "out": -40}, "arm_L": {"aim": (0.5, 0.2, -0.85)},
+                    "forearm_L": {"fwd": 95, "out": -70}, "head": {"out": 8, "fwd": -6}},
+    "plan_fist":   {"arm_R": {"aim": (0.35, 0.35, 0.85)}, "forearm_R": {"fwd": 40}, "spine": {"fwd": -5}, "head": {"fwd": -8}},
+    "raise_hand":  {"arm_R": {"aim": (0.1, 0.25, 1.0)}, "forearm_R": {"fwd": 5}},
+}
+
+
+def gesture(rig, name, frame, hold=24, blend=5, wiggle=None):
+    """layered held gesture: salute, namaste, shh, cover_ears, hold_nose, thumbs_up, scratch_head, cross_arms,
+    finger_wag, think_chin, plan_fist (Gudiya's 'चलो, प्लान बनाते हैं!'), raise_hand (voting). Returns the last frame."""
+    p = GESTURES[name]; segs = list(p.keys())
+    keys = [(0, {s: {} for s in segs}), (blend, p)]
+    if name in ("finger_wag", "scratch_head") or wiggle:
+        for i, f in enumerate(range(blend + 3, blend + hold, 4)):
+            q = {k: dict(v) for k, v in p.items()}
+            s = "forearm_R"; q[s] = dict(q[s], out=q[s].get("out", 0) + (20 if i % 2 else -20))
+            keys.append((f, q))
+    idle = idle_arms()
+    keys += [(blend + hold, p), (2 * blend + hold, {s: idle.get(s, {}) for s in segs})]
+    keys[0] = (0, {s: idle.get(s, {}) for s in segs})
+    rig.clear(segs, frame, frame + 2 * blend + hold)
+    return _seq(rig, frame, keys, layer=True)
+
+
 def pat_head(rig, frame, side="R", pats=3):
     """Dadi: pats the top of her head looking for the glasses that are up there all along"""
     up = {f"arm_{side}": {"aim": (0.2, 0.6, 0.8)}, f"forearm_{side}": {"fwd": 120, "out": -60}}
@@ -1442,6 +1479,7 @@ def make_character(kind="auto", name="kid", loc=(0, 0, 0), rot_z=0.0, height=1.1
     info = {"kind": None}
     base = find_mpfb()
     if kind in ("auto", "mpfb") and base:
+        before = set(bpy.data.objects)
         try:
             import mpfb_child as MC
             if base != MC.BASE:
@@ -1451,6 +1489,8 @@ def make_character(kind="auto", name="kid", loc=(0, 0, 0), rot_z=0.0, height=1.1
             return Rig(arm), info
         except Exception as ex:
             print("MPFB dressed child not available:", repr(ex)[:200])
+            for o in [o for o in bpy.data.objects if o not in before]:      # never leave a half-built (undressed) body
+                bpy.data.objects.remove(o, do_unlink=True)
             if kind == "mpfb": raise
     if kind in ("auto", "mpfb_doll") and base:
         try:
@@ -1481,10 +1521,14 @@ def assert_no_undressed_humans():
     bad = []
     for o in bpy.data.objects:
         if o.type != "MESH" or o.hide_render: continue
-        is_human = ("basemesh" in o.name.lower() or "human" in o.name.lower()) and o.data is not None and len(o.data.vertices) > 10000
+        sk = o.data.shape_keys
+        is_human = ("basemesh" in o.name.lower() or "human" in o.name.lower() or (sk is not None and any(k.name.startswith("$md") for k in sk.key_blocks))) \
+            and len(o.data.vertices) > 10000
         if not is_human: continue
-        siblings = [c for c in bpy.data.objects if c.parent in (o, o.parent) and c is not o and c.type == "MESH"]
-        if not any(any(w in c.name.lower() for w in ("cloth", "suit", "shirt", "dress", "pants", "short", "kurta", "frock", "top")) for c in siblings):
+        siblings = [c for c in bpy.data.objects if c is not o and c.type == "MESH" and not c.hide_render and
+                    (c.parent in (o, o.parent) and c.parent is not None)]
+        non_clothes = ("hair", "eye", "brow", "lash", "teeth", "tongue", "shoe", "proxy")
+        if not any(not any(w in c.name.lower() for w in non_clothes) for c in siblings):
             bad.append(o.name)
     if bad:
         raise RuntimeError(f"undressed human mesh is renderable: {bad}")
