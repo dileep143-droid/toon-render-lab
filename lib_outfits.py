@@ -499,7 +499,7 @@ def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
             if shin > 0: ws[f"lowerleg01.{side}"] = legw * f * shin
     return {k: v for k, v in ws.items() if v > 1e-3}
 
-def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.004, thick=0.004, wfun=None, open_front=None, close_top=False):
+def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.004, thick=0.004, wfun=None, open_front=None, close_top=False, twist=0.0, amp0=0.0):
     """rings: [(z, cy, rx, ry)] top -> bottom. pleats around, amp grows to the hem; front>0 = extra saree pleats at the front"""
     bm = bmesh.new(); uv = bm.loops.layers.uv.new("UVMap")
     z0, z1 = rings[0][0], rings[-1][0]; grid = []
@@ -511,7 +511,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
         for i in range(nseg):
             a = a0 + (a1 - a0) * i / segs
             fa = math.exp(-((math.atan2(math.sin(a + math.pi / 2), math.cos(a + math.pi / 2))) / 0.5) ** 2) if front else 0
-            k = 1 + amp * dep * math.sin(pleats * a) + front * (0.3 + 0.7 * dep) * fa * math.sin(64 * a)
+            k = 1 + (amp0 + amp * dep) * math.sin(pleats * a + twist * dep) + front * (0.3 + 0.7 * dep) * fa * math.sin(64 * a)
             row.append(bm.verts.new((rx * k * math.cos(a), cy + ry * k * math.sin(a), z)))
         grid.append(row)
     faces = []
@@ -755,13 +755,13 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
             cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
             prev = (cy, max(abs(p.x) for p in pts), (max(p.y for p in pts) - min(p.y for p in pts)) / 2)
         cy, rx, ry = prev
-        bulge = 1.0 + 0.1 * math.sin(math.pi * min(1.0, f * 1.25))
+        bulge = 1.0 + 0.16 * math.sin(math.pi * min(1.0, f * 1.1))
         dome = math.sqrt(max(0.04, 1 - _smoothstep(0.7, 1.0, f) * 0.96))
         pad = 0.011 * s
         rings.append((z, cy - 0.004 * s * f, (rx * bulge + pad) * dome, (ry * bulge + pad) * dome))
     rings.reverse()
     m = fabric("pagdi", colour, 0.7, 0.4, pattern={"kind": "stripes", "c2": band, "scale": 0.17, "lw": 0.12, "dir": "h"}, coord="uv")
-    return lathe(B, "pagdi", m, rings, segs=64, pleats=7, amp=0.05, clear=0.003, thick=0.003, wfun=lambda co: {"head": 1.0}, close_top=True)
+    return lathe(B, "pagdi", m, rings, segs=96, pleats=4, amp=0.0, amp0=0.05, twist=9.0, clear=0.003, thick=0.003, wfun=lambda co: {"head": 1.0}, close_top=True)
 
 def topi(B, colour=(0.97, 0.97, 0.95)):
     """Gandhi topi: white boat-shaped cap"""
@@ -788,7 +788,7 @@ def collar(B, mat, h=None, open_front=0.35, ease=0.006, name="collar"):
     rg = B.ring(B.zn + 0.006 * Hs, ease + 0.006 * Hs / 1.6, parts=("head",), xmax=0.06 * Hs)
     if rg is None: return None
     cy, rx, ry = rg
-    rings = [(B.zn + h, cy, rx * 1.1, ry * 1.08), (B.zn + h * 0.3, cy, rx * 1.02, ry * 1.02), (B.zn - 0.008 * Hs, cy, rx * 1.12, ry * 1.12)]
+    rings = [(B.zn + h, cy, rx * 1.06, ry * 1.05), (B.zn + h * 0.35, cy, rx * 1.02, ry * 1.02), (B.zn - 0.004 * Hs, cy, rx * 1.2, ry * 1.18), (B.zn - 0.016 * Hs, cy, rx * 1.42, ry * 1.32)]
     return lathe(B, name, mat, rings, segs=48, clear=0.003, thick=0.003, open_front=open_front,
                  wfun=lambda co: B.kd_weights(co, ("torso", "head"), drop=("arm",)))
 
@@ -1037,7 +1037,7 @@ def _saree(B, C, o, pallu_w=0.17, elder=False):
     wrap = top(B, "saree_wrap", fabric("saree_wrap", C["saree"], 0.6, 0.5), B.zw - 0.04 * Hs, sleeveless=True, top_z=B.zub + 0.012 * Hs, offset=0.009, clear=0.006)
     G.append(wrap)
     rings = skirt_rings(B, B.zw - 0.005 * Hs, max(0.008, 0.25 * B.za), flare=1.26, ease=0.014, top_ease=0.004)
-    G.append(lathe(B, "saree_skirt", sm, rings, segs=128, pleats=10, amp=0.01, front=0.03))
+    G.append(lathe(B, "saree_skirt", sm, rings, segs=160, pleats=10, amp=0.01, front=0.07))
     pm = fabric("pallu", C["saree"], 0.6, 0.5, border={"c": C["border"], "mode": "v_edges", "w": 0.1, "zari": C["border"] == GOLD}, coord="uv")
     G.append(drape(B, "pallu", pm, _pallu_anchors(B, "nivi"), [0.13 * Hs, pallu_w * Hs, 0.12 * Hs, 0.08 * Hs, 0.13 * Hs, 0.17 * Hs, 0.19 * Hs], clear=0.008))
     if o.get("head_pallu"): G.append(head_pallu(B, fabric("head_pallu", C["saree"], 0.6, 0.5)))
@@ -1086,7 +1086,6 @@ def _build(B, outfit, C, o):
             vest = top(B, "nehru_vest", fabric("nehru_vest", C["vest"], 0.7, 0.4, pattern={"kind": "stripes", "c2": tuple(c * 0.85 for c in C["vest"]), "scale": 0.01, "lw": 0.5}),
                        B.zh - 0.05 * Hs, sleeveless=True, neck_depth=0.05 * Hs, neck_angle=70, offset=0.012, clear=0.007, thick=0.006)
             G.append(vest)
-            G.append(collar(B, fabric("vest_collar", C["vest"], 0.7, 0.3), h=0.016 * Hs, open_front=0.3, ease=0.016, name="vest_collar"))
             G.append(buttons(B, B.zn - 0.06 * Hs, B.zh - 0.06 * Hs, 5, C["button"], name="vest_buttons"))
     elif outfit == "lungi_shirt":
         lm = fabric("lungi", C["lungi"], 0.75, 0.3, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.05 * Hs / 1.6, "lw": 0.12, "c3": C["check2"]}, coord="uv")
@@ -1286,7 +1285,7 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 def keep(i, sd=sd):
                     return B.side[i] == sd and B.part[i] == "leg" and (any(b.startswith(("foot", "toe")) for b in B.w[i]) or B.t[i] > 0.93)
                 A, F = B.axes[("leg", sd)]; d = (F - A).normalized()
-                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.007, smooth=14,
+                o = shell(B, f"shoe{s}", solid("shoe_black", colour or (0.06, 0.05, 0.05), 0.3), keep, offset=0.008, smooth=40,
                           cuts=[(lambda i: True, A + (F - A) * 0.955, -d)], clear=0.005, thick=0.005, min_island=0.2)
                 low = [p for p in foot if p.z < 0.02 * B.Hs]
                 hull = _hull(sorted({(round(p.x, 3), round(p.y, 3)) for p in low}))
