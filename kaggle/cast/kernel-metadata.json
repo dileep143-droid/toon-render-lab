@@ -1,0 +1,13 @@
+{
+  "id": "mani7673/sonpur-cast-library",
+  "title": "sonpur-cast-library",
+  "code_file": "build_on_kaggle.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
