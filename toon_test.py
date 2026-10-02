@@ -96,8 +96,9 @@ for mode in ("before", "after"):
             for o in bpy.data.objects:
                 m = o.modifiers.get(LT.OUTLINE_MOD) if o.type == "MESH" else None
                 if m: m.show_render = False
-            look(cam, *cams["front"][:2], 50); sc.render.filepath = os.path.join(OUT, f"{key}_front_nooutline.png")
-            bpy.ops.render.render(write_still=True); print("SHOT", key, "front_nooutline")
+            for view in ("front", "face"):
+                look(cam, *cams[view]); sc.render.filepath = os.path.join(OUT, f"{key}_{view}_nooutline.png")
+                bpy.ops.render.render(write_still=True); print("SHOT", key, view, "nooutline")
     except Exception as ex:
         rep["error"] = repr(ex)[:400]; print("TOON ERROR", key, repr(ex)[:300]); traceback.print_exc()
     print("REPORT", key, json.dumps(rep, default=str)[:2500])
