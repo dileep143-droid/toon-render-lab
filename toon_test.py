@@ -99,6 +99,15 @@ for mode in ("before", "after"):
             for view in ("front", "face"):
                 look(cam, *cams[view]); sc.render.filepath = os.path.join(OUT, f"{key}_{view}_nooutline.png")
                 bpy.ops.render.render(write_still=True); print("SHOT", key, view, "nooutline")
+        # debug: where does the BODY show through? body skin -> bright green (character stays fully dressed)
+        gm = bpy.data.materials.new("dbg_green"); gm.use_nodes = True
+        gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0, 1, 0, 1)
+        old = [s.material for s in h.material_slots]
+        for s in h.material_slots: s.material = gm
+        look(cam, Vector((0.05 * H, -0.75 * H, H * 0.62)), Vector((0, 0, H * 0.62)), 60)
+        sc.render.filepath = os.path.join(OUT, f"{key}_chest_greenbody.png"); bpy.ops.render.render(write_still=True)
+        for s, m in zip(h.material_slots, old): s.material = m
+        rep["pen"] = {g: round(v["frac"], 4) for g, v in LO.penetration(h, G).items()}
     except Exception as ex:
         rep["error"] = repr(ex)[:400]; print("TOON ERROR", key, repr(ex)[:300]); traceback.print_exc()
     print("REPORT", key, json.dumps(rep, default=str)[:2500])
