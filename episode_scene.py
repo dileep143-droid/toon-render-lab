@@ -80,6 +80,7 @@ def setup_engine(engine, samples=None):
             sc.cycles.device = "GPU"
         except Exception as ex: log("cycles prefs", ex)
         sc.cycles.samples = int(samples or S.get("samples", 32)); sc.cycles.use_denoising = True
+        sc.render.use_persistent_data = True
         try: sc.cycles.denoiser = "OPTIX"
         except Exception: sc.cycles.denoiser = "OPENIMAGEDENOISE"
         sc.cycles.max_bounces = 4; sc.cycles.transparent_max_bounces = 16
@@ -88,7 +89,7 @@ def setup_engine(engine, samples=None):
     else:
         names = [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items]
         r.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in names else "BLENDER_EEVEE"
-        try: sc.eevee.taa_render_samples = int(samples or 24)
+        try: sc.eevee.taa_render_samples = int(samples or S.get("eevee_samples", 24))
         except Exception: pass
         for a, v in (("use_gtao", True), ("use_shadows", True), ("shadow_ray_count", 2), ("shadow_step_count", 4)):
             try: setattr(sc.eevee, a, v)
@@ -132,12 +133,7 @@ sc = bpy.context.scene
 F0, F1 = S.get("frames", [1, 240]); sc.frame_start, sc.frame_end = F0, F1
 setup_engine(opt("--engine", "eevee"), opt("--samples"))
 
-# ---------------- set
-setmod = importlib.import_module(S["set"]["lib"])
-SET = setmod.BUILDERS[S["set"]["name"]](S["set"]["name"])
-bpy.context.view_layer.update()
-
-
+# ---------------- sets ("set" = one set at the origin; "sets" = several, each placed at its own world offset "at")
 def descendants(o):
     out, st = [], list(o.children)
     while st:
@@ -145,20 +141,32 @@ def descendants(o):
     return out
 
 
-SETOBJ = descendants(SET)
+SETS = S.get("sets") or [dict(S["set"], id="main")]
+SETROOT, SETOBJS, OFFS = {}, {}, {}
+for st_ in SETS:
+    sid = st_.get("id", st_["name"])
+    try:
+        mod = importlib.import_module(st_["lib"]); root = mod.BUILDERS[st_["name"]](sid)
+        root.location = Vector(st_.get("at", [0, 0, 0])); root.rotation_euler = (0, 0, R(st_.get("rot_z", 0)))
+        bpy.context.view_layer.update()
+        SETROOT[sid] = root; SETOBJS[sid] = descendants(root)
+        ref = None
+        if st_.get("ref_mark"):
+            ref = next((o for o in SETOBJS[sid] if o.name.endswith(".mark_" + st_["ref_mark"])), None)
+        OFFS[sid] = (ref.matrix_world.translation - Vector(st_["ref_local"])) if ref else Vector(st_.get("at", [0, 0, 0]))
+        log("SET", sid, st_["name"], "objects", len(SETOBJS[sid]), "offset", tuple(round(v, 3) for v in OFFS[sid]))
+    except Exception as ex:
+        err("set " + sid, ex); OFFS[sid] = Vector(st_.get("at", [0, 0, 0])); SETOBJS[sid] = []
+DEFAULT_SET = SETS[0].get("id", SETS[0]["name"])
+OFF = OFFS[DEFAULT_SET]
 
 
-def find(key):
-    for o in SETOBJ:
-        if o.name == SET.name + "." + key: return o
-    for o in SETOBJ:
-        if o.name.endswith("." + key) or o.name == key: return o
+def find(key, sid=None):
+    pools = [SETOBJS[sid]] if sid in SETOBJS else list(SETOBJS.values())
+    for pool in pools:
+        for o in pool:
+            if o.name.endswith("." + key) or o.name == key: return o
     return bpy.data.objects.get(key)
-
-
-ref = find("mark_" + S["set"].get("ref_mark", "charpai"))
-OFF = (ref.matrix_world.translation - Vector(S["set"]["ref_local"])) if ref else Vector()
-log("SET", SET.name, "objects", len(SETOBJ), "offset", tuple(round(v, 3) for v in OFF))
 
 
 def bbox(o):
@@ -171,27 +179,30 @@ def bbox(o):
     return lo, hi
 
 
-def zval(z):
+def zval(z, sid=None):
     """number (set-local) -> world z;  '@top:<name>[+-dz]' -> world top of that object (+dz)"""
     if isinstance(z, str) and z.startswith("@top:"):
         body = z[5:]; dz = 0.0
         for sgn in ("+", "-"):
             if sgn in body[1:]:
                 k = body.rindex(sgn); dz = float(body[k:]); body = body[:k]; break
-        o = find(body) or PROPS.get(body)
+        o = PROPS.get(body) or find(body, sid)
         bpy.context.view_layer.update()
         return bbox(o)[1].z + dz
-    return float(z) + OFF.z
+    return float(z) + OFFS.get(sid, OFF).z
 
 
 def P(p):
-    return Vector((p[0] + OFF.x, p[1] + OFF.y, zval(p[2]) if len(p) > 2 else OFF.z))
+    """[x, y, z(, set_id)] in that set's local layout -> world"""
+    sid = p[3] if len(p) > 3 else DEFAULT_SET
+    o = OFFS.get(sid, OFF)
+    return Vector((p[0] + o.x, p[1] + o.y, zval(p[2], sid) if len(p) > 2 else o.z))
 
 
 PROPS = {}
 for e in S.get("set_edits", []):
     try:
-        o = find(e["find"])
+        o = find(e["find"], e.get("set"))
         if o is None: log("set_edit: not found", e["find"]); continue
         bpy.context.view_layer.update()
         if "loc" in e:
@@ -203,7 +214,14 @@ for e in S.get("set_edits", []):
     except Exception as ex: err("set_edit " + str(e.get("find")), ex)
 
 # ---------------- light
-try: CAM.light_preset(S.get("light", "morning"))
+try:
+    if S.get("lights"):            # [[frame, preset], ...] time-of-day changes at scene cuts
+        for f, nm in S["lights"]:
+            CAM.light_preset(nm, frame=f)
+            if f > F0: CAM.light_preset(prev, frame=f - 1); CAM.light_preset(nm, frame=f)
+            prev = nm
+    else:
+        CAM.light_preset(S.get("light", "morning"))
 except Exception as ex: err("light", ex)
 
 
@@ -270,6 +288,13 @@ for p in S.get("props", []):
             par = PROPS.get(p.get("parent"))
             if par: o.parent = par; o.location = Vector(p.get("offset", [0, 0, 0]))
             else: o.location = P(p["loc"])
+        elif k == "ball":
+            import bmesh
+            me = bpy.data.meshes.new(pid); bm = bmesh.new(); bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=12, radius=p["radius"])
+            bm.to_mesh(me); bm.free(); me.materials.append(mat("ep_ball_" + pid, p.get("color", [0.95, 0.7, 0.25]), 0.8))
+            for pl in me.polygons: pl.use_smooth = True
+            o = bpy.data.objects.new(pid, me); sc.collection.objects.link(o); o.location = P(p["loc"])
+            if p.get("squash"): o.scale = (1, 1, p["squash"])
         else:
             log("unknown prop kind", k); continue
         PROPS[pid] = o
@@ -318,7 +343,8 @@ def head_anchor(cid):
 for a in S.get("attach", []):
     try:
         ch = CH[a["on"]]; arm = ch["arm"]; rig = ch["rig"]
-        mod = importlib.import_module(a["lib"]); o = mod.BUILDERS[a["name"]](a["id"])
+        if a.get("of"): o = PROPS[a["of"]]                     # an already-built prop
+        else: mod = importlib.import_module(a["lib"]); o = mod.BUILDERS[a["name"]](a["id"])
         s = a.get("scale", 1.0); o.scale = (s, s, s)
         pp = arm.data.pose_position; arm.data.pose_position = "REST"; bpy.context.view_layer.update()
         Mi = arm.matrix_world.inverted()
@@ -335,6 +361,12 @@ for a in S.get("attach", []):
             ev.to_mesh_clear()
         if top < -1e8: top = rig.head_top
         local = Vector((hc.x, hc.y - a.get("fwd", 0.03), top + a.get("dz", -0.01)))
+        if a.get("where") == "mouth" and ch["h"] is not None:      # front of the face, just under the nose
+            dg = bpy.context.evaluated_depsgraph_get(); ev = ch["h"].evaluated_get(dg); me = ev.to_mesh()
+            hz = [Mi @ (ch["h"].matrix_world @ v.co) for v in me.vertices]; ev.to_mesh_clear()
+            near = [q for q in hz if abs(q.x - hc.x) < 0.02 and hc.z - 0.07 < q.z < hc.z - 0.02]
+            if near:
+                fr_ = min(near, key=lambda q: q.y); local = Vector((hc.x, fr_.y - 0.004, fr_.z + a.get("dz", 0.0)))
         o.matrix_world = arm.matrix_world @ Matrix.Translation(local) @ Euler((R(a.get("tilt", -65)), 0, 0)).to_matrix().to_4x4() @ Matrix.Diagonal((s, s, s, 1))
         bpy.context.view_layer.update()
         A.attach(o, rig, a.get("seg", "head"))
@@ -397,7 +429,7 @@ def anim_target(a):
 
 def do_action(a):
     t = a["t"]
-    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz"):
+    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz", "anim"):
         ch = CH[a["who"]]; rig = ch["rig"]; arm = ch["arm"]
     if t == "seat":
         A._seq(rig, a["frame"], [(0, seated(rig, seat_rel(ch, a["seat"])))])
@@ -409,6 +441,12 @@ def do_action(a):
                 key = (base, a.get("seat"))
                 if key not in cache: cache[key] = (seated if base == "seated" else half_seated)(rig, seat_rel(ch, a["seat"]))
                 b = cache[key]
+            elif base == "lying":      # on the back (put the rig on the bed first with a 'move')
+                lie = rig.hip_z - 0.09 * rig.leg_len
+                b = {"hips": {"loc": (0, 0, -lie), "fwd": -90}, "arm_L": {"aim": (0.3, 0.6, -0.75)}, "arm_R": {"aim": (0.3, 0.6, -0.75)}, "head": {"fwd": 8}}
+            elif base == "crouch":
+                d = 0.14 * rig.leg_len
+                b = {"hips": {"loc": (0, 0, -d)}, "spine": {"fwd": 22}, **A.leg_ik(rig, "L", 0.02, 0, d), **A.leg_ik(rig, "R", 0.02, 0, d)}
             else: b = None
             if a.get("layer"): A._seq(rig, f, [(0, pose)], layer=True)
             else: A._seq(rig, f, [(0, pose)], base=b)
@@ -417,7 +455,8 @@ def do_action(a):
             f, loc = k[0], k[1]; rz = k[2] if len(k) > 2 else None
             arm.location = P(loc); arm.keyframe_insert("location", frame=f)
             if rz is not None: arm.rotation_euler = (0, 0, R(rz)); arm.keyframe_insert("rotation_euler", frame=f)
-            if a.get("interp"): key_interp(arm, f, a["interp"])
+            if len(k) > 3 and k[3]: key_interp(arm, f, k[3])
+            elif a.get("interp"): key_interp(arm, f, a["interp"])
     elif t == "talk":
         A.talk(rig, a["frame"], rhubarb_json=os.path.join(SDIR, a["rhubarb"]), strength=a.get("strength", 1.0), head_bob=a.get("head_bob", False))
     elif t == "expr":
@@ -438,6 +477,37 @@ def do_action(a):
         for ff in sorted({F0, max(F0, f - 1)}): o.keyframe_insert("scale", frame=ff)
         o.scale = s * 1.15; o.keyframe_insert("scale", frame=f + a.get("dur", 6) - 2)
         o.scale = s; o.keyframe_insert("scale", frame=f + a.get("dur", 6))
+    elif t == "hide":
+        o = PROPS[a["obj"]]; f = a["frame"]
+        s = o.scale.copy(); o.keyframe_insert("scale", frame=max(F0, f - 1))
+        o.scale = (0.001,) * 3; o.keyframe_insert("scale", frame=f); key_interp(o, max(F0, f - 1), "CONSTANT")
+        o.scale = s
+    elif t == "obj_move":           # keys [[frame, [x,y,z(,set)], rot_z?], ...]
+        o = PROPS[a["obj"]]
+        for k in a["keys"]:
+            o.location = P(k[1]); o.keyframe_insert("location", frame=k[0])
+            if len(k) > 2: o.rotation_euler.z = R(k[2]); o.keyframe_insert("rotation_euler", index=2, frame=k[0])
+            if a.get("interp"): key_interp(o, k[0], a["interp"])
+    elif t == "anim":                # any lib_anim helper: fn(rig, **args); point-like args are converted to world
+        args = dict(a.get("args", {}))
+        for kk in list(args):
+            if kk.endswith("_world") and isinstance(args[kk], list): args[kk] = tuple(P(args[kk]))
+            elif isinstance(args[kk], list): args[kk] = tuple(args[kk])
+        getattr(A, a["fn"])(rig, **args)
+    elif t == "fx":                  # lib_fx effect anchored on a head: fn(anchor, **args)
+        tgt = head_anchor(a["who"]) if a.get("who") in CH else (LA.head_of(AN[a["animal"]]["arm"]) if a.get("animal") else P(a["at"]))
+        getattr(FX, a["fn"])(tgt, **a.get("args", {}))
+    elif t == "animal_move":         # root keys (teleports between sets: CONSTANT)
+        root = AN[a["who"]]["root"]
+        for k in a["keys"]:
+            root.location = P(k[1]); root.keyframe_insert("location", frame=k[0])
+            if len(k) > 2: root.rotation_euler.z = R(k[2]); root.keyframe_insert("rotation_euler", index=2, frame=k[0])
+            key_interp(root, k[0], a.get("interp", "CONSTANT"))
+    elif t == "torch":
+        fo = A.follower(CH[a["who"]]["rig"], a.get("seg", "hand_R"))
+        lo = CAM.torch(fo, energy=a.get("energy", 60.0))
+        for f, e in a.get("energy_keys", []):
+            lo.data.energy = e; lo.data.keyframe_insert("energy", frame=f); key_interp(lo.data, f, "CONSTANT")
     elif t == "glint":
         L2.glint(PROPS[a["obj"]], a["frame"], a.get("length", 8))
     elif t == "animal_play":
@@ -469,18 +539,25 @@ def do_action(a):
 def do_hold(a):
     """hold contact: the object follows a hand from f_grab (blend in) until f_release, then rests at `place`.
     Copy Location only, so a plate stays level."""
-    ch = CH[a["who"]]; rig = ch["rig"]; o = PROPS[a["obj"]]
+    o = PROPS[a["obj"]]
     fg, fr = a["f_grab"], a["f_release"]; bi, bo = a.get("blend_in", 4), a.get("blend_out", 5)
     sc.frame_set(fg); bpy.context.view_layer.update()
-    sock = bpy.data.objects.new(a["obj"] + "_socket", None); sc.collection.objects.link(sock); sock.empty_display_size = 0.05
-    hand = rig.map[a.get("seg", "hand_R")][-1]
-    pb = rig.arm.pose.bones[hand]; hw = rig.arm.matrix_world @ pb.tail
+    sock = bpy.data.objects.new(a["obj"] + f"_socket_{fg}", None); sc.collection.objects.link(sock); sock.empty_display_size = 0.05
     start = o.matrix_world.translation.copy()
     off = Vector(a.get("offset", [0, 0, 0]))
-    sock.location = start if a.get("snap", "object") == "object" else hw + off
-    A.attach(sock, rig, a.get("seg", "hand_R"))
-    cn = o.constraints.new("COPY_LOCATION"); cn.target = sock; cn.name = "hold_" + a["who"]
+    if a.get("animal"):              # held in an animal's mouth (follows its head)
+        hd = LA.head_of(AN[a["animal"]]["arm"]); hw = hd.matrix_world.translation.copy()
+        sock.location = hw + off if a.get("snap") == "hand" else start
+        mw = sock.matrix_world.copy(); sock.parent = hd; sock.matrix_world = mw
+    else:
+        rig = CH[a["who"]]["rig"]
+        hand = rig.map[a.get("seg", "hand_R")][-1]
+        pb = rig.arm.pose.bones[hand]; hw = rig.arm.matrix_world @ pb.tail
+        sock.location = start if a.get("snap", "object") == "object" else hw + off
+        A.attach(sock, rig, a.get("seg", "hand_R"))
+    cn = o.constraints.new("COPY_LOCATION"); cn.target = sock; cn.name = f"hold_{fg}"
     for f, v in ((F0, 0.0), (fg - bi, 0.0), (fg, 1.0), (fr, 1.0), (fr + bo, 0.0)):
+        if f == F0 and fg - bi <= F0: continue
         cn.influence = v; cn.keyframe_insert("influence", frame=max(F0, f))
     if a.get("place") is not None:
         o.location = start; o.keyframe_insert("location", frame=max(F0, fr - 1))
@@ -555,9 +632,10 @@ for s in SHOTS:
             cl = CAMO.matrix_world.translation.copy()
             for cid, ch in CH.items():
                 if ch["h"] is None: continue
+                if (ch["arm"].matrix_world.translation - cl).length > S.get("coverage_radius", 18.0): continue   # other set / offstage
                 try:
                     lvl = LO.OUTFITS.get(ch["spec"]["outfit"], {}).get("cover", "knee")
-                    r = LO.coverage(ch["h"], ch["arm"], {"cam": cl}, level=lvl)["cam"]
+                    r = LO.coverage(ch["h"], ch["arm"], {"cam": cl}, level=lvl, step=S.get("coverage_step", 2))["cam"]
                     rep[f"{cid}@{f}"] = round(r["frac"], 4)
                     if r["frac"] > TOL: ok = False; rep[f"{cid}@{f}_bones"] = r.get("exposed_bones")
                 except Exception as ex:
