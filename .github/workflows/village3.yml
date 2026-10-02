@@ -1,0 +1,34 @@
+name: village-v3
+on:
+  workflow_dispatch: {}
+jobs:
+  village:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS + MPFB2
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          python3 - <<'EOF'
+          import json, urllib.request
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab)"}
+          d = json.load(urllib.request.urlopen(urllib.request.Request("https://extensions.blender.org/api/v1/extensions/", headers=H), timeout=60))
+          e = next(x for x in d.get("data", d) if x.get("id") == "mpfb")
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+      - name: MakeHuman CC0 packs
+        run: |
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+          mkdir -p pack functional && unzip -q pack.zip -d pack
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+      - name: CC0 cartoon packs (Kenney + Quaternius)
+        run: pip install -q gdown && python3 fetch_cartoon_assets.py cartoon ultimateanimatedanimals,farmanimal 2>&1 | grep -E "QPACK|gdown|KENNEY|SUMMARY|fail" | cut -c1-400
+      - name: Build village v3 + size check + render
+        run: ./blender/blender -b -noaudio --python village_v3.py -- cartoon pack functional assets/props/charpai_owner.obj out 2>&1 | grep -E "KENNEY|no kenney|ANIMAL|no animal|SIZE|   |SHOT|DONE|Error|Traceback|line [0-9]|refusing" | grep -vE "^Fra:" | tail -n 80
+      - uses: actions/upload-artifact@v4
+        with: { name: village-v3, path: out, retention-days: 7 }
