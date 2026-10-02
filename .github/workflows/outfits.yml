@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       outfits: { description: "comma list of outfits or all", required: false, default: "all" }
+      refs: { description: "yes = also make FLUX reference pictures", required: false, default: "no" }
 jobs:
   outfits:
     runs-on: ubuntu-latest
@@ -10,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        who: [girl, boy, woman, man, elder, teen, heavy, bodies_a, bodies_b]
+        who: [girl, boy, woman, man, elder, teen, heavy, bodies_a, bodies_b, bodies_c]
     steps:
       - uses: actions/checkout@v4
       - name: Libraries
@@ -39,3 +40,55 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: "outfits-${{ matrix.who }}", path: out, retention-days: 7, if-no-files-found: ignore }
+  refs:
+    if: ${{ github.event.inputs.refs == 'yes' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - name: FLUX.1-schnell reference pictures (Apache-2.0, free HF Space)
+        run: |
+          pip install -q gradio_client pillow
+          mkdir -p refs
+          python3 - <<'EOF'
+          import os, time
+          from gradio_client import Client
+          from PIL import Image
+          STYLE = "3D cartoon character, Pixar style, kids animated show, full body head to toe, standing, front view, plain light grey background, soft studio lighting, fully clothed, modest"
+          P = {
+           "saree_elder": "a kind Indian grandmother wearing a plain white cotton saree with a maroon border, the saree end covering her head, round glasses",
+           "teacher_saree": "an Indian village school teacher wearing a neat blue cotton saree with pink border, yellow short-sleeve blouse, pallu pinned on the left shoulder",
+           "salwar_kameez_dupatta": "an Indian girl wearing a sky blue printed knee-length kameez with round neck, cream salwar gathered at the ankles, pink dupatta over both shoulders",
+           "kurta_pyjama": "an Indian village man wearing a cream straight-cut knee-length kurta with mandarin band collar and side slits, white straight pyjama",
+           "dhoti_kurta": "an Indian village man wearing a white dhoti in kachha style with front pleats and a white kurta with band collar",
+           "lungi_shirt": "an Indian village man wearing a blue checked lungi wrapped like a straight tube to the ankle with a knot at the waist, and a light blue half sleeve shirt with turn-down collar",
+           "banian_dhoti_farmer": "an Indian farmer wearing a white sleeveless vest, a knee-length white dhoti with green border, a red checked gamcha towel on his shoulder and an orange turban",
+           "school_uniform_boy": "an Indian school boy of 10 wearing a white half-sleeve shirt with collar and pocket, navy blue shorts, red striped tie, white socks and black shoes",
+           "school_uniform_girl": "an Indian school girl of 9 wearing a white half-sleeve shirt with collar and a navy blue knee-length pinafore dress with pleats, white socks, black shoes",
+           "frock_girl": "a little Indian girl wearing a pink polka dot frock with puff sleeves, gathered waist with a yellow sash, knee-length skirt with soft folds",
+           "shopkeeper": "an Indian village shopkeeper wearing a cream kurta with pyjama and a brown sleeveless Nehru jacket with band collar",
+           "police_didi": "a friendly Indian policewoman wearing a khaki uniform shirt with collar and epaulettes, khaki trousers, brown belt, black shoes",
+           "vet_coat": "an Indian village veterinary doctor wearing a white doctor coat with lapels over a light blue shirt and grey trousers",
+           "shirt_shorts_boy": "an Indian village boy of 10 wearing an orange checked half-sleeve shirt with collar and knee-length blue shorts, sandals",
+           "nightwear": "an old Indian school master wearing a long striped nightshirt and striped pyjama with a nightcap",
+          }
+          names = sorted(P)[${{ matrix.chunk }}::5]
+          c = Client("black-forest-labs/FLUX.1-schnell")
+          for n in names:
+              for a in range(3):
+                  try:
+                      r = c.predict(prompt=f"{P[n]}, {STYLE}", seed=11 + a, randomize_seed=False, width=768, height=1024, num_inference_steps=4, api_name="/infer")
+                      p = r[0] if isinstance(r, (list, tuple)) else r
+                      if isinstance(p, dict): p = p.get("path") or p.get("url")
+                      Image.open(p).convert("RGB").save(f"refs/{n}.png"); print("REF", n, "ok"); break
+                  except Exception as ex:
+                      print("REF", n, a, repr(ex)[:160]); time.sleep(20)
+          EOF
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "refs-${{ matrix.chunk }}", path: refs, retention-days: 7, if-no-files-found: ignore }
