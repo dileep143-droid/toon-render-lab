@@ -31,10 +31,11 @@ jobs:
         run: |
           mkdir -p pack
           for u in \
+            "https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
             "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
             "http://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip" \
             "https://download.tuxfamily.org/makehuman/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip"; do
-            if curl -fsSL -A "Mozilla/5.0" -o pack.zip "$u"; then echo "PACK from $u"; break; fi
+            if curl -fsSL --retry 2 -A "Mozilla/5.0" -o pack.zip "$u" || curl -fsSLk -A "Mozilla/5.0" -o pack.zip "$u"; then echo "PACK from $u"; break; fi
           done
           ls -la pack.zip && unzip -q pack.zip -d pack && ls pack | head
       - name: Dressed child with expressions
