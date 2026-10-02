@@ -5,6 +5,9 @@ on:
       fast:
         description: "quick preview (half size, every 2nd frame)"
         default: "no"
+      scene:
+        description: "which script to render (render_scene.py = Gudu, render_village.py = the village)"
+        default: "render_village.py"
 
 jobs:
   render:
@@ -26,7 +29,7 @@ jobs:
       - name: Render frames
         run: |
           ARGS="frames"; [ "${{ inputs.fast }}" = "yes" ] && ARGS="frames --fast"
-          ./blender/blender -b -noaudio --python render_scene.py -- $ARGS 2>&1 | grep -E "Fra:|RENDER DONE|Error|Traceback" | tail -n 40
+          ./blender/blender -b -noaudio --python "${{ inputs.scene }}" -- $ARGS 2>&1 | grep -E "RENDER DONE|Error|Traceback|line [0-9]" | tail -n 40
           ls frames | wc -l
 
       - name: Make sound effects and the video
@@ -35,6 +38,13 @@ jobs:
           ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.7*sin(2*PI*95*t)*exp(-11*t)+0.25*sin(2*PI*1400*t)*exp(-28*t)':s=44100:d=0.5" bonk.wav
           ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.25*sin(2*PI*(1200+600*sin(2*PI*6*t))*t)*exp(-1.2*t)':s=44100:d=2.0" twinkle.wav
           FR=24; [ "${{ inputs.fast }}" = "yes" ] && FR=12
+          if [ "${{ inputs.scene }}" = "render_village.py" ]; then
+            # village ambience: birds chirping, a distant cow, a bell from the temple
+            ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.12*sin(2*PI*(2600+900*sin(2*PI*22*t))*t)*lt(mod(t,1.7),0.10)+0.10*sin(2*PI*(3100+700*sin(2*PI*30*t))*t)*lt(mod(t+0.6,2.3),0.08)+0.28*sin(2*PI*(115+25*sin(2*PI*2.5*t))*t)*between(t,4.0,5.3)*sin(PI*(t-4.0)/1.3)+0.18*sin(2*PI*880*t)*exp(-3*(t-7.0))*gte(t,7.0)':s=44100:d=10" amb.wav
+            ffmpeg -loglevel error -y -framerate $FR -pattern_type glob -i 'frames/frame_*.png' -i amb.wav -map 0:v -map 1:a -shortest \
+              -c:v libx264 -pix_fmt yuv420p -crf 20 -c:a aac -b:a 128k gudu_sample.mp4
+            ls -la gudu_sample.mp4; exit 0
+          fi
           ffmpeg -loglevel error -y -framerate $FR -pattern_type glob -i 'frames/frame_*.png' \
             -i boing.wav -i boing.wav -i boing.wav -i bonk.wav -i twinkle.wav \
             -filter_complex "[1]adelay=660|660[a];[2]adelay=1330|1330[b];[3]adelay=2000|2000[c];[4]adelay=5000|5000[d];[5]adelay=5150|5150[e];[a][b][c][d][e]amix=inputs=5:normalize=0,apad[aud]" \
