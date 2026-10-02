@@ -1,4 +1,4 @@
-﻿{
+{
   "_note": "Sonpur ki Toli cast. age in years -> MPFB age macro in build_library.py. outfit names come from lib_outfits.OUTFITS. weight 0..1 (0.5 average).",
   "main": [
     {"id": "gudiya",   "name_hi": "गुड़िया",   "age": 9,  "gender": "f", "weight": 0.5,  "skin": "young_asian_female", "skin_rgb": [0.86, 0.64, 0.48], "hair": "ponytail01",   "outfit": "langa_voni",            "extras": ["bindi", "bangles", "gajra"], "role": "brave kind leader"},
