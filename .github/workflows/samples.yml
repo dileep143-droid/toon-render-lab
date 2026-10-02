@@ -47,7 +47,7 @@ jobs:
           pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install -q scikit-build-core pybind11 cmake ninja
           pip install -q --no-build-isolation git+https://github.com/tatsy/torchmcubes.git
-          grep -v torchmcubes TripoSR/requirements.txt > req.txt && pip install -q -r req.txt
+          grep -v torchmcubes TripoSR/requirements.txt > req.txt && pip install -q -r req.txt onnxruntime
       - name: Fetch a freely licensed charpai photo from Wikimedia Commons
         run: |
           python3 - <<'EOF'
@@ -59,7 +59,7 @@ jobs:
           pages = sorted(d["query"]["pages"].values(), key=lambda p: p.get("index", 99))
           for p in pages:
               ii = p["imageinfo"][0]
-              if ii.get("mime") in ("image/jpeg", "image/png"):
+              if ii.get("mime") in ("image/jpeg", "image/png") and any(k in p["title"].lower() for k in ("charpoy", "charpai", "charpaee")):
                   lic = ii.get("extmetadata", {}).get("LicenseShortName", {}).get("value")
                   print("IMAGE", p["title"], lic, ii["descriptionurl"])
                   open("input.jpg", "wb").write(urllib.request.urlopen(urllib.request.Request(ii["thumburl"], headers=H), timeout=60).read()); break
