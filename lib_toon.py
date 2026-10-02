@@ -27,10 +27,10 @@ import bpy, math, sys
 from mathutils import Vector
 
 STYLES = {
-    "infobells": dict(head=0.15, eyes=0.20, jaw=0.05, legs=0.07, adult=0.6,
-                      tex_mix=0.22, rim=0.22, emit=0.12, rough=0.6, spec=0.22, sss=0.12,
+    "infobells": dict(head=0.20, eyes=0.25, jaw=0.05, legs=0.07, adult=0.6,
+                      tex_mix=0.22, rim=0.15, emit=0.06, skin_gain=0.9, rough=0.6, spec=0.22, sss=0.12,
                       iris=1.2, brow_x=1.08, brow_z=1.35,
-                      hair_rgb=(0.07, 0.05, 0.04), hair_fac=0.88, brow_rgb=(0.035, 0.025, 0.02),
+                      hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
 }
 OUTLINE_MOD = "toon_outline"
@@ -237,7 +237,7 @@ def toon_skin_material(name, skin_rgb, st, albedo=None):
     nt = m.node_tree; N, L = nt.nodes, nt.links; N.clear()
     out = N.new("ShaderNodeOutputMaterial"); out.location = (900, 0)
     b = N.new("ShaderNodeBsdfPrincipled"); b.location = (600, 0)
-    flat = (*_lin(skin_rgb), 1.0)
+    flat = (*_lin(tuple(c * st.get("skin_gain", 1.0) for c in skin_rgb)), 1.0)
     m.diffuse_color = flat
     col = None
     if albedo is not None and st["tex_mix"] > 0:
@@ -294,18 +294,36 @@ def _tint(nt, rgb, fac, mode="MIX", seen=None):
     return n_
 
 
-def _iris(nt, scale, seen=None):
-    """enlarge the iris: scale the eye texture's UVs about the texture centre"""
+def _iris_centre(o, rig):
+    """UV of the pupil = UV of the front-most vertex of each eyeball (the character faces -Y in rig space)"""
+    me = o.data
+    if not me.uv_layers: return None
+    uv = me.uv_layers.active.data; vuv = {}
+    for lp in me.loops:
+        if lp.vertex_index not in vuv: vuv[lp.vertex_index] = uv[lp.index].uv.copy()
+    M = rig.matrix_world.inverted() @ o.matrix_world
+    co = [M @ v.co for v in me.vertices]; cx = sum(p.x for p in co) / len(co); out = []
+    for side in (1, -1):
+        idx = [i for i, p in enumerate(co) if (p.x - cx) * side > 0 and i in vuv]
+        if not idx: return None
+        out.append(vuv[min(idx, key=lambda i: co[i].y)])
+    if (out[0] - out[1]).length > 0.05: print("TOON iris: eyes use different UV islands", out); return None
+    return (out[0] + out[1]) / 2
+
+
+def _iris(nt, scale, centre=None, seen=None):
+    """enlarge the iris: scale the eye texture's UVs about the pupil's UV"""
     seen = seen if seen is not None else set()
-    if nt.name in seen or scale == 1: return
+    if nt.name in seen or scale == 1 or centre is None: return
     seen.add(nt.name)
     for n in list(nt.nodes):
-        if n.bl_idname == "ShaderNodeGroup" and n.node_tree: _iris(n.node_tree, scale, seen)
+        if n.bl_idname == "ShaderNodeGroup" and n.node_tree: _iris(n.node_tree, scale, centre, seen)
         if n.bl_idname == "ShaderNodeTexImage" and n.image and not n.inputs["Vector"].is_linked:
             nm = n.image.name.lower()
             if any(w in nm for w in ("normal", "_nor", "bump")): continue
             tc = nt.nodes.new("ShaderNodeTexCoord"); mp = nt.nodes.new("ShaderNodeMapping"); mp.vector_type = "POINT"
-            s = 1.0 / scale; mp.inputs["Scale"].default_value = (s, s, 1); mp.inputs["Location"].default_value = (0.5 - 0.5 * s, 0.5 - 0.5 * s, 0)
+            s = 1.0 / scale; u, v = centre
+            mp.inputs["Scale"].default_value = (s, s, 1); mp.inputs["Location"].default_value = (u - u * s, v - v * s, 0)
             nt.links.new(tc.outputs["UV"], mp.inputs["Vector"]); nt.links.new(mp.outputs["Vector"], n.inputs["Vector"])
 
 
@@ -317,8 +335,10 @@ def outline_material(rgb):
     nt = m.node_tree; N, L = nt.nodes, nt.links; N.clear()
     out = N.new("ShaderNodeOutputMaterial")
     geo = N.new("ShaderNodeNewGeometry"); lp = N.new("ShaderNodeLightPath")
+    inv = N.new("ShaderNodeMath"); inv.operation = "SUBTRACT"; inv.inputs[0].default_value = 1.0
+    L.new(geo.outputs["Backfacing"], inv.inputs[1])   # flipped hull: its FAR side faces the camera = the visible rim
     mul = N.new("ShaderNodeMath"); mul.operation = "MULTIPLY"
-    L.new(geo.outputs["Backfacing"], mul.inputs[0]); L.new(lp.outputs["Is Camera Ray"], mul.inputs[1])
+    L.new(inv.outputs[0], mul.inputs[0]); L.new(lp.outputs["Is Camera Ray"], mul.inputs[1])
     tr = N.new("ShaderNodeBsdfTransparent"); em = N.new("ShaderNodeEmission")
     em.inputs["Color"].default_value = (*_lin(rgb), 1); em.inputs["Strength"].default_value = 1.0
     mix = N.new("ShaderNodeMixShader")
@@ -379,8 +399,11 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
                 k = _kind(o, h)
                 mats = [s.material for s in o.material_slots if s.material and s.material.use_nodes]
                 if k == "eyes":
+                    try: ctr = _iris_centre(o, rig)
+                    except Exception as ex: ctr = None; print("TOON iris centre fail", repr(ex)[:150])
+                    info["iris_uv"] = tuple(round(x, 3) for x in ctr) if ctr is not None else None
                     for m in mats:
-                        _iris(m.node_tree, st["iris"])
+                        _iris(m.node_tree, st["iris"], ctr)
                         for b in _principleds(m.node_tree):
                             _set(b, "Roughness", 0.04); _set(b, ("Coat Weight",), 0.8); _set(b, ("Coat Roughness",), 0.03)
                             _set(b, ("Specular IOR Level", "Specular"), 0.6)
@@ -403,7 +426,7 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
                     for m in mats:
                         _tint(m.node_tree, st["hair_rgb"], st["hair_fac"])
                         for b in _principleds(m.node_tree):
-                            _set(b, "Roughness", 0.38); _set(b, ("Specular IOR Level", "Specular"), 0.55)
+                            _set(b, "Roughness", 0.5); _set(b, ("Specular IOR Level", "Specular"), 0.35)
                             _set(b, ("Sheen Weight",), 0.0); _set(b, ("Coat Weight",), 0.0)
         if outline:
             add_outline(h, st["outline_body"], st["outline_rgb"])
