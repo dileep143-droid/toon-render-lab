@@ -111,7 +111,7 @@ def nazar_bracelet(B, side=-1):
 def woollen_cap(B, colour, pompom):
     """dome cap over the head (and any hair) down to the eyebrows, with a rolled brim and a pompom"""
     Hs = B.Hs; z0 = B.ze + 0.18 * (B.zt - B.ze)
-    pts = LO._head_pts(B, z0, 0.012 * Hs)
+    pts = [B.co[i] for i in B.body_idx if B.part[i] == "head" and abs(B.co[i].z - z0) < 0.012 * Hs]   # head only: hair is squashed under the cap
     if len(pts) < 4: return None
     cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2
     rx = max(abs(p.x) for p in pts); ry = (max(p.y for p in pts) - min(p.y for p in pts)) / 2
@@ -130,7 +130,7 @@ def woollen_cap(B, colour, pompom):
         M = Mi @ ob.matrix_world; Minv = M.inverted()
         for v in ob.data.vertices:
             p = M @ v.co
-            if p.z < z0 - 0.01 * Hs: continue
+            if p.z < z0 - 0.024 * Hs: continue   # below the brim the hair shows
             k = ell(p, rx, ry, h) if p.z >= z0 else math.sqrt((p.x / rx) ** 2 + ((p.y - cy) / ry) ** 2)
             if k > 0.93:
                 c0 = Vector((0, cy, min(p.z, z0) if p.z < z0 else z0))
@@ -299,8 +299,8 @@ def carry_baby(adult_rig, baby_rig, side="left", mode="hip", offset=(0.0, 0.0, 0
     if mode == "hip":
         face = (-sd * X - 0.7 * Y).normalized()                # towards the adult's front-centre
         bz = Z; by = -face; bx = by.cross(bz).normalized(); by = bz.cross(bx)
-        mid = _bone_world(A, f"lowerarm01.{s}", "mid")
-        target = mid + Z * 0.04 + sd * X * 0.02
+        hip = _bone_world(A, f"upperleg01.{s}")               # child's bottom just above the adult's hip joint, out to the side
+        target = hip + Z * 0.1 + sd * X * 0.1 - Y * 0.02
     else:
         bz = sd * X; by = -Z; bx = by.cross(bz).normalized()   # head towards `side`, face up
         target = (_bone_world(A, f"lowerarm01.{s}", "mid") + _bone_world(A, f"lowerarm01.{o_}", "mid")) / 2 + Z * 0.05
