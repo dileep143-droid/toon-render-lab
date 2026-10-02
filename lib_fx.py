@@ -1249,7 +1249,20 @@ def impact_stars(target, f0, f1, count=5, radius=0.22, height=0.25, size=1.0, c=
     _pop(ring, f0, 1.0, 4); key(ring, "scale", f1 - 4, (1, 1, 1)); key(ring, "scale", f1, (0.001,) * 3)
     life(ring, f0, f1)
     for s in stars: life(s, f0, f1)
-    return {"ring": ring, "stars": stars}
+    birds = []
+    if birdies:                                    # 'tweety' birds flapping round the ring between the stars
+        n = 2 if birdies is True else int(birdies)
+        for i in range(n):
+            a = 2 * math.pi * (i + 0.5) / max(count, n)
+            br, wings = bird_small(f"dizzybird_{f0}_{i}", col, "yellow", 0.6 * size)
+            br.parent = ring; br.location = (math.cos(a) * radius * size, math.sin(a) * radius * size, 0.02 * size)
+            br.rotation_euler = (0, 0, a + math.pi / 2)
+            for f in range(f0, f1, 2):
+                for sy, wp in zip((-1, 1), wings):
+                    key(wp, "rotation_euler", f, (R(60 * sy if (f // 2) % 2 else -30 * sy), 0, 0))
+            for o in [br] + list(br.children_recursive): life(o, f0, f1)
+            birds.append(br)
+    return {"ring": ring, "stars": stars, "birds": birds}
 
 
 def sweat_drops(target, frame, count=3, side=1, size=1.0, c="sweat", offset=(0.12, -0.05, 0.12), seed=23):
@@ -1497,17 +1510,19 @@ def freeze_plan(start, end, freezes=None, zooms=None):
 def render_plan(plan, out_dir, prefix="f_"):
     """render a freeze_plan(): numbered PNGs (out_dir/f_0001.png ...)"""
     import os
-    sc = scene(); cam = sc.camera; base = cam.data.lens if cam else 50
-    os.makedirs(out_dir, exist_ok=True)
+    sc = scene(); cam = sc.camera
+    if out_dir: os.makedirs(out_dir, exist_ok=True)       # out_dir=None: dry run, just returns the lens per output frame
+    lenses = []
     for i, (f, z) in enumerate(plan):
         sc.frame_set(f)
-        if cam and z != 1.0:
-            cam.data.lens = cam.data.lens * z
-        sc.render.filepath = os.path.join(out_dir, f"{prefix}{i + 1:04d}.png")
-        bpy.ops.render.render(write_still=True)
-        if cam and z != 1.0:
-            sc.frame_set(f)                                      # restore animated lens
-    return len(plan)
+        l0 = cam.data.lens if cam else None
+        if cam: cam.data.lens = l0 * z
+        lenses.append(cam.data.lens if cam else None)
+        if out_dir:
+            sc.render.filepath = os.path.join(out_dir, f"{prefix}{i + 1:04d}.png")
+            bpy.ops.render.render(write_still=True)
+        if cam: cam.data.lens = l0                               # restore (keyed or not)
+    return lenses
 
 
 def squash_stretch(obj, frame, kind="land", amount=0.3, dur=8, base=None, axis=2):
