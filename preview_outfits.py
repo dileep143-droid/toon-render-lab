@@ -166,9 +166,8 @@ for who, outfit, opts in PLAN:
             cov = LO.coverage(h, rig, {**{k: v[0] for k, v in cams.items()}, **extra}, level=LO.OUTFITS[outfit].get("cover", "knee"))
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
-            if pose == "apose":
-                rep["fit_mm"] = LO.fit_report(h, rig, G)
-                print("FIT", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in rep["fit_mm"].items()})
+            rep["fit_mm" if pose == "apose" else f"fit_mm_{pose}"] = fr = LO.fit_report(h, rig, G)
+            print("FIT" if pose == "apose" else "FITWALK", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in fr.items()})
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             if pose == "walk":
                 print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"], v.get("worst")) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})

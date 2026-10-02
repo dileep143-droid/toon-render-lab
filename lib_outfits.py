@@ -1389,7 +1389,7 @@ def _kurta(B, C, key="kurta", name="kurta", hem_z=None, pattern=None, collar_sty
     """straight-cut kurta: slim body, side slits from the hip, soft cloth fall, mandarin collar + short placket"""
     Hs = B.Hs; s = Hs / 1.6
     km = fabric(name, C[key], 0.8, 0.45, pattern=pattern)
-    out = [top(B, name, km, B.zh - 0.02 * Hs, sleeve_t=sleeve, neck_depth=0.006 * Hs, offset=0.006, sleeve_loose=0.1, loose=0.003)]
+    out = [top(B, name, km, B.zh - 0.02 * Hs, sleeve_t=sleeve, neck_depth=0.006 * Hs, offset=0.006, sleeve_loose=0.1, loose=0.0015)]
     kz = hem_z if hem_z is not None else B.zk
     rings = skirt_rings(B, B.zh, kz, flare=1.0, ease=0.012, top_ease=0.008)
     out.append(lathe(B, name + "_tail", fabric(name + "_tail", C[key], 0.8, 0.45, pattern=pattern, coord="uv" if pattern is None or pattern.get("kind") != "stripes" else "uv"),
@@ -1404,7 +1404,7 @@ def _saree(B, C, o, pallu_w=0.09, elder=False):
     G += _blouse(B, C, hem=B.zub - 0.01 * Hs, sleeve=0.3 if elder else 0.26, neck=0.03 if elder else 0.04, trim=C["border"])
     zari = C["border"] == GOLD
     pat = None if elder else {"kind": "buti", "c2": C["border"], "scale": 0.045 * s, "r": 0.1}
-    G.append(top(B, "saree_wrap", fabric("saree_wrap", C["saree"], 0.8, 0.5, pattern=pat), B.zw - 0.04 * Hs, sleeveless=True, top_z=B.zub + 0.012 * Hs, offset=0.009, clear=0.006))
+    G.append(top(B, "saree_wrap", fabric("saree_wrap", C["saree"], 0.8, 0.5, pattern=pat), B.zw - 0.04 * Hs, sleeveless=True, top_z=B.zub + 0.012 * Hs, offset=0.007, clear=0.005))
     rings = skirt_rings(B, B.zw - 0.005 * Hs, max(0.008, 0.25 * B.za), flare=1.3, ease=0.014, top_ease=0.004)
     sm = fabric("saree", C["saree"], 0.8, 0.5, border={"c": C["border"], "mode": "v_hi", "w": 0.07, "zari": zari, "stripe": True},
                 pattern=None if elder else {"kind": "buti", "c2": C["border"], "scale": 0.05, "r": 0.1}, coord="uv")
@@ -1826,7 +1826,7 @@ def penetration(h, garments):
             if loc is not None and (p - loc).dot(nrm) < -0.002: inside += 1
             if src is not None and B is not None and k < len(g.data.vertices) and k % 3 == 0:
                 s_ = src.data[k].value
-                errs.append(((Mi @ p - g.data.vertices[k].co) - (Mi @ co[s_] - B.co[s_])).length)
+                errs.append(abs((Mi @ p - Mi @ co[s_]).length - (g.data.vertices[k].co - B.co[s_]).length))   # change of the skin->cloth gap
                 if errs[-1] >= max(errs):
                     gv = g.data.vertices[k]
                     worst = {"k": k, "src": s_, "err_mm": round(1000 * errs[-1], 1), "g_rest": [round(x, 3) for x in gv.co], "b_rest": [round(x, 3) for x in B.co[s_]],
@@ -1865,11 +1865,12 @@ anklets = payal
 
 
 # ----------------------------------------------------------------------------------------------- fit measurement
-FIT_LIMITS_MM = {"shoulder": 8, "upper_back": 8, "chest": 10, "waist": 8, "upper_arm": 12}
+FIT_LIMITS_MM = {"shoulder": 8, "upper_back": 8, "chest": 10, "waist": 8, "upper_arm": 12,
+                 "forearm": None, "thigh": None, "shin": None}   # None = reported only (loose styles such as salwar / dhoti / skirts are meant to hang free)
 
 def fit_report(h, rig, garments=None):
     """skin -> nearest garment (inner surface) distance per region, in mm (mean / p90 / max) over the body
-    vertices that are covered by something within 6 cm. Use in the A-pose."""
+    vertices that are covered by something within 6 cm. Works in any pose (A-pose and walk)."""
     B = body_of(h, rig); co = posed_coords(h); Mi = h.matrix_world.inverted()
     objs = [g for g in (garments or [o for o in bpy.data.objects if o.get("outfit_piece")]) if g is not None and g.name in bpy.data.objects
             and any(m.type == "SOLIDIFY" for m in g.modifiers)]
@@ -1885,6 +1886,7 @@ def fit_report(h, rig, garments=None):
     bpy.context.view_layer.update()
     if not P: return {}
     bvh = BVHTree.FromPolygons(V, P); ys = B.bh["spine01"].y; Hs = B.Hs
+    sk = BVHTree.FromPolygons(co, B.body_polys)   # posed skin, for its outward normals
     def wsum(i, pre): return sum(x for b, x in B.w[i].items() if b.startswith(pre))
     regions = {
         "shoulder": lambda i: B.part[i] in ("torso", "arm") and wsum(i, ("clavicle", "shoulder01")) > 0.3 and B.co[i].z > B.zc,
@@ -1892,6 +1894,9 @@ def fit_report(h, rig, garments=None):
         "chest": lambda i: B.part[i] == "torso" and B.co[i].y < ys - 0.02 * Hs and B.zub < B.co[i].z < B.zn - 0.06 * Hs,
         "waist": lambda i: B.part[i] == "torso" and abs(B.co[i].z - B.zw) < 0.015 * Hs,
         "upper_arm": lambda i: B.part[i] == "arm" and 0.1 < B.t[i] < 0.22,
+        "forearm": lambda i: B.part[i] == "arm" and 0.6 < B.t[i] < 0.8,
+        "thigh": lambda i: B.part[i] == "leg" and 0.15 < B.t[i] < 0.35,
+        "shin": lambda i: B.part[i] == "leg" and 0.6 < B.t[i] < 0.8,
     }
     out = {}
     for name, sel in regions.items():
@@ -1899,9 +1904,14 @@ def fit_report(h, rig, garments=None):
         for i in B.body_idx[::2]:
             if not sel(i): continue
             loc, nrm, _, d = bvh.find_nearest(co[i], 0.06)
-            if loc is not None: ds.append(d * 1000)
+            if loc is None: continue
+            sn = sk.find_nearest(co[i])[1]
+            # count only skin the cloth really lies OVER (nearest cloth roughly along the skin normal):
+            # bare skin next to a hem / armhole edge (sleeveless vest, short sleeve) is not a "gap"
+            if d > 0.002 and sn is not None and (loc - co[i]).normalized().dot(sn) < 0.6: continue
+            ds.append(d * 1000)
         if len(ds) < 5: continue
         ds.sort()
         out[name] = {"n": len(ds), "mean": round(sum(ds) / len(ds), 1), "p90": round(ds[int(0.9 * (len(ds) - 1))], 1), "max": round(ds[-1], 1),
-                     "limit": FIT_LIMITS_MM[name], "ok": sum(ds) / len(ds) <= FIT_LIMITS_MM[name]}
+                     "limit": FIT_LIMITS_MM[name], "ok": FIT_LIMITS_MM[name] is None or sum(ds) / len(ds) <= FIT_LIMITS_MM[name]}
     return out
