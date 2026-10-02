@@ -1,4 +1,4 @@
-"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
+﻿"""Preview every outfit on MPFB characters (girl 8y, boy 10y, woman, man, elder woman): front + 3/4 stills in the
 A-pose and in a walking pose, plus a JSON report (garment vertex counts, coverage, penetration).
 SAFETY: coverage (no required skin visible from the camera) is asserted before every render; failing views are skipped.
 Run: blender -b --python preview_outfits.py -- <mpfb_pack_dir> <functional_dir> <out_dir> [who,...] [outfit,...]"""
@@ -26,7 +26,7 @@ CAST = {
     "boy":   dict(gender=1.0, age=0.16875, skin=first("skins", ["young_asian_male"]), hair=first("hair", ["short02", "short01"])),
     "woman": dict(gender=0.0, age=0.5, skin=first("skins", ["middleage_asian_female", "young_asian_female"]), hair=first("hair", ["braid01", "ponytail01", "bob02", "long01"])),
     "man":   dict(gender=1.0, age=0.55, skin=first("skins", ["middleage_asian_male", "young_asian_male"]), hair=first("hair", ["short02", "short04", "short01"])),
-    "elder": dict(gender=0.0, age=0.85, skin=first("skins", ["old_asian_female", "old_caucasian_female", "middleage_asian_female", "young_asian_female"]), hair=first("hair", ["bob02", "bob01", "ponytail01"])),
+    "elder": dict(gender=0.0, age=0.85, skin=first("skins", ["old_asian_female", "old_caucasian_female", "middleage_asian_female", "young_asian_female"]), hair=first("hair", ["ponytail01", "bob01"])),
 }
 PLAN = [
     ("girl", "langa_voni", {}), ("girl", "pattu_pavadai", {}), ("girl", "frock_girl", {}), ("girl", "frock_wet", {}),
@@ -97,7 +97,7 @@ for who, outfit, opts in PLAN:
             cov = LO.coverage(h, rig, {k: v[0] for k, v in cams.items()}, level=LO.OUTFITS[outfit].get("cover", "knee"))
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
-            print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6]) for k, v in cov.items()})
+            print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             for view, (frm, to) in cams.items():
                 if cov[view]["frac"] > TOL:
                     print("SKIP", key, pose, view, "exposed", cov[view]["exposed"], "of", cov[view]["required"]); rep.setdefault("skipped", []).append(f"{pose}_{view}"); continue
