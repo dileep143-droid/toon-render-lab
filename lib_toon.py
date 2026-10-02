@@ -294,6 +294,31 @@ def _tint(nt, rgb, fac, mode="MIX", seen=None):
     return n_
 
 
+def _pupil_uv(nt, seen=None):
+    """UV of the pupil = centroid of the darkest pixels of the eye's colour texture"""
+    import numpy as np
+    seen = seen if seen is not None else set()
+    if nt.name in seen: return None
+    seen.add(nt.name)
+    for n in nt.nodes:
+        if n.bl_idname == "ShaderNodeGroup" and n.node_tree:
+            r = _pupil_uv(n.node_tree, seen)
+            if r is not None: return r
+        if n.bl_idname == "ShaderNodeTexImage" and n.image and n.image.size[0] > 8:
+            nm = n.image.name.lower()
+            if any(w in nm for w in ("normal", "_nor", "bump", "rough", "spec")): continue
+            w, h = n.image.size
+            px = np.empty(w * h * 4, dtype=np.float32); n.image.pixels.foreach_get(px); px = px.reshape(h, w, 4)
+            lum = px[..., 0] * 0.3 + px[..., 1] * 0.59 + px[..., 2] * 0.11
+            thr = np.percentile(lum, 0.4)
+            ys, xs = np.nonzero(lum <= thr)
+            if len(xs) < 4: continue
+            if xs.std() > 0.08 * w or ys.std() > 0.08 * h:
+                print("TOON pupil not one dark spot", n.image.name, round(float(xs.std()) / w, 3), round(float(ys.std()) / h, 3)); return None
+            return (float(xs.mean() + 0.5) / w, float(ys.mean() + 0.5) / h)
+    return None
+
+
 def _iris_centre(o, rig):
     """UV of the pupil = UV of the front-most vertex of each eyeball (the character faces -Y in rig space)"""
     me = o.data
@@ -399,10 +424,10 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
                 k = _kind(o, h)
                 mats = [s.material for s in o.material_slots if s.material and s.material.use_nodes]
                 if k == "eyes":
-                    try: ctr = _iris_centre(o, rig)
-                    except Exception as ex: ctr = None; print("TOON iris centre fail", repr(ex)[:150])
-                    info["iris_uv"] = tuple(round(x, 3) for x in ctr) if ctr is not None else None
                     for m in mats:
+                        try: ctr = _pupil_uv(m.node_tree)
+                        except Exception as ex: ctr = None; print("TOON pupil fail", repr(ex)[:150])
+                        info.setdefault("pupil_uv", []).append(tuple(round(x, 3) for x in ctr) if ctr else None)
                         _iris(m.node_tree, st["iris"], ctr)
                         for b in _principleds(m.node_tree):
                             _set(b, "Roughness", 0.04); _set(b, ("Coat Weight",), 0.8); _set(b, ("Coat Roughness",), 0.03)
