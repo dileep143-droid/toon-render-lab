@@ -1677,14 +1677,15 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 hull = _hull(pts2); cx = sum(p[0] for p in hull) / len(hull); cy = sum(p[1] for p in hull) / len(hull)
                 hull = [(cx + (x - cx) * 1.08 + (0.004 if x > cx else -0.004), cy + (y - cy) * 1.06) for x, y in hull]
                 th = 0.012 * B.Hs / 1.6
+                top = -0.001   # the sole lies UNDER the foot (the body stands on it), never inside the foot
                 col = colour or (0.45, 0.28, 0.15)
                 ymin = min(p[1] for p in hull); ymax = max(p[1] for p in hull)
                 sc_ = B.Hs / 1.6
                 t1, t2 = B.bh.get(f"toe1-1.{s}"), B.bh.get(f"toe2-1.{s}")
-                post = Vector((((t1.x + t2.x) / 2) if t1 and t2 else cx, ((t1.y + t2.y) / 2 + 0.006 * sc_) if t1 and t2 else ymin + 0.16 * (ymax - ymin), th))
+                post = Vector((((t1.x + t2.x) / 2) if t1 and t2 else cx, ((t1.y + t2.y) / 2 + 0.006 * sc_) if t1 and t2 else ymin + 0.16 * (ymax - ymin), top))
                 ym = cy - 0.1 * (ymax - ymin)
                 xs_ = [p[0] for p in hull if abs(p[1] - ym) < 0.25 * (ymax - ymin)] or [p[0] for p in hull]
-                mid = [Vector((min(xs_) + 0.004 * sc_, ym, th)), Vector((max(xs_) - 0.004 * sc_, ym, th))]
+                mid = [Vector((min(xs_) + 0.004 * sc_, ym, top)), Vector((max(xs_) - 0.004 * sc_, ym, top))]
                 def over_foot(x, y, lo, foot=foot):   # top of the foot under (x, y): highest foot vertex nearby
                     rr = (0.009 * sc_) ** 2
                     zs_ = [p.z for p in foot if (p.x - x) ** 2 + (p.y - y) ** 2 < rr and p.z < B.za + 0.004 * sc_]
@@ -1693,17 +1694,17 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 for m_ in mid:   # thong straps from the toe post over the top of the foot to both edges of the sole
                     for k in range(14):
                         f = k / 13; x = post.x + (m_.x - post.x) * f; y = post.y + (m_.y - post.y) * f
-                        z = over_foot(x, y, th)
-                        if f > 0.8: z = z + (th + 0.002 - z) * _smoothstep(0.8, 1.0, f)
+                        z = over_foot(x, y, top)
+                        if f > 0.8: z = z + (top + 0.002 - z) * _smoothstep(0.8, 1.0, f)
                         strap.append(Vector((x, y, z)))
-                pz = over_foot(post.x, post.y + 0.004 * sc_, th)
-                def build(bm, hull=hull, th=th, strap=strap, post=post, pz=pz):
-                    vb = [bm.verts.new((x, y, -0.002)) for x, y in hull]; vt = [bm.verts.new((x, y, th)) for x, y in hull]
+                pz = over_foot(post.x, post.y + 0.004 * sc_, top)
+                def build(bm, hull=hull, th=th, top=top, strap=strap, post=post, pz=pz):
+                    vb = [bm.verts.new((x, y, top - th)) for x, y in hull]; vt = [bm.verts.new((x, y, top)) for x, y in hull]
                     bm.faces.new(vb[::-1]); bm.faces.new(vt)
                     for i in range(len(hull)):
                         j = (i + 1) % len(hull); bm.faces.new((vb[i], vb[j], vt[j], vt[i]))
                     for p in strap: _ball(bm, p, 0.0042 * sc_, (1.0, 1.0, 0.55))
-                    for k in range(4): _ball(bm, Vector((post.x, post.y, th + (pz - th) * k / 3)), 0.0028 * sc_)
+                    for k in range(4): _ball(bm, Vector((post.x, post.y, top + (pz - top) * k / 3)), 0.0028 * sc_)
                 o = rigid(B, f"chappal{s}", solid("chappal", col, 0.6), build, f"foot.{s}")
                 out.append(o)
             else:
@@ -1727,6 +1728,18 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
         return out
     finally:
         rig.data.pose_position = pp; bpy.context.view_layer.update()
+
+def lowest_z(h):
+    """world z of the lowest point of a dressed character: the skin or the footwear soles under it"""
+    co = posed_coords(h); B = _BODIES.get(h.name); M = h.matrix_world
+    z = min((M @ co[i]).z for i in (B.body_idx if B else range(len(co))))
+    dg = bpy.context.evaluated_depsgraph_get()
+    for o in bpy.data.objects:
+        if o.type == "MESH" and o.get("outfit_foot") and not o.hide_render:
+            ev = o.evaluated_get(dg); me = ev.to_mesh(); W = o.matrix_world
+            if len(me.vertices): z = min(z, min((W @ v.co).z for v in me.vertices))
+            ev.to_mesh_clear()
+    return z
 
 def _hull(pts):
     pts = sorted(set(pts))

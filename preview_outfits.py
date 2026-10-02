@@ -125,9 +125,8 @@ def look(cam, frm, to, lens=50):
     cam.location = frm; cam.rotation_euler = (to - frm).to_track_quat("-Z", "Y").to_euler(); cam.data.lens = lens
 
 def ground_feet(h, rig):
-    co = LO.posed_coords(h); B = LO.body_of(h, rig)
-    mz = min(co[i].z for i in B.body_idx)
-    rig.location.z -= mz; bpy.context.view_layer.update()
+    LO.body_of(h, rig)
+    rig.location.z -= LO.lowest_z(h); bpy.context.view_layer.update()   # stands on the soles when footwear is on
 
 def eval_verts(o):
     dg = bpy.context.evaluated_depsgraph_get(); ev = o.evaluated_get(dg); me = ev.to_mesh(); n = len(me.vertices); ev.to_mesh_clear(); return n
