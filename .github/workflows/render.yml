@@ -1,0 +1,48 @@
+name: render-sample
+on:
+  workflow_dispatch:
+    inputs:
+      fast:
+        description: "quick preview (half size, every 2nd frame)"
+        default: "no"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install libraries Blender needs, and ffmpeg
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 ffmpeg
+
+      - name: Download Blender 4.2 LTS
+        run: |
+          curl -sSL -o blender.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf blender.tar.xz && mv blender-4.2.3-linux-x64 blender && ./blender/blender --version | head -1
+
+      - name: Render frames
+        run: |
+          ARGS="frames"; [ "${{ inputs.fast }}" = "yes" ] && ARGS="frames --fast"
+          ./blender/blender -b -noaudio --python render_scene.py -- $ARGS 2>&1 | grep -E "Fra:|RENDER DONE|Error|Traceback" | tail -n 40
+          ls frames | wc -l
+
+      - name: Make sound effects and the video
+        run: |
+          ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.5*sin(2*PI*(180+420*exp(-8*t))*t)*exp(-5*t)':s=44100:d=0.7" boing.wav
+          ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.7*sin(2*PI*95*t)*exp(-11*t)+0.25*sin(2*PI*1400*t)*exp(-28*t)':s=44100:d=0.5" bonk.wav
+          ffmpeg -loglevel error -y -f lavfi -i "aevalsrc='0.25*sin(2*PI*(1200+600*sin(2*PI*6*t))*t)*exp(-1.2*t)':s=44100:d=2.0" twinkle.wav
+          FR=24; [ "${{ inputs.fast }}" = "yes" ] && FR=12
+          ffmpeg -loglevel error -y -framerate $FR -pattern_type glob -i 'frames/frame_*.png' \
+            -i boing.wav -i boing.wav -i boing.wav -i bonk.wav -i twinkle.wav \
+            -filter_complex "[1]adelay=660|660[a];[2]adelay=1330|1330[b];[3]adelay=2000|2000[c];[4]adelay=5000|5000[d];[5]adelay=5150|5150[e];[a][b][c][d][e]amix=inputs=5:normalize=0,apad[aud]" \
+            -map 0:v -map "[aud]" -shortest -c:v libx264 -pix_fmt yuv420p -crf 20 -c:a aac -b:a 128k gudu_sample.mp4
+          ls -la gudu_sample.mp4
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gudu-sample
+          path: gudu_sample.mp4
+          retention-days: 7
