@@ -27,8 +27,8 @@ import bpy, math, sys
 from mathutils import Vector
 
 STYLES = {
-    "infobells": dict(head=0.20, eyes=0.25, jaw=0.05, legs=0.07, adult=0.6,
-                      tex_mix=0.22, rim=0.15, emit=0.06, skin_gain=0.9, rough=0.6, spec=0.22, sss=0.12,
+    "infobells": dict(head=0.22, eyes=0.30, jaw=0.05, legs=0.07, adult=0.6,
+                      tex_mix=0.12, rim=0.15, emit=0.06, skin_gain=0.9, rough=0.6, spec=0.22, sss=0.12,
                       iris=1.2, brow_x=1.08, brow_z=1.35,
                       hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
@@ -319,23 +319,6 @@ def _pupil_uv(nt, seen=None):
     return None
 
 
-def _iris_centre(o, rig):
-    """UV of the pupil = UV of the front-most vertex of each eyeball (the character faces -Y in rig space)"""
-    me = o.data
-    if not me.uv_layers: return None
-    uv = me.uv_layers.active.data; vuv = {}
-    for lp in me.loops:
-        if lp.vertex_index not in vuv: vuv[lp.vertex_index] = uv[lp.index].uv.copy()
-    M = rig.matrix_world.inverted() @ o.matrix_world
-    co = [M @ v.co for v in me.vertices]; cx = sum(p.x for p in co) / len(co); out = []
-    for side in (1, -1):
-        idx = [i for i, p in enumerate(co) if (p.x - cx) * side > 0 and i in vuv]
-        if not idx: return None
-        out.append(vuv[min(idx, key=lambda i: co[i].y)])
-    if (out[0] - out[1]).length > 0.05: print("TOON iris: eyes use different UV islands", out); return None
-    return (out[0] + out[1]) / 2
-
-
 def _iris(nt, scale, centre=None, seen=None):
     """enlarge the iris: scale the eye texture's UVs about the pupil's UV"""
     seen = seen if seen is not None else set()
@@ -377,8 +360,12 @@ def outline_material(rgb):
 def add_outline(o, thickness, rgb):
     """inverted-hull outline (render only; viewport off so coverage / posed_coords never see the extra vertices)"""
     if o.modifiers.get(OUTLINE_MOD): return
-    mat = outline_material(rgb)
-    o.data.materials.append(mat)
+    mat = outline_material(rgb); mats = o.data.materials
+    # faces whose material_index points past the last slot are drawn with the LAST slot: pad with it so appending the
+    # outline material never re-colours them
+    top = max((p.material_index for p in o.data.polygons), default=0)
+    while len(mats) and len(mats) <= top: mats.append(mats[len(mats) - 1])
+    mats.append(mat)
     so = o.modifiers.new(OUTLINE_MOD, "SOLIDIFY")
     so.thickness = thickness; so.offset = 1.0; so.use_flip_normals = True; so.use_rim = False
     so.use_quality_normals = True; so.material_offset = len(o.data.materials) - 1
