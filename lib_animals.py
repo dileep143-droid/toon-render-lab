@@ -54,7 +54,7 @@ SPECIES = {
         skin=(0.86, 0.60, 0.34), brow=(0.42, 0.25, 0.13), iris=(0.45, 0.26, 0.12),
         eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.11, eye_out=0.55, brow_len=1.25,
         jaw=dict(hinge=(0, -2.06, 2.47), cut_z=2.47, cut_y=-2.13, tip=(0, -2.33, 2.36)),
-        smile=[(0.15, -2.24, 2.50), (0.10, -2.33, 2.465), (0.0, -2.385, 2.462)], smile_off=0.014,
+        smile=[(0.15, -2.24, 2.50), (0.10, -2.33, 2.465), (0.0, -2.385, 2.462)], smile_off=0.03, brow_off=0.4,
         actions={  # our name -> pack action (renamed "<prefix><pack name>")
             "idle": "Idle", "idle2": "Idle_2", "walk": "Walk", "run": "Gallop", "eat": "Eating", "sniff_ground": "Idle_2_HeadLow",
             "jump_pack": "Jump_ToIdle", "gallop_jump": "Gallop_Jump", "hit_left": "Idle_HitReact_Left", "hit_right": "Idle_HitReact_Right",
@@ -321,7 +321,7 @@ def _add_face(spec, sp, name, arm, mesh, coll):
         gaze = (n * spec["eye_out"] + Vector((0, -1, 0)) * (1 - spec["eye_out"]) + Vector((0, 0, 0.12))).normalized()
         centre = p - n * (0.35 * r)
         bp, bn = _surface(mesh, centre + up * (1.45 * r) + gaze * (0.2 * r))
-        eyes[side] = (centre, gaze, bp + bn * (0.12 * r))
+        eyes[side] = (centre, gaze, bp + bn * (spec.get("brow_off", 0.12) * r))
     sm = [Vector(x) for x in spec["smile"]]
     smile_pts = [Vector((x.x, x.y, x.z)) for x in sm] + [Vector((-x.x, x.y, x.z)) for x in reversed(sm[:-1])]
     smile_pts = [_surface(mesh, q)[0] + _surface(mesh, q)[1] * spec.get("smile_off", 0.0) for q in smile_pts]   # subsurf shrinks the body a little
@@ -1064,7 +1064,7 @@ def hop_to(rig, frame, to, height=None, turn=True):
     root = rig.parent
     bpy.context.scene.frame_set(frame)
     p0 = root.matrix_world.translation.copy(); p1 = Vector(to)
-    h = height if height is not None else max(0.25, (p1.z - p0.z) + 0.25)
+    h = height if height is not None else 0.18 + 0.3 * max(0.0, p1.z - p0.z)      # arc height above the straight line
     root.location = p0; root.keyframe_insert("location", frame=frame + 5)
     if turn and (p1 - p0).xy.length > 1e-4:
         d = p1 - p0; root.rotation_euler = (0, 0, math.atan2(d.y, d.x) + math.pi / 2); root.keyframe_insert("rotation_euler", frame=frame)
