@@ -22,7 +22,8 @@ jobs:
           items = d.get("data", d)
           e = next(x for x in items if x.get("id") == "mpfb")
           print("MPFB", e.get("version"), e.get("license"), e.get("blender_version_min"))
-          urllib.request.urlretrieve(e["archive_url"], "mpfb.zip")
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab sample)"}
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
           EOF
           ls -la mpfb.zip
           ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
@@ -44,7 +45,9 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/VAST-AI-Research/TripoSR.git
           pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
-          pip install -q -r TripoSR/requirements.txt
+          pip install -q scikit-build-core pybind11 cmake ninja
+          pip install -q --no-build-isolation git+https://github.com/tatsy/torchmcubes.git
+          grep -v torchmcubes TripoSR/requirements.txt > req.txt && pip install -q -r req.txt
       - name: Fetch a freely licensed charpai photo from Wikimedia Commons
         run: |
           python3 - <<'EOF'
