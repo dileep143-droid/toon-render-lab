@@ -53,13 +53,13 @@ jobs:
           python3 - <<'EOF'
           import json, urllib.request, urllib.parse
           H = {"User-Agent": "toon-render-lab sample (github actions)"}
-          q = urllib.parse.urlencode({"action": "query", "format": "json", "generator": "search", "gsrnamespace": 6, "gsrsearch": "intitle:charpoy OR intitle:charpai", "gsrlimit": 30,
+          q = urllib.parse.urlencode({"action": "query", "format": "json", "titles": "File:Charpaibett.JPG",
                                       "prop": "imageinfo", "iiprop": "url|extmetadata|mime", "iiurlwidth": 800})
           d = json.load(urllib.request.urlopen(urllib.request.Request("https://commons.wikimedia.org/w/api.php?" + q, headers=H), timeout=60))
           pages = sorted(d["query"]["pages"].values(), key=lambda p: p.get("index", 99))
           for p in pages:
               ii = p["imageinfo"][0]
-              if ii.get("mime") in ("image/jpeg", "image/png") and any(k in p["title"].lower() for k in ("charpoy", "charpai", "charpaee")):
+              if ii.get("mime") in ("image/jpeg", "image/png"):
                   lic = ii.get("extmetadata", {}).get("LicenseShortName", {}).get("value")
                   print("IMAGE", p["title"], lic, ii["descriptionurl"])
                   open("input.jpg", "wb").write(urllib.request.urlopen(urllib.request.Request(ii["thumburl"], headers=H), timeout=60).read()); break
