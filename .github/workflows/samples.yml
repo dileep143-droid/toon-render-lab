@@ -53,7 +53,7 @@ jobs:
           python3 - <<'EOF'
           import json, urllib.request, urllib.parse
           H = {"User-Agent": "toon-render-lab sample (github actions)"}
-          q = urllib.parse.urlencode({"action": "query", "format": "json", "generator": "search", "gsrnamespace": 6, "gsrsearch": "charpai", "gsrlimit": 15,
+          q = urllib.parse.urlencode({"action": "query", "format": "json", "generator": "search", "gsrnamespace": 6, "gsrsearch": "intitle:charpoy OR intitle:charpai", "gsrlimit": 30,
                                       "prop": "imageinfo", "iiprop": "url|extmetadata|mime", "iiurlwidth": 800})
           d = json.load(urllib.request.urlopen(urllib.request.Request("https://commons.wikimedia.org/w/api.php?" + q, headers=H), timeout=60))
           pages = sorted(d["query"]["pages"].values(), key=lambda p: p.get("index", 99))
