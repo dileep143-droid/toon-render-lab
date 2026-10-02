@@ -47,6 +47,13 @@ try:
         print("USER DATA NOW", sorted(os.listdir(ud))[:30])
 except Exception: traceback.print_exc()
 
+# functional packs (face units + visemes) via MPFB's own installer
+for z in sorted(glob.glob(os.path.abspath(os.path.join(PACK, "..", "functional", "*.zip")))):
+    try: print("FUNC PACK", os.path.basename(z), AS.check_asset_pack_zip(z), AS.fix_and_extract_asset_pack_zip(z, LS.get_user_data()))
+    except Exception as ex: print("func pack fail", z, repr(ex)[:300])
+try: AS.update_all_asset_lists(); AS.rescan_pack_metadata()
+except Exception as ex: print("rescan fail", ex)
+
 def listing(kind):
     for fn in ("get_asset_list", "list_mhclo_assets", "list_mhmat_assets"):
         f = getattr(AS, fn, None)
@@ -203,14 +210,33 @@ def all_keys():
             for k in o.data.shape_keys.key_blocks: out.setdefault(k.name, []).append(k)
     return out
 
-# 1) try every FaceService function that loads face units / visemes onto the basemesh
-FSc = next((obj for n, obj in vars(fsmod).items() if inspect.isclass(obj) and obj.__module__ == fsmod.__name__), None)
-if FSc:
-    for fn in [x for x in dir(FSc) if not x.startswith("_") and any(w in x.lower() for w in ("load", "face", "viseme", "unit", "add"))]:
-        f = getattr(FSc, fn)
-        for args in ((h,), (h, True), ()):
-            try: r = f(*args); print("CALLED", fn, len(args), "->", str(r)[:120]); break
-            except Exception as ex: print("call fail", fn, len(args), repr(ex)[:160])
+FSc = fsmod.FaceService
+try: print("CALLED faceunits installed:", FSc.is_faceunits01_installed(force_recheck=True))
+except Exception as ex: print("call fail is_faceunits", ex)
+try: FSc.load_targets(h, load_microsoft_visemes=True, load_meta_visemes=False, load_arkit_faceunits=True); print("CALLED load_targets ok")
+except Exception as ex: print("call fail load_targets", repr(ex)[:300])
+# 2) MPFB's built-in named expressions (data/expressions)
+exprs = []
+try: exprs = FSc.list_available_expressions(); print("EXPR LIST", str(exprs)[:1500])
+except Exception as ex: print("call fail list_expr", ex)
+def expr_files(words):
+    out = []
+    items = exprs.items() if isinstance(exprs, dict) else [(e if isinstance(e, str) else str(e), e) for e in (exprs or [])]
+    for name, val in items:
+        if any(w in str(name).lower() for w in words): out.append(val if isinstance(val, str) else name)
+    if not out:
+        out = [f for f in glob.glob(os.path.join(ext_dir, "data", "expressions", "**", "*"), recursive=True) if os.path.isfile(f) and any(w in os.path.basename(f).lower() for w in words)]
+    return out
+for nm, words in (("smile", ["smile", "happy", "laugh"]), ("surprise", ["surpris", "shock"]), ("sad", ["sad", "cry"]), ("angry", ["angry", "anger", "mad"])):
+    fs_ = expr_files(words); print("EXPR FILES", nm, fs_[:5])
+    if fs_:
+        try:
+            FSc.clear_applied_expressions(h)
+            FSc.apply_expression_file(h, fs_[0], weight=1.0, append=False); bpy.context.view_layer.update()
+            shot(f"named_{nm}.png", *FACE); print("EXPR named ok", nm)
+        except Exception as ex: print("call fail apply_expr", nm, repr(ex)[:300])
+try: FSc.clear_applied_expressions(h)
+except Exception: pass
 ks = all_keys()
 print("KEYS NOW", len(ks), sorted(ks)[:120])
 
@@ -224,11 +250,11 @@ def clear_keys():
         for k in lst:
             if k.name != "Basis" and not k.name.startswith("$md"): k.value = 0.0
 tests = {
-    "smile": ["mouthsmile", "smile", "lip-corner-up", "lips-corner-up", "mouth-corner-up", "cheekraise", "cheek-up"],
-    "blink": ["eyeblink", "blink", "eye-close", "eyelid-down", "eyesclosed"],
-    "surprise": ["browinnerup", "browouterup", "eyewide", "jawopen", "brow-up", "eyes-wide"],
-    "viseme_aa": ["viseme_aa", "_aa", "aa"],
-    "viseme_oh": ["viseme_o", "_oh", "oh"],
+    "smile": ["mouthsmile", "cheeksquint"],
+    "blink": ["eyeblink"],
+    "surprise": ["browinnerup", "browouterup", "eyewide", "jawopen"],
+    "viseme_aa": ["viseme_aa", "viseme02", "aa"],
+    "viseme_oh": ["viseme_o", "viseme08", "oh"],
 }
 for name, words in tests.items():
     clear_keys(); hit = set_keys(words, 1.0); bpy.context.view_layer.update()
