@@ -18,7 +18,17 @@ RES = tuple(int(x) for x in str(opt.get("res", "640x360")).split("x"))
 t0 = time.time()
 
 import village as V
-sc = V.setup_shaded(fast=True, frames=N)
+if KIND != "doll":
+    # a factory reset would unload the MPFB extension: clear the start-up scene by hand instead
+    for o in list(bpy.data.objects): bpy.data.objects.remove(o, do_unlink=True)
+    _orig_reset = bpy.ops.wm.read_factory_settings
+    class _NoReset:
+        def __call__(self, *a, **k): return {"FINISHED"}
+    bpy.ops.wm.read_factory_settings = _NoReset()
+    sc = V.setup_shaded(fast=True, frames=N)
+    bpy.ops.wm.read_factory_settings = _orig_reset
+else:
+    sc = V.setup_shaded(fast=True, frames=N)
 V._MATS.clear()                                            # village caches materials across factory resets
 import lib_fx as FX, lib_anim as A, lib_camera as CAM
 sc.frame_start, sc.frame_end = 1, N
@@ -36,7 +46,8 @@ top = FX.new_obj("charpai_collider", FX.mesh_box(1.9, 0.9, 0.06, "cp_col"), None
 top.rotation_euler = (0, 0, math.radians(5)); top.hide_render = True; FX.rb_add(top, "PASSIVE", "BOX")
 
 # ---------------- characters ----------------
-raju, ri = A.make_character(KIND, name="raju", loc=(-0.2, -0.3, 0), rot_z=math.radians(-20), colors=dict(top=(1.0, 0.56, 0.12)))
+raju, ri = A.make_character(KIND, name="raju", loc=(-0.2, -0.3, 0), rot_z=math.radians(-20), colors=dict(top=(1.0, 0.56, 0.12)),
+                            mpfb_kw=dict(gender=1.0, hair="short02", clothes=("male_casualsuit03", "shoes01")))
 gud, gi = A.make_character(KIND, name="gudiya", loc=(0.9, 0.2, 0), rot_z=math.radians(25), girl=True, colors=dict(top=(0.82, 0.16, 0.48), bottom=(1.0, 0.84, 0.2)))
 print("CHARACTERS", ri["kind"], gi["kind"])
 A.assert_no_undressed_humans()
