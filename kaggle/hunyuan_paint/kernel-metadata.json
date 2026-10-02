@@ -1,0 +1,13 @@
+{
+  "id": "mani7673/sonpur-hunyuan-paint",
+  "title": "sonpur-hunyuan-paint",
+  "code_file": "paint.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": ["mani7673/sonpur-hunyuan-props"]
+}
