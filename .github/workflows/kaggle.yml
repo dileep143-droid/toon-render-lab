@@ -1,0 +1,60 @@
+name: kaggle
+# Run the Kaggle side of the pipeline from GitHub (no laptop needed). Uses the encrypted secrets KAGGLE_KEY1..20.
+#   action=build  : set ONLY/MODS in <kernel_dir>/build_on_kaggle.py and push the kernel (starts a GPU build on Kaggle)
+#   action=status : show the kernel's status
+#   action=sync   : wait for the kernel to finish, merge its output into the private dataset, publish a new version
+#   action=list   : list my kernels and datasets
+on:
+  workflow_dispatch:
+    inputs:
+      action:     { description: "build | status | sync | list", default: "status" }
+      kernel_dir: { description: "kaggle/library or kaggle/cast or kaggle/hunyuan", default: "kaggle/library" }
+      only:       { description: "build: props | cast | animals", default: "props" }
+      mods:       { description: "build: prop modules, e.g. lib_props4 or lib_props,lib_props2", default: "lib_props,lib_props2,lib_props3,lib_props4" }
+      key:        { description: "which KAGGLE_KEYn secret to use (1-20)", default: "1" }
+      dataset:    { description: "database dataset", default: "mani7673/sonpur-asset-library-data" }
+
+jobs:
+  kaggle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets[format('KAGGLE_KEY{0}', inputs.key)] }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Kaggle CLI
+        run: |
+          pip install -q --upgrade kaggle
+          test -n "$KAGGLE_API_TOKEN" || { echo "secret KAGGLE_KEY${{ inputs.key }} is empty"; exit 1; }
+          kaggle config view | grep -i username || true
+      - name: Kernel id
+        id: k
+        run: echo "ref=$(python3 -c "import json;print(json.load(open('${{ inputs.kernel_dir }}/kernel-metadata.json'))['id'])")" >> $GITHUB_OUTPUT
+      - name: Build (push kernel)
+        if: inputs.action == 'build'
+        run: |
+          python3 - <<'EOF'
+          import re
+          p = "${{ inputs.kernel_dir }}/build_on_kaggle.py"
+          t = open(p, encoding="utf-8-sig").read()
+          t = re.sub(r'^ONLY = .*$', 'ONLY = "${{ inputs.only }}"', t, flags=re.M)
+          if re.search(r'^MODS = ', t, flags=re.M): t = re.sub(r'^MODS = .*$', 'MODS = "${{ inputs.mods }}"', t, flags=re.M)
+          open(p, "w", encoding="utf-8").write(t); print([l for l in t.splitlines() if l.startswith(("ONLY", "MODS"))])
+          EOF
+          kaggle kernels push -p ${{ inputs.kernel_dir }}
+      - name: Status
+        if: inputs.action == 'status' || inputs.action == 'build'
+        run: kaggle kernels status ${{ steps.k.outputs.ref }}
+      - name: Sync into the database
+        if: inputs.action == 'sync'
+        run: |
+          for i in $(seq 1 270); do
+            s=$(kaggle kernels status ${{ steps.k.outputs.ref }}); echo "$s"
+            echo "$s" | grep -qE 'RUNNING|QUEUED' || break; sleep 60
+          done
+          python3 kaggle/sync_library.py ${{ steps.k.outputs.ref }} ${{ inputs.dataset }} work
+      - name: List
+        if: inputs.action == 'list'
+        run: kaggle kernels list --mine; kaggle datasets list --mine
