@@ -746,6 +746,13 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34, ripple=rip[0], nrip=rip[1])
     return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick, post_smooth=4)
 
+def underlayer(B, name, rgb, waist_z=None, leg_t=0.95):
+    """petticoat / inner layer under a skirt, saree, langa or lungi: snug ankle-length leg tubes that follow the legs
+    (same colour family, a shade darker), so no skin can show in a walking stride even where a leg passes the outer skirt"""
+    Hs = B.Hs
+    return bottoms(B, name, fabric(name, _darker(rgb, 0.8), 0.85, 0.35), waist_z if waist_z is not None else B.zw,
+                   leg_t=leg_t, style="snug", offset=0.004, ease=0.003, clear=0.003, thick=0.003)
+
 def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
     """pelvis at the waist -> thighs -> shins at the hem; left/right split by x"""
     legw = 0.97 * _smoothstep(B.zh + 0.01 * B.Hs, B.zx - 0.3 * (B.zx - B.zk), z) * stiff
@@ -1408,6 +1415,7 @@ def _saree(B, C, o, pallu_w=0.09, elder=False):
     rings = skirt_rings(B, B.zw - 0.005 * Hs, max(0.008, 0.25 * B.za), flare=1.3, ease=0.014, top_ease=0.004)
     sm = fabric("saree", C["saree"], 0.8, 0.5, border={"c": C["border"], "mode": "v_hi", "w": 0.07, "zari": zari, "stripe": True},
                 pattern=None if elder else {"kind": "buti", "c2": C["border"], "scale": 0.05, "r": 0.1}, coord="uv")
+    G.append(underlayer(B, "petticoat", C["saree"], B.zw - 0.005 * Hs))
     G.append(lathe(B, "saree_skirt", sm, rings, segs=128, sim=SKIRT_SIM))
     hem = rings[-1][0]
     fm = fabric("saree_pleats", C["saree"], 0.8, 0.5, border={"c": C["border"], "mode": "u_gt", "w": (B.zw - hem) - 0.07 * (B.zw - hem), "zari": zari}, coord="uv")
@@ -1454,6 +1462,7 @@ def _build(B, outfit, C, o):
     elif outfit == "langa_voni":
         G += _blouse(B, C, trim=C["zari"])
         rings = skirt_rings(B, B.zw + 0.008 * Hs, max(0.01, 0.4 * B.za), flare=1.5, ease=0.012)
+        G.append(underlayer(B, "langa_petticoat", C["langa"]))
         G.append(lathe(B, "langa", fabric("langa", C["langa"], 0.4, 0.8, border={"c": C["zari"], "mode": "v_hi", "w": 0.12, "zari": True, "stripe": True},
                                           pattern={"kind": "buti", "c2": C["zari"], "scale": 0.05, "r": 0.09}, coord="uv"), rings, segs=128, pleats=48, amp0=0.012, sim=SILK_SIM))
         G.append(waistband(B, B.zw + 0.008 * Hs, fabric("langa_band", C["zari"], 0.3, 0, metal=0.7), h=0.016 * Hs))
@@ -1462,6 +1471,7 @@ def _build(B, outfit, C, o):
     elif outfit == "pattu_pavadai":
         G += _blouse(B, C, sleeve=0.22, neck=0.03, trim=C["zari"])
         rings = skirt_rings(B, B.zw + 0.008 * Hs, max(0.01, 0.4 * B.za), flare=1.6, ease=0.012)
+        G.append(underlayer(B, "pavadai_petticoat", C["skirt"]))
         G.append(lathe(B, "pavadai", fabric("pavadai", C["skirt"], 0.35, 0.8, border={"c": C["zari"], "mode": "v_hi", "w": 0.2, "zari": True, "stripe": True},
                                             pattern={"kind": "buti", "c2": C["zari"], "scale": 0.045, "r": 0.1}, coord="uv"), rings, segs=128, pleats=48, amp0=0.012, sim=SILK_SIM))
         G.append(waistband(B, B.zw + 0.008 * Hs, fabric("pavadai_band", C["zari"], 0.3, 0, metal=0.75), h=0.022 * Hs))
@@ -1496,7 +1506,8 @@ def _build(B, outfit, C, o):
         lm = fabric("lungi", C["lungi"], 0.85, 0.4, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.045 * s, "lw": 0.1, "c3": C["check2"]}, coord="uv")
         short = o.get("lungi_short", False)
         hem = (B.zk - 0.03 * Hs) if short else max(0.012, 0.6 * B.za)
-        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.01, top_ease=0.004)
+        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.12, ease=0.016, top_ease=0.004)   # fuller wrap: overlaps more, splits less in a stride
+        G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95))
         G.append(lathe(B, "lungi", lm, rings, segs=96, sim=SKIRT_SIM))
         G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.024 * Hs, ease=0.012, name="lungi_roll"))
         if short:   # folded up to the knee: a thick rolled hem
@@ -1672,7 +1683,7 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
             foot = [B.co[i] for i in B.body_idx if B.side[i] == sd and B.part[i] == "leg" and any(b.startswith(("foot", "toe")) for b in B.w[i])]
             if not foot: continue
             if kind == "chappal":
-                low = [p for p in foot if p.z < 0.025 * B.Hs]
+                low = [p for p in foot if p.z < 0.045 * B.Hs]   # the widest low part of the foot, not just the contact patch
                 pts2 = sorted({(round(p.x, 3), round(p.y, 3)) for p in low})
                 hull = _hull(pts2); cx = sum(p[0] for p in hull) / len(hull); cy = sum(p[1] for p in hull) / len(hull)
                 hull = [(cx + (x - cx) * 1.08 + (0.004 if x > cx else -0.004), cy + (y - cy) * 1.06) for x, y in hull]
