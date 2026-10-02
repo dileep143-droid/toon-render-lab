@@ -60,7 +60,7 @@ def save_blend(path):
     bpy.ops.wm.save_as_mainfile(filepath=path, compress=True, copy=True)
 
 # ---------------- props ----------------
-for modname in (("lib_props", "lib_props2") if "props" in ONLY else ()):
+for modname in (("lib_props", "lib_props2", "lib_props3") if "props" in ONLY else ()):
     try:
         LP = importlib.import_module(modname)
         d = os.path.join(OUT, "props"); os.makedirs(d, exist_ok=True)
@@ -95,14 +95,26 @@ if "cast" in ONLY:
                 base_clothes = ("female_casualsuit01", "shoes01") if fem else ("male_casualsuit01", "shoes02")
                 h, rig = MC.make_child(gender=0.0 if fem else 1.0, age=MC.age_macro(member["age"]), skin=member["skin"], hair=member["hair"],
                                        clothes=base_clothes, skin_rgb=tuple(member["skin_rgb"]), weight=member.get("weight", 0.5))
-                garments = LO.dress(h, rig, member["outfit"])
+                kid_mod = member.get("outfit_module")
+                if kid_mod:   # babies / toddlers: their own outfit module (dress_kid builds accessories + footwear itself)
+                    KM = importlib.import_module(kid_mod)
+                    garments = KM.dress_kid(h, rig, member["outfit"])
+                else:
+                    garments = LO.dress(h, rig, member["outfit"])
                 if not garments: raise RuntimeError("outfit produced no garments: refusing to save an undressed character")
-                for ex_ in member.get("extras", []):
+                if kid_mod:   # hard safety rule: no file or thumbnail of a child unless the outfit fully covers (torso + hips + legs to the knee)
+                    H_ = max(0.6, h.dimensions.z)
+                    cams_ = {n: Vector(v) for n, v in (("front", (0, -2 * H_, 0.55 * H_)), ("back", (0, 2 * H_, 0.55 * H_)), ("left", (2 * H_, 0, 0.55 * H_)),
+                                                        ("right", (-2 * H_, 0, 0.55 * H_)), ("thumb", (1.3 * H_, -1.7 * H_, 1.2 * H_)))}
+                    cov_ = LO.coverage(h, rig, cams_, level=getattr(KM, "OUTFITS", {}).get(member["outfit"], {}).get("cover", "knee"))
+                    if any(v["frac"] > 0.002 for v in cov_.values()):
+                        raise RuntimeError(f"coverage check failed {({k: v['exposed'] for k, v in cov_.items()})}: refusing to save or render this child")
+                for ex_ in ([] if kid_mod else member.get("extras", [])):
                     f = getattr(LO, ex_, None)
                     if callable(f):
                         try: f(h, rig)
                         except Exception as e2: print("extra fail", cid, ex_, repr(e2)[:200])
-                if hasattr(LO, "footwear"):
+                if hasattr(LO, "footwear") and not kid_mod:
                     try: LO.footwear(h, rig, "chappal")
                     except Exception as e2: print("footwear fail", cid, repr(e2)[:200])
                 MC.set_face(h, mouthSmileLeft=0.35, mouthSmileRight=0.35)
