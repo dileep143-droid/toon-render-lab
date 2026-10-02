@@ -200,6 +200,25 @@ class Body:
         s = sum(acc.values()) or 1.0
         return {b: x / s for b, x in acc.items() if x / s > 0.01}
 
+def _register_existing(B):
+    """add the outfit pieces already on the character (rest pose) to the collider"""
+    dg = bpy.context.evaluated_depsgraph_get(); Mi = B.h.matrix_world.inverted(); n = 0
+    for o in set(B.rig.children_recursive) | set(B.h.children_recursive):
+        if o.type != "MESH" or not (o.get("outfit_piece") or o.get("outfit_foot")): continue
+        sol = [(m, m.show_viewport) for m in o.modifiers if m.type == "SOLIDIFY"]
+        th = max([m.thickness for m, _ in sol] or [0.0])
+        for m, _ in sol: m.show_viewport = False
+        bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
+        ev = o.evaluated_get(dg); me = ev.to_mesh(); M = Mi @ o.matrix_world; R3 = M.to_3x3()
+        B.add_collider([M @ v.co + (R3 @ v.normal).normalized() * th for v in me.vertices], [tuple(p.vertices) for p in me.polygons])
+        ev.to_mesh_clear(); n += 1
+        for m, s_ in sol: m.show_viewport = s_
+    bpy.context.view_layer.update()
+    for o in set(B.rig.children_recursive):
+        if o.type == "MESH" and o.get("outfit_piece") and any(m.type == "ARMATURE" for m in o.modifiers) and o.name.endswith(("skirt", "langa", "pavadai", "lungi", "_tail")):
+            B.skirt_tops.append(max(v.co.z for v in o.data.vertices))
+    print("OUTFIT registered existing pieces", n)
+
 def body_of(h, rig, refresh=False):
     if refresh or h.name not in _BODIES: _BODIES[h.name] = Body(h, rig)
     return _BODIES[h.name]
@@ -417,7 +436,7 @@ def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=
         hb = bmesh.new()
         for p in hull_pts: hb.verts.new(p)
         bmesh.ops.convex_hull(hb, input=hb.verts[:])
-        hb.normal_update(); hbvh = BVHTree.FromBMesh(hb); hb.free()
+        bmesh.ops.recalc_face_normals(hb, faces=hb.faces[:]); hb.normal_update(); hbvh = BVHTree.FromBMesh(hb); hb.free()
         for _ in range(2): push_out(bm.verts, hbvh, offset)
         bmesh.ops.smooth_vert(bm, verts=bm.verts[:], factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
         push_out(bm.verts, hbvh, offset * 0.8)
@@ -540,7 +559,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
     for _ in range(2): push_out(bm.verts, bv, clear)
     bm.normal_update()   # faces are built facing outward (radial); no per-face flipping
     rxh = max(rr[2] for rr in rings)
-    if wfun is None: B.skirt_tops.append(z0)
+    if wfun is None and z1 < B.zh: B.skirt_tops.append(z0)   # real skirts / tails only (not belts or sashes)
     weights = [(wfun or (lambda co: _skirt_weights(B, z0, z1, co.x, co.z, rxh)))(v.co) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick)
     _register(B, o)
@@ -935,10 +954,13 @@ def strip_clothes(h, rig):
     """remove MPFB clothes (and earlier outfit pieces) - keeps hair, eyes, eyebrows, eyelashes, teeth, tongue"""
     removed = []
     keep_types = {"Basemesh", "Skeleton", "Hair", "Eyes", "Eyebrows", "Eyelashes", "Teeth", "Tongue", "Proxymeshes"}
-    for o in list(set(rig.children_recursive) | set(h.children_recursive)):
-        if o == h or o.type != "MESH": continue
-        t = _otype(o); nm = o.name.lower()
-        if o.get("outfit_piece") or o.get("outfit_foot") or t == "Clothes" or (t not in keep_types and not any(w in nm for w in ("hair", "eye", "brow", "lash", "teeth", "tongue", "long01", "short0", "bob0", "braid", "ponytail", "high-poly", "low-poly"))):
+    objs = [o for o in set(rig.children_recursive) | set(h.children_recursive) if o != h and o.type == "MESH"]
+    types = {o.name: _otype(o) for o in objs}
+    typed = any(t for t in types.values())   # MPFB object types readable -> trust them; props parented to bones are never touched
+    for o in objs:
+        t = types[o.name]; nm = o.name.lower()
+        mpfb_clothes = (t == "Clothes") if typed else (any(w in nm for w in ("suit", "shoe", "boot", "dress", "shirt", "pants", "jeans", "skirt", "sweater", "tshirt", "jacket")))
+        if o.get("outfit_piece") or o.get("outfit_foot") or mpfb_clothes:
             removed.append(o.name); bpy.data.objects.remove(o, do_unlink=True)
     mods = []
     for m in list(h.modifiers):
@@ -996,6 +1018,7 @@ def sweater(basemesh, rig, kind="cardigan", colour=None):
     pp = rig.data.pose_position; rig.data.pose_position = "REST"; bpy.context.view_layer.update()
     try:
         B = body_of(basemesh, rig)
+        if len(B.col) == 1: _register_existing(B)   # fresh session: learn the clothes already on so the sweater goes over them
         return [x for x in _sweater(B, kind, colour) if x is not None]
     finally:
         rig.data.pose_position = pp; bpy.context.view_layer.update()
