@@ -1,0 +1,44 @@
+name: make-props
+on:
+  workflow_dispatch:
+    inputs:
+      items:
+        description: "JSON list of item names from make_object_pictures.py"
+        default: '["bullock_cart","chai_stall","banyan_tree","village_temple","village_school","mud_house","matka","chulha","goat","village_dog","peacock","water_buffalo"]'
+
+jobs:
+  prop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        item: ${{ fromJSON(inputs.items) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 cmake
+      - name: Picture (FLUX.1-schnell, Apache-2.0)
+        run: |
+          pip install -q gradio_client pillow
+          python3 make_object_pictures.py pictures ${{ matrix.item }}
+          test -f pictures/${{ matrix.item }}.png
+      - name: TripoSR (MIT) on CPU
+        run: |
+          git clone --depth 1 https://github.com/VAST-AI-Research/TripoSR.git
+          pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -q scikit-build-core pybind11 cmake ninja
+          pip install -q --no-build-isolation git+https://github.com/tatsy/torchmcubes.git
+          grep -v torchmcubes TripoSR/requirements.txt > req.txt && pip install -q -r req.txt onnxruntime
+          cd TripoSR && python run.py ../pictures/${{ matrix.item }}.png --device cpu --output-dir ../tsr --model-save-format obj --foreground-ratio 0.85 --mc-resolution 320 2>&1 | tail -n 3
+      - name: Preview render
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          mkdir -p out && cp pictures/${{ matrix.item }}.png out/ && cp tsr/0/mesh.obj out/${{ matrix.item }}.obj
+          ./blender/blender -b -noaudio --python sample_object_render.py -- tsr/0/mesh.obj out/preview 2>&1 | grep -E "ORIENT|DONE|Error" | tail -n 5
+      - uses: actions/upload-artifact@v4
+        with: { name: "prop-${{ matrix.item }}", path: out, retention-days: 14 }
