@@ -39,6 +39,14 @@ A free, open-source pipeline to make Infobells-style 3D Indian-village kids' car
 - PowerShell 5.1 `Set-Content -Encoding UTF8` writes a BOM that breaks JSON/Kaggle metadata — write files with Python/UTF-8.
 - Kaggle kernel output keeps only the LATEST version: after each build, download it, merge into the local library and `kaggle datasets version` the database.
 
+## Run everything from GitHub (no laptop needed)
+The repo has encrypted secrets `KAGGLE_KEY1`…`KAGGLE_KEY20` (key 1 = account `mani7673`, which owns the kernels and the database). Workflow `.github/workflows/kaggle.yml` (Actions tab → "kaggle" → Run workflow):
+- `action=list` — show kernels + datasets (tested OK on 2 Oct).
+- `action=build`, `kernel_dir=kaggle/library`, `only=props|cast|animals`, `mods=lib_props4` (or a comma list) — starts a GPU build on Kaggle.
+- `action=status` — kernel status.
+- `action=sync` — waits for the build to finish, merges its output into the private dataset `mani7673/sonpur-asset-library-data` and publishes a new version (`kaggle/sync_library.py`).
+Test workflows (outfits.yml, kids.yml, hair.yml, toon.yml, animals.yml, fx.yml, samples.yml) also run from the Actions tab. A cloud Claude session only needs GitHub access to drive all of this.
+
 ## How to run things
 - Build part of the library on Kaggle: edit `kaggle/library/build_on_kaggle.py` (`ONLY = "props"|"cast"|"animals"`, `MODS = "lib_props4"` etc.), then `kaggle kernels push -p kaggle/library` (env `KAGGLE_API_TOKEN`). Download: `kaggle kernels output mani7673/sonpur-asset-library -p <dir>`.
 - Locally: `blender -b --python preview_props.py -- <out> [names] [--workbench|--check|--ref]` (same for preview_props2/3/4).
