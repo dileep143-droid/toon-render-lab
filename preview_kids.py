@@ -36,7 +36,7 @@ def make_kid(c, name, faces=True, loc=(0, 0, 0)):
     h.name = f"{name}_body"; rig.name = f"{name}_rig"
     sk = h.data.shape_keys.key_blocks if h.data.shape_keys else []
     hair_objs = [o.name for o in bpy.data.objects if o.parent in (h, rig) and c["hair"] != "none" and c["hair"].lower() in o.name.lower()]
-    eyes = [o.name for o in bpy.data.objects if o.parent in (h, rig) and "eye" in o.name.lower()]
+    eyes = [o.name for o in bpy.data.objects if o.parent in (h, rig) and any(w in o.name.lower() for w in ("eye", "high-poly", "low-poly"))]
     print("KID built", name, "years", c["years"], "age_macro", round(MC.age_macro(c["years"]), 4), "height_m", round(h.dimensions.z, 3),
           "shape_keys", len(sk), "mouthSmileLeft" in [k.name for k in sk], "hair", hair_objs, "eyes", eyes,
           "skin_mats", [s.material.name for s in h.material_slots if s.material][:3])
@@ -114,7 +114,7 @@ if WHO in KIDS:
         print("REPORT", key, json.dumps(rep)[:1500])
         json.dump(REPORT, open(os.path.join(OUT, f"report_{WHO}.json"), "w"), indent=1)
 elif WHO == "carry":
-    for mode, side, kid, outfit in (("hip", "left", "boy3", "toddler_kurta_shorts"), ("arms", "left", "baby1", "jhabla")):
+    for mode, side, kid, outfit in (("hip", "left", "boy3", "toddler_kurta_shorts"), ("arms", "left", "baby1", "baby_romper")):   # a lying baby needs closed legs (an open smock shows up the hem from the feet)
         if ONLY and outfit not in ONLY: continue
         key = f"carry_{mode}_{kid}_{outfit}"; rep = REPORT[key] = {}; t0 = time.time()
         try:
@@ -134,6 +134,11 @@ elif WHO == "carry":
             rep["coverage"] = cov; print("COVER", key, ok, json.dumps(cov)[:1500])
             if not ok:
                 print("SKIP", key, "coverage failed: nothing rendered"); rep["skipped"] = True
+                # diagnostic only: the GARMENTS alone (every body, hair, eye mesh hidden - no person in the frame)
+                hide = [o for o in bpy.data.objects if o.type == "MESH" and not (o.get("outfit_piece") or o.get("outfit_foot")) and o.name != "ground"]
+                for o in hide: o.hide_render = True
+                look(cam, cams["front"], tgt); sc.render.filepath = os.path.join(OUT, f"{key}_front_GARMENTS_ONLY.png"); bpy.ops.render.render(write_still=True)
+                for o in hide: o.hide_render = False
             else:
                 shoot(sc, cam, key, cams, tgt, ("front", "q34", "left"), rep)
             rep["s"] = round(time.time() - t0, 1)
