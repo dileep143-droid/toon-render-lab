@@ -4,15 +4,17 @@ python kaggle/check_needs.py <dataset_ref> <work_dir>"""
 import json, os, re, subprocess, sys, glob, zipfile
 DATASET, W = sys.argv[1], sys.argv[2]
 os.makedirs(W, exist_ok=True)
-def get(f):
-    subprocess.run(f"kaggle datasets download {DATASET} -f {f} -p {W} --force", shell=True)
-    base = os.path.basename(f)
-    for z in glob.glob(os.path.join(W, base + "*.zip")): zipfile.ZipFile(z).extractall(W); os.remove(z)
-    p = os.path.join(W, base)
-    return json.load(open(p, encoding="utf-8-sig")) if os.path.exists(p) else None
-cat = get("catalogue.json"); needs = get("stories/ASSET_NEEDS.json")
+subprocess.run(f"kaggle datasets download {DATASET} -p {W} --force", shell=True)   # read-only download, nothing is uploaded
+for _ in range(3):   # the dataset zip and its inner per-folder zips (props.zip, stories.zip, ...)
+    for z in glob.glob(os.path.join(W, "**", "*.zip"), recursive=True):
+        d = os.path.splitext(z)[0]; zipfile.ZipFile(z).extractall(d if os.path.basename(d) not in DATASET else W); os.remove(z)
+def find(pat):
+    hits = sorted(glob.glob(os.path.join(W, "**", pat), recursive=True), key=len)
+    print("FOUND", pat, [h[len(W) + 1:] for h in hits[:5]])
+    return json.load(open(hits[0], encoding="utf-8-sig")) if hits else None
+cat = find("catalogue.json"); needs = find("ASSET_NEEDS*.json") or find("*needs*.json")
 if cat is None or needs is None:
-    subprocess.run(f"kaggle datasets files {DATASET} --page-size 200", shell=True)
+    print("TREE", sorted({os.path.relpath(r, W) for r, _, _ in os.walk(W)})[:80])
     sys.exit(f"missing file: catalogue={cat is not None} needs={needs is not None}")
 have = {}
 for k, v in cat.items():
