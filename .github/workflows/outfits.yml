@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        who: [girl, boy, woman, man, elder, teen, heavy]
+        who: [girl, boy, woman, man, elder, teen, heavy, bodies_a, bodies_b]
     steps:
       - uses: actions/checkout@v4
       - name: Libraries
