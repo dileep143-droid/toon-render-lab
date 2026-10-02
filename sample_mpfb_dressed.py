@@ -88,17 +88,25 @@ def add(kind, prefer):
         except Exception as ex: print("add fail", kind, kw, repr(ex)[:200])
 
 try:
-    sk = pick("skins", ["young", "middleage", "default", "light"])
+    sk = pick("skins", ["young_asian_female"])
     if sk:
         for kw in ({"skin_type": "ENHANCED_SSS"}, {"skin_type": "MAKESKIN"}, {}):
             try: HS.set_character_skin(sk, h, **kw); print("SKIN", os.path.basename(sk), kw); break
             except Exception as ex: print("skin fail", kw, repr(ex)[:200])
 except Exception: traceback.print_exc()
-add("eyes", ["brown", "low-poly", "high-poly"])
-add("eyebrows", ["eyebrow001", "eyebrow"])
-add("eyelashes", ["eyelashes01", "eyelash"])
-add("hair", ["ponytail", "long", "braid", "bob"])
-add("clothes", ["dress", "skirt", "shirt", "top"])
+add("eyes", ["high-poly"])
+add("eyebrows", ["eyebrow010", "eyebrow001"])
+add("eyelashes", ["eyelashes01"])
+add("hair", ["braid01", "ponytail01", "long01"])
+DRESSED = 0
+def add_cloth(name):
+    global DRESSED
+    f = next((x for x in found.get("clothes", []) if os.path.basename(x).lower() == name + ".mhclo"), None)
+    if not f: print("NO cloth", name); return
+    try: HS.add_mhclo_asset(f, h, asset_type="Clothes"); print("ADDED cloth", name); DRESSED += 1
+    except Exception as ex: print("cloth fail", name, repr(ex)[:300])
+add_cloth("female_casualsuit01"); add_cloth("shoes01")
+print("DRESSED COUNT", DRESSED, "objects", [o.name for o in bpy.data.objects])
 
 def shot(name, cam_loc, cam_rot, lens):
     sc.camera.location = cam_loc; sc.camera.rotation_euler = cam_rot; sc.camera.data.lens = lens
@@ -112,9 +120,32 @@ sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"; sc.cycles.samples = 40; s
 sc.render.resolution_x, sc.render.resolution_y = 720, 900; sc.view_settings.view_transform = "Standard"
 H = h.dimensions.z
 print("OBJECTS", [(o.name, o.type) for o in sc.objects])
-shot("dressed_full.png", (0, -3.0, H * 0.55), (R(90), 0, 0), 50)
 headz = H * 0.90
-shot("face_neutral.png", (0, -1.0, headz), (R(90), 0, 0), 85)
+# safety: never render the body unless the outfit is on; otherwise head-and-shoulders only
+if DRESSED >= 1:
+    shot("dressed_full.png", (0, -3.0, H * 0.55), (R(90), 0, 0), 50)
+else:
+    print("NOT DRESSED: skipping full-body shot")
+FACE = ((0, -0.75, headz + 0.02), (R(90), 0, 0), 110)   # tight on the face only
+shot("face_neutral.png", *FACE)
+# ---- smile trials with the default rig's face bones (oris = mouth ring, levator = lip raisers) ----
+if rig is not None:
+    pb = rig.pose.bones
+    def reset():
+        for b in pb: b.rotation_mode = "XYZ"; b.rotation_euler = (0, 0, 0); b.location = (0, 0, 0)
+    trials = {
+        "smile_a": {"levator05.L": (0, 0, 0, 0, 0, 0.004), "levator05.R": (0, 0, 0, 0, 0, 0.004), "oris07.L": (0, 0, 0, 0.002, 0, 0.003), "oris07.R": (0, 0, 0, -0.002, 0, 0.003)},
+        "smile_b": {"oris07.L": (0, 0, -15, 0, 0, 0), "oris07.R": (0, 0, 15, 0, 0, 0), "levator06.L": (-15, 0, 0, 0, 0, 0), "levator06.R": (-15, 0, 0, 0, 0, 0)},
+        "smile_c": {"oris07.L": (15, 0, 0, 0, 0, 0), "oris07.R": (15, 0, 0, 0, 0, 0), "oris06.L": (10, 0, 0, 0, 0, 0), "oris06.R": (10, 0, 0, 0, 0, 0)},
+        "jaw_open": {"jaw": (12, 0, 0, 0, 0, 0)},
+    }
+    for name, mv in trials.items():
+        reset()
+        for bn, (rx, ry, rz, lx, ly, lz) in mv.items():
+            if bn in pb: pb[bn].rotation_euler = (R(rx), R(ry), R(rz)); pb[bn].location = (lx, ly, lz)
+            else: print("no bone", bn)
+        bpy.context.view_layer.update(); shot(f"face_{name}.png", *FACE)
+    reset()
 
 # ---- expressions: try face-unit shape keys / pose-based expressions ----
 done = False
