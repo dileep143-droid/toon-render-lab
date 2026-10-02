@@ -38,8 +38,14 @@ jobs:
             if curl -fsSL --retry 2 -A "Mozilla/5.0" -o pack.zip "$u" || curl -fsSLk -A "Mozilla/5.0" -o pack.zip "$u"; then echo "PACK from $u"; break; fi
           done
           ls -la pack.zip && unzip -q pack.zip -d pack && ls pack | head
+          mkdir -p functional
+          for p in faceunits01 visemes01; do
+            curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip "https://files2.makehumancommunity.org/functional/$p.zip" \
+              || curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip "https://files.makehumancommunity.org/functional/$p.zip"
+            unzip -l functional/$p.zip | head -n 12
+          done
       - name: Dressed child with expressions
-        run: ./blender/blender -b -noaudio --python sample_mpfb_dressed.py -- out pack 2>&1 | grep -vE "^Fra:|Sample [0-9]|^\s*$" | grep -E "SIG|SERVICE|USER|PACK|LIST|FILES|RIG|SKIN|ADDED|NO |fail|OBJECTS|SHAPEKEYS|FACE|FS fn|DONE|API|DATA|CALLED|call fail|KEYS NOW|EXPR|WARMED|Error|Traceback|line [0-9]|rescan" | tail -n 150
+        run: ./blender/blender -b -noaudio --python sample_mpfb_dressed.py -- out pack 2>&1 | grep -vE "^Fra:|Sample [0-9]|^\s*$" | grep -E "SIG|SERVICE|USER|PACK|LIST|FILES|RIG|SKIN|ADDED|NO |fail|OBJECTS|SHAPEKEYS|FACE|FS fn|DONE|API|DATA|CALLED|call fail|KEYS NOW|EXPR|WARMED|FUNC PACK|func pack|Error|Traceback|line [0-9]|rescan" | tail -n 150
       - uses: actions/upload-artifact@v4
         with: { name: mpfb-child, path: out, retention-days: 7 }
 
