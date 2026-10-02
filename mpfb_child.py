@@ -40,10 +40,16 @@ def _tint_tree(nt, rgb, fac, mode, seen):
                 to = l.to_socket; nt.links.remove(l); nt.links.new(mix.outputs[2], to)
 
 _SKIN_DONE = set()
+def age_macro(years):
+    """MakeHuman age macro: 0 = 1 y, 0.1875 = 11 y, 0.5 = 25 y, 1 = 90 y"""
+    if years <= 11: return max(0.0, 0.1875 * (years - 1) / 10)
+    if years <= 25: return 0.1875 + 0.3125 * (years - 11) / 14
+    return min(1.0, 0.5 + 0.5 * (years - 25) / 65)
+
 def make_child(gender=0.0, age=0.14, skin="young_asian_female", hair="long01", clothes=("female_casualsuit01", "shoes01"),
-               skin_rgb=(0.86, 0.64, 0.48), loc=(0, 0, 0), rot_z=0.0, faces=True):
-    """returns (basemesh, rig). Refuses to return an undressed child."""
-    macros = {"gender": gender, "age": age, "muscle": 0.5, "weight": 0.55, "proportions": 0.5, "height": 0.5, "cupsize": 0.5, "firmness": 0.5,
+               skin_rgb=(0.86, 0.64, 0.48), loc=(0, 0, 0), rot_z=0.0, faces=True, weight=0.55, height=0.5):
+    """returns (basemesh, rig). Works for any age (use age_macro(years)). Refuses to return an undressed character."""
+    macros = {"gender": gender, "age": age, "muscle": 0.5, "weight": weight, "proportions": 0.5, "height": height, "cupsize": 0.5, "firmness": 0.5,
               "race": {"african": 0.15, "asian": 0.55, "caucasian": 0.30}}
     h = HS.create_human(macro_detail_dict=macros, feet_on_ground=True, scale=0.1)
     rig = HS.add_builtin_rig(h, "default")
