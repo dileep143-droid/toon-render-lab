@@ -334,7 +334,7 @@ def reach_grab_move_place(rig, hand_side, obj, to_world, fr, show_at=None, look_
 # count objects one by one (explicit counts on words, then a comic fast-forward), free hand steadies the container
 # =====================================================================================================================
 def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), blend=None, container=None, show_dist=0.3,
-                  radius=0.021):
+                  radius=0.021, look_off=None):
     """objs: objects in pick order; dests: world origins they end at; beats: per object {"word": frame} (explicit: lifted and
     shown on the word) or {"fast": frame} (quick pick, comic speed-up). steady: (side, world grip point) for the free hand.
     pats: frames of satisfied pats on the container (needs `container`). blend = (in0, in1, out0, out1) IK on/off."""
@@ -342,7 +342,7 @@ def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), 
     b0, b1, b2, b3 = blend
     hd.clear_fk(b0 + 1, b3 - 1)
     hd.influence(b0, b1, b2, b3); hd.fingers_key(b0, 8); hd.fingers_key(b3, 8)    # (before any contact solve)
-    lk.influence(b0 - 2, b1 - 2, b2, b3 + 4)
+    lk.influence(b0 - 2, b1 - 2, *(look_off or (b2, b3 + 4)))      # look_off: head/eyes back to the FK pose earlier (talk up)
     # start of the blend = where the FK hand is (no pop), end = rest the hand on the container's edge
     _at(b0); w0, y0 = hd.wrist_world(); hd.key_wrist(b0, w0, y0)
     hb = rig.arm.pose.bones[rig.map["head"][0]]; _at(b0)
