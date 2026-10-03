@@ -1,0 +1,47 @@
+name: physics
+# lib_physics checks (Blender 4.2 LTS, CPU): world = props settle + ground snap + check_scene on Dadi's aangan (no people);
+# cloth = girl in langa-voni + jada braid walking with cloth / sway / foot lock; demo = Dadi's aangan with 3 villagers.
+# Stills are rendered only after the coverage check (no required skin visible).
+on:
+  workflow_dispatch:
+    inputs:
+      modes: { description: "comma list: world,cloth,demo", required: false, default: "world,cloth,demo" }
+jobs:
+  physics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [world, cloth, demo]
+    steps:
+      - uses: actions/checkout@v4
+        if: contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+      - name: Libraries
+        if: contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS + MPFB2
+        if: contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          python3 - <<'EOF'
+          import json, urllib.request
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab)"}
+          d = json.load(urllib.request.urlopen(urllib.request.Request("https://extensions.blender.org/api/v1/extensions/", headers=H), timeout=60))
+          e = next(x for x in d.get("data", d) if x.get("id") == "mpfb")
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+      - name: MakeHuman CC0 packs
+        if: matrix.mode != 'world' && contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+        run: |
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+          mkdir -p pack functional && unzip -q pack.zip -d pack
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+      - name: Physics ${{ matrix.mode }}
+        if: contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+        run: ./blender/blender -b -noaudio --python physics_test.py -- ${{ matrix.mode }} out pack functional 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "PHYSICS|OUTFIT|EPISODE|Error|Traceback|line [0-9]|Exception" | cut -c1-3000 | tail -n 400
+      - uses: actions/upload-artifact@v4
+        if: always() && contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)
+        with: { name: "physics-${{ matrix.mode }}", path: out, retention-days: 7, if-no-files-found: ignore }
