@@ -1112,7 +1112,7 @@ def topi(B, colour=(0.97, 0.97, 0.95), tilt_side=7.0, tilt_fwd=4.0):
     rx0 = max(abs(p.x) for p in sk); ry0 = (max(p.y for p in sk) - min(p.y for p in sk)) / 2
     hx = max([abs(p.x) for p in hp], default=0.0); hyr = max([abs(p.y - cy) for p in hp], default=0.0)
     rx = min(max(rx0, hx), rx0 + 0.01 * s) + 0.004; ry = min(max(ry0, hyr), ry0 + 0.01 * s) + 0.008
-    h, peak, NA, NL = 0.05 * s, 0.012 * s, 64, 9
+    h, peak, NA, NL = 0.045 * s, 0.011 * s, 64, 9
     piv = Vector((0.0, cy, z0)); Rm = (Matrix.Rotation(R(tilt_side), 3, "Y") @ Matrix.Rotation(R(-tilt_fwd), 3, "X"))
     rows = []
     for k in range(-2, NL + 1):          # k < 0: the folded band; k = NL: the crease
@@ -1128,9 +1128,15 @@ def topi(B, colour=(0.97, 0.97, 0.95), tilt_side=7.0, tilt_fwd=4.0):
             row.append(piv + Rm @ (Vector((x, cy + y, z)) - piv))
         rows.append(row)
     bm, G = _grid(rows, lambda r, c: (c / NA, r / (len(rows) - 1)), closed=True)
-    for v in [v for row in G[:4] for v in row]:   # the band never sinks into the head / hair
-        loc, nrm, _, d = B.bvh().find_nearest(v.co, 0.05)
-        if loc is not None and (v.co - loc).dot(nrm) < 0.002: v.co = loc + nrm * 0.002
+    bv = B.bvh(); hv, hpoly = B.hair_mesh
+    hbv = BVHTree.FromPolygons(hv, hpoly) if hpoly else None
+    for it in range(3):   # band AND panels stay outside the skull and hair (soft cotton follows the crown where it is wider)
+        for v in bm.verts:
+            for tree in (bv, hbv):
+                if tree is None: continue
+                loc, nrm, _, d = tree.find_nearest(v.co, 0.06)
+                if loc is not None and (v.co - loc).dot(nrm) < 0.0025: v.co = loc + nrm * 0.0025
+        if it < 2: bmesh.ops.smooth_vert(bm, verts=[v for row in G[3:-1] for v in row], factor=0.25, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     orient_outward(bm, B.bvh())
     return _finish(B, bm, "topi", fabric("topi", colour, 0.85, 0.3), [{"head": 1.0} for _ in bm.verts], 0.002)
 
@@ -1241,17 +1247,18 @@ def head_pallu(B, mat, border=None):
     weights = [B.kd_weights(v.co, ("head",) if v.co.z > B.zn + 0.04 * Hs else ("head", "torso"), drop=("arm",)) for v in bm.verts]
     o = _finish(B, bm, "head_pallu", mat, weights, 0.0015); _register(B, o)
     out = [o]
-    if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), r=0.0022 * s))
+    if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), keep=lambda p: p.z > B.zn + 0.05 * Hs, r=0.0022 * s))
     return out
 
 def refit_head_cover(basemesh, rig):
     """rebuild a saree head pallu over the hair that is on the head NOW (e.g. after lib_hair.add_hair added Dadi's bun).
     Keeps its material and border colour. Returns the new pieces ([] when the character has no head pallu)."""
     old = [o for o in list(set(rig.children_recursive) | set(basemesh.children_recursive))
-           if o.type == "MESH" and o.get("outfit_piece") and o.name.split(".")[0] in ("head_pallu", "head_pallu_border", "head_pallu_veil")]
+           if o.type == "MESH" and o.get("outfit_piece") and o.name.startswith("head_pallu")]
     if not old: return []
-    mat = next((o.data.materials[0] for o in old if o.name.startswith("head_pallu") and "border" not in o.name and o.data.materials), None)
-    bmat = next((o.data.materials[0] for o in old if "border" in o.name and o.data.materials), None)
+    edge = lambda o: any(w in o.name for w in ("border", "piping"))
+    mat = next((o.data.materials[0] for o in old if not edge(o) and o.data.materials), None)
+    bmat = next((o.data.materials[0] for o in old if edge(o) and o.data.materials), None)
     border = tuple(bmat.diffuse_color[:3]) if bmat is not None else None
     if border: border = tuple(max(0.0, x) ** (1 / 2.2) for x in border)
     for o in old: bpy.data.objects.remove(o, do_unlink=True)

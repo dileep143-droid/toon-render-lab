@@ -116,6 +116,22 @@ def _move_before(o, mod, before_types=("SOLIDIFY", "SUBSURF")):
             bpy.ops.object.modifier_move_to_index(modifier=mod.name, index=tgt)
 
 
+def prop_collision(objs, thickness=0.004):
+    """cloth collides with these props too (a charpai under a sitting saree, a step, a bench)"""
+    for o in objs:
+        for m_ in _meshes_of(o):
+            if not any(m.type == "COLLISION" for m in m_.modifiers):
+                m_.modifiers.new("Collision", "COLLISION"); m_.collision.thickness_outer = thickness; m_.collision.cloth_friction = 5.0
+
+
+def _animated(o):
+    r = o
+    while r is not None:
+        if (r.animation_data and r.animation_data.action) or any(c.influence > 0 for c in r.constraints): return True
+        r = r.parent
+    return False
+
+
 def body_collision(body, thickness=0.004, friction=5.0):
     """the character's skin becomes the collision object for every cloth on it"""
     m = next((m for m in body.modifiers if m.type == "COLLISION"), None) or body.modifiers.new("Collision", "COLLISION")
@@ -368,7 +384,7 @@ def _cloth_explosion(o, dg, ratio=2.5):
     return worst
 
 
-def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_range=None, max_pairs=12, quiet=False):
+def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_range=None, max_pairs=12, quiet=False, seats=()):
     """report everything that breaks physics at a frame. Returns a dict; autofix snaps floating / sunk props."""
     sc = bpy.context.scene
     if frame is not None: sc.frame_set(frame)
@@ -379,7 +395,8 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
     is_char = {g: g.type == "ARMATURE" for g in groups}
     bvhs = {g: _bvh([o for o in ms if not _is_ground(o)], dg)[0] for g, ms in groups.items()}   # floors may touch everything
     rep = {"frame": sc.frame_current, "penetrations": [], "floating": [], "sunk": [], "unsupported": [], "cloth_explosions": [],
-           "garment_through_body": [], "foot_slide": {}}
+           "garment_through_body": [], "foot_slide": {}, "contacts": []}
+    seat_roots = {_owner(s) for s in seats}
     # 1) thing through thing (different owners); the ground is allowed to touch everything
     keys = [g for g in groups if bvhs[g] is not None]
     for i, a in enumerate(keys):
@@ -389,6 +406,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
             n = len(bvhs[a].overlap(bvhs[b]))
             if n > 20 and not held:
                 kind = "person/person" if is_char[a] and is_char[b] else ("person/prop" if is_char[a] or is_char[b] else "prop/prop")
+                if kind == "person/prop" and (a in seat_roots or b in seat_roots): rep["contacts"].append((a.name, b.name, "seated", n)); continue
                 rep["penetrations"].append((a.name, b.name, kind, n))
     rep["penetrations"] = sorted(rep["penetrations"], key=lambda x: -x[3])[:max_pairs]
     # 2) garment through its own body (> 2 % of the cloth inside the skin)
@@ -415,8 +433,9 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
         dz = max(ds)
         if dz < -tol: rep["floating"].append((g.name, round(-dz, 3)))
         elif dz > tol: rep["sunk"].append((g.name, round(dz, 3)))
-    if autofix and (rep["floating"] or rep["sunk"]):
-        rep["fixed"] = ground_snap([bpy.data.objects[n] for n, _ in rep["floating"] + rep["sunk"]])
+    if autofix and (rep["floating"] or rep["sunk"]):   # animated / constrained objects (in a hand, keyed) are only reported
+        fix = [bpy.data.objects[n] for n, _ in rep["floating"] + rep["sunk"] if not _animated(bpy.data.objects[n])]
+        if fix: rep["fixed"] = ground_snap(fix)
     # 4) cloth explosions
     for o in meshes:
         if any(m.type == "CLOTH" for m in o.modifiers):
@@ -439,12 +458,13 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
 # the hook episode_scene.py calls
 # ------------------------------------------------------------------------------------------------------------------------
 def apply_physics(characters, props=(), f0=None, f1=None, walkers=(), check_frames=None, cloth=True, sway=True, settle_props=True,
-                  autofix=True):
+                  autofix=True, seats=()):
     """one call per shot.
       characters : [(body, rig), ...]          dressed villagers (villager.make_villager returns body, rig)
       props      : [object or asset root ...]  props that must rest on what is under them
       walkers    : [lib_anim.Rig ...]          rigs whose feet must not slide (foot lock over f0..f1)
       check_frames: frames to check (default: f0, middle, f1)
+      seats      : [charpai / bench ...]       props people sit on: cloth collides with them, body contact is not an error
     Order: head covers refitted over the current hair -> props settled -> feet locked -> cloth + sway -> simulate -> check."""
     import lib_outfits as LO
     sc = bpy.context.scene; f0 = sc.frame_start if f0 is None else f0; f1 = sc.frame_end if f1 is None else f1
@@ -452,13 +472,14 @@ def apply_physics(characters, props=(), f0=None, f1=None, walkers=(), check_fram
         try: LO.refit_head_cover(body, rig)
         except Exception as ex: log("WARN refit_head_cover", body.name, repr(ex)[:120])
     sc.frame_set(f0)
-    if settle_props and props: settle(list(props), exclude=[r for _, r in characters])
+    if settle_props and props: settle([p for p in props if not _animated(p)], exclude=[r for _, r in characters])
+    prop_collision(list(seats) + [p for p in props if not _animated(p)])
     for rw in walkers: foot_lock(rw, f0, f1)
     if cloth:
         for body, rig in characters: dress_physics(body, rig, f0, f1, sway=sway)
         simulate(f0, f1)
     frames = check_frames or sorted({f0, (f0 + f1) // 2, f1})
-    reports = [check_scene(f, autofix=autofix, rigs_for_slide=walkers, slide_range=(f0, f1) if f == frames[-1] else None) for f in frames]
+    reports = [check_scene(f, autofix=autofix, rigs_for_slide=walkers, slide_range=(f0, f1) if f == frames[-1] else None, seats=seats) for f in frames]
     ok = all(r["ok"] for r in reports)
     log("APPLY", "frames", f0, f1, "ok" if ok else "PROBLEMS", "checked", frames)
     return {"ok": ok, "reports": reports}

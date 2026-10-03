@@ -73,7 +73,7 @@ def world_props():
     m = asset("lib_props", "matka", "test_matka", (1.2, -1.5, 0.35), (R(12), 0, 0))     # 35 cm in the air, tilted
     b = asset("lib_props", "bucket", "test_bucket", (2.0, -1.2, -0.06))                  # 6 cm sunk into the floor
     c = asset("lib_props", "charpai", "test_charpai", (0.0, -2.4, 0.0))
-    p = asset("lib_props2", "laddoo_plate", "test_plate", (0.1, -2.4, 0.75))            # hovering over the cot
+    p = asset("lib_props2", "laddoo_plate", "test_plate", (0.35, -2.68, 0.75))          # hovering over the cot, near its front edge
     return [m, b, p], c
 
 
@@ -122,7 +122,8 @@ def mode_demo():
     props, cot = world_props(); PH.ground_snap([cot])
     seat_z = max((cot.matrix_world @ Vector(b)).z for o in [cot] + list(cot.children_recursive) if o.type == "MESH" for b in o.bound_box)
     # Dadi on the charpai (saree + head pallu over her small bun)
-    dadi, drig = V.make_villager("elder_woman_70y", "saree_elder", name="dadi", loc=(-0.3, -1.92, 0.0), rot_z=R(180))   # cot behind her, facing the aangan
+    PH.settle([props[2]])                                  # the plate rests on the cot BEFORE anyone plans to reach for it
+    dadi, drig = V.make_villager("elder_woman_70y", "saree_elder", name="dadi", loc=(-0.45, -1.84, 0.0), rot_z=R(180))   # cot behind her, facing the aangan
     LH.add_hair(dadi, drig, "elder_tied_small_bun")
     dw = A.Rig(drig); A.sit(dw, 1, seat_z=seat_z)
     # the girl walks across the aangan
@@ -130,7 +131,7 @@ def mode_demo():
     LH.add_hair(girl, grig, "tied_long_jada")
     gw = A.Rig(grig); A.walk(gw, 1, cycles=3, move=True)
     # the boy picks up the laddoo plate from the cot (hand-holding = lib_handobj, laptop-owned: called, never edited)
-    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.55, -2.75, 0.0), rot_z=R(150))
+    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.35, -3.08, 0.0), rot_z=R(0))   # in front of the cot, facing it (+y)
     bw = A.Rig(brig)
     plate = props[2]
     try:
@@ -140,12 +141,12 @@ def mode_demo():
     except Exception as ex:
         REPORT["handobj"] = "lib_handobj call failed: " + repr(ex)[:200]; PH.log("WARN handobj", repr(ex)[:200])
     chars = [(dadi, drig), (girl, grig), (boy, brig)]
-    REPORT["physics"] = PH.apply_physics(chars, props=[props[0], props[1]], f0=1, f1=72, walkers=[gw], check_frames=[1, 36, 72])
+    REPORT["physics"] = PH.apply_physics(chars, props=[props[0], props[1], props[2]], f0=1, f1=72, walkers=[gw], check_frames=[1, 36, 72], seats=[cot])
     for f in (1, 24, 48, 72):
         look(cam, (4.8, -7.0, 2.4), (0.6, -1.8, 0.7), 28); still(cam, "demo_wide", f, chars)
     sc.frame_set(36); c = grig.matrix_world.translation.copy()
     look(cam, c + Vector((2.2, 2.4, 1.0)), c + Vector((0, 0, 0.8)), 40); still(cam, "demo_girl_back", 36, chars)
-    look(cam, (-0.3 + 0.9, -1.92 + 1.9, 1.15), (-0.3, -1.92, 0.75), 40); still(cam, "demo_dadi", 36, chars)
+    look(cam, (-0.45 + 0.9, -1.84 + 1.9, 1.15), (-0.45, -1.84, 0.75), 40); still(cam, "demo_dadi", 36, chars)
 
 
 try:
@@ -154,4 +155,5 @@ try:
 except Exception as ex:
     REPORT["error"] = repr(ex)[:500]; PH.log("ERROR", repr(ex)[:300]); traceback.print_exc()
 save()
-PH.log("DONE", MODE, "error" if REPORT.get("error") else "ok")
+_probs = [r for k in ("physics", "after") for r in ([REPORT[k]] if isinstance(REPORT.get(k), dict) else []) if not r.get("ok", True)]
+PH.log("DONE", MODE, "error" if REPORT.get("error") else ("PROBLEMS" if _probs else "ok"))

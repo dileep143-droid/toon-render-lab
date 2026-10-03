@@ -178,6 +178,19 @@ for who, outfit, opts in PLAN:
                     w_at = lambda z0: (lambda xs: round(max(xs) - min(xs), 3) if xs else None)([v.co.x for v in g.data.vertices if abs(v.co.z - z0) < 0.02])
                     shp[g.name]["width_top_hem"] = [w_at(zt - 0.03), w_at(zh + 0.03)]
         print("FITPIECES", key, json.dumps(shp)[:1400])
+        # hair under the head cover: share of hair / bun vertices that the head pallu covers (ray from the head centre outwards)
+        hc = [g for g in G if g.name.startswith("head_pallu") and "piping" not in g.name and "border" not in g.name]
+        hair = [o_ for o_ in set(rig.children_recursive) | set(h.children_recursive) if o_.type == "MESH" and (o_.get("hair_piece") or "hair" in o_.name.lower()) and not o_.get("outfit_piece")]
+        if hc and hair:
+            from mathutils.bvhtree import BVHTree
+            dg_ = bpy.context.evaluated_depsgraph_get(); ev_ = hc[0].evaluated_get(dg_); me_ = ev_.to_mesh()
+            tree = BVHTree.FromPolygons([hc[0].matrix_world @ v.co for v in me_.vertices], [tuple(p_.vertices) for p_ in me_.polygons]); ev_.to_mesh_clear()
+            Bh = LO.body_of(h, rig); c0 = h.matrix_world @ Vector((0.0, Bh.bh["head"].y, Bh.ze + 0.02 * Bh.Hs))
+            for ho in hair:
+                vs = [ho.matrix_world @ v.co for v in ho.data.vertices][::3]
+                above = [v for v in vs if v.z > Bh.zn - 0.02 * Bh.Hs]   # hair on the head / nape (not a long braid down the back)
+                cov = sum(1 for v in above if (lambda r: r[0] is not None and (r[0] - c0).length >= (v - c0).length - 0.001)(tree.ray_cast(c0, (v - c0).normalized(), 1.0)))
+                print("FITHAIRCOVER", key, ho.name, "covered", cov, "of", len(above), round(cov / max(1, len(above)), 3))
         for pose in (("apose",) if views == "base" else ("apose", "walk")):
             rig.location.z = 0; LO.set_pose(rig, pose); bpy.context.view_layer.update(); ground_feet(h, rig)
             cams = cams_for(h, rig, neck=(pose == "apose" and views != "base"))
