@@ -288,6 +288,19 @@ for p in S.get("props", []):
             box(pid + "_back", (w, 0.05, h), (0, d, h / 2), m, o); box(pid + "_floor", (w, d, 0.04), (0, d / 2, -0.02), mat("ep_room_floor", p.get("floor", [0.42, 0.3, 0.2])), o)
             box(pid + "_ceil", (w, d, 0.05), (0, d / 2, h), m, o)
             for sx in (-1, 1): box(f"{pid}_side{sx}", (0.05, d, h), (sx * w / 2, d / 2, h / 2), m, o)
+        elif k == "light":   # interior / practical light: {type POINT|AREA|SPOT, loc, energy, color, size}
+            ld = bpy.data.lights.new(pid, p.get("type", "POINT")); ld.energy = p.get("energy", 100.0); ld.color = tuple(p.get("color", [1, 0.9, 0.75]))
+            if hasattr(ld, "size"): ld.size = p.get("size", 0.25)
+            if hasattr(ld, "shadow_soft_size"): ld.shadow_soft_size = p.get("size", 0.25)
+            o = bpy.data.objects.new(pid, ld); sc.collection.objects.link(o); o.location = P(p["loc"])
+            o.rotation_euler = tuple(R(v) for v in p.get("rot", [0, 0, 0]))
+        elif k == "panel":   # flat coloured box (window pane, door leaf, wall niche); emit > 0 glows (a sunny window)
+            m = mat("ep_panel_" + pid, p.get("color", [0.5, 0.5, 0.5]), 0.8)
+            if p.get("emit"):
+                b = m.node_tree.nodes.get("Principled BSDF")
+                b.inputs["Emission Color" if "Emission Color" in b.inputs else "Emission"].default_value = (*[c ** 2.2 for c in p["color"]], 1)
+                b.inputs["Emission Strength"].default_value = p["emit"]
+            o = box(pid, tuple(p["size"]), P(p["loc"]), m); o.rotation_euler.z = R(p.get("rot_z", 0))
         elif k == "ground":
             s = p.get("size", 160.0); o = box(pid, (s, s, 0.02), P([0, 0, p.get("z", -0.012)]), mat("ep_ground", p.get("color", [0.55, 0.5, 0.32]), 0.95))
         elif k == "cloth_dome":
@@ -414,6 +427,10 @@ for a in S.get("animals", []):
 CAMO = CAM.camera((0, -10, 2), (0, 0, 1), 35, name="EP_cam")
 sc.camera = CAMO
 CAMO.data.clip_start = 0.05; CAMO.data.sensor_width = 36
+if S.get("cam_lights"):   # soft key (camera side, above-right) + fill (left) that travel with the camera: faces and eyes read in dialogue
+    for nm_, off_, en_, sz_ in (("key", (0.55, 0.35, 0.0), S["cam_lights"].get("key", 30.0), 1.2), ("fill", (-0.6, -0.1, 0.0), S["cam_lights"].get("fill", 10.0), 1.6)):
+        ld = bpy.data.lights.new("EP_cam_" + nm_, "AREA"); ld.energy = en_; ld.size = sz_; ld.color = (1.0, 0.95, 0.88)
+        lo_ = bpy.data.objects.new("EP_cam_" + nm_, ld); sc.collection.objects.link(lo_); lo_.parent = CAMO; lo_.location = off_
 
 
 # ---------------- actions
@@ -759,9 +776,13 @@ for s in SHOTS:
             CAMO.keyframe_insert("location", frame=f); CAMO.keyframe_insert("rotation_euler", frame=f); CAMO.data.keyframe_insert("lens", frame=f)
         s["_cam"] = [list(l0), list(l1)]
     except Exception as ex: err("shot " + s.get("name", "?"), ex)
-for idb in (CAMO, CAMO.data):
+MOVES_ = {s["f0"] for s in SHOTS if s.get("end")}       # locked-off cameras: hold every key (cuts stay cuts); only shots with an
+for idb in (CAMO, CAMO.data):                              # "end" glide, eased, from f0 to f1 (no Bezier wobble across cuts)
     for fc in FX.fcurves(idb):
-        for kp in fc.keyframe_points: kp.interpolation = "BEZIER"; kp.handle_left_type = kp.handle_right_type = "AUTO_CLAMPED"
+        for kp in fc.keyframe_points:
+            if int(round(kp.co.x)) in MOVES_:
+                kp.interpolation = "SINE"; kp.easing = "EASE_IN_OUT"          # slow eased dolly, handles ignored
+            else: kp.interpolation = "CONSTANT"
 log("SHOTS keyed", len(SHOTS))
 
 # ---------------- coverage check (never render a frame where a body shows): per shot, first / middle / last frame
