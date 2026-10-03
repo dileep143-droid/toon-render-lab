@@ -564,8 +564,128 @@ def st_outfits():
         del p; torch.cuda.empty_cache()
 
 
+# ---------------------------------------------------------------- KEY DRAWINGS (limited animation): one full drawing per key pose
+# J["keys"] = list of items. kind "pose": LoRA(char) + IP-Adapter(master) + ControlNet OpenPose (template kp in px) -> raw.png + rgba.png
+#            kind "txt": LoRA + IP, no control (animal side views)    kind "i2i": img2img (+ canny ControlNet) from item["init"] (base64 png)
+#            kind "edit": masked inpaint of another item's raw.png (ellipse masks in px) -> expressions / mouth states
+def _asset(cid, sub, ext):
+    g = glob.glob(f"/kaggle/input/**/{sub}/{cid}.{ext}", recursive=True) or glob.glob(f"/kaggle/input/**/{sub}_{cid}.{ext}", recursive=True)
+    return g[0] if g else None
+
+
+def _ntok(p, prompt):
+    try: return len(p.tokenizer(prompt).input_ids)
+    except Exception: return -1
+
+
+def _pipe_gen(cid, kind):
+    """kind: pose (CN openpose) | txt | i2i (CN canny img2img)"""
+    import torch
+    from diffusers import AutoencoderKL, DPMSolverMultistepScheduler, ControlNetModel
+    vae = AutoencoderKL.from_pretrained(CFG["vae"], torch_dtype=torch.float16)
+    if kind == "i2i":
+        from diffusers import StableDiffusionXLControlNetImg2ImgPipeline as P_
+        cn = ControlNetModel.from_pretrained(CFG.get("cn_canny", "xinsir/controlnet-canny-sdxl-1.0"), torch_dtype=torch.float16)
+    else:
+        from diffusers import StableDiffusionXLControlNetPipeline as P_
+        cn = ControlNetModel.from_pretrained(CFG["cn"], torch_dtype=torch.float16)
+    p = P_.from_pretrained(CFG["base"], controlnet=cn, vae=vae, torch_dtype=torch.float16, variant="fp16")
+    p.scheduler = DPMSolverMultistepScheduler.from_config(p.scheduler.config, use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")
+    lf = _asset(cid, "charlora", "safetensors")
+    log("lora for", cid, lf)
+    if lf: p.load_lora_weights(lf); p.fuse_lora(lora_scale=CFG.get("lora_scale", 0.9))
+    p.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models", weight_name="ip-adapter-plus_sdxl_vit-h.safetensors", image_encoder_folder="models/image_encoder")
+    try: p.to("cuda")
+    except Exception as e:
+        log("to(cuda) failed -> cpu offload", str(e)[:200]); p.enable_model_cpu_offload()
+    p.set_progress_bar_config(disable=True); return p
+
+
+def _pipe_inpaint(cid):
+    import torch
+    from diffusers import AutoPipelineForInpainting, DPMSolverMultistepScheduler
+    p = AutoPipelineForInpainting.from_pretrained(CFG["base"], torch_dtype=torch.float16, variant="fp16")
+    p.scheduler = DPMSolverMultistepScheduler.from_config(p.scheduler.config, use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")
+    lf = _asset(cid, "charlora", "safetensors")
+    if lf: p.load_lora_weights(lf); p.fuse_lora(lora_scale=CFG.get("lora_scale_edit", 0.8))
+    p.to("cuda"); p.set_progress_bar_config(disable=True); return p
+
+
+def st_keys(share):
+    import numpy as np, torch, cv2, io
+    from PIL import Image, ImageFilter
+    items = J.get("keys", []); groups = sorted({it.get("group", it["id"]) for it in items})
+    mine = {g for i, g in enumerate(groups) if i % share[1] == share[0]}
+    items = [it for it in items if it.get("group", it["id"]) in mine]
+    gen_items = sorted([it for it in items if it["kind"] != "edit"], key=lambda it: (it["char"], it["kind"]))
+    edits = sorted([it for it in items if it["kind"] == "edit"], key=lambda it: it["char"])
+    log("share", share, "gen", len(gen_items), "edit", len(edits))
+    cur = (None, None); p = None
+    for it in gen_items:
+        d = f"{OUT}/keys/{it['id']}"; os.makedirs(d, exist_ok=True)
+        if os.path.exists(f"{d}/rgba.png"): continue
+        kind = "pose" if it["kind"] in ("pose", "txt") else "i2i"
+        if cur != (it["char"], kind):
+            p = None; torch.cuda.empty_cache(); p = _pipe_gen(it["char"], kind); cur = (it["char"], kind)
+        mp = _asset(it["char"], "masters", "png"); master = Image.open(mp).convert("RGB") if mp else Image.new("RGB", (512, 512), (200, 200, 200))
+        p.set_ip_adapter_scale(it.get("ip_scale", 0.5) if mp else 0.0)
+        W, H = it["canvas"]; t = time.time()
+        g = torch.Generator("cuda").manual_seed(int(it["seed"]))
+        common = dict(prompt=it["prompt"], negative_prompt=it.get("neg", NEG_CUT), num_inference_steps=it.get("steps", CFG["steps"]),
+                      guidance_scale=it.get("cfg", CFG["cfg"]), generator=g, ip_adapter_image=master)
+        if it["kind"] == "pose":
+            kp = [[q[0] / W, q[1] / H] if q else None for q in it["kp"]]; ctl = Image.fromarray(draw_pose(kp, W, H))
+            im = p(image=ctl, controlnet_conditioning_scale=it.get("cn_scale", CFG["cn_scale"]), width=W, height=H, **common).images[0]
+            ctl.save(f"{d}/pose.png")
+        elif it["kind"] == "txt":
+            ctl = Image.new("RGB", (W, H), 0)
+            im = p(image=ctl, controlnet_conditioning_scale=0.0, width=W, height=H, **common).images[0]
+        else:
+            init = Image.open(io.BytesIO(base64.b64decode(it["init"]))).convert("RGB").resize((W, H))
+            e = cv2.Canny(np.asarray(init), 80, 160); ctl = Image.fromarray(np.stack([e] * 3, 2))
+            im = p(image=init, control_image=ctl, strength=it.get("strength", 0.5), controlnet_conditioning_scale=it.get("cn_scale", 0.6),
+                   width=W, height=H, **common).images[0]
+            init.save(f"{d}/init.png")
+        tlog("key", s=round(time.time() - t, 2), kind=it["kind"], ntok=_ntok(p, it["prompt"]))
+        im.save(f"{d}/raw.png"); alpha(im).save(f"{d}/rgba.png")
+        json.dump({k: v for k, v in it.items() if k not in ("init",)}, open(f"{d}/item.json", "w"))
+    p = None; torch.cuda.empty_cache(); cur = None
+    for it in edits:
+        d = f"{OUT}/keys/{it['id']}"; os.makedirs(d, exist_ok=True)
+        if os.path.exists(f"{d}/rgba.png"): continue
+        src = f"{OUT}/keys/{it['src']}/raw.png"
+        if not os.path.exists(src):
+            g = glob.glob("/kaggle/input/**/src/" + it["src"].replace("/", "__") + ".png", recursive=True); src = g[0] if g else src
+        if not os.path.exists(src): log("edit: no src", it["src"]); continue
+        if cur != it["char"]: p = None; torch.cuda.empty_cache(); p = _pipe_inpaint(it["char"]); cur = it["char"]
+        im = Image.open(src).convert("RGB"); W, H = im.size
+        m = np.zeros((H, W), np.uint8)
+        for (cx, cy, rx, ry) in it["ellipses"]: cv2.ellipse(m, (int(cx), int(cy)), (int(rx), int(ry)), 0, 0, 360, 255, -1)
+        mk = Image.fromarray(m).filter(ImageFilter.GaussianBlur(it.get("feather", 8)))
+        cb = it.get("crop")                    # small faces: inpaint an upscaled crop around the head, paste back
+        if cb:
+            cb = [int(max(0, cb[0])), int(max(0, cb[1])), int(min(W, cb[2])), int(min(H, cb[3]))]
+            ci = im.crop(cb); cm = mk.crop(cb); s_ = 1024 / max(ci.size); cw, ch_ = int(ci.size[0] * s_) // 8 * 8, int(ci.size[1] * s_) // 8 * 8
+            img_in, msk_in, Wi, Hi = ci.resize((cw, ch_), Image.LANCZOS), cm.resize((cw, ch_)), cw, ch_
+        else:
+            img_in, msk_in, Wi, Hi = im, mk, W, H
+        t = time.time()
+        out = p(prompt=it["prompt"], negative_prompt=it.get("neg", NEG), image=img_in, mask_image=msk_in, strength=it.get("strength", 0.9),
+                num_inference_steps=it.get("steps", 12), guidance_scale=it.get("cfg", 3.5), width=Wi, height=Hi,
+                generator=torch.Generator("cuda").manual_seed(int(it["seed"]))).images[0]
+        if cb:
+            full = im.copy(); full.paste(out.resize(ci.size, Image.LANCZOS), cb[:2]); out = full
+        out = Image.composite(out, im, mk)    # pixels outside the mask stay exactly the source drawing -> aligned states
+        mk.save(f"{d}/mask.png")
+        tlog("key_edit", s=round(time.time() - t, 2), ntok=_ntok(p, it["prompt"]))
+        out.save(f"{d}/raw.png"); alpha(out).save(f"{d}/rgba.png"); json.dump(it, open(f"{d}/item.json", "w"))
+    log("keys done", share)
+
+
 def task(name):
     try:
+        if name in ("keys0", "keys1"): return st_keys((int(name[-1]), 2))
+        if name == "keys": return st_keys((0, 1))
         if name == "cl_data": return st_charlora_data()
         if name in ("cl_train0", "cl_train1"): return st_charlora_train((int(name[-1]), 2))
         if name == "outfits": return st_outfits()
@@ -614,6 +734,12 @@ if "charlora" in stages:
     spawn("cl_data", 0).wait(); tlog("cl_data_done")
     a = spawn("cl_train0", 0); b = spawn("cl_train1", 1 if ngpu > 1 else 0); a.wait(); b.wait(); tlog("cl_train_done")
     spawn("outfits", 0).wait(); tlog("outfits_done")
+if "keys" in stages:
+    if ngpu > 1:
+        a = spawn("keys0", 0); time.sleep(90); b = spawn("keys1", 1); a.wait(); b.wait()
+    else:
+        spawn("keys", 0).wait()
+    tlog("keys_done")
 if "fx" in stages:
     a = spawn("faces0", 0); b = spawn("faces1", 1 if ngpu > 1 else 0) if ngpu > 1 else None
     a.wait()
