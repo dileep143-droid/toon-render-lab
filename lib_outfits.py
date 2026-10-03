@@ -1100,20 +1100,39 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
     bm.normal_update()
     return _finish(B, bm, "pagdi", m1, [{"head": 1.0}] * len(bm.verts), thick=0, extra_mats=(m2,))
 
-def topi(B, colour=(0.97, 0.97, 0.95)):
-    """Gandhi topi: white boat-shaped cap"""
-    z0 = B.ze + 0.42 * (B.zt - B.ze)
+def topi(B, colour=(0.97, 0.97, 0.95), tilt_side=7.0, tilt_fwd=4.0):
+    """Gandhi topi: soft white cotton boat cap. A folded band round the head, two FLAT side panels that lean in and meet
+    in a crease along the top (front to back); the crease rises to soft points at the front and the back (boat shape).
+    Worn on top of the head, tilted a little to one side and forward."""
     s = B.Hs / 1.6
-    sk = [B.co[i] for i in B.body_idx if B.part[i] == "head" and abs(B.co[i].z - z0) < 0.012 * B.Hs]   # the SKULL sets the size and centre
-    hp = [p for p in B.hair_pts if abs(p.z - z0) < 0.012 * B.Hs]                                         # hair only adds a little room
+    z0 = B.ze + 0.48 * (B.zt - B.ze)
+    sk = [B.co[i] for i in B.body_idx if B.part[i] == "head" and abs(B.co[i].z - z0) < 0.012 * B.Hs]   # the SKULL sets size and centre
+    hp = [p for p in B.hair_pts if abs(p.z - z0) < 0.012 * B.Hs]
     cy = (min(p.y for p in sk) + max(p.y for p in sk)) / 2
-    hx = max([abs(p.x) for p in hp], default=0.0); hyr = max([abs(p.y - cy) for p in hp], default=0.0)
     rx0 = max(abs(p.x) for p in sk); ry0 = (max(p.y for p in sk) - min(p.y for p in sk)) / 2
-    rx = min(max(rx0, hx), rx0 + 0.012 * s) + 0.004; ry = min(max(ry0, hyr), ry0 + 0.012 * s) + 0.004
-    h = 0.03 * s   # LOW boat cap (about 4 cm with the band): long front-to-back, narrow ridge on top, folded band below
-    rings = [(z0 + h, cy, 0.01 * s, ry * 0.92), (z0 + h * 0.75, cy, rx * 0.55, ry * 1.0), (z0 + h * 0.4, cy, rx * 0.88, ry * 1.03),
-             (z0 + 0.002 * s, cy, rx * 1.03, ry * 1.04), (z0 - 0.008 * s, cy, rx * 1.03, ry * 1.04), (z0 - 0.011 * s, cy, rx * 0.99, ry * 0.99)]
-    return lathe(B, "topi", solid("topi_white", colour, 0.75), rings, segs=48, clear=0.002, thick=0.003, wfun=lambda co: {"head": 1.0})
+    hx = max([abs(p.x) for p in hp], default=0.0); hyr = max([abs(p.y - cy) for p in hp], default=0.0)
+    rx = min(max(rx0, hx), rx0 + 0.01 * s) + 0.004; ry = min(max(ry0, hyr), ry0 + 0.01 * s) + 0.008
+    h, peak, NA, NL = 0.05 * s, 0.012 * s, 64, 9
+    piv = Vector((0.0, cy, z0)); Rm = (Matrix.Rotation(R(tilt_side), 3, "Y") @ Matrix.Rotation(R(-tilt_fwd), 3, "X"))
+    rows = []
+    for k in range(-2, NL + 1):          # k < 0: the folded band; k = NL: the crease
+        f = max(0.0, k / NL); row = []
+        for i in range(NA):
+            a = 2 * math.pi * i / NA; ca, sa = math.cos(a), math.sin(a)
+            if k < 0:                    # band: straight round the head, a fold that stands 3 mm proud
+                x, y, z = rx * 1.035 * ca, ry * 1.02 * sa, z0 + k * 0.006 * s
+            else:                        # flat panels: width falls LINEARLY to the crease, length stays (boat), crease peaks at the ends
+                x = rx * (1.0 - 0.985 * f) * ca
+                y = ry * (1.0 - 0.06 * f) * sa
+                z = z0 + h * f + peak * f * f * sa * sa
+            row.append(piv + Rm @ (Vector((x, cy + y, z)) - piv))
+        rows.append(row)
+    bm, G = _grid(rows, lambda r, c: (c / NA, r / (len(rows) - 1)), closed=True)
+    for v in [v for row in G[:4] for v in row]:   # the band never sinks into the head / hair
+        loc, nrm, _, d = B.bvh().find_nearest(v.co, 0.05)
+        if loc is not None and (v.co - loc).dot(nrm) < 0.002: v.co = loc + nrm * 0.002
+    orient_outward(bm, B.bvh())
+    return _finish(B, bm, "topi", fabric("topi", colour, 0.85, 0.3), [{"head": 1.0} for _ in bm.verts], 0.002)
 
 def gamcha(B, colours=((0.85, 0.12, 0.12), (0.97, 0.95, 0.9)), side=-1):
     """checked cotton towel over one shoulder (default the right one), hanging front and back"""
