@@ -1276,7 +1276,7 @@ def _decal_front(F, name, mat, outline_fn, cx, cz, rx, rz, n=10, lift=0.0005):
     for f in bm.faces:
         if f.normal.y > 0: f.normal_flip()
     o = _obj(F, bm, name, mat, [{"head": 1.0}] * len(bm.verts), tag="forehead_mark", subsurf=1, role="mark", solid_t=0.0004 * s)
-    bind_face_keys(F, o, max_d=0.015 * s)
+    _stick_to_skin(F, o, lift * s)
     return o
 
 
@@ -1301,8 +1301,23 @@ def _decal_disc(F, name, mat, cx, cz, r, lift=0.0005, rings=5, seg=28):
     for f in bm.faces:
         if f.normal.y > 0: f.normal_flip()
     o = _obj(F, bm, name, mat, [{"head": 1.0}] * len(bm.verts), tag="forehead_mark", subsurf=0, role="mark", solid_t=0.0004 * s)
-    bind_face_keys(F, o, max_d=0.015 * s)
+    _stick_to_skin(F, o, lift * s)
     return o
+
+
+def _stick_to_skin(F, o, lift):
+    """forehead marks follow the DEFORMED skin (brows down / up, frowns) through a shrinkwrap on the posed basemesh,
+    right after the armature modifier. Copied face-unit keys (bind_face_keys) tore the bottu into a long red spike
+    on browDown (3 Oct)."""
+    if o.data.shape_keys: o.shape_key_clear()
+    m = o.modifiers.new("stick_to_skin", "SHRINKWRAP")
+    m.target = F.h; m.wrap_method = "NEAREST_SURFACEPOINT"; m.wrap_mode = "ABOVE_SURFACE"; m.offset = max(lift, 0.0003 * F.s)
+    arm = next((i for i, mm in enumerate(o.modifiers) if mm.type == "ARMATURE"), None)
+    cur = len(o.modifiers) - 1
+    if arm is not None and cur != arm + 1:
+        try: o.modifiers.move(cur, arm + 1)
+        except Exception as ex: print("HAIR WARN mark modifier order", repr(ex)[:120])
+    return m
 
 
 def add_forehead_mark(basemesh, rig, kind, size="medium", colour=None, stone=False, side=1):
