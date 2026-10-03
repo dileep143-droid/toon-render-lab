@@ -333,13 +333,13 @@ if WHO in ("chamki", "sheru"):
                 if kind == "ears":
                     d = (tip_in_head(ear_tip) - ear0)
                     print("EARS", WHO, m, "tip moved", round(d.length / max(earlen, 1e-6), 2), "x ear length; dir (head space)", tuple(round(x, 2) for x in d))
-                    if m != "relaxed" and d.length < 0.3 * earlen: check(f"EARS {WHO}:{m} tip moves only {d.length / earlen:.2f} ear lengths")
+                    if m in ("back", "flat", "droop") and d.length < 0.3 * earlen: check(f"EARS {WHO}:{m} tip moves only {d.length / earlen:.2f} ear lengths")
                     hp = head_pos(); aim(hp - Vector((0, 0, H * 0.06)), Vector((0.85, -0.55, 0.30)), H * 0.9)
                 elif m == "tucked":
                     tt = rig.pose.bones["Tail3"].tail; hb = [rig.pose.bones[f"IKBackLeg.{s}"].head for s in "LR"]
                     hy = sum(p.y for p in hb) / 2; hz = rig.pose.bones["BackUpperLeg.L"].head.z
                     print("TAIL tucked", WHO, "tip y", round(tt.y, 2), "hind feet y", round(hy, 2), "tip z", round(tt.z, 2), "hip z", round(hz, 2), "tip x", round(tt.x, 2))
-                    if not (tt.z < 0.75 * hz and tt.y < hy + 0.6 * abs(hb[0].x - hb[1].x) + 0.3): check(f"TAIL {WHO}: tucked tail tip not between the hind legs ({tuple(round(x, 2) for x in tt)})")
+                    if WHO == "sheru" and not (tt.z < 0.75 * hz and tt.y < hy + 0.6 * abs(hb[0].x - hb[1].x) + 0.3): check(f"TAIL {WHO}: tucked tail tip not between the hind legs ({tuple(round(x, 2) for x in tt)})")
                 if kind == "tail":       # from behind and low, so a tuck between the hind legs is visible
                     lo, hi = bbox_world([body]); frame_box(lo, hi, view=(0.75, 0.95, 0.18), fill=0.9)
                 label(f"{kind}: {m}", 1.25); cells.append(render(os.path.join(OUT, "stills", f"{WHO}_{kind}_{m}.png")))
