@@ -76,8 +76,36 @@ def leaks():
     return out
 
 
+TALK = {"girl": ("Mummy, bas ek aam aur do na!", "happy"), "boy": ("Main bhi bat pakdunga, Papa!", "happy"),
+        "dadi": ("Beta, mera pyaara bachcha, aao!", "happy")}
+
+
+def talk_strip():
+    import lib_anim as AN
+    text, emo = TALK[CHAR]
+    LE.clear_animation(h, rig)
+    LE.animate_expression(h, rig, emo, 1, 120, talking=True, release=False)
+    last = LE.talk_emotion(h, rig, 8, text=text, emotion=emo)
+    cues = AN.text_to_cues(text, 24, 13.0)
+    fr = [8 + int(round(t0 * 24)) for t0, t1, s in cues]
+    a = [8 + int(round(t0 * 24)) + 1 for t0, t1, s in cues if s == "A"][:2]
+    d = [8 + int(round(t0 * 24)) for t0, t1, s in cues if s in ("D", "C")][:2]
+    rest = [f for f in fr if f not in a + d]
+    pick = sorted(set(a + d + rest[::max(1, len(rest) // 4)][:6 - len(a) - len(d)]))[:6]
+    print("TALK", CHAR, "cues", "".join(s for _, _, s in cues), "frames", pick, "last", last)
+    sc.render.resolution_x, sc.render.resolution_y = 640, 360
+    for j, ff in enumerate(pick):
+        sc.frame_set(ff); bpy.context.view_layer.update()
+        shoot(os.path.join(OUT, f"{CHAR}_talk_{j}_f{ff:03d}.png"), -12, field=2.4, up=-0.4)
+    sc.render.resolution_x = sc.render.resolution_y = 512
+
+
 REPORT = {}
 for name in EXPRS:
+    if name == "talk":
+        try: talk_strip()
+        except Exception as ex: print("FACE ERROR talk", repr(ex)[:300]); traceback.print_exc()
+        continue
     rep = REPORT[name] = {}
     try:
         LE.clear_animation(h, rig)
