@@ -1,0 +1,211 @@
+name: motionpacks
+# Ready-made motion library -> MPFB rigs (lib_motionlib). Raw and retargeted motion data NEVER leave this run unencrypted:
+# between jobs they travel as AES-256 encrypted artifacts (key = KAGGLE_KEY1 secret) and they end up only in the PRIVATE
+# Kaggle datasets mani7673/sonpur-motion-packs (commercial OK) and mani7673/sonpur-motion-nc (non-commercial).
+# Public artifacts: rigs.json (MPFB CC0 bone data), catalogue metadata, check-sheet PNGs of dressed cast members.
+on:
+  workflow_dispatch:
+    inputs:
+      packs:   { description: "comma list or all: cmu,style100,bandai,lafan,zeggs,motorica,interact,quaternius", default: "all" }
+      publish: { description: "create/version the Kaggle datasets (true/false)", default: "true" }
+      sheets:  { description: "render the check sheet (true/false)", default: "true" }
+env:
+  MP_KEY: ${{ secrets.KAGGLE_KEY1 }}
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  rigs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
+          bash kaggle/motionpacks/setup_blender.sh
+      - name: Export MPFB reference rigs
+        run: ./blender/blender -b -noaudio --python kaggle/motionpacks/blender_prep.py -- rigs pack functional rigs.json 2>&1 | grep -E "RIG|Error|Traceback|line [0-9]" | cut -c1-600
+      - uses: actions/upload-artifact@v4
+        with: { name: rigs, path: rigs.json, retention-days: 3 }
+
+  build:
+    needs: rigs
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { pack: cmu, shard: 0, n: 4 }
+          - { pack: cmu, shard: 1, n: 4 }
+          - { pack: cmu, shard: 2, n: 4 }
+          - { pack: cmu, shard: 3, n: 4 }
+          - { pack: style100, shard: 0, n: 4 }
+          - { pack: style100, shard: 1, n: 4 }
+          - { pack: style100, shard: 2, n: 4 }
+          - { pack: style100, shard: 3, n: 4 }
+          - { pack: bandai, shard: 0, n: 1 }
+          - { pack: lafan, shard: 0, n: 2 }
+          - { pack: lafan, shard: 1, n: 2 }
+          - { pack: zeggs, shard: 0, n: 2 }
+          - { pack: zeggs, shard: 1, n: 2 }
+          - { pack: motorica, shard: 0, n: 2 }
+          - { pack: motorica, shard: 1, n: 2 }
+          - { pack: interact, shard: 0, n: 3 }
+          - { pack: interact, shard: 1, n: 3 }
+          - { pack: interact, shard: 2, n: 3 }
+    steps:
+      - uses: actions/checkout@v4
+        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
+      - name: Build ${{ matrix.pack }} shard ${{ matrix.shard }}
+        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
+        run: |
+          pip install -q numpy remotezip requests
+          W=$RUNNER_TEMP/work; mkdir -p $W
+          if [ "${{ matrix.pack }}" = "cmu" ]; then git clone -q --depth 1 https://github.com/una-dinosauria/cmu-mocap.git $W/cmu-mocap; fi
+          if [ "${{ matrix.pack }}" = "bandai" ]; then git clone -q --depth 1 https://github.com/BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset.git $W/bandai; fi
+          du -sh $W/* 2>/dev/null || true
+      - uses: actions/download-artifact@v4
+        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
+        with: { name: rigs, path: rigsdl }
+      - name: Retarget
+        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
+        run: |
+          export MOTION_RIGS=$PWD/rigsdl/rigs.json
+          python3 kaggle/motionpacks/build_pack.py ${{ matrix.pack }} ${{ matrix.shard }} ${{ matrix.n }} $RUNNER_TEMP/work $RUNNER_TEMP/out 2>&1 | tail -n 60
+          cd $RUNNER_TEMP && tar -cf out.tar out && du -sh out.tar && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in out.tar -out md.enc && rm out.tar
+      - uses: actions/upload-artifact@v4
+        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
+        with: { name: "md-${{ matrix.pack }}-${{ matrix.shard }}", path: "${{ runner.temp }}/md.enc", retention-days: 3, compression-level: 0 }
+
+  quaternius:
+    needs: rigs
+    if: inputs.packs == 'all' || contains(inputs.packs, 'quaternius')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: rigs, path: rigsdl }
+      - name: Blender 4.2
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz && tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+      - name: Sample Quaternius UAL 1+2 (CC0)
+        run: |
+          mkdir -p qz && cd qz
+          curl -fsSL -A "Mozilla/5.0" -o ual1.zip https://opengameart.org/sites/default/files/universal_animation_librarystandard.zip
+          curl -fsSL -A "Mozilla/5.0" -o ual2.zip https://opengameart.org/sites/default/files/universal_animation_library_2standard.zip
+          cd .. && export MOTION_RIGS=$PWD/rigsdl/rigs.json
+          ./blender/blender -b -noaudio --python kaggle/motionpacks/blender_prep.py -- quaternius qz $RUNNER_TEMP/out 2>&1 | grep -E "ZIP|QUATERNIUS|PACK|ERR|Error|Traceback|line [0-9]" | cut -c1-3000
+          cd $RUNNER_TEMP && tar -cf out.tar out && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in out.tar -out md.enc
+      - uses: actions/upload-artifact@v4
+        with: { name: md-quaternius-0, path: "${{ runner.temp }}/md.enc", retention-days: 3, compression-level: 0 }
+
+  merge:
+    needs: [build, quaternius]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: "md-*", path: enc }
+      - name: Decrypt + merge catalogues
+        run: |
+          pip install -q numpy
+          bash kaggle/motionpacks/decrypt_all.sh enc mdroot
+          python3 kaggle/motionpacks/merge.py mdroot merged stories/hindi/ASSET_NEEDS.json
+      - uses: actions/upload-artifact@v4
+        with: { name: merged, path: merged, retention-days: 7 }
+
+  sheet:
+    needs: merge
+    if: ${{ !cancelled() && needs.merge.result == 'success' && inputs.sheets != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    strategy:
+      fail-fast: false
+      matrix: { shard: [0, 1, 2, 3, 4, 5, 6, 7] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: "md-*", path: enc }
+      - uses: actions/download-artifact@v4
+        with: { name: merged, path: merged }
+      - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
+          bash kaggle/motionpacks/setup_blender.sh
+          bash kaggle/motionpacks/decrypt_all.sh enc mdroot
+          python3 -c "import json;d=json.load(open('merged/motion_catalogue_all.json'));json.dump(d,open('mdroot/motion_catalogue.json','w'))"
+      - name: Render tiles (shard ${{ matrix.shard }})
+        run: ./blender/blender -b -noaudio --python kaggle/motionpacks/sheet_render.py -- pack functional $PWD/mdroot merged/sheet_selection.json tiles ${{ matrix.shard }} 8 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "CAST|TILE|SKIP|SHEET|MOTION|NON-COMMERCIAL|Error|Traceback|line [0-9]|refusing" | cut -c1-700 | tail -n 400
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "tiles-${{ matrix.shard }}", path: tiles, retention-days: 7, if-no-files-found: ignore }
+
+  assemble:
+    needs: sheet
+    if: ${{ !cancelled() && needs.sheet.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: "tiles-*", path: tiles }
+      - run: |
+          pip install -q pillow; sudo apt-get install -y -q fonts-dejavu-core > /dev/null || true
+          python3 kaggle/motionpacks/sheet_assemble.py tiles sheets
+      - uses: actions/upload-artifact@v4
+        with: { name: sheets, path: sheets, retention-days: 14 }
+
+  blendlib:
+    needs: merge
+    if: ${{ !cancelled() && needs.merge.result == 'success' && inputs.publish != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: "md-*", path: enc }
+      - uses: actions/download-artifact@v4
+        with: { name: merged, path: merged }
+      - name: Blender 4.2 + MPFB
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
+          bash kaggle/motionpacks/setup_blender.sh
+          bash kaggle/motionpacks/decrypt_all.sh enc mdroot
+          python3 -c "import json;d=json.load(open('merged/motion_catalogue_all.json'));json.dump(d,open('mdroot/motion_catalogue.json','w'))"
+      - name: Bake .blend action libraries
+        run: |
+          ./blender/blender -b -noaudio --python kaggle/motionpacks/blend_lib.py -- pack functional $PWD/mdroot merged blend 2>&1 | grep -E "BLEND|BAKE FAIL|Error|Traceback|line [0-9]" | tail -n 80
+          tar -cf blend.tar blend && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in blend.tar -out blend.enc && du -sh blend
+      - uses: actions/upload-artifact@v4
+        with: { name: blend-enc, path: blend.enc, retention-days: 3, compression-level: 0 }
+
+  publish:
+    needs: [merge, blendlib]
+    if: ${{ !cancelled() && needs.merge.result == 'success' && inputs.publish != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix: { which: [packs, nc] }
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_KEY1 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL; df -h / | tail -1
+      - uses: actions/download-artifact@v4
+        with: { pattern: "md-*", path: enc }
+      - uses: actions/download-artifact@v4
+        with: { name: merged, path: merged }
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with: { name: blend-enc, path: blendenc }
+      - name: Publish ${{ matrix.which }} to Kaggle (private)
+        run: |
+          pip install -q --upgrade kaggle numpy
+          bash kaggle/motionpacks/decrypt_all.sh enc mdroot
+          if [ -f blendenc/blend.enc ]; then openssl enc -d -aes-256-cbc -pbkdf2 -pass env:MP_KEY -in blendenc/blend.enc | tar -xf -; fi
+          python3 kaggle/motionpacks/publish.py ${{ matrix.which }} mdroot merged $RUNNER_TEMP/stage blend
