@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.dirname(HERE); sys.path.insert(0, HERE)
 import compose as C, poses as PS
 import effects as FX, transitions as TR, titles as TI
+if os.path.exists('C:/Windows/Fonts/arialbd.ttf'): TI.LATIN_FONT = 'C:/Windows/Fonts/arialbd.ttf'
 FPS, OW, OH = C.FPS, C.OW, C.OH
 KEYS = os.path.join(HERE, "out", "keys")
 _cache = {}
@@ -132,7 +133,7 @@ def render(out_mp4, sel_path, only=None, sections=None):
     def draw(si, t):
         name, dur = secs[si]; s = math.sin
         if name == "title":
-            return TI.title_card(t, series="सोनपुर की टोली", episode="Movement test v2", subtitle="key drawings, not warped limbs", dur=dur)
+            return TI.title_card(t, series="सोनपुर की टोली", episode="Movement test v2", subtitle="key drawings, not warped limbs", dur=dur, font=next((f for f in ("C:/Windows/Fonts/Nirmala.ttc", "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf") if os.path.exists(f)), None))
         if name == "walk":
             f = S.plate.copy()
             S.walk(f, "chhotu", t, .08, +1, 330, .95)
