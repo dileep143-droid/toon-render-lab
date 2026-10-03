@@ -93,10 +93,19 @@ def upgrade_scene(S):
     # talk -> talk_emotion with the emotion the speaker shows at that moment
     for i, a in enumerate(out):
         if a.get("t") != "talk": continue
-        # the most specific emotion at that moment (shortest span covering the line start): a long "happy" behind the whole
-        # scene must not override the "determined" written for this very line
-        cand = [e for e in out if e.get("t") == "emotion" and e["who"] == a["who"] and e["frame"] - 6 <= a["frame"] <= e["end"]]
-        emo = min(cand, key=lambda e: e["end"] - e["frame"])["name"] if cand else None
+        # the emotion that covers MOST of this line (a short "happy" ending just as the line starts, or a quick "surprised"
+        # beat at its very start, must not override the "determined" / "thinking" written for the whole line)
+        l0 = a["frame"]; l1 = l0 + 48
+        try:
+            if a.get("rhubarb"):
+                import lib_anim as A_          # (this pass runs before the module-level import of lib_anim)
+                cues = A_.rhubarb_cues(os.path.join(SDIR, a["rhubarb"]))
+                if cues: l1 = l0 + int(max(c[1] for c in cues) * S.get("fps", 24))
+        except Exception: pass
+        cand = [(min(l1, e["end"]) - max(l0, e["frame"]), e["name"]) for e in out
+                if e.get("t") == "emotion" and e["who"] == a["who"] and e["frame"] <= l1 and e["end"] >= l0]
+        cand = [c for c in cand if c[0] > 0]
+        emo = max(cand)[1] if cand else None
         out[i] = {"t": "talk_emotion", "who": a["who"], "frame": a["frame"], "rhubarb": a.get("rhubarb"), "emotion": emo,
                   "strength": a.get("strength", 1.0), "head_bob": a.get("head_bob", True)}
         UPGRADE_LOG["talk_emotion"] += 1
