@@ -486,7 +486,7 @@ def _neck_profile(B, z, n=48, a0=0.0, a1=2 * math.pi, pad=0.003):
         out.append((a, min(r, rmax) + pad))
     return c, out
 
-def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004, buttons_n=0, btn_colour=(0.9, 0.85, 0.7)):
+def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.0015, thick=0.002, buttons_n=0, btn_colour=(0.9, 0.85, 0.7)):
     """mandarin / band collar: a low stand that sits ON the neck base and hugs the neck (front gap)"""
     s = B.Hs / 1.6; h = h or 0.024 * s
     zb = B.zn - 0.006 * B.Hs
@@ -505,7 +505,7 @@ def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004,
         out.append(buttons(B, B.zn - 0.004 * B.Hs, B.zn - 0.012 * B.Hs - 0.035 * s * (buttons_n - 1), buttons_n, btn_colour, name=name + "_buttons", r=0.0035))
     return out
 
-def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False, name="collar", pad=0.003, thick=0.0035):
+def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.0, rounded=False, name="collar", pad=0.0015, thick=0.0018):
     """turn-down shirt collar: stand + a fall that folds over and lies on the shoulders, pointed (or rounded) front ends"""
     s = B.Hs / 1.6; stand = stand or 0.02 * s; fall = fall or 0.052 * s
     zb = B.zn - 0.006 * B.Hs
@@ -518,7 +518,7 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
         if rounded: tip = 1.0 - 0.35 * max(0.0, 1 - min(i, n - 1 - i) / 6.0)
         d = Vector((math.cos(a), math.sin(a), 0)); C = Vector((0, c0.y, 0))
         ztop = zb + stand
-        prof_pts = [(r * 1.04, zb), (r, zb + stand * 0.6), (r + 0.001, ztop), (r + 0.006 * s, ztop + 0.003 * s),
+        prof_pts = [(r * 1.02, zb), (r, zb + stand * 0.6), (r + 0.0005, ztop), (r + 0.003 * s, ztop + 0.0015 * s),
                     (r + 0.5 * fall * tip, ztop - 0.25 * fall * tip), (r + 0.95 * fall * tip, ztop - 0.75 * fall * tip)]
         for k, (rr, zz) in enumerate(prof_pts): rows[k].append(C + d * rr + Vector((0, 0, zz)))
     bm, G = _grid(rows, lambda r, c: (c / (n - 1) * 0.3, r / 5))
@@ -531,7 +531,7 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
             for v in row:
                 loc, nrm, _, d = bv.find_nearest(v.co, 0.15)
                 if loc is None: continue
-                want = loc + nrm * (0.0025 + 0.001 * k)
+                want = loc + nrm * (0.0012 + 0.0004 * k)
                 v.co = v.co.lerp(want, 0.7 if it < 3 else 1.0)
         if it < 3: bmesh.ops.smooth_vert(bm, verts=[v for row in G[4:] for v in row], factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     push_out(bm.verts, B.bvh(), 0.002)
@@ -541,10 +541,8 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
 
 def placket(B, mat, z_top, z_bot, w=None, name="placket", x=0.0):
     s = B.Hs / 1.6; w = w or 0.024 * s
-    pts = [B.surf(x, z_top + (z_bot - z_top) * k / 4, "front") for k in range(5)]
-    pts = [p for p in pts if p is not None]
-    if len(pts) < 2: return None
-    return drape(B, name, mat, pts, w, clear=0.0015, thick=0.002, iters=2, n=4, m=3)
+    # flat strip ON the shirt front (a curled drape looked like a hanging tube)
+    return patch(B, mat, x - w / 2, x + w / 2, z_bot, z_top, name=name, nx=2, nz=14, clear=0.0008, thick=0.0012)
 
 def patch(B, mat, x0, x1, z0, z1, name="pocket", side="front", nx=6, nz=6, clear=0.0018, thick=0.002, wparts=("torso",)):
     """flat cloth patch (pocket, flap, badge) laid on the current outer surface; uv v = 1 along the top edge"""
@@ -1125,19 +1123,34 @@ def collar(B, mat, style="turn", name="collar", **k):
     return collar_turn(B, mat, name=name, **k)
 
 def buttons(B, z_from, z_to, n=5, colour=(0.95, 0.95, 0.92), x=0.0, name="buttons", r=0.0042):
+    r = min(r, 0.003)   # small flat shirt buttons
     pts = [B.surf(x, z_from + (z_to - z_from) * k / max(1, n - 1), "front") for k in range(n)]
     pts = [p for p in pts if p is not None]
     if not pts: return None
     r = r * B.Hs / 1.6
-    return rigid(B, name, solid(name, colour, 0.35), lambda bm: [_ball(bm, p - Vector((0, 0.0012, 0)), r, (1, 0.3, 1)) for p in pts],
+    return rigid(B, name, solid(name, colour, 0.35), lambda bm: [_ball(bm, p - Vector((0, 0.0008, 0)), r, (1, 0.22, 1)) for p in pts],
                  wfun=lambda co: B.kd_weights(co, ("torso", "head"), drop=("arm",)))
 
-def waistband(B, z, mat, h=None, ease=0.006, name="waistband"):
-    h = h or 0.022 * B.Hs; rg = B.ring(z, ease)
+def waistband(B, z, mat, h=None, ease=0.006, name="waistband", pad=0.0015, thick=0.003, segs=64):
+    """belt / rolled waist / sash: each ring is traced round the CLOTHED waist at its own height (inward rays against
+    the body + garments already on) and sits pad above it, so it lies on the clothes instead of floating.
+    ease is kept for old calls and only caps the pad."""
+    h = h or 0.022 * B.Hs; rg = B.ring(z, 0.0)
     if rg is None: return None
-    cy, rx, ry = rg
-    rings = [(z + h / 2, cy, rx, ry), (z - h / 2, cy, rx * 1.01, ry * 1.01)]
-    return lathe(B, name, mat, rings, segs=64, clear=0.004, thick=0.004)
+    cy = rg[0]; bv = B.bvh(); pad = min(pad, ease) if ease else pad
+    rows = []
+    for zz in (z + h / 2, z, z - h / 2):
+        c = Vector((0.0, cy, zz)); row = []
+        for i in range(segs):
+            a = 2 * math.pi * i / segs; d = Vector((math.cos(a), math.sin(a), 0))
+            loc, nrm, _, _ = bv.ray_cast(c + d * 0.8, -d, 0.8)
+            row.append((loc + d * pad) if loc is not None else c + d * 0.12)
+        rows.append(row)
+    bm, G = _grid(rows, lambda r, c: (c / segs, 1 - r / 2), closed=True)
+    orient_outward(bm, bv)
+    weights = [B.kd_weights(v.co, ("torso",), drop=("arm",)) for v in bm.verts]
+    o = _finish(B, bm, name, mat, weights, thick); _register(B, o)
+    return o
 
 # ----------------------------------------------------------------------------------------------- drape paths
 def _pallu_anchors(B, kind="nivi"):
@@ -1367,13 +1380,9 @@ def hair_ribbon(B, colour=(0.9, 0.1, 0.15)):
 
 def cardboard_badge(B, colour=(0.82, 0.68, 0.45)):
     """flat card pinned on the left chest (blank: add text/texture in the scene if needed)"""
-    p = B.surf(0.5 * B.sw, B.zc + 0.02 * B.Hs, "front")
-    if p is None: return None
-    s = B.Hs / 1.6
-    def build(bm):
-        bmesh.ops.create_cube(bm, size=1.0, matrix=Matrix.Translation(p - Vector((0, 0.004, 0))) @ Matrix.Diagonal((0.06 * s, 0.003, 0.04 * s, 1)))
-        _ball(bm, p - Vector((0, 0.007, -0.016 * s)), 0.003 * s)
-    return rigid(B, "cardboard_badge", solid("cardboard", colour, 0.85), build, wfun=lambda co: B.kd_weights(co, ("torso",), drop=("arm",)))
+    s = B.Hs / 1.6; x, z = 0.5 * B.sw, B.zc + 0.02 * B.Hs
+    return patch(B, solid("cardboard", colour, 0.85), x - 0.03 * s, x + 0.03 * s, z - 0.02 * s, z + 0.02 * s, name="cardboard_badge",
+                 nx=6, nz=4, clear=0.001, thick=0.0025)
 
 SKIRT_SIM = {"frames": 40, "bend": 0.35, "mass": 0.22, "pin_rows": 2}
 SILK_SIM = {"frames": 40, "bend": 0.7, "mass": 0.2, "pin_rows": 2}
@@ -1516,18 +1525,19 @@ def _build(B, outfit, C, o):
         lm = fabric("lungi", C["lungi"], 0.85, 0.4, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.045 * s, "lw": 0.1, "c3": C["check2"]}, coord="uv")
         short = o.get("lungi_short", False)
         hem = (B.zk - 0.03 * Hs) if short else max(0.012, 0.6 * B.za)
-        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.12, ease=0.016, top_ease=0.004)   # fuller wrap: overlaps more, splits less in a stride
+        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=0.9, ease=0.008, top_ease=0.003)   # straight wrap that falls close to the legs (inner layer covers any stride gap)
         G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95))
         G.append(lathe(B, "lungi", lm, rings, segs=96, sim=SKIRT_SIM))
-        G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.024 * Hs, ease=0.012, name="lungi_roll"))
+        G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.02 * Hs, name="lungi_roll", pad=0.002, thick=0.004))
         if short:   # folded up to the knee: a thick rolled hem
             G.append(waistband(B, hem + 0.006 * Hs, lm, h=0.02 * Hs, ease=0.02, name="lungi_fold_hem"))
         kp = B.surf(-0.3 * B.sw, B.zw + 0.006 * Hs, "front")
         if kp is not None:   # the knot / tuck at the waist with the loose end hanging from it
-            G.append(rigid(B, "lungi_knot", lm, lambda bm: [_ball(bm, kp + Vector((dx, -0.012 * s, dz)), 0.016 * s, (1.1, 0.6, 0.8)) for dx, dz in ((0, 0), (0.012 * s, -0.006 * s), (-0.01 * s, -0.004 * s))],
+            # small tucked knot at the waist + a short folded tuck under it (no long hanging strip)
+            G.append(rigid(B, "lungi_knot", lm, lambda bm: [_ball(bm, kp + Vector((dx, -0.006 * s, dz)), 0.0085 * s, (1.2, 0.55, 0.8)) for dx, dz in ((0, 0), (0.008 * s, -0.004 * s))],
                            wfun=lambda co: _skirt_weights(B, B.zw, B.zk, co.x, co.z, 0.2)))
-            fold = [kp + Vector((0, -0.02 * s, -0.015 * s)), B.surf(-0.27 * B.sw, B.zx, "front"), B.surf(-0.25 * B.sw, (B.zx + B.zk) / 2, "front")]
-            G.append(drape(B, "lungi_fold", lm, [p for p in fold if p is not None], [0.05 * Hs, 0.055 * Hs, 0.04 * Hs], clear=0.005, thick=0.003, m=7, pleats=0.004 * s))
+            G.append(patch(B, lm, -0.36 * B.sw, -0.24 * B.sw, B.zw - 0.05 * Hs, B.zw - 0.004 * Hs, name="lungi_tuck", nx=3, nz=4, clear=0.0012, thick=0.003,
+                           wparts=("torso", "leg")))
         G += _shirt(B, C, "shirt", pattern={"kind": "checks", "c2": _darker(C["shirt"], 0.9), "scale": 0.01 * s}, pocket=True, hem=B.zh - 0.03 * Hs)
     elif outfit == "banian_dhoti_farmer":
         G += _dhoti(B, C, leg_t=0.57)
@@ -1627,9 +1637,16 @@ def _build(B, outfit, C, o):
             G.append(patch(B, km, min(x0, x1), max(x0, x1), B.zc - 0.04 * Hs, B.zc + 0.01 * Hs, name=f"police_pocket{'L' if sd > 0 else 'R'}"))
             G.append(patch(B, fabric(f"police_flap{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35), min(x0, x1) - 0.003, max(x0, x1) + 0.003, B.zc + 0.005 * Hs, B.zc + 0.02 * Hs,
                            name=f"police_flap{'L' if sd > 0 else 'R'}", nz=2, clear=0.0035))
-            p = B.surf(sd * 0.68 * B.sw, B.zn + 0.02 * Hs, "top", y=B.bh[f"clavicle.{'L' if sd > 0 else 'R'}"].y)
-            if p: G.append(rigid(B, f"epaulette{'L' if sd > 0 else 'R'}", fabric(f"epaulette{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35),
-                                 lambda bm, p=p: _ball(bm, p + Vector((0, 0, 0.0015)), 0.022 * s, (1.5, 0.85, 0.12)), wfun=lambda co: B.kd_weights(co, ("torso", "arm"))))
+            yc = B.bh[f"clavicle.{'L' if sd > 0 else 'R'}"].y
+            rows = []
+            for dy in (-0.013 * s, 0.0, 0.013 * s):   # strip from the collar to the shoulder point, following the slope
+                row = [B.surf(sd * (0.45 + 0.35 * k / 8) * B.sw, B.zn + 0.03 * Hs, "top", y=yc + dy, clear=0.0012) for k in range(9)]   # rays start below the jaw / ears
+                rows.append(row)
+            if all(p is not None for row in rows for p in row):
+                bm_, _G = _grid(rows, lambda r, c: (c / 8, r / 2))
+                orient_outward(bm_, B.bvh())
+                G.append(_finish(B, bm_, f"epaulette{'L' if sd > 0 else 'R'}", fabric(f"epaulette{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35),
+                                 [B.kd_weights(v.co, ("torso", "arm")) for v in bm_.verts], 0.0018))
         bp2 = B.surf(-0.42 * B.sw, B.zc + 0.035 * Hs, "front")
         if bp2: G.append(rigid(B, "name_badge", solid("badge", (0.1, 0.1, 0.12), 0.4), lambda bm: _ball(bm, bp2 - Vector((0, 0.0015, 0)), 0.012 * s, (1.8, 0.2, 0.45)),
                                wfun=lambda co: B.kd_weights(co, ("torso",), drop=("arm",))))
