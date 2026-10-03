@@ -162,7 +162,7 @@ for who, outfit, opts in PLAN:
         shp = {}
         for g in G:
             n = g.name.lower()
-            if any(w in n for w in ("pallu", "pleat", "tuck", "_tail", "voni", "dupatta", "lungi", "knot")) and g.type == "MESH" and len(g.data.vertices):
+            if any(w in n for w in ("pallu", "pleat", "tuck", "_tail", "voni", "dupatta", "lungi", "knot", "topi", "dhoti")) and g.type == "MESH" and len(g.data.vertices):
                 b_ = bb(g); top_ = max(g.data.vertices, key=lambda v: v.co.z).co
                 shp[g.name] = {"x": b_[0:2], "y": b_[2:4], "z": b_[4:6], "top_x": round(top_.x, 3)}
                 if "_tail" in n or n == "lungi":   # straightness: hem width vs top width

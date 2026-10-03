@@ -659,7 +659,7 @@ def shell(B, name, mat, keep, offset=0.006, smooth=2, cuts=(), tube=None, clear=
     _register(B, o)
     return o
 
-def _tube_fn(B, limb, rfun, t0=0.12, t1=0.3, ripple=0.0, nrip=7):
+def _tube_fn(B, limb, rfun, t0=0.12, t1=0.3, ripple=0.0, nrip=7, twist=4.0):
     """returns tube(v, i): pushes limb vertices radially to at least rfun(side, t); ripple adds soft lengthwise folds"""
     def f(v, i):
         if B.part[i] != limb: return
@@ -674,7 +674,7 @@ def _tube_fn(B, limb, rfun, t0=0.12, t1=0.3, ripple=0.0, nrip=7):
         if ripple:
             e1 = (Vector((1, 0, 0)) - d * d.x).normalized(); e2 = d.cross(e1)
             th = math.atan2(rad.dot(e2), rad.dot(e1))
-            want = max(r + 0.002, want * (1 + ripple * math.sin(nrip * th + 4.0 * t * (1 if s > 0 else -1)) * min(1.0, 2 * w)))
+            want = max(r + 0.002, want * (1 + ripple * math.sin(nrip * th + twist * t * (1 if s > 0 else -1)) * min(1.0, 2 * w)))
         if want > r: v.co = v.co + rad.normalized() * (want - r) * w
     return f
 
@@ -739,7 +739,8 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     cuts = [(lambda i: B.part[i] == "torso", Vector((0, 0, waist_z)), Vector((0, 0, 1)))]
     for sd in (1, -1):
         A, F = B.axes[("leg", sd)]; d = (F - A).normalized()
-        cuts.append(((lambda s: (lambda i: B.part[i] == "leg" and B.side[i] == s))(sd), A + (F - A) * leg_t, d))
+        cn = (d + Vector((0, 0.45, 0))).normalized() if style == "dhoti" else d   # dhoti: hem dips at the front, rides up at the back
+        cuts.append(((lambda s: (lambda i: B.part[i] == "leg" and B.side[i] == s))(sd), A + (F - A) * leg_t, cn))
     r = lambda s, t: B.r_at("leg", s, t)
     if style == "straight":      # pyjama / trousers: falls straight from the thigh
         rf = lambda s, t: max(r(s, t) + ease, (r(s, 0.35) + ease) * (1.0 - 0.22 * max(0, t - 0.35) / 0.65))
@@ -750,8 +751,8 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     elif style == "shorts":
         rf = lambda s, t: max(r(s, t) + ease, r(s, 0.3) + ease * 1.3)
     else: rf = lambda s, t: r(s, t) + ease
-    rip = {"dhoti": (0.07, 6), "salwar": (0.06, 8), "straight": (0.02, 5), "shorts": (0.02, 5)}.get(style, (0.0, 5))
-    tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34, ripple=rip[0], nrip=rip[1])
+    rip = {"dhoti": (0.11, 5), "salwar": (0.06, 8), "straight": (0.02, 5), "shorts": (0.02, 5)}.get(style, (0.0, 5))
+    tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34, ripple=rip[0], nrip=rip[1], twist=11.0 if style == "dhoti" else 4.0)   # dhoti: diagonal wrap folds round each leg
     return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick, post_smooth=4)
 
 def underlayer(B, name, rgb, waist_z=None, leg_t=0.95, mat=None):
@@ -1098,11 +1099,12 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
 
 def topi(B, colour=(0.97, 0.97, 0.95)):
     """Gandhi topi: white boat-shaped cap"""
-    z0 = B.ze + 0.45 * (B.zt - B.ze)
+    z0 = B.ze + 0.42 * (B.zt - B.ze)
     pts = _head_pts(B, z0, 0.012 * B.Hs)
     cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2; rx = max(abs(p.x) for p in pts) + 0.006; ry = (max(p.y for p in pts) - min(p.y for p in pts)) / 2 + 0.006
-    h = 0.07 * B.Hs / 1.6
-    rings = [(z0 + h, cy, 0.008, ry * 1.02), (z0 + h * 0.6, cy, rx * 0.75, ry * 1.04), (z0 + h * 0.25, cy, rx * 0.97, ry * 1.02), (z0, cy, rx, ry), (z0 - 0.012 * B.Hs / 1.6, cy, rx * 1.01, ry * 1.01)]
+    s = B.Hs / 1.6; h = 0.045 * s   # low boat-shaped cap: long front-to-back, narrow, soft ridge on top, folded band below
+    rings = [(z0 + h, cy, 0.012 * s, ry * 0.9), (z0 + h * 0.8, cy, rx * 0.55, ry * 1.0), (z0 + h * 0.45, cy, rx * 0.86, ry * 1.04),
+             (z0 + h * 0.15, cy, rx * 0.98, ry * 1.04), (z0 + 0.004 * s, cy, rx * 1.05, ry * 1.06), (z0 - 0.012 * s, cy, rx * 1.05, ry * 1.06), (z0 - 0.016 * s, cy, rx * 1.0, ry * 1.0)]
     return lathe(B, "topi", solid("topi_white", colour, 0.75), rings, segs=48, clear=0.002, thick=0.003, wfun=lambda co: {"head": 1.0})
 
 def gamcha(B, colours=((0.85, 0.12, 0.12), (0.97, 0.95, 0.9)), side=-1):
@@ -1177,30 +1179,45 @@ def _pallu_anchors(B, kind="nivi"):
     return []
 
 def head_pallu(B, mat, border=None):
-    """saree end pulled over the head: an offset copy of the back/top of the head (over the hair), open face"""
-    Hs = B.Hs; hy = B.bh["head"].y
-    def keep(i):
-        if B.part[i] != "head": return False
-        c = B.co[i]
-        return (c.y > hy + 0.005 * Hs and c.z > B.ze - 0.035 * Hs) or c.z > B.ze + 0.45 * (B.zt - B.ze)   # crown + back of the head; ears and face stay free
-    hair_extent = 0.0
-    if B.hair_pts:   # make room for the hair
-        hb = BVHTree.FromPolygons([B.co[i] for i in range(len(B.co))], B.body_polys)
-        for p in B.hair_pts[::7]:
-            if p.z > B.ze - 0.02 * Hs and p.z < B.zt + 0.05:
-                loc, n, _, d = hb.find_nearest(p)
-                if loc is not None and (p - loc).dot(n) > 0: hair_extent = max(hair_extent, min(d, 0.045 * Hs / 1.6))
-    off = hair_extent + 0.006 * Hs / 1.6
-    o = shell(B, "head_pallu", mat, keep, offset=off, smooth=10, cuts=[], clear=0.003, thick=0.003, min_island=0.2)
+    """saree end pulled over the head (Dadi): SOFT cloth that lies on the hair and follows the head, frames the open face,
+    and falls onto both shoulders and the upper back. Built as a sheet traced over head + hair (inward rays), not a shell."""
+    Hs = B.Hs; s = Hs / 1.6
+    hb = B.bh["head"]; c = Vector((0.0, hb.y + 0.004 * s, B.ze + 0.02 * Hs))   # head centre (about ear height)
+    bv = B.bvh()
+    hp = B.hair_pts[::3] if B.hair_pts else []
+    kd = None
+    if hp:
+        kd = KDTree(len(hp))
+        for k, p in enumerate(hp): kd.insert(p, k)
+        kd.balance()
+    NA, NE = 25, 14
+    A0, A1 = R(-118), R(118)            # round the back of the head, face left open (0 = straight back, +y)
+    E0, E1 = R(84), R(-58)              # from near the crown down to the shoulders / upper back
+    rows = []
+    for ie in range(NE):
+        e = E0 + (E1 - E0) * ie / (NE - 1); fe = ie / (NE - 1)
+        row = []
+        for ia in range(NA):
+            a = A0 + (A1 - A0) * ia / (NA - 1)
+            d = Vector((math.sin(a) * math.cos(e), math.cos(a) * math.cos(e), math.sin(e)))
+            loc, nrm, _, _ = bv.ray_cast(c + d * 0.6, -d, 0.6)
+            p = loc if loc is not None else c + d * 0.1 * s
+            ext = 0.0
+            if kd is not None:   # lie ON the hair: how far the hair stands out along this direction near the hit
+                for q, _, _ in kd.find_range(p, 0.03 * s): ext = max(ext, (q - c).dot(d) - (p - c).dot(d))
+            sag = 0.022 * s * max(0.0, fe - 0.55) / 0.45                                 # lower part hangs a little away (soft fall)
+            fold = 0.004 * s * math.sin(9 * a) * max(0.0, fe - 0.4)                       # soft folds in the lower part
+            row.append(p + d * (max(0.0, ext) + 0.004 + sag + fold))
+        rows.append(row)
+    bm, G = _grid(rows, lambda r, c_: (c_ / (NA - 1), 1 - r / (NE - 1)))
+    for _ in range(2):
+        bmesh.ops.smooth_vert(bm, verts=bm.verts[:], factor=0.25, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+        push_out(bm.verts, bv, 0.003)
+    orient_outward(bm, bv)
+    weights = [B.kd_weights(v.co, ("head",) if v.co.z > B.zn + 0.04 * Hs else ("head", "torso"), drop=("arm",)) for v in bm.verts]
+    o = _finish(B, bm, "head_pallu", mat, weights, 0.0015); _register(B, o)
     out = [o]
-    if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), r=0.003 * Hs / 1.6))
-    # the cloth falls from the back of the head over the nape to the upper back
-    s = Hs / 1.6
-    vel = [B.surf(0.0, B.ze + 0.01 * Hs, "back"), B.surf(0.0, B.zn + 0.02 * Hs, "back"), B.surf(0.0, B.zc, "back")]
-    vel = [p for p in vel if p is not None]
-    if len(vel) >= 2:
-        if B.hair_pts: vel[0] = vel[0] + Vector((0, off, 0))
-        out.append(drape(B, "head_pallu_veil", mat, vel, [0.09 * Hs, 0.12 * Hs, 0.15 * Hs], clear=0.006, thick=0.003, m=9, pleats=0.004 * s, wparts=("torso", "head")))
+    if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), r=0.0022 * s))
     return out
 
 # ----------------------------------------------------------------------------------------------- outfits
@@ -1454,7 +1471,7 @@ def _dhoti(B, C, leg_t=0.9):
     dm = fabric("dhoti", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "z_lo", "w": hem + 0.03 * Hs})
     G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.008, ease=0.016))
     pm = fabric("dhoti_pleats", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "v_edges", "w": 0.1}, coord="uv")
-    G.append(pleat_fan(B, "dhoti_pleats", pm, B.zw, hem + 0.012 * Hs, 0.06 * s, 0.1 * s, n=6, depth=0.01 * s))
+    G.append(pleat_fan(B, "dhoti_pleats", pm, B.zw, hem + 0.03 * Hs, 0.05 * s, 0.13 * s, n=7, depth=0.02 * s, x0=0.01 * s, flat=False))   # deep loose pleats hanging between the legs
     G.append(pleat_fan(B, "dhoti_back_tuck", pm, B.zw, B.zx - 0.05 * Hs, 0.07 * s, 0.045 * s, n=4, depth=0.008 * s, side="back"))
     G.append(waistband(B, B.zw + 0.01 * Hs, fabric("dhoti_roll", C["dhoti"], 0.85, 0.4), h=0.02 * Hs, ease=0.007, name="dhoti_roll"))
     return G
