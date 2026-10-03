@@ -11,15 +11,15 @@ TD = os.path.join(OUT, "tiles"); os.makedirs(TD, exist_ok=True); R = math.radian
 import villager as VL, lib_motionlib as ML, lib_outfits as LO, mpfb_child as MC
 VL.setup(PACK, FUNC)
 # need -> (catalogue need key, who)
-NEEDS = [("child walk", "walk_child", "chhotu"), ("elder walk", "walk_elderly", "dadi"), ("run / chase", "chase", "gudiya"),
-         ("sit cross-legged", "sit_cross_legged", "chhotu"), ("stand up", "stand_up", "dadi"), ("carry", "carry_on_hip", "lallan"),
-         ("eat", "eat_by_hand", "chhotu"), ("give / take", "give_take", "gudiya"), ("pat head", "pat_head", "dadi"),
-         ("laugh", "laugh", "chhotu"), ("cry", "cry", "gudiya"), ("sulk", "sulk", "chhotu")]
+NEEDS = [("child walk (stand-in)", "style100_skip_fw_c02", "chhotu"), ("child walk (exact, NC)", "bandai1_walk_childish_001", "chhotu"),
+         ("elder walk", "style100_old_fw_c02", "dadi"), ("run / chase", "style100_neutral_fr_c02", "gudiya"),
+         ("sit cross-legged", "cmu_082_05_c01", "chhotu"), ("stand up", "cmu_139_16", "dadi"), ("carry", "cmu_069_69", "lallan"),
+         ("eat", "cmu_079_15", "chhotu"), ("give / take", "cmu_022_13", "gudiya"), ("pat head (stand-in: comfort)", "cmu_023_03", "dadi"),
+         ("laugh", "cmu_013_14_c01", "chhotu"), ("cry", "cmu_079_72", "gudiya"), ("sulk (stand-in: depressed)", "style100_depressed_id_c01", "chhotu")]
 
 def pick(need):
     cat = ML.catalogue(); nd = None
-    for r in cat.values():
-        pass
+    if need in cat: return need, "curated", {}
     for d in ML.data_dirs():
         import glob
         for p in glob.glob(os.path.join(d, "**", "motion_catalogue.json"), recursive=True):
