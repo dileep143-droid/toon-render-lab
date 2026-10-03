@@ -73,7 +73,7 @@ def hair_material(colour="black", oiled=False):
     mx.inputs[6].default_value = (*lo, 1); mx.inputs[7].default_value = (*hi, 1)
     L.new(nz.outputs["Fac"], mx.inputs[0]); L.new(mx.outputs[2], b.inputs["Base Color"])
     b.inputs["Roughness"].default_value = 0.24 if oiled else 0.42
-    for nm, v in (("Specular IOR Level", 0.75 if oiled else 0.45), ("Coat Weight", 0.35 if oiled else 0.0), ("Coat Roughness", 0.12), ("Sheen Weight", 0.0)):
+    for nm, v in (("Specular IOR Level", 0.6 if oiled else 0.45), ("Coat Weight", 0.15 if oiled else 0.0), ("Coat Roughness", 0.2), ("Sheen Weight", 0.0)):
         if nm in b.inputs: b.inputs[nm].default_value = v
     if "Emission Color" in b.inputs:
         L.new(mx.outputs[2], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 0.05
@@ -285,14 +285,25 @@ class Fit:
             if rr: r = rr
         return ph
 
-    def push_out(self, verts, clear, bvh=None):
-        bvh = bvh or self.hbvh
+    def push_out(self, verts, clear, bvh=None, max_push=None):
+        """push verts out of the surface by `clear`. Pushes are LIMITED (max_push, default 1.2 cm adult): a vertex that
+        seems to be deeper is matched to the wrong face (jaw underside / neck rim) and pushing it makes a spike."""
+        bvh = bvh or self.hbvh; mp = max_push if max_push is not None else 0.012 * self.s
         for _ in range(2):
             for v in verts:
-                loc, nrm, _, d = bvh.find_nearest(v.co, 0.2)
+                loc, nrm, _, d = bvh.find_nearest(v.co, 0.03 * self.s)
                 if loc is None: continue
                 sd = (v.co - loc).dot(nrm)
-                if sd < clear: v.co = v.co + nrm * (clear - sd)
+                if sd < clear and clear - sd <= mp: v.co = v.co + nrm * (clear - sd)
+
+    def hray(self, th, z, bvh=None):
+        """skull point at height z in direction th: ray from the vertical head axis OUTWARD (first hit = the skull side,
+        never the outer ear); falls back to the whole body (nape / neck below the head polygons)"""
+        dH = Vector((math.sin(th), -math.cos(th), 0.0)); a = Vector((0.0, self.cy, z))
+        for bv in ((bvh or self.hbvh), self.B.body_bvh()):
+            loc, nrm, _, _ = bv.ray_cast(a, dH, 0.4)
+            if loc is not None: return loc, dH
+        return a + dH * self.ry, dH
 
     def surf_from(self, o, d, bvh=None, dist=3.0):
         loc, nrm, _, _ = (bvh or self.B.bvh()).ray_cast(o, d, dist)
@@ -358,8 +369,9 @@ HAIRLINES = {
     "boy":      [(0, 0.62), (30, 0.58), (55, 0.42), (68, 0.05), (78, -0.3), (86, 0.12), (104, 0.12), (122, -0.55), (150, -0.8), (180, -0.88)],
     "short":    [(0, 0.66), (30, 0.6), (55, 0.45), (68, 0.1), (78, -0.15), (86, 0.18), (104, 0.18), (122, -0.4), (150, -0.62), (180, -0.7)],
     "receding": [(0, 0.86), (20, 0.84), (38, 0.68), (52, 0.62), (68, 0.1), (78, -0.25), (86, 0.12), (104, 0.12), (122, -0.55), (150, -0.8), (180, -0.88)],
-    "sleek":    [(0, 0.6), (35, 0.52), (58, 0.3), (72, -0.05), (88, -0.32), (110, -0.6), (140, -0.95), (180, -1.05)],
-    "open":     [(0, 0.6), (35, 0.52), (58, 0.3), (72, -0.05), (88, -0.5), (110, -0.85), (180, -1.0)],
+    # sleek / open: temple -> over the top of the ear -> behind the ear -> nape (ends at the nape, never down the neck)
+    "sleek":    [(0, 0.6), (35, 0.52), (58, 0.32), (72, 0.16), (90, 0.1), (104, 0.04), (118, -0.3), (135, -0.52), (155, -0.6), (180, -0.62)],
+    "open":     [(0, 0.6), (35, 0.52), (58, 0.32), (72, 0.16), (90, 0.1), (104, 0.04), (118, -0.3), (135, -0.55), (180, -0.66)],
     "bob":      [(0, 0.3), (40, 0.28), (56, 0.1), (70, -0.85), (180, -1.1)],
     "toddler":  [(0, 0.7), (40, 0.62), (60, 0.42), (75, 0.1), (88, 0.22), (104, 0.22), (125, -0.35), (180, -0.55)],
     "band_bot": [(0, 0.0), (60, 0.0), (75, -0.3), (86, 0.1), (104, 0.1), (122, -0.55), (150, -0.8), (180, -0.88)],
@@ -379,12 +391,23 @@ def _cap(F, name, mat, line, thick, parting=None, ridge=0.6, hang=0.0, band_top=
     for i in range(ncol):
         th = t0 + (t1 - t0) * i / (ncol if wrap else ncol - 1)
         deg = math.degrees(_angdiff(th, 0.0))
-        ph_b = F.phi_at(th, F.f2z(_interp(line, deg)))
-        ph_t = math.pi / 2 if band_top is None else F.phi_at(th, F.f2z(_interp(band_top, deg)))
+        z_b = F.f2z(_interp(line, deg)); z_t = None if band_top is None else F.f2z(_interp(band_top, deg))
+        # meridian from the top down to the hairline: spherical rays from the head centre above F.c.z, horizontal rays
+        # from the head axis below it (single-centre rays at the nape run almost straight down and miss / hit the jaw)
+        zc = F.c.z; Rr = F.ry * 1.05
+        ph_t = math.pi / 2 if z_t is None else (F.phi_at(th, z_t) if z_t > zc else 0.0)
+        ph_m = F.phi_at(th, z_b) if z_b > zc else 0.0
+        Ls = max(0.0, ph_t - ph_m) * Rr if (z_t is None or z_t > zc) else 0.0
+        zv0 = zc if (z_t is None or z_t > zc) else z_t
+        Lv = max(0.0, zv0 - z_b) if z_b < zc else 0.0
         col = []
         for j in range(M + 1):
-            t = j / M; ph = ph_t + (ph_b - ph_t) * t
-            d = F.dir(th, ph); r = F.skull(d) or (F.ry * 1.05)
+            t = j / M; u = t * (Ls + Lv)
+            if u <= Ls and Ls > 0:
+                ph = ph_t - (u / Rr); d = F.dir(th, ph); r = F.skull(d) or Rr; base = F.c + d * r
+            else:
+                z = zv0 - (u - Ls); loc, d = F.hray(th, z); base = loc
+                ph = -(zc - z) / Rr          # approximate elevation (radians) for the thickness profiles
             T = thick(th, ph, t) * s
             if parting is not None:
                 dp = abs(_angdiff(th, parting)) * math.cos(ph)
@@ -394,7 +417,7 @@ def _cap(F, name, mat, line, thick, parting=None, ridge=0.6, hang=0.0, band_top=
             T *= 1 + 0.12 * ridge * math.sin(41 * th + 3 * math.sin(7 * ph)) * _sm(0.0, 0.25, t)
             k = _sm(1.0, 1.0 - edge, t) if band_top is None else _sm(1.0, 1.0 - edge, t) * _sm(0.0, edge, t)
             T = thmin + (max(T, thmin) - thmin) * k
-            col.append(F.c + d * (r + T))
+            col.append(base + d * T)
         if hang > 0:   # hanging hair: below the widest row the horizontal radius never shrinks
             rho_max = 0.0
             for j, p in enumerate(col):
@@ -502,7 +525,10 @@ def _hairpin(F, centre, axis, rad):
 
 
 def _back_point(F, f, theta=math.pi, out=0.0):
-    ph = F.phi_at(theta, F.f2z(f)); d = F.dir(theta, ph)
+    z = F.f2z(f)
+    if z < F.c.z:                      # back of the head / nape: horizontal ray from the head axis (see Fit.hray)
+        loc, d = F.hray(theta, z); return loc + d * out, d
+    ph = F.phi_at(theta, z); d = F.dir(theta, ph)
     return F.c + d * ((F.skull(d) or F.ry) + out), d
 
 
@@ -518,8 +544,12 @@ def _curtain(F, name, mat, z_top_f, z_end, th0=R(118), th1=R(242), n_th=34, n_z=
         for i in range(n_th + 1):
             th = th0 + (th1 - th0) * i / n_th; d = Vector((math.sin(th), -math.cos(th), 0))
             ax = Vector((0, F.cy if z > F.zn else B.bh["neck01"].y, z))
-            loc, nrm = F.surf_from(ax + d * 1.5, -d, bvh)
+            # short ray from just outside the head/shoulder radius: a ray from 1.5 m hit the A-pose ARMS and blew the
+            # curtain up into giant shards
+            r_out = 1.9 * max(F.rx, F.ry)
+            loc, nrm = F.surf_from(ax + d * r_out, -d, bvh, dist=r_out)
             rs = (loc - ax).length if loc is not None else (prev[i] or F.ry)
+            if rs > 1.6 * max(F.rx, F.ry): rs = prev[i] or F.ry
             u = j / n_z
             tk = _sm(F.f2z(-0.3), F.f2z(-0.95), z)      # tucked under the cap at the top
             r = rs + 0.003 * s + tk * (0.002 * s + thick * s * (0.6 + 0.4 * u) + wave * s * math.sin(9 * th + 2 * u))
@@ -622,7 +652,7 @@ def _style_volumes(F, style, mat, opts):
     s = F.s; B = F.B; out = []
     rib = opts.get("ribbon_colour", (0.85, 0.06, 0.12))
     if style in ("long_single_braid", "tied_long_jada"):
-        root, d = _back_point(F, -0.75, out=0.006 * s)
+        root, d = _back_point(F, -0.56, out=0.006 * s)
         _ = out.append(_rigid(F, "hair_gather", mat, lambda bm: _ell(bm, root - d * 0.004 * s, Vector((0.03, 0, 0)) * s, Vector((0, 0.016, 0)) * s, Vector((0, 0, 0.032)) * s, sub=2)))
         z_end = B.zw if style == "tied_long_jada" else B.zc - 0.35 * (B.zc - B.zw)
         r0 = 0.0145 * s
@@ -668,11 +698,12 @@ def _style_volumes(F, style, mat, opts):
                                name=f"hair_ribbon_{'L' if sd > 0 else 'R'}"))
     elif style in ("bun_juda", "tied_low_bun_koppu", "tied_bun_with_flowers", "low_bun_elder", "elder_tied_small_bun"):
         small = style in ("low_bun_elder", "elder_tied_small_bun")
-        f = {"bun_juda": -0.45, "tied_low_bun_koppu": -0.8, "tied_bun_with_flowers": -0.7}.get(style, -0.85)
+        # centre height (fraction of eye->crown below the eyes): the koppu sits low at the nape, the juda higher
+        f = {"bun_juda": -0.2, "tied_low_bun_koppu": -0.42, "tied_bun_with_flowers": -0.36}.get(style, -0.4)
         rad = (0.026 if small else 0.038) * s; depth = rad * 0.72
         p, d = _back_point(F, f)
-        axis = (d + Vector((0, 0.25, -0.15 if f < -0.6 else 0.0))).normalized()
-        centre = p + axis * (depth * 0.55)
+        axis = (d + Vector((0, 0.0, -0.18 if f < -0.3 else 0.0))).normalized()
+        centre = p + axis * (depth * 0.78)          # inner face just inside the cap: sits ON the hair, not buried
         out.append(_bun(F, "hair_bun", mat, centre, axis, rad, depth))
         if opts.get("gajra", style in ("bun_juda", "tied_low_bun_koppu")):
             out.append(_gajra_ring(F, centre - axis * depth * 0.25, axis, rad * 0.98))
@@ -1024,6 +1055,8 @@ DEFAULT_COLOUR = {"low_bun_elder": "grey", "elder_tied_small_bun": "white", "rec
 OILED = {"side_parting_oiled", "tied_low_bun_koppu", "tied_long_jada", "tied_bun_with_flowers", "elder_tied_small_bun", "two_plaits_ribbons",
          "two_plaits_looped", "girl_two_jadas_with_ribbons_folded", "long_single_braid", "bun_juda", "side_braid", "low_bun_elder"}
 _ACC = ("gajra", "hair_ribbon", "topi", "pagdi", "nightcap")
+TIED = ("tied_low_bun_koppu", "tied_long_jada", "tied_bun_with_flowers", "tied_half_back", "elder_tied_small_bun", "girl_two_jadas_with_ribbons_folded",
+        "bun_juda", "low_bun_elder", "long_single_braid", "two_plaits_ribbons", "two_plaits_looped", "side_braid")
 
 
 def remove_hair(h, rig, which="head"):
@@ -1064,8 +1097,10 @@ def _refit_accessories(h, rig, F, style, opts):
     own_ribbon = any(o.get("hair_role") == "ribbon" for o in F.made)
     own_gajra = any(o.get("hair_role") == "gajra" for o in F.made)
     for a in found:
-        if a == "gajra" and (own_gajra or style in ("bald", "crew_cut")): continue
-        if a == "hair_ribbon" and own_ribbon: continue
+        # the tied styles carry their own flowers (gajra ring on buns: opts gajra=True; kanakambaram strings): never also the
+        # outfit's generic gajra (it was shaped for MPFB hair and floats / doubles up on the new hair)
+        if a == "gajra" and (own_gajra or style in ("bald", "crew_cut") or style in TIED or opts.get("gajra") is False): continue
+        if a == "hair_ribbon" and (own_ribbon or style in TIED): continue
         fn = getattr(LO, a, None)
         try:
             r = fn(B) if a != "pagdi" else fn(B, colour=opts.get("pagdi_colour", (0.95, 0.95, 0.92)))
@@ -1132,15 +1167,26 @@ def hair_report(F):
         top = [F.B.co[i] for i in F.head_ids if F.B.co[i].z > F.f2z(0.75)]
         far = sum(1 for p in top if (bv.find_nearest(p, 1.0)[3] or 1.0) > 0.009 * F.s)
         out["gap_top"] = round(far / max(1, len(top)), 4)
-    inside = tot = 0
+    inside = tot = 0; per = {}; big = []
     for o in F.made:
         if not o.get("hair_piece") and not o.get("facial_hair"): continue
         pts, _ = _rest_bm_points(o, F.h)
+        pi_ = pt_ = 0
         for p in pts[::3]:
             loc, nrm, _, d = F.hbvh.find_nearest(p, 0.05)
-            tot += 1
-            if loc is not None and (p - loc).dot(nrm) < -0.0015 * F.s: inside += 1
-    out["pen"] = round(inside / max(1, tot), 4)
+            pt_ += 1
+            if loc is not None and (p - loc).dot(nrm) < -0.0015 * F.s: pi_ += 1
+        inside += pi_; tot += pt_
+        if pts:   # spike / shard detector: any piece wider than 2.6 head widths, or reaching far from the head + body
+            xs = [p.x for p in pts]; zs = [p.z for p in pts]; ys = [p.y for p in pts]
+            ext = (max(xs) - min(xs), max(ys) - min(ys)); far = 0
+            bb = F.B.body_bvh()
+            for p in pts[::5]:
+                loc, _, _, dd = bb.find_nearest(p, 1.0)
+                if loc is None or dd > 0.07 * F.s: far += 1
+            per[o.name] = {"pen": round(pi_ / max(1, pt_), 3), "wide": round(max(ext) / (2 * F.rx), 2), "far": far}
+            if max(ext) > 2.6 * 2 * F.rx and o.get("hair_role") not in ("braid", "curtain", "tassel") or far: big.append(o.name)
+    out["pen"] = round(inside / max(1, tot), 4); out["pieces"] = per; out["SPIKES"] = big
     return out
 
 
@@ -1184,7 +1230,7 @@ def add_forehead_mark(basemesh, rig, kind, size="medium", colour=None, stone=Fal
                                                                                               and kind in ("kumkum_bottu", "bindi_sticker"))):
                 bpy.data.objects.remove(o, do_unlink=True)
         F = Fit(h, rig); s = F.s; HH = F.HH; out = []
-        zb = F.ze + 0.24 * HH
+        zb = F.ze + 0.21 * HH            # between the eyebrows (brow line ~0.2 of eye->crown above the eye centre)
         circ = lambda u, v: u * u + v * v <= 1.0001
         if kind == "kumkum_bottu":
             r = {"small": 0.0042, "medium": 0.006, "large": 0.0085}.get(size, 0.006) * s
