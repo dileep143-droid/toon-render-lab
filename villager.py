@@ -39,7 +39,7 @@ def make_villager(body_id, outfit, colours=None, extras=(), footwear="chappal", 
         if toon:
             try:
                 LT = importlib.import_module("lib_toon")
-                if getattr(LT, "TOON_BEFORE_DRESS", True): LT.toonify(h, rig)
+                if getattr(LT, "TOON_BEFORE_DRESS", True): LT.toonify(h, rig, skin_rgb=tuple(b["skin_rgb"]), age=b["age"])
             except ImportError: pass
         if outfit in KID_OUTFITS:
             garments = importlib.import_module("lib_outfits_kids").dress_kid(h, rig, outfit, colours=colours, seed=seed)
@@ -55,7 +55,7 @@ def make_villager(body_id, outfit, colours=None, extras=(), footwear="chappal", 
         if toon:
             try:
                 LT = importlib.import_module("lib_toon")
-                if not getattr(LT, "TOON_BEFORE_DRESS", True): LT.toonify(h, rig)
+                if not getattr(LT, "TOON_BEFORE_DRESS", True): LT.toonify(h, rig, skin_rgb=tuple(b["skin_rgb"]), age=b["age"])
                 if hasattr(LT, "toonify_scene"): LT.toonify_scene()
             except ImportError: pass
     except Exception:
