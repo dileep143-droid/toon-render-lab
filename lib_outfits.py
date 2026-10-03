@@ -1035,9 +1035,11 @@ def glasses(B, colour=(0.2, 0.12, 0.08)):
     def build(bm):
         for sd, e in ((1, eL), (-1, eR)):
             _torus(bm, Vector((e.x, y, z)), Vector((0, 1, 0)), rr, 0.06 * rr, 32, 6)
-            p0 = Vector((e.x + sd * rr, y, z)); p1 = Vector((sd * (hw + 0.004), y + 0.9 * sep, z - 0.1 * sep))
-            for k in range(12):
-                _ball(bm, p0 + (p1 - p0) * (k / 11), 0.07 * rr)
+            # temple arm: hugs the side of the head (was hw + 4 mm -> a dotted chain sticking out past the face) and is
+            # continuous (24 overlapping beads instead of 12 spaced ones)
+            p0 = Vector((e.x + sd * rr, y, z)); p1 = Vector((sd * (hw - 0.001), y + 0.9 * sep, z - 0.1 * sep))
+            for k in range(24):
+                _ball(bm, p0 + (p1 - p0) * (k / 23), 0.07 * rr)
         for k in range(6):
             _ball(bm, Vector((eR.x + rr + (eL.x - eR.x - 2 * rr) * k / 5, y, z + 0.25 * rr)), 0.07 * rr)
     return rigid(B, "glasses", m, build, "head")
