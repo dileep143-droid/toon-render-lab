@@ -224,12 +224,20 @@ def lining(h, rig, level="knee", gap=0.001, min_verts=200):
     for gi, g in enumerate(gar):
         for v in g.data.vertices: kd.insert(g.matrix_world @ v.co, len(owner)); owner.append(gi)
     kd.balance()
-    me = h.data.copy(); me.name = nm
+    # the body's REAL shape: its shape keys (MPFB age / proportions) mixed in, but no pose (armature off) -> rest shape
+    was = [(m, m.show_viewport) for m in h.modifiers]
+    for m, _ in was: m.show_viewport = False
+    bpy.context.view_layer.update()
+    me = bpy.data.meshes.new_from_object(h.evaluated_get(bpy.context.evaluated_depsgraph_get()), preserve_all_data_layers=True,
+                                         depsgraph=bpy.context.evaluated_depsgraph_get())
+    for m, v in was: m.show_viewport = v
+    bpy.context.view_layer.update()
+    me.name = nm
+    if len(me.vertices) != len(h.data.vertices): log("WARN lining: vertex count changed", len(me.vertices), len(h.data.vertices))
     o = bpy.data.objects.new(nm, me)
     for c in h.users_collection: c.objects.link(o)
-    o.parent = h.parent; o.matrix_world = h.matrix_world.copy()
+    o.parent = h.parent; o.matrix_parent_inverse = h.matrix_parent_inverse.copy(); o.matrix_world = h.matrix_world.copy()
     for vg in h.vertex_groups: o.vertex_groups.new(name=vg.name)
-    if me.shape_keys is not None: o.shape_key_clear()
     bm = bmesh.new(); bm.from_mesh(me)
     bm.faces.ensure_lookup_table()
     dead = [f for f in bm.faces if not all(v.index in keep for v in f.verts)]
@@ -237,6 +245,7 @@ def lining(h, rig, level="knee", gap=0.001, min_verts=200):
     me.materials.clear()
     for m in mats: me.materials.append(m)
     mw = h.matrix_world
+    bm.verts.ensure_lookup_table()
     for f in bm.faces:
         if f in dead or not gar: continue
         _, j, _ = kd.find(mw @ f.calc_center_median())
@@ -249,7 +258,17 @@ def lining(h, rig, level="knee", gap=0.001, min_verts=200):
         a = o.modifiers.new("Armature", "ARMATURE"); a.object = arm.object; a.use_deform_preserve_volume = arm.use_deform_preserve_volume
     d = o.modifiers.new("PH_lining_out", "DISPLACE"); d.strength = gap; d.mid_level = 0.0; d.direction = "NORMAL"
     o["outfit_piece"] = True; o["outfit_lining"] = True
-    log("LINING", rig.name, "faces", len(me.polygons), "colours", [m.name for m in mats][:6])
+    try:
+        bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
+        ev = o.evaluated_get(dg).to_mesh(); bv = BVHTree.FromPolygons([o.matrix_world @ v.co for v in ev.vertices], [tuple(p.vertices) for p in ev.polygons])
+        o.evaluated_get(dg).to_mesh_clear()
+        hb = h.evaluated_get(dg).to_mesh(); hw = h.matrix_world
+        ds = [bv.find_nearest(hw @ hb.vertices[i].co)[3] for i in list(keep)[::25] if i < len(hb.vertices)]
+        h.evaluated_get(dg).to_mesh_clear()
+        ds = [d for d in ds if d is not None]
+        log("LINING", rig.name, "faces", len(me.polygons), "colours", [m.name for m in mats][:6],
+            "skin->lining mm median", round(1000 * sorted(ds)[len(ds) // 2], 2) if ds else None, "max", round(1000 * max(ds), 2) if ds else None)
+    except Exception as ex: log("LINING", rig.name, "faces", len(me.polygons), "check failed", repr(ex)[:120])
     return o
 
 
