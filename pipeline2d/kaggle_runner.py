@@ -641,7 +641,10 @@ def st_keys(share):
             ctl = Image.new("RGB", (W, H), 0)
             im = p(image=ctl, controlnet_conditioning_scale=0.0, width=W, height=H, **common).images[0]
         else:
-            init = Image.open(io.BytesIO(base64.b64decode(it["init"]))).convert("RGB").resize((W, H))
+            if it.get("init_file"):
+                init = Image.open(glob.glob("/kaggle/input/**/src/" + it["init_file"], recursive=True)[0]).convert("RGB").resize((W, H))
+            else:
+                init = Image.open(io.BytesIO(base64.b64decode(it["init"]))).convert("RGB").resize((W, H))
             e = cv2.Canny(np.asarray(init), 80, 160); ctl = Image.fromarray(np.stack([e] * 3, 2))
             im = p(image=init, control_image=ctl, strength=it.get("strength", 0.5), controlnet_conditioning_scale=it.get("cn_scale", 0.6),
                    width=W, height=H, **common).images[0]
