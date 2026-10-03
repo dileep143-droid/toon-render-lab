@@ -162,6 +162,7 @@ def _side(n):
 
 def _core(n):
     c = n.split(":")[-1]
+    c = re.sub(r"^(DEF|ORG|MCH|mixamorig)[-_]", "", c, flags=re.I)
     c = re.sub(r"(?i)left|right", "", c)
     c = re.sub(r"^[LR](?=[A-Z])", "", c)
     c = re.sub(r"([_.\-])[lLrR]$", "", c); c = re.sub(r"(?<=[a-z0-9])[LR]$", "", c)
@@ -174,8 +175,8 @@ _ROLE_PATS = [  # role, pattern on the core name (full match), sided?
     ("ankle", r"foot|ankle", True), ("toe", r"toes?(_?base)?|ball|toe_?0?1", True),
     ("collar", r"collar|clavicle", True), ("shoulder", r"shoulder", True), ("uparm", r"arm|upper_?arm|up_?arm", True),
     ("forearm", r"fore_?arm|lower_?arm|elbow", True), ("wrist", r"hand|wrist", True),
-    ("index1", r"(hand_?)?index_?0?1|finger_?2-?1|index_?finger_?1", True), ("middle1", r"(hand_?)?middle_?0?1|finger_?3-?1", True),
-    ("pinky1", r"(hand_?)?(pinky|little)_?0?1|finger_?5-?1", True), ("thumb1", r"(hand_?)?thumb_?0?1|thumb|finger_?1-?1", True),
+    ("index1", r"(hand_?|f_)?index[._]?0?1|finger_?2-?1|index_?finger_?1", True), ("middle1", r"(hand_?|f_)?middle[._]?0?1|finger_?3-?1", True),
+    ("pinky1", r"(hand_?|f_)?(pinky|little)[._]?0?1|finger_?5-?1", True), ("thumb1", r"(hand_?|f_)?thumb[._]?0?1|thumb|finger_?1-?1", True),
     ("hipjoint_holden", r"hip", True), ("knee_h", r"knee", True),
 ]
 
