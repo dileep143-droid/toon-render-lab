@@ -60,17 +60,18 @@ def shoot(path, ang, field=1.55, up=-0.25):
 
 def leaks():
     """world space, evaluated + posed: count mouth-object verts not hidden behind the skin"""
+    co = LO.posed_coords(h); B = LO.body_of(h, rig)
+    bvh = BVHTree.FromPolygons(co, B.body_polys)
+    idx = list(h.get("mouth_idx") or [])
+    s = LH.Fit(h, rig).s
+    op = LE._opening(co, idx, s) if len(idx) == 4 else None
+    out = {"opening": [round(x, 4) for x in op] if op else None}
     dg = bpy.context.evaluated_depsgraph_get()
-    ev = h.evaluated_get(dg); me = ev.to_mesh(); M = h.matrix_world
-    co = [M @ v.co for v in me.vertices]; polys = [tuple(p.vertices) for p in me.polygons]
-    ev.to_mesh_clear()
-    bvh = BVHTree.FromPolygons(co, polys)
-    out = {}
     for o in mouthy:
         if o.hide_render: continue
         eo = o.evaluated_get(dg); m2 = eo.to_mesh(); Mo = o.matrix_world
         pts = [Mo @ v.co for v in m2.vertices]; eo.to_mesh_clear()
-        bad = sum(1 for p in pts if not LE._legal(p, bvh, 0.0))
+        bad = sum(1 for p in pts if not LE._legal(p, bvh, 0.0, op))
         out[o.name] = f"{bad}/{len(pts)}"
     return out
 
