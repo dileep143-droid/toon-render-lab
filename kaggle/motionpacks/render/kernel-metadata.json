@@ -1,0 +1,13 @@
+{
+  "id": "mani7673/sonpur-motionlib-ep1-sheet",
+  "title": "sonpur-motionlib-ep1-sheet",
+  "code_file": "run.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["mani7673/sonpur-motion-packs", "mani7673/sonpur-motion-nc"],
+  "competition_sources": [],
+  "kernel_sources": []
+}
