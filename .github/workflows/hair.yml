@@ -1,17 +1,19 @@
 name: hair
+# default: the owner's hair + forehead-mark combos (hair_test.py). script=preview runs the older style sheets (preview_hair.py).
 on:
   workflow_dispatch:
     inputs:
       jobs: { description: "comma list of jobs or all", required: false, default: "all" }
-      only: { description: "comma list of style tags / expressions or all", required: false, default: "all" }
+      script: { description: "test (hair_test.py combos) or preview (preview_hair.py style sheets)", required: false, default: "test" }
+      only: { description: "preview only: comma list of style tags or all", required: false, default: "all" }
 jobs:
   hair:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
-        job: [hair_girls, hair_women, hair_elders, hair_boys, hair_men, hair_babies, expr_girl, expr_boy, expr_dadi]
+        job: [girl_jada, woman_koppu, heavy_flowers, elder_bun, school_jadas, men]
     steps:
       - uses: actions/checkout@v4
       - name: Skip?
@@ -42,9 +44,12 @@ jobs:
           curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
           mkdir -p pack functional && unzip -q pack.zip -d pack
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
-      - name: Preview (${{ matrix.job }})
+      - name: Hair test (${{ matrix.job }})
         if: steps.skip.outputs.run == '1'
-        run: ./blender/blender -b -noaudio --python preview_hair.py -- pack functional out ${{ matrix.job }} ${{ github.event.inputs.only || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "HAIR|FACE|TOON|SHOT|REPORT|DONE|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception|WARN" | cut -c1-2500 | tail -n 400
+        run: |
+          S="${{ github.event.inputs.script || 'test' }}"
+          if [ "$S" = "preview" ]; then CMD="preview_hair.py -- pack functional out ${{ matrix.job }} ${{ github.event.inputs.only || 'all' }}"; else CMD="hair_test.py -- pack functional out ${{ matrix.job }}"; fi
+          ./blender/blender -b -noaudio --python $CMD 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "HAIR|FACE|CHECK|SKIP|SHOT|REPORT|DONE|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception|WARN" | cut -c1-3000 | tail -n 400
       - uses: actions/upload-artifact@v4
         if: always() && steps.skip.outputs.run == '1'
         with: { name: "hair-${{ matrix.job }}", path: out, retention-days: 7, if-no-files-found: ignore }
