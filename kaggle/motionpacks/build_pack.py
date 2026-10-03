@@ -52,6 +52,7 @@ def clips(pack, shard, n, work):
         url = PK.SOURCES[pack]["url"]
         z = remotezip.RemoteZip(url, headers={"User-Agent": "Mozilla/5.0"})
         mem = sorted([i.filename for i in z.infolist() if i.filename.lower().endswith(".bvh")])
+        if pack == "zeggs": mem = [m for m in mem if "mirror" not in os.path.basename(m)]   # mirrored duplicates (load_motion(mirror=True))
         for i, m in enumerate(mem):
             if i % n != shard: continue
             b = os.path.basename(m)[:-4]
@@ -94,6 +95,20 @@ def run(pack, shard, n, work, out):
     json.dump({"pack": pack, "shard": shard, "motions": rows, "errors": errors, "roles": roles_seen},
               open(os.path.join(out, f"catalogue_{pack}_{shard}.json"), "w", encoding="utf-8"), ensure_ascii=False)
     fl = sum(1 for r in rows if r["flagged"])
+    why = {}
+    for r in rows:
+        for rig, q in r.get("qc", {}).items():
+            if not q.get("flagged"): continue
+            for k, lim in (("floor_pen_cm", 4), ("max_limb_twist_deg", 150)):
+                if q.get(k, 0) > lim: why[k] = why.get(k, 0) + 1
+            for k in ("knee_backwards_frames", "elbow_backwards_frames", "reach_fail_frames"):
+                if q.get(k, 0) > 0.05 * r["frames"]: why[k] = why.get(k, 0) + 1
+            if "error" in q: why["error"] = why.get("error", 0) + 1
+    print("FLAG REASONS (rig-motions)", json.dumps(why))
+    import statistics as st
+    for k in ("floor_pen_cm", "foot_slide_cm", "foot_slide95_cm", "max_limb_twist_deg", "knee_backwards_frames", "reach_fail_frames"):
+        v = [q.get(k, 0) for r in rows for q in r.get("qc", {}).values() if k in q]
+        if v: print(f"QC {k}: median {st.median(v)}  p90 {sorted(v)[int(0.9 * len(v))]}  max {max(v)}")
     print(f"PACK DONE {pack} shard {shard}: {k} files -> {len(rows)} motions ({fl} flagged), {len(errors)} errors, {time.time() - t0:.0f}s")
     print("ROLES", json.dumps(roles_seen)[:1500])
     for e in errors[:10]: print("ERR", e)
