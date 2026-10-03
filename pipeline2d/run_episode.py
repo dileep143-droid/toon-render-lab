@@ -178,8 +178,8 @@ def do_charsheet(work, plan, out_png):
 
 
 @stage("compose")
-def do_compose(work, out_mp4):
-    subprocess.run([PY, os.path.join(HERE, "compose.py"), work, out_mp4], check=True)
+def do_compose(work, out_mp4, units=None):
+    subprocess.run([PY, os.path.join(HERE, "compose.py"), work, out_mp4] + (["--units", units] if units else []), check=True)
 
 
 @stage("frame_qa")
@@ -196,13 +196,18 @@ def do_frame_qa(work, out_mp4):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("ep"); ap.add_argument("--start", type=float, default=0); ap.add_argument("--seconds", type=float, default=60)
     ap.add_argument("--key", type=int, default=12); ap.add_argument("--kernel"); ap.add_argument("--out"); ap.add_argument("--cfg"); ap.add_argument("--sheet"); ap.add_argument("--retries", type=int, default=2)
-    ap.add_argument("--skip-kaggle", action="store_true", help="assets already downloaded"); a = ap.parse_args()
+    ap.add_argument("--skip-kaggle", action="store_true", help="assets already downloaded")
+    ap.add_argument("--units", help="a:b = compose only these units (GitHub slices)"); ap.add_argument("--no-qa", action="store_true"); a = ap.parse_args()
     a.kernel = a.kernel or f"p2d-{a.ep}-full"
     work = os.path.join(HERE, "out", a.ep); os.makedirs(work, exist_ok=True)
     out_mp4 = a.out or os.path.join(work, f"{a.ep}_2d.mp4")
     plan = do_plan(a, work); pp = os.path.join(work, "plan.json")
     if not a.skip_kaggle and not os.path.exists(os.path.join(work, "assets", "poses")):
         do_kaggle(a, work, pp)
+    if a.skip_kaggle:   # runner / cached assets: compose (+ optional frame QA) only
+        do_compose(work, out_mp4, a.units)
+        if not a.no_qa and gem.KEYS: do_frame_qa(work, out_mp4)
+        json.dump(TIMES, open(os.path.join(work, "stage_times.json"), "w"), indent=1); print("stage times", TIMES); return
     fails = qa_images(work, plan)
     for retry in range(1, a.retries + 1):
         if not fails or a.skip_kaggle: break
