@@ -741,7 +741,8 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     cuts = [(lambda i: B.part[i] == "torso", Vector((0, 0, waist_z)), Vector((0, 0, 1)))]
     for sd in (1, -1):
         A, F = B.axes[("leg", sd)]; d = (F - A).normalized()
-        cn = (d + Vector((0, 0.45, 0))).normalized() if style == "dhoti" else d   # dhoti: hem dips at the front, rides up at the back
+        tilt = (0.45 if leg_t > 0.75 else 0.1) if style == "dhoti" else 0.0   # long dhoti: hem dips at the front; knee dhoti: almost level (knee stays covered)
+        cn = (d + Vector((0, tilt, 0))).normalized()
         cuts.append(((lambda s: (lambda i: B.part[i] == "leg" and B.side[i] == s))(sd), A + (F - A) * leg_t, cn))
     r = lambda s, t: B.r_at("leg", s, t)
     if style == "straight":      # pyjama / trousers: falls straight from the thigh
@@ -1102,11 +1103,16 @@ def pagdi(B, colour=(1.0, 0.55, 0.1), band=(0.95, 0.85, 0.75)):
 def topi(B, colour=(0.97, 0.97, 0.95)):
     """Gandhi topi: white boat-shaped cap"""
     z0 = B.ze + 0.42 * (B.zt - B.ze)
-    pts = _head_pts(B, z0, 0.012 * B.Hs)
-    cy = (min(p.y for p in pts) + max(p.y for p in pts)) / 2; rx = max(abs(p.x) for p in pts) + 0.006; ry = (max(p.y for p in pts) - min(p.y for p in pts)) / 2 + 0.006
-    s = B.Hs / 1.6; h = 0.045 * s   # low boat-shaped cap: long front-to-back, narrow, soft ridge on top, folded band below
-    rings = [(z0 + h, cy, 0.012 * s, ry * 0.9), (z0 + h * 0.8, cy, rx * 0.55, ry * 1.0), (z0 + h * 0.45, cy, rx * 0.86, ry * 1.04),
-             (z0 + h * 0.15, cy, rx * 0.98, ry * 1.04), (z0 + 0.004 * s, cy, rx * 1.05, ry * 1.06), (z0 - 0.012 * s, cy, rx * 1.05, ry * 1.06), (z0 - 0.016 * s, cy, rx * 1.0, ry * 1.0)]
+    s = B.Hs / 1.6
+    sk = [B.co[i] for i in B.body_idx if B.part[i] == "head" and abs(B.co[i].z - z0) < 0.012 * B.Hs]   # the SKULL sets the size and centre
+    hp = [p for p in B.hair_pts if abs(p.z - z0) < 0.012 * B.Hs]                                         # hair only adds a little room
+    cy = (min(p.y for p in sk) + max(p.y for p in sk)) / 2
+    hx = max([abs(p.x) for p in hp], default=0.0); hyr = max([abs(p.y - cy) for p in hp], default=0.0)
+    rx0 = max(abs(p.x) for p in sk); ry0 = (max(p.y for p in sk) - min(p.y for p in sk)) / 2
+    rx = min(max(rx0, hx), rx0 + 0.012 * s) + 0.004; ry = min(max(ry0, hyr), ry0 + 0.012 * s) + 0.004
+    h = 0.03 * s   # LOW boat cap (about 4 cm with the band): long front-to-back, narrow ridge on top, folded band below
+    rings = [(z0 + h, cy, 0.01 * s, ry * 0.92), (z0 + h * 0.75, cy, rx * 0.55, ry * 1.0), (z0 + h * 0.4, cy, rx * 0.88, ry * 1.03),
+             (z0 + 0.002 * s, cy, rx * 1.03, ry * 1.04), (z0 - 0.008 * s, cy, rx * 1.03, ry * 1.04), (z0 - 0.011 * s, cy, rx * 0.99, ry * 0.99)]
     return lathe(B, "topi", solid("topi_white", colour, 0.75), rings, segs=48, clear=0.002, thick=0.003, wfun=lambda co: {"head": 1.0})
 
 def gamcha(B, colours=((0.85, 0.12, 0.12), (0.97, 0.95, 0.9)), side=-1):
