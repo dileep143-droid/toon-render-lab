@@ -53,7 +53,7 @@ SPECIES = {
         colours={"Main": (0.86, 0.60, 0.34), "Main_Light": (0.98, 0.91, 0.78), "Black": (0.10, 0.08, 0.08),
                  "Eyes_White": (0.86, 0.60, 0.34), "Eyes_Pupil": (0.86, 0.60, 0.34), "Eyes_Black": (0.86, 0.60, 0.34)},
         skin=(0.86, 0.60, 0.34), brow=(0.42, 0.25, 0.13), iris=(0.45, 0.26, 0.12),
-        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.135, eye_out=0.45, brow_len=1.25, head_scale=1.2,
+        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.145, eye_out=0.32, brow_len=1.25, head_scale=1.2, eye_shift=(0.92, -0.05, 0.03),
         acts=("idle", "idle_flick", "sleep", "lie_down", "wake_sniff", "lazy_walk", "walk", "trot", "run_to_food", "bark", "growl",
               "scratch_ear", "roll_over", "sit", "beg", "stretch_yawn", "lick", "cower", "sniff_ground", "eat", "look_around", "hop",
               "startled_jump", "hit_left"),
@@ -70,7 +70,7 @@ SPECIES = {
                  "Hooves": (0.12, 0.10, 0.10), "Muzzle": (0.95, 0.80, 0.74), "Eye_Lighter": (0.70, 0.40, 0.20),
                  "Eye_Black": (0.70, 0.40, 0.20), "Eye_White": (0.70, 0.40, 0.20), "Patch": (0.98, 0.96, 0.92)},
         skin=(0.70, 0.40, 0.20), brow=(0.30, 0.17, 0.09), iris=(0.62, 0.36, 0.14),
-        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.145, eye_out=0.42, brow_len=1.2, head_scale=1.25,
+        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.16, eye_out=0.28, brow_len=1.2, head_scale=1.25, eye_shift=(0.92, -0.07, 0.05),
         acts=("idle", "idle_flick", "walk", "trot", "run", "hop", "chew", "eat_something", "eat_grass", "bleat", "creep",
               "startled_jump", "butt", "push", "lie_down", "sleep", "look_around", "steal_run", "tug_of_war", "hit_left"),
         jaw=dict(hinge=(0, -2.18, 3.61), cut_z=3.61, cut_y=-2.24, tip=(0, -2.62, 3.52)),
@@ -213,7 +213,7 @@ def _append(spec, name, coll):
         if o is None: continue
         coll.objects.link(o)
         if o.type == "ARMATURE": arm = o
-        elif o.type == "MESH" and o.name.startswith(spec["mesh"]): mesh = o
+        elif o.type == "MESH" and (o.name.startswith(spec["mesh"]) or mesh is None): mesh = o     # Bull.blend's mesh isn't called 'Bull'
     # actions: rename to "<prefix><name>"; if this species was loaded before, drop the duplicates
     new = [a for a in bpy.data.actions if a not in before]
     ad = arm.animation_data
@@ -323,6 +323,8 @@ def _add_face(spec, sp, name, arm, mesh, coll):
     eyes = {}
     for side, s in (("L", 1), ("R", -1)):
         c0 = _centroid(mesh, spec["eye_src"], 1); c0.x *= s          # computed on the left, mirrored: always symmetric
+        kx, dy, dz = spec.get("eye_shift", (1.0, 0.0, 0.0))         # cartoon: eyes further forward/up so they read from the front
+        c0 = Vector((c0.x * kx, c0.y + dy, c0.z + dz))
         p, n = _surface(mesh, c0)
         gaze = (n * spec["eye_out"] + Vector((0, -1, 0)) * (1 - spec["eye_out"]) + Vector((0, 0, 0.12))).normalized()
         centre = p - n * (0.35 * r)
@@ -376,7 +378,7 @@ def _add_face(spec, sp, name, arm, mesh, coll):
         o = _new_obj(f"{name}_brow_{side}", _tube_mesh("toon_brow", [(-L / 2, 0, -0.1 * r), (0, 0, 0.08 * r), (L / 2, 0, -0.1 * r)], [0.10 * r, 0.16 * r, 0.10 * r], 8), coll, brow)
         _parent_bone(o, arm, f"Brow.{side}", M)
     M = bone_frame("Smile"); Mi = M.inverted()
-    o = _new_obj(f"{name}_smile", _tube_mesh("toon_smile_" + sp, [Mi @ q for q in smile_pts], [0.010] + [0.016] * (len(smile_pts) - 2) + [0.010], 8), coll, mouth_c)
+    o = _new_obj(f"{name}_smile", _tube_mesh("toon_smile_" + sp, [Mi @ q for q in smile_pts], [0.014] + [0.026] * (len(smile_pts) - 2) + [0.014], 8), coll, mouth_c)
     _parent_bone(o, arm, "Smile", M)
     # mouth cavity (seen when the jaw opens) + tongue on the jaw
     j = spec["jaw"]; hc = Vector(j["hinge"]).lerp(Vector(j["tip"]), 0.55)
@@ -735,7 +737,7 @@ def _build_actions(sp, arm):
     def lying_tucked():                 # chest down, legs folded under (goat / dog 'loaf')
         P = _copy(stand)
         hip = arm.data.bones["Body"].head_local.z
-        drop = 0.62 * arm.data.bones["Torso2"].head_local.z
+        drop = 0.53 * arm.data.bones["Torso2"].head_local.z          # 0.62 sank the belly ~5 cm into the ground
         _mov(arm, P, "Body", (0, 0, -drop))
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
@@ -751,7 +753,7 @@ def _build_actions(sp, arm):
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
             _mov(arm, loaf, f"IKFrontLeg.{s}", (-0.03 * sx, -0.30 - 0.45 * front_leg, -0.10))
-    loaf = _chin_to(arm, loaf, 0.17 * T2z if sp == "sheru" else 0.20 * T2z, yaw=0 if sp == "sheru" else 14)
+    loaf = _chin_to(arm, loaf, 0.17 * T2z if sp == "sheru" else 0.30 * T2z, yaw=0 if sp == "sheru" else 14)
     sleep_base = loaf
 
     def sleep_pose(t, base=None):
@@ -964,7 +966,7 @@ def _build_actions(sp, arm):
 
     def tug(t):              # tug-of-war: legs braced, leaning back, head yanking side to side, jaw clamped on the rope
         P = _copy(stand); y = _osc(t, 24)
-        braced(P, (0.22 + 0.06 * y) * front_leg, 0.10 * T2z, 0.22 * front_leg, 0.18 * front_leg)
+        braced(P, (0.16 + 0.06 * y) * front_leg, 0.10 * T2z, 0.10 * front_leg, 0.10 * front_leg)
         _rot(arm, P, "Body", pitch=6 + 3 * y)
         _rot(arm, P, "Neck1", pitch=-14); _rot(arm, P, "Head", pitch=-8, yaw=16 * _osc(t, 12))
         _posture(arm, P, t, dict(ears="back", tail="up"))
@@ -974,7 +976,7 @@ def _build_actions(sp, arm):
     def push(t):             # head-butt push: head down, horns forward, rear legs driving
         P = _copy(stand); y = 0.5 + 0.5 * _osc(t, 24)
         braced(P, -(0.10 + 0.08 * y) * front_leg, 0.08 * T2z, 0.05 * front_leg, 0.30 * front_leg)
-        _rot(arm, P, "Neck1", pitch=-26 - 4 * y); _rot(arm, P, "Head", pitch=-22)
+        _rot(arm, P, "Neck1", pitch=-42 - 5 * y); _rot(arm, P, "Neck2", pitch=-10); _rot(arm, P, "Head", pitch=-18)
         _posture(arm, P, t, dict(ears="back"))
         return _face(arm, P, "angry", jaw=0.0)
     _bake(arm, pre + "push", 24, push, 1)
@@ -1051,7 +1053,7 @@ EARS = {   # (pitch, outward roll) per ear
     "flat":    dict(L=(72, 22), R=(72, 22)),       # pinned flat (scared, guilty)
     "droop":   dict(L=(18, 58), R=(18, 58)),       # sad / bored: hanging sideways
     "relaxed": dict(L=(12, 14), R=(12, 14)),
-    "one_up":  dict(L=(-24, -4), R=(28, 42)),      # confused
+    "one_up":  dict(L=(-8, -12), R=(28, 42)),      # confused
 }
 TAIL = {   # pitch per tail bone (+ optional wag (deg, period))
     "up":        dict(pitch=(-28, -10, 0)),
@@ -1102,8 +1104,9 @@ def _posture(arm, P, t, c):
     tm = c.get("tail")
     if tm:
         tt = TAIL[tm]
+        kup = 0.3 if arm.get("species") == "chamki" else 1.0          # the goat's short tuft hits her back when raised far
         for i, a in enumerate(tt.get("pitch", ())):
-            if f"Tail{i + 1}" in bones: _rot(arm, P, f"Tail{i + 1}", pitch=a)
+            if f"Tail{i + 1}" in bones: _rot(arm, P, f"Tail{i + 1}", pitch=a * (kup if a < 0 else 1.0))
         if "wag" in tt:
             amp, per = tt["wag"]
             _rot(arm, P, "Tail1", yaw=amp * _osc(t, per))
@@ -1292,7 +1295,7 @@ def _emo_fx(rig, kind, frame, hold, anchor=None):
     a = anchor or fx_of(rig); s = _fx_size(rig)
     if a is None: return None
     if kind == "sweat": return FX.sweat_drops(a, frame + 2, count=3, size=s)
-    if kind == "hearts": return FX.hearts(a, frame, count=4, size=s)
+    if kind == "hearts": return FX.hearts(a, frame, count=4, size=s, offset=(0, -0.1, 0.05))
     if kind == "zzz": return FX.zzz(a, frame, frame + hold, size=s)
     return FX.mark(kind, a, frame, frame + min(hold, 40), size=s, offset=(0, 0, 0.30))
 
@@ -1419,10 +1422,12 @@ def walk_along(rig, curve, speed=None, start_frame=1, action="walk", ground_z=No
         for i in range(1, len(vs)): L.append(L[-1] + (vs[i] - vs[i - 1]).length)
     act, _ = _resolve(rig, action)
     prof = _profile(rig, act)                      # per-frame advance that keeps the planted feet still
-    Lc = len(prof); rate = v / nat
+    nat = max(nat, 0.05); Lc = len(prof); rate = v / nat
     sc = root.matrix_world.to_scale().z
     dist = [0.0]
-    while dist[-1] < L[-1] and len(dist) < 100000:
+    if max(prof) <= 1e-6:                          # a cycle whose feet never plant (bad profile): advance uniformly
+        prof = [nat / (sc * bpy.context.scene.render.fps)] * Lc
+    while dist[-1] < L[-1] and len(dist) < 5000:
         ph = ((len(dist) - 1) * rate) % Lc; i = int(ph); fr = ph - i
         dist.append(dist[-1] + (prof[i] * (1 - fr) + prof[(i + 1) % Lc] * fr) * rate * sc)
     n = len(dist) - 1
