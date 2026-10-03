@@ -43,7 +43,7 @@ def _patch(src_rgba, edit_id):
     m = np.asarray(Image.open(mp).convert("L")).astype(np.float32) / 255; ys, xs = np.nonzero(m > 0.02)
     if not len(xs): return None
     y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
-    return raw[y0:y1, x0:x1, :3], m[y0:y1, x0:x1, None], (x0, y0, x1, y1)
+    return raw[y0:y1, x0:x1, :3].copy(), m[y0:y1, x0:x1, None].copy(), (x0, y0, x1, y1)
 
 
 def apply_patch(img, p, w=1.0):
@@ -61,18 +61,35 @@ class View:
     def mouth_box(self): return self.boxes.get("mouth")
 
 
+class _Lazy:
+    """name -> RGBA drawing, loaded on first use, small LRU (5 parallel renders x 7 characters must fit in 16 GB)"""
+    def __init__(self, n=12): self.ids, self.lru, self.n = {}, {}, n
+    def __contains__(self, k): return k in self.ids
+    def keys(self): return self.ids.keys()
+    def __iter__(self): return iter(self.ids)
+    def __getitem__(self, k):
+        if k in self.lru: v = self.lru.pop(k); self.lru[k] = v; return v
+        v = _load(self.ids[k]); self.lru[k] = v
+        if len(self.lru) > self.n: self.lru.pop(next(iter(self.lru)))
+        return v
+
+
+class _Boxes(dict):
+    def __init__(self, d): super().__init__(); self.d = d
+    def __missing__(self, k): v = KeyChar._bbox(self.d[k]); self[k] = v; return v
+
+
 class KeyChar:
     def __init__(self, cid, sel, body):
-        self.cid, self.S, self.body = cid, sel, body; self.d = {}; self.kp = {}; self.cache = {}
+        self.cid, self.S, self.body = cid, sel, body; self.d = _Lazy(); self.kp = {}; self.cache = {}
         for act, ids in sel.get("actions", {}).items():
             T = PS.load(body, act) if os.path.exists(os.path.join(PS.PD, f"{body}_{act}.json")) else None
             for i, k in enumerate(ids):
-                a = _load(k)
-                if a is None: continue
-                self.d[f"{act}_{i}"] = a; self.kp[f"{act}_{i}"] = T["frames"][i]["kp"] if T and i < len(T["frames"]) else None
+                if not os.path.exists(os.path.join(KEYS, k.replace("/", os.sep), "rgba.png")): continue
+                self.d.ids[f"{act}_{i}"] = k; self.kp[f"{act}_{i}"] = T["frames"][i]["kp"] if T and i < len(T["frames"]) else None
         self.mouth = {n: {s: _patch(None, e) for s, e in v.items()} for n, v in sel.get("body_mouth", {}).items()}
         self.expr = {n: {s: _patch(None, e) for s, e in v.items()} for n, v in sel.get("body_expr", {}).items()}
-        self.box = {n: self._bbox(a) for n, a in self.d.items()}
+        self.box = _Boxes(self.d)
 
     @staticmethod
     def _bbox(a):
