@@ -59,7 +59,7 @@ def shoot_face(sc, cam, h, rig, path, ang=-14, field=2.4, up=-0.38):
 
 
 def body_cam(h, rig, ang=-14):
-    Hh = max(0.9, h.dimensions.z); a = R(ang); D = 1.75 * Hh
+    Hh = max(0.9, h.dimensions.z); a = R(ang); D = 1.42 * Hh
     tgt = Vector((rig.location.x, rig.location.y, 0.5 * Hh))
     return tgt + Vector((D * math.sin(a), -D * math.cos(a), 0.05 * Hh)), tgt
 
@@ -119,7 +119,7 @@ for k, name in enumerate(names):
         if name in partner:
             tgt = partner[name]; mk = marker("partner_" + name, tgt)
         info = LE.animate_expression(h, rig, name, 1, 70, seed=k, target=tgt)
-        hero = info["peak"] if name in LE.ANIMATED else 24
+        hero = info["hold"][0] + 9 if name in LE.ANIMATED else 24
         while any(abs(hero - b) <= 4 for b in info["blinks"]): hero += 3
         rep["hero"] = hero; rep["blinks"] = info["blinks"]
         sc.frame_set(hero); bpy.context.view_layer.update()
