@@ -17,7 +17,7 @@ import lib_hair as LH, lib_expressions as LE, lib_anim as AN
 
 CHARS = {"girl": ("girl_9y", "langa_voni", {}, [("hair", "two_plaits_ribbons", {})]),
          "boy": ("boy_10y", "kurta_pyjama", {}, [("hair", "side_parting_oiled", {})]),
-         "dadi": ("elder_woman_70y", "saree_elder", {"head_pallu": False}, [("hair", "elder_tied_small_bun", {})])}   # kumkum_bottu mark tears into a red spike on browDown (lib_hair bug) - left off
+         "dadi": ("elder_woman_70y", "saree_elder", {"head_pallu": False}, [("hair", "elder_tied_small_bun", {}), ("mark", "kumkum_bottu", {})])}
 TALK = {"happy": "Namaste Dadi! Aaj mela chalo!", "sad": "Mera laddoo gir gaya...", "angry": "Yeh kisne kiya? Batao!"}
 TOL = 0.002
 
