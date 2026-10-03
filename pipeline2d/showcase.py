@@ -44,7 +44,7 @@ class Puppet:
 def place(frame, img, P, x, foot, h, flip=False, rot=0.0):
     if flip: img = img[:, ::-1]
     bx0, by0, bx1, by1 = P.bbox; feet = ((bx0 + bx1) / 2 if not flip else P.W - (bx0 + bx1) / 2, by1)
-    k = h * OH / max(1, by1 - by0); M = cv2.getRotationMatrix2D(feet, rot, k)
+    k = h * OH / max(1, by1 - by0); M = cv2.getRotationMatrix2D((float(feet[0]), float(feet[1])), float(rot), float(k))
     M[0, 2] += x * OW - feet[0]; M[1, 2] += foot * OH - feet[1]
     C.blend(frame, cv2.warpAffine(img, M, (OW, OH), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0)))
 
