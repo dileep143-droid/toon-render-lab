@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        job: [girl_langa, girl_school, boy, elder, girl_expr]
+        job: [girl_langa, girl_school, boy, elder, girl_expr, girl_expr_np, girl_expr_nr]
     steps:
       - uses: actions/checkout@v4
       - name: Skip?
