@@ -407,6 +407,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
             if n > 20 and not held:
                 kind = "person/person" if is_char[a] and is_char[b] else ("person/prop" if is_char[a] or is_char[b] else "prop/prop")
                 if kind == "person/prop" and (a in seat_roots or b in seat_roots): rep["contacts"].append((a.name, b.name, "seated", n)); continue
+                if kind == "prop/prop" and n < 60: rep["contacts"].append((a.name, b.name, "resting", n)); continue   # a plate on a cot, a pot on a shelf
                 rep["penetrations"].append((a.name, b.name, kind, n))
     rep["penetrations"] = sorted(rep["penetrations"], key=lambda x: -x[3])[:max_pairs]
     # 2) garment through its own body (> 2 % of the cloth inside the skin)

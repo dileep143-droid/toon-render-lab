@@ -131,13 +131,14 @@ def mode_demo():
     LH.add_hair(girl, grig, "tied_long_jada")
     gw = A.Rig(grig); A.walk(gw, 1, cycles=3, move=True)
     # the boy picks up the laddoo plate from the cot (hand-holding = lib_handobj, laptop-owned: called, never edited)
-    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.35, -3.08, 0.0), rot_z=R(0))   # in front of the cot, facing it (+y)
+    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.35, -3.08, 0.0), rot_z=R(180))   # in front of the cot, facing it (+y)
     bw = A.Rig(brig)
     plate = props[2]
     try:
         import lib_handobj as HO
-        REPORT["handobj"] = HO.reach_grab_move_place(bw, "R", plate, plate.matrix_world.translation + Vector((0.25, -0.2, 0.25)),
-                                                     dict(hover=10, grab=20, place=50, off=60))
+        # he picks it up and holds it in front of his chest for the rest of the shot (place / release after the shot)
+        REPORT["handobj"] = HO.reach_grab_move_place(bw, "R", plate, plate.matrix_world.translation + Vector((0.0, -0.25, 0.22)),
+                                                     dict(hover=10, grab=20, mid=40, place=95, off=105))
     except Exception as ex:
         REPORT["handobj"] = "lib_handobj call failed: " + repr(ex)[:200]; PH.log("WARN handobj", repr(ex)[:200])
     chars = [(dadi, drig), (girl, grig), (boy, brig)]
