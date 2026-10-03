@@ -431,8 +431,8 @@ def _fix_teeth(rig, F=None):
         keep = JAW_KEYS | ({"tongueOut"} if kind == "tongue" else set())
         nz = 0
         for kb in sk.key_blocks[1:]:
-            if kb.name not in keep:
-                for i, d in enumerate(kb.data): d.co = bco[i]
+            if kb.name not in keep and not kb.name.lower().startswith(("toon", "macro", "$")):   # keep lib_toon's warp key:
+                for i, d in enumerate(kb.data): d.co = bco[i]                                   # zeroing it dropped the tongue under the toon chin
                 nz += 1
             elif kind == "teeth":
                 for i, d in enumerate(kb.data):
@@ -512,7 +512,12 @@ def _mouth_bag(F):
     for _ in range(3):   # keep it well inside the head
         for v in bm.verts:
             loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
-            if loc is not None and nrm.y < -0.2 and (v.co - loc).dot(nrm) > -0.006 * s: v.co = loc - nrm * 0.006 * s   # outer face skin only (inner-lip normals point into the mouth)
+            if loc is None: continue
+            outer = nrm.y < -0.2 or (nrm.z < -0.35 and loc.z < fc["mouth_z"] - 0.012 * s)   # face front or under the chin; not the inner lips
+            if outer and (v.co - loc).dot(nrm) > -0.006 * s: v.co = loc - nrm * 0.006 * s
+    zlo = fc["chin_z"] + 0.45 * (fc["mouth_z"] - fc["chin_z"])   # never reach down into the (toon-shortened) chin
+    for v in bm.verts:
+        if v.co.z < zlo: v.co.z = zlo
     mat = LH.solid("mouth_inside_dark", (0.11, 0.015, 0.025), 0.8)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
