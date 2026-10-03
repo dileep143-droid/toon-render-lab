@@ -190,7 +190,7 @@ if WHO in ("chamki", "sheru"):
 
     # ---------------- actions ----------------
     if "actions" in PARTS:
-        engine("workbench", 240, 180); COLS = 5
+        engine("eevee", 240, 180); COLS = 5
         rows = []
         box = None
         for an in LA.action_names(rig):
@@ -203,8 +203,9 @@ if WHO in ("chamki", "sheru"):
                 bm = bpy.data.materials.new("box"); bm.diffuse_color = (0.6, 0.4, 0.2, 1); box.data.materials.append(bm)
                 root.location = (0, 0.15, 0); end = LA.hop_to(rig, 1, (0, -0.75, 0.45)); airborne = range(6, 26)
             elif an in ("run", "run_to_food"):
-                end = LA.walk_along(rig, [(0, 1.5, 0), (0, -2.5, 0)], start_frame=1, action=an, settle=None)
-                LA.dust_trail(rig, 1, end, every=6); L = int(end - 1)
+                print("RUNSPEED", an, round(LA.natural_speed(rig, an), 3), "m/s"); sys.stdout.flush()
+                end = LA.walk_along(rig, [(0, 1.5, 0), (0, -2.5, 0)], start_frame=1, action=an, settle=None, speed=2.4)
+                end = min(end, 120); LA.dust_trail(rig, 1, end, every=6); L = int(end - 1)
             elif an == "sleep":
                 end = LA.sleep(rig, 1, 49)
             elif an in ("steal_run", "tug_of_war"):
@@ -231,7 +232,7 @@ if WHO in ("chamki", "sheru"):
                 sc.frame_set(f); l_, h_ = bbox_world([body])
                 lo = l_ if lo is None else Vector(map(min, lo, l_)); hi = h_ if hi is None else Vector(map(max, hi, h_))
                 z = min_z(body); gz.append(round(z * 100, 1))
-                flies = an in ("hop", "run", "run_to_food", "steal_run", "startled_jump", "jump_pack", "trot") and z < 0.25
+                flies = an == "hop" or an in ( "run", "run_to_food", "steal_run", "startled_jump", "jump_pack", "trot") and z < 0.25
                 if (z < -0.015) or (z > 0.015 and not flies and f not in airborne):
                     check(f"GROUND {WHO}:{an} frame {f}: lowest body point {z * 100:+.1f} cm ({'FLOAT' if z > 0 else 'SINK'})")
                 ov = overlaps(body, accs)
@@ -243,7 +244,10 @@ if WHO in ("chamki", "sheru"):
             label(f"{WHO} : {an}", 1.333)
             row = []
             for f in frames:
-                sc.frame_set(f); row.append(render(os.path.join(OUT, "stills", f"{WHO}_{an}_{f:03d}.png")))
+                sc.frame_set(f)
+                if an in ("run", "run_to_food"):          # travelling: follow the animal
+                    l_, h_ = bbox_world([body]); frame_box(l_, h_ + Vector((0, 0.6, 0)), fill=0.75)
+                row.append(render(os.path.join(OUT, "stills", f"{WHO}_{an}_{f:03d}.png")))
             rows.append(np.concatenate(row, axis=1))
             print("ROW", WHO, an, "frames", frames, "lowest z cm", gz)
             wipe(new_objs_since(before) if an != "hop" else new_objs_since(before))
@@ -273,7 +277,8 @@ if WHO in ("chamki", "sheru"):
             reset(rig, root); before = set(bpy.data.objects)
             LA.play(rig, "idle", 1, loops=3); LA.emotion(rig, e, 1, hold=40)
             sc.frame_set(14)
-            dmax = max((base_m[b].to_quaternion().rotation_difference(rig.pose.bones[b].matrix.to_quaternion()).angle for b in base_m), default=0)
+            angs = [base_m[b].to_quaternion().rotation_difference(rig.pose.bones[b].matrix.to_quaternion()).angle for b in base_m]
+            dmax = max([min(a_, 2 * math.pi - a_) for a_ in angs] + [0])
             dloc = (rig.pose.bones["Body"].matrix.translation - base_m["Body"].translation).length
             if math.degrees(dmax) < 3 and dloc < 0.01: check(f"NOOP {WHO}:{e} posture moves only {math.degrees(dmax):.1f} deg")
             z = min_z(body)
@@ -281,7 +286,7 @@ if WHO in ("chamki", "sheru"):
             ov = overlaps(body, accs); bad = {k: v for k, v in ov.items() if v > base_ov.get(k, 0) * 1.5 + 12}
             if bad: check(f"CLIP {WHO}:emotion {e}: {bad}")
             hp = head_pos()
-            aim(hp - Vector((0, 0, H * 0.10)), Vector((0.30, -1.0, 0.10)), H * 1.25); label(f"{e}", 1.25)
+            aim(hp - Vector((0, 0, H * 0.06)), Vector((0.30, -1.0, 0.12)), H * 0.85); label(f"{e}", 1.25)
             cells.append(render(os.path.join(OUT, "stills", f"{WHO}_emo_{e}_front.png")))
             lo, hi = bbox_world([body]); hi.z = max(hi.z, hp.z + 0.25)
             frame_box(lo, hi, view=(0.85, -0.75, 0.30), fill=0.85); label(f"{e}", 1.25)
