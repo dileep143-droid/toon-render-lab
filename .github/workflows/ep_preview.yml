@@ -1,0 +1,60 @@
+name: ep-preview
+# Quick low-res preview of part of an episode scene. Scene data comes from the PRIVATE Kaggle dataset (not this public repo).
+on:
+  workflow_dispatch:
+    inputs:
+      scene_file: { description: "scene JSON in the private dataset", default: "scene1.json" }
+      first:      { description: "first frame", default: "1" }
+      last:       { description: "last frame", default: "360" }
+      step:       { description: "render every Nth frame", default: "2" }
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: { part: [0, 1, 2] }
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_KEY1 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 ffmpeg
+      - name: Blender 4.2 + MPFB + CC0 packs
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz && tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          python3 - <<'EOF'
+          import json, urllib.request
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab)"}
+          d = json.load(urllib.request.urlopen(urllib.request.Request("https://extensions.blender.org/api/v1/extensions/", headers=H), timeout=60))
+          e = next(x for x in d.get("data", d) if x.get("id") == "mpfb")
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=180).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+          mkdir -p pack functional
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip && unzip -qo pack.zip -d pack
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+      - name: Private scene data
+        run: |
+          pip install -q kaggle pillow
+          kaggle datasets download mani7673/sonpur-episodes -p epdata --unzip
+          f=$(find epdata -name "${{ inputs.scene_file }}" | head -1); echo "scene file: $f"; test -n "$f"
+          rm -rf ep && cp -r "$(dirname "$f")" ep
+          python3 - <<'EOF'
+          import json
+          p = "ep/${{ inputs.scene_file }}"; s = json.load(open(p, encoding="utf-8"))
+          s["resolution"] = [640, 360]; s["samples"] = 8; s["eevee_samples"] = 8
+          json.dump(s, open(p, "w", encoding="utf-8"), ensure_ascii=False)
+          a, b, st, part = ${{ inputs.first }}, ${{ inputs.last }}, ${{ inputs.step }}, ${{ matrix.part }}
+          fr = list(range(a, b + 1, st)); fr = fr[part::3]
+          open("frames.txt", "w").write(",".join(map(str, fr))); print(len(fr), "frames for this part")
+          EOF
+      - name: Build scene (coverage-checked) and render
+        run: |
+          BL="./blender/blender -b -noaudio"
+          $BL --python episode_scene.py -- ep/${{ inputs.scene_file }} --pack pack --functional functional --out out --save scene.blend --engine cycles 2>&1 | grep -E "EPISODE|Error|Traceback|line [0-9]|refusing|OUTFIT built" | tail -n 80
+          ALLOW=""; test -f out/allowed.json && ALLOW="--allowed out/allowed.json"
+          $BL scene.blend --python episode_scene.py -- ep/${{ inputs.scene_file }} --render-only --out frames $ALLOW --engine cycles --samples 8 --frames $(cat frames.txt) 2>&1 | grep -E "RENDER|Error|Traceback" | tail -n 30
+          ls frames | wc -l
+      - uses: actions/upload-artifact@v4
+        with: { name: "frames-${{ matrix.part }}", path: frames, retention-days: 3 }
