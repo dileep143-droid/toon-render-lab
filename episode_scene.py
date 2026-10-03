@@ -332,6 +332,13 @@ for c in S.get("characters", []):
                     import lib_hair as LH
                     LH.add_hair(h, arm, c["hair"], colour=c.get("hair_colour"), **c.get("hair_opts", {}))
                 except Exception as ex: err(f"hair {cid}", ex)
+            if c.get("mark"):                       # forehead mark (lib_hair): kumkum_bottu / bindi_sticker / sindoor_line ...
+                try:
+                    import lib_hair as LH
+                    for mk in (c["mark"] if isinstance(c["mark"], list) else [c["mark"]]):
+                        mk = {"kind": mk} if isinstance(mk, str) else dict(mk)
+                        LH.add_forehead_mark(h, arm, mk.pop("kind"), **mk)
+                except Exception as ex: err(f"mark {cid}", ex)
             rig = A.Rig(arm)
         arm.location = P(c["loc"]); arm.rotation_euler = (0, 0, R(c.get("rot_z", 0)))
         bpy.context.view_layer.update()
@@ -443,8 +450,51 @@ def anim_target(a):
 
 def do_action(a):
     t = a["t"]
-    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz", "anim"):
+    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz", "anim",
+             "emotion", "talk_emotion", "eye_look", "blush", "mocap"):
         ch = CH[a["who"]]; rig = ch["rig"]; arm = ch["arm"]
+    if t in ("emotion", "talk_emotion", "eye_look", "blush"):
+        import lib_expressions as LE
+    if t == "emotion":               # lib_expressions: full emotion (face + body acting + micro-motion), settles back by `end`
+        LE.animate_expression(ch["h"], arm, a["name"], a["frame"], a.get("end", a["frame"] + 48), strength=a.get("strength", 1.0),
+                              release=a.get("release", True), seed=a.get("seed", 0), target=P(a["target"]) if a.get("target") else None,
+                              talking=a.get("talking", False))
+        return
+    if t == "talk_emotion":          # lip-sync on top of the emotion (rhubarb cues, else text)
+        LE.talk_emotion(ch["h"], arm, a["frame"], text=a.get("text"), rhubarb_json=os.path.join(SDIR, a["rhubarb"]) if a.get("rhubarb") else None,
+                        emotion=a.get("emotion"), strength=a.get("strength", 1.0), head_bob=a.get("head_bob", True))
+        return
+    if t == "eye_look":              # target: world point | {"obj": prop} | {"who": character} | {"animal": id}; or direction
+        tg = a.get("target")
+        if isinstance(tg, dict):
+            tg = PROPS[tg["obj"]] if "obj" in tg else (head_anchor(tg["who"]) if "who" in tg else LA.head_of(AN[tg["animal"]]["arm"]))
+        elif tg is not None: tg = P(tg)
+        LE.eye_look(ch["h"], arm, target=tg, direction=a.get("direction"), frame=a["frame"], blend=a.get("blend", 3))
+        return
+    if t == "blush":
+        LE.set_blush(ch["h"], a.get("amount", 0.8), frame=a["frame"], blend=a.get("blend", 4))
+        return
+    if t == "mocap":                 # captured clip (lib_mocap); clips ship next to the scene JSON in mocap/ (private dataset)
+        import lib_mocap as LM
+        for d in (os.environ.get("MOCAP_DATA", ""), os.path.join(SDIR, "mocap"), SDIR, "/kaggle/input"):
+            if d and d not in LM.SEARCH: LM.SEARCH.insert(0, d)
+        cr = a.get("clip_range")
+        if a.get("max_sec") and not cr:
+            D = LM.load_clip(a["clip"]); cr = (0, min(D["frames"] - 1, int(a["max_sec"] * float(D["fps"]) * a.get("speed", 1.0))))
+        LM.apply_clip(rig, ch["h"], a["clip"], a["frame"], parts=tuple(a.get("parts", ("body", "hands"))), strength=a.get("strength", 1.0),
+                      mirror=a.get("mirror", False), root_motion=a.get("root_motion", False), in_place=a.get("in_place", True),
+                      speed=a.get("speed", 1.0), clip_range=tuple(cr) if cr else None, verbose=False)
+        return
+    if t == "animal_emotion":        # lib_animals: face + ears/tail/body posture + fx
+        LA.emotion(anim_target(a), a["name"], a["frame"], hold=a.get("hold", 48), fx=a.get("fx", True)); return
+    if t == "animal_ears":
+        LA.ears(anim_target(a), a["mode"], a["frame"], hold=a.get("hold", 48)); return
+    if t == "animal_tail":
+        LA.tail(anim_target(a), a["mode"], a["frame"], hold=a.get("hold", 48)); return
+    if t == "animal_grab":           # the animal takes a prop in its mouth (Chamki stealing)
+        LA.grab(anim_target(a), PROPS[a["obj"]], a["frame"], offset=tuple(a.get("offset", (0, 0, 0))), rot=tuple(a.get("rot", (0, 0, 0)))); return
+    if t == "animal_release":
+        LA.release(anim_target(a), PROPS[a["obj"]], a["frame"]); return
     if t == "seat":
         A._seq(rig, a["frame"], [(0, seated(rig, seat_rel(ch, a["seat"])))])
     elif t == "pose":
