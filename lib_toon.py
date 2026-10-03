@@ -32,7 +32,7 @@ STYLES = {
     "infobells": dict(head=0.17, eyes=0.30, jaw=0.06, legs=0.07, adult=0.6,
                       # mouth / chin warps OFF: lib_expressions sizes its mouth bag from the eye spacing, so a narrower
                       # mouth or a lifted chin let the dark bag poke through the skin (run 1, 3 Oct)
-                      nose=0.42, mouth=0.0, cheek=0.08, chin=0.0, neck=0.12, lash=0.35, eye_tall=1.35, brow_lift=0.26,
+                      nose=0.42, mouth=0.0, cheek=0.08, chin=0.0, neck=0.12, lash=0.35, eye_tall=1.35, brow_lift=0.16,
                       tex_mix=0.0, rim=0.12, emit=0.07, skin_gain=0.92, rough=0.72, spec=0.12, sss=0.10,
                       blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.8, lip_rgb=(0.84, 0.40, 0.42),
                       iris_r=0.80, pupil_r=0.36, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
@@ -289,11 +289,11 @@ class _Warp:
             if lift and getattr(self, "_cur_kind", None) not in ("eyes", "lash"):
                 for c in self.eyes:
                     dx = abs(p.x - c.x); dz = p.z - c.z
-                    w = (1 - _smooth(0.45 * self.d, 0.7 * self.d, dx)) * _smooth(0.42 * self.d, 0.58 * self.d, dz) * (1 - _smooth(0.95 * self.d, 1.25 * self.d, dz))
+                    w = (1 - _smooth(0.45 * self.d, 0.7 * self.d, dx)) * _smooth(0.42 * self.d, 0.58 * self.d, dz) * (1 - _smooth(0.75 * self.d, 1.25 * self.d, dz))   # top falloff wider than the lift: a narrower one folded the forehead up through the hair cap (bald-patch peaks, face run 4)
                     # inner brow ends rise most: soft arched brows instead of the angled-down "frown" (run 5)
                     mx = (self.eyes[0].x + self.eyes[1].x) / 2
                     inner = 1 - _smooth(0.15 * self.d, 0.55 * self.d, abs(p.x - mx))
-                    if w > 0 and p.y < c.y + 0.3 * self.d: p = Vector((p.x, p.y, p.z + lift * w * (1 + 1.2 * inner)))
+                    if w > 0 and p.y < c.y + 0.3 * self.d: p = Vector((p.x, p.y, p.z + lift * w * (1 + 0.5 * inner)))
         if self.lm and p.z > self.z0: p = self._features(p, self.st)
         if self.jaw:
             z = p.z; e = self.eye_z; d = self.d
