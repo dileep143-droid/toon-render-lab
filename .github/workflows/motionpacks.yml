@@ -15,12 +15,36 @@ env:
   PYTHONUNBUFFERED: "1"
 
 jobs:
+  mhpack:      # the MakeHuman CC0 asset server is slow (~13 min): download once into the Actions cache
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/cache@v4
+        id: c
+        with:
+          path: |
+            pack
+            functional
+          key: mh-cc0-pack-v1
+      - if: steps.c.outputs.cache-hit != 'true'
+        run: |
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+          mkdir -p pack functional && unzip -q pack.zip -d pack && rm pack.zip
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+
   rigs:
+    needs: mhpack
     if: inputs.from_run == ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            pack
+            functional
+          key: mh-cc0-pack-v1
       - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
@@ -122,7 +146,7 @@ jobs:
         with: { name: merged, path: merged, retention-days: 7 }
 
   sheet:
-    needs: merge
+    needs: [merge, mhpack]
     if: ${{ !cancelled() && needs.merge.result == 'success' && inputs.sheets != 'false' }}
     runs-on: ubuntu-latest
     timeout-minutes: 200
@@ -135,6 +159,12 @@ jobs:
         with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: actions/download-artifact@v4
         with: { name: merged, path: merged }
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            pack
+            functional
+          key: mh-cc0-pack-v1
       - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
@@ -162,7 +192,7 @@ jobs:
         with: { name: sheets, path: sheets, retention-days: 14 }
 
   blendlib:
-    needs: merge
+    needs: [merge, mhpack]
     if: ${{ !cancelled() && needs.merge.result == 'success' && inputs.publish != 'false' }}
     runs-on: ubuntu-latest
     timeout-minutes: 240
@@ -172,6 +202,12 @@ jobs:
         with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: actions/download-artifact@v4
         with: { name: merged, path: merged }
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            pack
+            functional
+          key: mh-cc0-pack-v1
       - name: Blender 4.2 + MPFB
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
