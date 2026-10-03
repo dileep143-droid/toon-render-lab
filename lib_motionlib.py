@@ -48,6 +48,8 @@ def frame(d, r):
     return np.stack([d, r, np.cross(d, r)], -1)
 
 def avg_rot(Ms):
+    Ms = Ms[np.isfinite(Ms).all(axis=(-2, -1))]
+    if len(Ms) == 0: return np.eye(3)
     U, S, Vt = np.linalg.svd(np.sum(Ms, 0)); D = np.eye(3); D[2, 2] = np.sign(np.linalg.det(U @ Vt))
     return U @ D @ Vt
 
@@ -132,6 +134,10 @@ def parse_bvh(text, fps=FPS, skip_first=False, t0=None, t1=None):
     tt = np.arange(a, b, 1.0 / fps)
     idx = np.clip(np.round(tt * src_fps).astype(int) + first, 0, nf - 1)
     data = data[idx].astype(np.float64); F = len(idx); J = len(names)
+    good = np.isfinite(data).all(1) & (np.abs(data).max(1) < 1e6)
+    if not good.all():
+        if not good.any(): raise ValueError("no finite frames")
+        data = _ffill(data, good)
     P = np.zeros((F, J, 3)); B = np.zeros((F, J, 3, 3)); rest = np.zeros((J, 3))
     col = 0
     for j in range(J):
