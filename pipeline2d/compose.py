@@ -11,6 +11,12 @@ FFMPEG = next((p for p in [r"C:\Users\goddu\Downloads\ffmpeg-master-latest-win64
 GAP, LEAD, TAIL, NOAUDIO = 0.35, 0.35, 0.45, 1.3
 
 
+try:
+    import registry as REG          # optional toolkit (claude/toolkit branch); compose works without it
+except Exception:
+    REG = None
+
+
 def ease(u): u = min(1, max(0, u)); return u * u * (3 - 2 * u)
 
 
@@ -52,6 +58,12 @@ class Pose:
         self.arm = np.asarray(Image.open(os.path.join(d, "arm.png")).convert("RGBA")).copy() if os.path.exists(os.path.join(d, "arm.png")) else None
         bp = os.path.join(d, "boxes.json"); self.boxes = json.load(open(bp)) if os.path.exists(bp) else {}
         self.base[:, :, 3] = np.where(self.base[:, :, 3] > 24, self.base[:, :, 3], 0)
+        # keep only the main figure (drops stray slivers such as a second copy at the image edge)
+        n, lab, st, _ = cv2.connectedComponentsWithStats((self.base[:, :, 3] > 64).astype(np.uint8))
+        if n > 2:
+            keep = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA])); big = cv2.dilate((lab == keep).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0
+            for arr in (self.base, self.body, self.arm):
+                if arr is not None: arr[:, :, 3] = np.where(big, arr[:, :, 3], 0)
         ys, xs = np.nonzero(self.base[:, :, 3] > 64)
         self.bbox = (xs.min(), ys.min(), xs.max(), ys.max()) if len(xs) else (0, 0, self.base.shape[1], self.base.shape[0])
         self.H, self.W = self.base.shape[:2]
@@ -248,7 +260,7 @@ def main(work, out_mp4, only=None):
             top = min(tops)
             if top < 0.04: top = 0.04
             if top + .46 / z < .5 / z: z = max(1.0, 0.04 / max(1e-3, top) if top > 0 else 1.0)
-            cy = min(cy, top + .44 / z)
+            cy = min(cy, top + .40 / z)
         cx = min(max(cx, .5 / z), 1 - .5 / z); cy = min(max(cy, .5 / z), 1 - .5 / z)
         sc = z * OW / Wp                                               # plate px -> screen px
         def P2S(px, py): return ((px - cx * Wp) * sc + OW / 2, (py - cy * Hp) * sc + OH / 2)
@@ -315,6 +327,11 @@ def main(work, out_mp4, only=None):
                 if m["type"] == "tail" and m["t0"] <= t <= m["t1"] and ps.boxes.get("tail"):
                     tb = ps.boxes["tail"]; piv = (tb[0], tb[3]); rad = max(tb[2] - tb[0], tb[3] - tb[1])
                     img = local_rot(img, piv, rad * .6, 18 * math.sin(2 * math.pi * 4 * t))
+            # toolkit hook: move types registered in pipeline2d/registry.py (sprite-space effects) take (img, pose, move, t) -> img
+            if REG is not None:
+                for m in mv:
+                    fn = getattr(REG, "SPRITE_MOVES", {}).get(m["type"])
+                    if fn and m.get("t0", 0) <= t <= m.get("t1", 1e9): img = fn(img, ps, m, t)
             # body placement
             x = ac.get("x", .5); fy = ac.get("foot_y", .9); flip = bool(ac.get("flip")); rot = 0.0; lift = 0.0; clip = None
             for m in mv:
