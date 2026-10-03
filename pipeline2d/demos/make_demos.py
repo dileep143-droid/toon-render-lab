@@ -271,7 +271,31 @@ def demo_qa():
         out.append(np.asarray(im))
     return C.write_video(out, os.path.join(OUT, "qa_checks.mp4"), fps, crf=28)
 
-DEMOS = {"qa": demo_qa, "titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+
+def demo_registry():
+    """two shots described ONLY by JSON (no code per episode) joined by a registry transition"""
+    import registry as R, json
+    shot1 = {"duration": 5.0, "cast": {"dadi": {"kind": "human", "art": "dadi", "x": 930, "y": 640, "height": 380, "flip": True}, "chhotu": {"kind": "human", "art": "kid", "x": 250, "y": 660, "height": 300},
+             "sheru": {"kind": "animal", "art": "dog", "x": 560, "y": 665, "height": 150}},
+             "events": [{"ambient": "village_morning"}, {"motion": "walk_cycle", "who": "chhotu", "start": 0.2, "dur": 1.6, "speed": 260}, {"motion": "wave", "who": "dadi", "start": 1.0, "dur": 1.6},
+                        {"motion": "bark", "who": "sheru", "start": 1.4, "dur": 1.2}, {"effect": "exclaim", "who": "sheru", "start": 1.5, "dur": 1.0}, {"motion": "namaste", "who": "chhotu", "start": 2.2, "dur": 1.6},
+                        {"effect": "hearts", "who": "dadi", "start": 3.0, "dur": 1.5}, {"camera": "push_in", "start": 2.0, "dur": 2.5, "target": [0.72, 0.55], "amount": 1.5},
+                        {"effect": "vignette", "start": 0, "strength": 0.4}, {"transition": "iris", "start": 4.4, "dur": 0.6}]}
+    shot2 = {"duration": 4.0, "cast": {"goat": {"kind": "animal", "art": "goat", "x": 640, "y": 660, "height": 260}, "hen": {"kind": "bird", "art": "hen", "x": 1000, "y": 670, "height": 120, "flip": True}},
+             "events": [{"effect": "rain", "start": 0, "intensity": 0.8}, {"effect": "wet", "start": 0}, {"motion": "bleat", "who": "goat", "start": 0.6, "dur": 1.2},
+                        {"motion": "peck", "who": "hen", "start": 0.4, "dur": 2.0}, {"effect": "sweat_drop", "who": "goat", "start": 1.0, "dur": 1.5}, {"effect": "lightning", "start": 2.2, "dur": 0.6},
+                        {"title": "lower_third", "name": "बकरी", "role": "भीगी हुई", "start": 1.0, "dur": 2.5}]}
+    print("shot1 errors:", R.validate_shot(shot1), "shot2 errors:", R.validate_shot(shot2))
+    s1 = R.Shot(shot1, plate=bg_frame("village_day"), font="NotoSansDevanagari-Bold.ttf"); s2 = R.Shot(shot2, plate=bg_frame("village_day"), font="NotoSansDevanagari-Bold.ttf")
+    fps = C.FPS
+    def gen():
+        for i in range(int(5.0 * fps)):
+            t = i / fps; yield s1.frame(t, s2.frame(0.0) if t >= 4.4 else None)
+        for i in range(int(4.0 * fps)): yield s2.frame(i / fps)
+    json.dump({"shot1": shot1, "shot2": shot2}, open(os.path.join(OUT, "registry_demo_shots.json"), "w"), ensure_ascii=False, indent=1)
+    return C.write_video(gen(), os.path.join(OUT, "registry.mp4"), fps, crf=28)
+
+DEMOS = {"registry": demo_registry, "qa": demo_qa, "titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
