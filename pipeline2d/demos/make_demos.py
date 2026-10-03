@@ -202,7 +202,33 @@ def demo_scene_life():
     return C.write_video(frames, os.path.join(OUT, "scene_life.mp4"), fps, crf=28)
 
 
-DEMOS = {"scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+def demo_audio():
+    import audio_mix as AM, tempfile
+    from PIL import Image, ImageDraw
+    tmp = tempfile.mkdtemp(); fps = C.FPS; D = 14.0
+    v1 = AM.write_wav(tmp + "/v1.wav", AM.synth_voice(2.6, 1)); v2 = AM.write_wav(tmp + "/v2.wav", AM.synth_voice(2.2, 2, f0=230)); v3 = AM.write_wav(tmp + "/v3.wav", AM.synth_voice(2.8, 3, f0=170)); mu = AM.write_wav(tmp + "/m.wav", AM.synth_music(10.0))
+    plan = dict(duration=D, voices=[dict(path=v1, t=1.2), dict(path=v2, t=4.6), dict(path=v3, t=8.4)], music=dict(path=mu, gain_db=-11, fade_in=1.0, fade_out=2.0),
+                sfx=[dict(name="pop", t=3.0), dict(name="boing", t=7.2), dict(name="coin", t=11.6), dict(name="tada", t=12.4)], ambience=[dict(loc="village_day", start=0, end=7.5), dict(loc="rain", start=7.5, end=D)])
+    wav = tmp + "/mix.wav"; info = AM.mix_from_plan(plan, wav); x = AM.decode(wav); rms = AM.rms_track(wav, fps); print("lufs", info["lufs"])
+    lanes = [("voices", (240, 120, 90)), ("music (ducks)", (90, 150, 240)), ("sfx", (250, 200, 60)), ("ambience", (110, 190, 120))]; W_, H_ = 1280, 720; x0, x1 = 160, 1230
+    def X(t): return x0 + (x1 - x0) * t / D
+    base = Image.new("RGB", (W_, H_), (30, 32, 40)); d = ImageDraw.Draw(base)
+    for li, (nm, col) in enumerate(lanes): d.text((20, 150 + li * 110), nm, fill=(230, 230, 230), font=C.load_font(None, 22)); d.rectangle([x0, 130 + li * 110, x1, 210 + li * 110], outline=(70, 72, 85))
+    for v in plan["voices"]: dur = len(AM.decode(v["path"])) / AM.SR; d.rectangle([X(v["t"]), 135, X(v["t"] + dur), 205], fill=lanes[0][1])
+    d.rectangle([X(0), 245, X(D), 315], fill=lanes[1][1])
+    for v in plan["voices"]: dur = len(AM.decode(v["path"])) / AM.SR; d.rectangle([X(v["t"]), 245, X(v["t"] + dur), 315], fill=(40, 60, 100))
+    for s_ in plan["sfx"]: d.polygon([(X(s_["t"]), 355), (X(s_["t"]) + 14, 395), (X(s_["t"]) - 14, 395)], fill=lanes[2][1]); d.text((X(s_["t"]) - 18, 400), s_["name"], fill=(255, 255, 255), font=C.load_font(None, 18))
+    for a in plan["ambience"]: d.rectangle([X(a["start"]), 465, X(a["end"]), 535], fill=lanes[3][1]); d.text((X(a["start"]) + 8, 490), a["loc"], fill=(20, 40, 20), font=C.load_font(None, 22))
+    d.text((20, 20), "audio_mix: voices + music (auto-ducked) + sfx + ambience  ->  -14 LUFS", fill=(255, 255, 255), font=C.load_font(None, 30)); d.text((20, 70), f"measured loudness: {info['lufs']:.1f} LUFS", fill=(200, 255, 200), font=C.load_font(None, 24))
+    base = np.asarray(base); frames = []
+    for i in range(int(D * fps)):
+        t = i / fps; f = base.copy(); im = Image.fromarray(f); dd = ImageDraw.Draw(im); dd.line([(X(t), 120), (X(t), 560)], fill=(255, 255, 255), width=3)
+        lvl = float(min(1.0, rms[min(i, len(rms) - 1)] * 4)); dd.rectangle([160, 610, 160 + 1000, 650], outline=(120, 120, 130)); dd.rectangle([160, 610, 160 + int(1000 * lvl), 650], fill=(120, 230, 140) if lvl < 0.8 else (250, 90, 80)); dd.text((20, 615), "level", fill=(230, 230, 230), font=C.load_font(None, 22))
+        frames.append(np.asarray(im))
+    vid = tmp + "/v.mp4"; C.write_video(frames, vid, fps, crf=26); out = os.path.join(OUT, "audio_mix.mp4"); AM.mix_from_plan(plan, out, video=vid); return out
+
+
+DEMOS = {"audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
