@@ -737,12 +737,13 @@ def _build_actions(sp, arm):
     def lying_tucked():                 # chest down, legs folded under (goat / dog 'loaf')
         P = _copy(stand)
         hip = arm.data.bones["Body"].head_local.z
-        drop = 0.53 * arm.data.bones["Torso2"].head_local.z          # 0.62 sank the belly ~5 cm into the ground
+        # goat: 0.62 sank the belly ~5 cm; dog: 0.62 left him hunched on bent hind legs -> lower, hind feet tucked forward
+        drop = (0.70 if sp == "sheru" else 0.53) * arm.data.bones["Torso2"].head_local.z
         _mov(arm, P, "Body", (0, 0, -drop))
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
             _mov(arm, P, f"IKFrontLeg.{s}", (0.05 * sx, 0.30, 0.10))
-            _mov(arm, P, f"IKBackLeg.{s}", (0.10 * sx, -0.55, 0.10))
+            _mov(arm, P, f"IKBackLeg.{s}", (0.22 * sx, -0.85, 0.06) if sp == "sheru" else (0.10 * sx, -0.55, 0.10))
         _rot(arm, P, "Neck1", pitch=-8)
         return P
     loaf = lying_tucked()
