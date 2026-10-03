@@ -58,6 +58,26 @@ lines += ["## Not included (and why)", "- AMASS / SMPL-derived sets, HumanML3D, 
           "- Mixamo, Rokoko free packs, ActorCore free motions: need the owner's own account login; see MANUAL_DOWNLOADS in the report.", ""]
 open(os.path.join(STAGE, "CREDITS.md"), "w", encoding="utf-8").write("\n".join(lines))
 # raw sources -------------------------------------------------------------------------------------------------------
+def publish(msg):
+    meta = {"title": TITLE, "id": DS, "licenses": [{"name": "other"}],
+            "subtitle": "Private motion library for the Sonpur kids series (MPFB retarget data + raw sources)"}
+    json.dump(meta, open(os.path.join(STAGE, "dataset-metadata.json"), "w", encoding="utf-8"))
+    sh(f"du -sh {STAGE}/* ; df -h {STAGE} | tail -1")
+    rc, out = sh(f"kaggle datasets status {DS}")
+    if rc == 0 and ("ready" in out.lower() or "pending" in out.lower()):
+        rc, out = sh(f'kaggle datasets version -p {STAGE} -m "{msg}" --dir-mode zip', 10800)
+    else:
+        rc, out = sh(f"kaggle datasets create -p {STAGE} --dir-mode zip", 10800)
+    print("PUBLISH", WHICH, DS, msg, "rc", rc, "motions", len(rows), flush=True); return rc
+
+if BLEND and os.path.isdir(BLEND):
+    os.makedirs(os.path.join(STAGE, "blend"), exist_ok=True)
+    for f in glob.glob(os.path.join(BLEND, f"*{WHICH}*.blend")): shutil.copy2(f, os.path.join(STAGE, "blend"))
+rc = publish("retargeted motions + catalogue")             # phase 1: the usable library right away
+if os.environ.get("MP_RAW", "1") != "1": sys.exit(rc)
+for k in range(60):                                          # phase 2: + raw source archives (new version)
+    time.sleep(30); r2, o2 = sh(f"kaggle datasets status {DS}")
+    if "ready" in o2.lower(): break
 raw = os.environ.get("RUNNER_TEMP", "/tmp") + "/rawtmp"; os.makedirs(raw, exist_ok=True)     # top-level raw_*.zip files (a sub-folder would be zipped twice)
 for pk in PACKS:
     if pk == "cmu":
@@ -69,18 +89,6 @@ for pk in PACKS:
             get(u, os.path.join(STAGE, "raw_quaternius_" + os.path.basename(u)))
     else:
         print("raw", pk, get(PK.SOURCES[pk]["url"], os.path.join(STAGE, f"raw_{pk}_bvh.zip")))
-if BLEND and os.path.isdir(BLEND):
-    os.makedirs(os.path.join(STAGE, "blend"), exist_ok=True)
-    for f in glob.glob(os.path.join(BLEND, f"*{WHICH}*.blend")): shutil.copy2(f, os.path.join(STAGE, "blend"))
-sh(f"du -sh {STAGE}/* ; ls -la {STAGE}/blend 2>/dev/null; df -h {STAGE} | tail -1")
-meta = {"title": TITLE, "id": DS, "licenses": [{"name": "other"}], "isPrivate": True,
-        "subtitle": "Private motion library for the Sonpur kids series (MPFB retarget data + raw sources)"}
-json.dump(meta, open(os.path.join(STAGE, "dataset-metadata.json"), "w", encoding="utf-8"))
-rc, out = sh(f"kaggle datasets status {DS}")
-if rc == 0 and ("ready" in out.lower() or "pending" in out.lower()):
-    rc, out = sh(f'kaggle datasets version -p {STAGE} -m "motion packs build" --dir-mode zip', 10800)
-else:
-    rc, out = sh(f"kaggle datasets create -p {STAGE} --dir-mode zip", 10800)
-print("PUBLISH", WHICH, DS, "rc", rc, "motions", len(rows))
-rc2, out2 = sh(f"kaggle datasets list --mine -s sonpur-motion")
+rc = publish("+ raw source archives")
+sh("kaggle datasets list --mine -s sonpur-motion")
 sys.exit(rc)
