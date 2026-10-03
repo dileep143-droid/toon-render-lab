@@ -245,7 +245,33 @@ def demo_titles():
     return C.write_video(frames, os.path.join(OUT, "titles.mp4"), fps, crf=26)
 
 
-DEMOS = {"titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+
+def demo_qa():
+    """a 10 s clip with planted faults; the QA report is burned into the picture so you can see each check fire"""
+    import puppet as PU, qa_checks as QA
+    from PIL import Image, ImageDraw
+    man, rman = T.make_human("man"); bg = bg_frame(); fps = C.FPS; n = 10 * fps
+    perf = PU.Performer(man, rman, [dict(motion="wave", start=0.2, dur=1.6), dict(motion="nod", start=2.2, dur=1.2), dict(motion="clap", start=5.0, dur=1.6)])
+    frames = []
+    for i in range(n):
+        t = i / fps; f = bg.copy(); sp, info = perf.frame(t)
+        if not (3.5 <= t < 4.5):                                  # fault 2: character missing for 1 s
+            PU.draw_character(f, sp, info, rman, 640, 640, 420)
+        if 6.5 <= t < 7.0: f[:] = 0                               # fault 1: black flash
+        frames.append(f)
+    frames[int(8 * fps):int(9.5 * fps)] = [frames[int(8 * fps)]] * int(1.5 * fps)   # fault 3: frozen 1.5 s
+    plan = {"actors": [{"who": "man", "box": [0.35, 0.2, 0.65, 0.92], "start": 0, "end": 10}], "motion": [(0, 10)]}
+    rep = QA.run_qa(frames, plan, plates=bg); txt = QA.format_report(rep).split("\n")
+    out = []
+    for i, f in enumerate(frames):
+        im = Image.fromarray(f); d = ImageDraw.Draw(im); d.rectangle([0, 0, 760, 24 + 20 * len(txt)], fill=(0, 0, 0)); t = i / fps
+        for k, line in enumerate(txt):
+            hot = k > 0 and any(abs(t - float(x)) < 0.3 for x in line.split("]")[1].split("s")[0].replace("-", " ").split()[:2]) if k else False
+            d.text((8, 6 + 20 * k), line[:100], fill=(255, 80, 80) if hot else (255, 255, 255))
+        out.append(np.asarray(im))
+    return C.write_video(out, os.path.join(OUT, "qa_checks.mp4"), fps, crf=28)
+
+DEMOS = {"qa": demo_qa, "titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
