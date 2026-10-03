@@ -2,6 +2,9 @@
 Needs the MPFB extension installed and the CC0 system pack + functional packs unpacked (see samples.yml)."""
 import bpy, os, glob, importlib
 BASE = "bl_ext.user_default.mpfb"
+for _cand in ("bl_ext.user_default.mpfb", "bl_ext.blender_org.mpfb", "mpfb"):   # local Blender may install MPFB from the online repo
+    try: importlib.import_module(_cand); BASE = _cand; break
+    except Exception: pass
 def _svc(n): return importlib.import_module(f"{BASE}.services.{n}")
 HS = _svc("humanservice").HumanService; AS = _svc("assetservice").AssetService
 LS = _svc("locationservice").LocationService; FS = _svc("faceservice").FaceService
