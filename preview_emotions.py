@@ -17,7 +17,7 @@ import lib_hair as LH, lib_expressions as LE, lib_anim as AN
 
 CHARS = {"girl": ("girl_9y", "langa_voni", {}, [("hair", "two_plaits_ribbons", {})]),
          "boy": ("boy_10y", "kurta_pyjama", {}, [("hair", "side_parting_oiled", {})]),
-         "dadi": ("elder_woman_70y", "saree_elder", {"head_pallu": False}, [("hair", "elder_tied_small_bun", {}), ("mark", "kumkum_bottu", {})])}
+         "dadi": ("elder_woman_70y", "saree_elder", {"head_pallu": False}, [("hair", "elder_tied_small_bun", {})])}   # kumkum_bottu mark tears into a red spike on browDown (lib_hair bug) - left off
 TALK = {"happy": "Namaste Dadi! Aaj mela chalo!", "sad": "Mera laddoo gir gaya...", "angry": "Yeh kisne kiya? Batao!"}
 TOL = 0.002
 
@@ -112,7 +112,7 @@ sh = rig.matrix_world @ rig.pose.bones[LE.rig_of(rig).map["arm_R"][0]].head
 partner = {"comforting": Vector((sh.x - 0.12 * H_, sh.y - 0.26 * H_, sh.z - 0.03 * H_)),
            "elder_blessing": Vector((sh.x + 0.06 * H_, sh.y - 0.27 * H_, sh.z - 0.06 * H_))}
 for k, name in enumerate(names):
-    rep = REPORT[name] = {}
+    rep = REPORT[name] = {}; k = LE.SHEET.index(name) if name in LE.SHEET else 90 + k
     try:
         LE.clear_animation(h, rig)
         mk = None; tgt = None
