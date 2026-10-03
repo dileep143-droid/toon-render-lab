@@ -1,0 +1,54 @@
+name: emotions
+on:
+  workflow_dispatch:
+    inputs:
+      jobs: { description: "comma list of char_part jobs (girl_a ... dadi_c, girl_probe) or all", required: false, default: "girl_probe" }
+      only: { description: "comma list of emotions or all", required: false, default: "happy,sad,giggle,thinking,furious,teacher_stern,terrified,crying,grateful,head_wobble_acha" }
+jobs:
+  emotions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [girl_a, girl_b, girl_c, boy_a, boy_b, boy_c, dadi_a, dadi_b, dadi_c, girl_probe]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip?
+        id: skip
+        run: |
+          J="${{ github.event.inputs.jobs || 'all' }}"
+          M="${{ matrix.job }}"
+          if [ "$J" = "all" ] && [ "${M##*_}" != "probe" ]; then echo "run=1" >> $GITHUB_OUTPUT
+          elif echo ",$J," | grep -q ",$M,"; then echo "run=1" >> $GITHUB_OUTPUT; else echo "run=0" >> $GITHUB_OUTPUT; fi
+      - name: Libraries
+        if: steps.skip.outputs.run == '1'
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS + MPFB2
+        if: steps.skip.outputs.run == '1'
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          python3 - <<'EOF'
+          import json, urllib.request
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab)"}
+          d = json.load(urllib.request.urlopen(urllib.request.Request("https://extensions.blender.org/api/v1/extensions/", headers=H), timeout=60))
+          e = next(x for x in d.get("data", d) if x.get("id") == "mpfb")
+          print("MPFB", e.get("version"))
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+      - name: MakeHuman CC0 packs
+        if: steps.skip.outputs.run == '1'
+        run: |
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+          mkdir -p pack functional && unzip -q pack.zip -d pack
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+      - name: Emotions (${{ matrix.job }})
+        if: steps.skip.outputs.run == '1'
+        run: |
+          M="${{ matrix.job }}"
+          ./blender/blender -b -noaudio --python preview_emotions.py -- pack functional out ${M%_*} ${M##*_} ${{ github.event.inputs.only || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "FACE|HAIR face|SHOT|SKIP|REPORT|DONE|RIG|Error|Traceback|line [0-9]|refusing|Exception|WARN" | cut -c1-2500 | tail -n 500
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.skip.outputs.run == '1'
+        with: { name: "emotions-${{ matrix.job }}", path: out, retention-days: 7, if-no-files-found: ignore }
