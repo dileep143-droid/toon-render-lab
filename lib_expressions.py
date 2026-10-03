@@ -7,7 +7,7 @@
     LE.apply_expression(h, rig, "happy")                          # static pose (no keys)
     LE.apply_expression(h, rig, "angry", frame=40, blend_frames=6)   # keyed, blends from whatever was there
     info = LE.animate_expression(h, rig, "giggle", 40, 100)       # onset -> hold (acting + micro-motion) -> settle
-    LE.talk_emotion(h, rig, 52, text="ÃƒÂ Ã‚Â¤Ã‚Â®ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã¢â‚¬â€œ ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã¢â‚¬â€ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ !", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
+    LE.talk_emotion(h, rig, 52, text="ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â­ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€¹Ã¢â‚¬Â !", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
     LE.eye_look(h, rig, target=other_rig_head_point, frame=60)  # or direction="left" / "up_right" / "camera"
     LE.set_blush(h, 0.8, frame=70)                                # animatable cheek tint
     LE.animate_expression(h, rig, "comforting", 10, 80, target=friend_shoulder_world_point)
@@ -122,7 +122,7 @@ EXPR = {
                    {"head": {"fwd": -10}, "neck": {"fwd": -4}, "spine": {"fwd": -10}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}},
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
-                   anim="tremble", desc="'ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã‚Â¤!' scream: hands on the cheeks, jaw dropped"),
+                   anim="tremble", desc="'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â­ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¤!' scream: hands on the cheeks, jaw dropped"),
     "nervous": E({**_b("mouthStretch", 1.0), **_b("mouthUpperUp", 0.3), **_b("mouthLowerDown", 0.3), "browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.3), "jawOpen": 0.05},
                  {"head": {"fwd": 6, "turn": -6}, "clav_L": {"lift": 11}, "clav_R": {"lift": 11}, "spine": {"fwd": 4}},
                  H("belly", off=(0.5, -0.25, -0.05), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
@@ -161,7 +161,7 @@ EXPR = {
     "wailing": E({"jawOpen": 0.85, **_b("mouthStretch", 0.85), **_b("mouthFrown", 1.0), **_b("eyeSquint", 1.0), **_b("eyeBlink", 0.9), "browInnerUp": 1.0,
                   **_b("cheekSquint", 0.6), **_b("mouthUpperUp", 0.45), **_b("mouthLowerDown", 0.55)},
                  {"head": {"fwd": -20}, "spine": {"fwd": -6}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}}, "wide_down", "wide_down", curl="fist",
-                 anim="wail", desc="head thrown back, mouth wide, fists down: 'ÃƒÂ Ã‚Â¤Ã¢â‚¬Â°ÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¤Ã…Â ÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¤Ã…Â ÃƒÂ Ã‚Â¤Ã‚Â!'"),
+                 anim="wail", desc="head thrown back, mouth wide, fists down: 'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€¦Ã‚Â ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€¦Ã‚Â ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â!'"),
     "sulking": E({"mouthPucker": 0.6, "mouthShrugLower": 1.0, **_b("mouthFrown", 0.7), **_b("browDown", 0.6), "browInnerUp": 0.4, "cheekPuff": 0.35},
                  {"head": {"fwd": 10, "turn": 22}, "spine": {"turn": 6}}, None, None, cross=True, eyes=(-18, -2),
                  desc="pout, arms crossed, turned away, side glance"),
@@ -216,7 +216,7 @@ EXPR = {
     "determined": E({**_b("browDown", 0.75), **_b("mouthPress", 0.6), **_b("mouthSmile", 0.35), **_b("eyeSquint", 0.35), "jawForward": 0.2, **_b("noseSneer", 0.2)},
                     {"head": {"fwd": -4}, "spine": {"fwd": -6}},
                     "fist_side", H("shoulder", off=(0.35, 0.15, 0.55), tip=0.3, pole=(0, 0.9, -0.5), curl="fist", twist=-30),
-                    curl="fist", desc="'ÃƒÂ Ã‚Â¤Ã…Â¡ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¥Ã¢â‚¬Â¹, ÃƒÂ Ã‚Â¤Ã‚ÂªÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã‚Â¨ ÃƒÂ Ã‚Â¤Ã‚Â¬ÃƒÂ Ã‚Â¤Ã‚Â¨ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡!' raised fist, set jaw"),
+                    curl="fist", desc="'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹, ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂªÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¨ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¨ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€¹Ã¢â‚¬Â ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡!' raised fist, set jaw"),
     # ---------------- low energy ----------------
     "bored": E({**_b("eyeBlink", 0.6), "mouthLeft": 0.6, "cheekPuff": 0.45, **_b("mouthPress", 0.3), "browDownRight": 0.3, "browOuterUpLeft": 0.2},
                {"head": {"out": 18, "fwd": -2, "turn": -8}, "spine": {"fwd": 8, "out": 4}}, None, None, cross=True, eyes=(20, 16),
@@ -232,7 +232,7 @@ EXPR = {
     "hungry": E({**_b("mouthSmile", 0.6), "jawOpen": 0.25, "tongueOut": 0.5, **_b("eyeBlink", 0.35), "browInnerUp": 0.75},
                 {"head": {"out": 14, "fwd": -12}},
                 H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
-                eyes=(10, 24), anim="rub", desc="Chhotu 'ÃƒÂ Ã‚Â¤Ã‚Â®ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã¢â‚¬â€œ ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã¢â‚¬â€ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ !': dreamy eyes up, licking lips, hands on tummy"),
+                eyes=(10, 24), anim="rub", desc="Chhotu 'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â­ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â²ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€¹Ã¢â‚¬Â !': dreamy eyes up, licking lips, hands on tummy"),
     "satisfied": E({**_b("mouthSmile", 0.85), **_b("eyeBlink", 0.85), **_b("cheekSquint", 0.6), "browInnerUp": 0.25, **_b("mouthPress", 0.2), "cheekPuff": 0.15},
                    {"spine": {"fwd": -8}, "head": {"fwd": -8}},
                    H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
@@ -251,22 +251,22 @@ EXPR = {
                           desc="jaw on the floor, arms dropped straight"),
     # ---------------- Indian gestures + social ----------------
     "head_wobble_acha": E({**_b("mouthSmile", 0.65), **_b("cheekSquint", 0.4), "browInnerUp": 0.35, **_b("eyeSquint", 0.2)},
-                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'ÃƒÂ Ã‚Â¤Ã¢â‚¬Â¦ÃƒÂ Ã‚Â¤Ã…Â¡ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã¢â‚¬ÂºÃƒÂ Ã‚Â¤Ã‚Â¾' wobble, palm up"),
+                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¾' wobble, palm up"),
     "nod_yes": E({**_b("mouthSmile", 0.55), "browInnerUp": 0.3, **_b("eyeSquint", 0.2)}, {"head": {"fwd": 10}}, "idle", "idle", anim="nod", desc="nodding yes"),
     "shake_no": E({**_b("mouthFrown", 0.45), **_b("mouthPress", 0.45), **_b("browDown", 0.35), "browInnerUp": 0.3},
                   {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.2), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", haim=(0.2, 0.0, 1), palm=(1, 0, 0)),
                   anim="shake", desc="shaking the head no, hand waving 'nahi'"),
     "shrug": E({"browInnerUp": 0.55, **_b("browOuterUp", 0.85), "mouthShrugUpper": 0.4, "mouthShrugLower": 0.65, **_b("mouthFrown", 0.35), **_b("mouthPress", 0.3)},
                {"head": {"out": 14}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}, "neck": {"fwd": -4}}, "shrug", "shrug", curl="open",
-               desc="'ÃƒÂ Ã‚Â¤Ã‚ÂªÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¤Ã‚Â¾ ÃƒÂ Ã‚Â¤Ã‚Â¨ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡' shrug: shoulders up, palms up, brows up"),
+               desc="'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚ÂªÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¾ ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¨ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¹ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡' shrug: shoulders up, palms up, brows up"),
     "whisper_secret": E({"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.55, **_b("eyeWide", 0.3), **_b("mouthSmile", 0.2)},
                         {"head": {"turn": 14, "out": -8}, "spine": {"fwd": 10, "out": -6}},
                         "idle", H("mouth", off=(0.05, 0.4, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", haim=(0.1, 0.0, 1), palm=(0, -1, 0)),
                         eyes=(-22, 0), anim="dart", desc="leaning in, hand beside the mouth, eyes checking"),
     "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
                   {"head": {"fwd": 4}, "spine": {"fwd": 6}},
-                  "idle", H("mouth", off=(0.0, 0.0, 0.1), tip=0.95, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
-                  desc="'ÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â¶!' finger on the lips"),
+                  "idle", H("mouth", off=(0.0, 0.0, 0.22), tip=0.95, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
+                  desc="'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¶ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¶ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¥Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¶!' finger on the lips"),
     "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
                   {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
                   H("chin", off=(0.5, 0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
@@ -284,7 +284,7 @@ EXPR = {
     "teacher_stern": E({**_b("browDown", 0.95), **_b("mouthPress", 0.6), **_b("eyeSquint", 0.3), **_b("eyeWide", 0.3), **_b("mouthFrown", 0.55), **_b("noseSneer", 0.3)},
                        {"head": {"fwd": 6}, "spine": {"fwd": -4}},
                        "hip", H("shoulder", off=(0.5, 0.1, 0.6), tip=0.5, pole=(0, 0.9, -0.5), curl="point", haim=(0.15, 0.0, 1), palm=(1, -0.5, 0)),
-                       anim="wag", desc="Masterji 'ÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¤Ã‚Â¿!': stern brows, finger up, hand on hip"),
+                       anim="wag", desc="Masterji 'ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¶ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â Ãƒâ€šÃ‚Â¤Ãƒâ€šÃ‚Â¿!': stern brows, finger up, hand on hip"),
 }
 
 SHEET = list(EXPR.keys())
@@ -437,38 +437,37 @@ def _fix_teeth(rig, F=None):
             elif kind == "teeth":
                 for i, d in enumerate(kb.data):
                     if bco[i].z > zmid: d.co = bco[i]          # upper teeth never move
-        moved = _tuck(F, o, scale=0.9 if kind == "teeth" else 0.95) if F is not None else 0
+        if F is not None and kind == "teeth":   # upper row a little smaller + back; lower row smaller, further back and lower (smiles pull the lower lip back)
+            moved = _tuck(F, o, [(lambda c, z=zmid: c.z > z, 0.9, 0.0025, 0.0), (lambda c: True, 0.8, 0.0055, 0.0015)])
+        elif F is not None:
+            moved = _tuck(F, o, [(lambda c: True, 0.92, 0.003, 0.001)])
+        else: moved = 0
         print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}), "tucked", moved)
 
 
-def _tuck(F, o, scale=0.9, back=0.0025, margin=0.002):
-    """shrink a mouth proxy a little about its centre, move it back, and push every vertex at least `margin` behind the
-    lip / face skin (same offset on every shape key) so smiles / frowns never show teeth through the lips"""
+def _tuck(F, o, rows=None):
+    """shrink a mouth proxy about its centre and set it back behind the lips (same transform on every shape key).
+    rows = [(selector(basis_co) -> bool, scale, back, down)] in units of the head scale F.s; the first matching row wins.
+    (A push-out-of-the-skin pass was tried and shredded the teeth: the inner-lip normals point into the mouth.)"""
     s = F.s; sk = o.data.shape_keys
     blocks = list(sk.key_blocks) if sk else []
     Mo = F.h.matrix_world.inverted() @ o.matrix_world; Mi3 = Mo.inverted().to_3x3()
     base = [Vector(v.co) for v in (blocks[0].data if blocks else o.data.vertices)]
     if not base: return 0
     cen = sum(base, Vector()) / len(base)
-    bk = Mi3 @ Vector((0, back * s, 0))
-    def xf(c): return cen + (Vector(c) - cen) * scale + bk
+    rows = rows or [(lambda c: True, 0.92, 0.002, 0.0)]
+    pick = []
+    for c in base:
+        for sel, sc, bk, dn in rows:
+            if sel(c): pick.append((sc, Mi3 @ Vector((0, bk * s, -dn * s)))); break
+        else: pick.append((1.0, Vector()))
     for kb in blocks:
-        for d in kb.data: d.co = xf(d.co)
+        for i, d in enumerate(kb.data):
+            sc, off = pick[i]; d.co = cen + (Vector(d.co) - cen) * sc + off
     if not blocks:
-        for v in o.data.vertices: v.co = xf(v.co)
-    cur = [Vector(d.co) for d in (blocks[0].data if blocks else o.data.vertices)]
-    moved = 0
-    for _ in range(2):
-        for i, c in enumerate(cur):
-            p = Mo @ c
-            loc, nrm, _, _ = F.hbvh.find_nearest(p, 0.05 * s)
-            if loc is None: continue
-            sd = (p - loc).dot(nrm)
-            if sd > -margin * s:
-                dl = Mi3 @ (-nrm * (sd + margin * s)); cur[i] = c + dl; moved += 1
-                for kb in blocks: kb.data[i].co = Vector(kb.data[i].co) + dl
-                if not blocks: o.data.vertices[i].co = cur[i]
-    return moved
+        for i, v in enumerate(o.data.vertices):
+            sc, off = pick[i]; v.co = cen + (Vector(v.co) - cen) * sc + off
+    return len(base)
 
 
 def _toon_teeth(F, rig):
