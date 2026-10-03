@@ -81,8 +81,8 @@ def setup_engine(engine, samples=None):
         except Exception as ex: log("cycles prefs", ex)
         sc.cycles.samples = int(samples or S.get("samples", 32)); sc.cycles.use_denoising = True
         sc.render.use_persistent_data = True
-        try: sc.cycles.denoiser = "OPTIX"
-        except Exception: sc.cycles.denoiser = "OPENIMAGEDENOISE"
+        # OptiX denoiser fails on Kaggle T4 ("Failed to create OptiX denoiser") -> every frame errors. OIDN works everywhere.
+        sc.cycles.denoiser = "OPENIMAGEDENOISE"
         sc.cycles.max_bounces = 4; sc.cycles.transparent_max_bounces = 16
         try: sc.cycles.use_adaptive_sampling = True
         except Exception: pass
