@@ -54,7 +54,7 @@ SPECIES = {
                  "Eyes_White": (0.86, 0.60, 0.34), "Eyes_Pupil": (0.86, 0.60, 0.34), "Eyes_Black": (0.86, 0.60, 0.34)},
         skin=(0.86, 0.60, 0.34), brow=(0.42, 0.25, 0.13), iris=(0.45, 0.26, 0.12),
         eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.145, eye_out=0.32, brow_len=1.25, head_scale=1.2, eye_shift=(0.92, -0.05, 0.01),
-        tail_override={"tucked": (100, 62, 48)},                 # the curl must come all the way down between the hind legs
+        tail_override={"tucked": (100, 85, 72)},                 # the curl must come all the way down and forward between the hind legs
         acts=("idle", "idle_flick", "sleep", "lie_down", "wake_sniff", "lazy_walk", "walk", "trot", "run_to_food", "bark", "growl",
               "scratch_ear", "roll_over", "sit", "beg", "stretch_yawn", "lick", "cower", "sniff_ground", "eat", "look_around", "hop",
               "startled_jump", "hit_left"),
@@ -701,6 +701,58 @@ def _bake(arm, name, n, fn, step=1, loop=True):
     return act
 
 
+def _lock_cycle(arm, poses):
+    """FOOT LOCK for a locomotion loop: during each foot's ground contact its local Y is replaced by a straight line at
+    ONE common stance speed (the pack cycles let feet drift at different speeds, so one planted foot always slid);
+    the difference is blended back during that foot's swing.  X/Z untouched."""
+    n = len(poses); B = arm.data.bones
+    legl = B["FrontUpperLeg.L"].length + B["FrontLowerLeg.L"].length; thr = 0.035 * legl
+    pts = {bn: [B[bn].head_local + B[bn].matrix_local.to_3x3() @ P[bn][0] for P in poses] for bn in IK_FEET}
+    st = {bn: [p.z < min(q.z for q in pts[bn]) + thr for p in pts[bn]] for bn in IK_FEET}
+    sp = sorted(pts[bn][(t + 1) % n].y - pts[bn][t].y for bn in IK_FEET for t in range(n) if st[bn][t] and st[bn][(t + 1) % n])
+    if not sp: return poses
+    v = sp[len(sp) // 2]
+    for bn in IK_FEET:
+        s = st[bn]
+        if all(s) or not any(s): continue
+        corr = [None] * n
+        start = next(t for t in range(n) if s[t] and not s[t - 1])          # first frame of a contact
+        t = start
+        while True:                                                          # walk once round the loop, contact by contact
+            run = []
+            while s[t % n] and len(run) < n: run.append(t % n); t += 1
+            m = run[len(run) // 2]
+            for i, f in enumerate(run):
+                corr[f] = (pts[bn][m].y + v * (i - len(run) // 2)) - pts[bn][f].y
+            while not s[t % n]: t += 1
+            if t % n == start: break
+            if t - start > 2 * n: break
+        # swing frames: smooth blend from the correction at lift-off to the one at the next touch-down
+        for f in range(n):
+            if corr[f] is not None: continue
+            a = f
+            while corr[a % n] is None: a -= 1
+            b = f
+            while corr[b % n] is None: b += 1
+            u = (f - a) / float(b - a); u = u * u * (3 - 2 * u)
+            corr[f] = corr[a % n] * (1 - u) + corr[b % n] * u
+        m3 = B[bn].matrix_local.to_3x3(); mi = m3.inverted()
+        for f, P in enumerate(poses):
+            p = pts[bn][f] + Vector((0, corr[f], 0))
+            P[bn][0] = mi @ (p - B[bn].head_local)
+    return poses
+
+
+def _bake_cycle(arm, name, n, fn):
+    """like _bake for a locomotion loop of n frames, with _lock_cycle applied (every frame keyed, last == first)"""
+    poses = _lock_cycle(arm, [fn(t) for t in range(n)])
+    act = _new_action(arm, name)
+    for f, P in enumerate(poses + [poses[0]]):
+        _keyP(arm, f, P)
+    _assign(arm, None)
+    return act
+
+
 def _profile(arm, act):
     """per-frame forward advance (rig units) over one locomotion cycle, read from the planted feet"""
     key = "_prof_" + act.name
@@ -783,7 +835,7 @@ def _build_actions(sp, arm):
         A["tail_" + e] = pre + "tail_" + e
     for e in EARS:
         A["ears_" + e] = pre + "ears_" + e
-    A["gallop_pack"] = pack["run"].name; A["run"] = pre + "run_g"
+    A["gallop_pack"] = pack["run"].name; A["run"] = pre + "run_g"; A["walk_pack"] = pack["walk"].name; A["walk"] = pre + "walk_l"
     if sp == "sheru": A["jump"] = pre + "hop"; A["run_to_food"] = pre + "run_g"; A["startled"] = pre + "startled_jump"
     else: A["jump"] = pre + "hop"; A["butt"] = pack["headbutt"].name; A["startled"] = pre + "startled_jump"; A["sleep"] = pre + "sleep"
     if already:
@@ -820,7 +872,11 @@ def _build_actions(sp, arm):
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
             _mov(arm, loaf, f"IKFrontLeg.{s}", (0.05 * sx, -0.30 - 0.45 * front_leg, -0.10))
-    loaf = _chin_to(arm, loaf, 0.27 * T2z if sp == "sheru" else 0.30 * T2z, yaw=0 if sp == "sheru" else 14)
+    if sp == "sheru":
+        loaf = _chin_to(arm, loaf, 0.27 * T2z)
+    else:   # goats sleep with the head UP and turned a little (tucking the nose down pushed it into the ground,
+            # then the ground clamp had to lift her back onto straight legs)
+        _rot(arm, loaf, "Neck1", pitch=-4, yaw=14); _rot(arm, loaf, "Head", pitch=-10, roll=6)
     loaf = _grounded(arm, loaf)
     sleep_base = loaf
 
@@ -897,6 +953,8 @@ def _build_actions(sp, arm):
         old = {n: bones[n].head_local + bones[n].matrix_local.to_3x3() @ P[n][0] for n in iks}
         C = _body_point(arm, P, t_c)
         T = _body_xform(arm, P, roll=a, pivot=C)
+        lev = _ease(t, 0, 12) * (1 - _ease(t, 36, 48))        # level the body on its back (the side pose is nose-down)
+        T = _body_xform(arm, P, pitch=14 * lev, pivot=C) @ T
         k = _ease(t, 4, 12) * (1 - _ease(t, 36, 44))
         for n in iks:                      # the feet roll with the body, then tuck up toward the belly
             p = T @ old[n]; p = p.lerp(T @ _body_point(arm, lying_side, Vector((bones[n].head_local.x, bones[n].head_local.y, hip.z * 0.55))), 0.45 * k)
@@ -911,14 +969,15 @@ def _build_actions(sp, arm):
         for s in ("L", "R"): _rot(arm, P, f"Ear1.{s}", pitch=-15)
         _rot(arm, P, "Tail1", pitch=-25)
         return _face(arm, P, "sleepy")
-    _bake(arm, pre + "lazy_walk", int(wl * 1.6), lazy, 1)
+    _bake_cycle(arm, pre + "lazy_walk", int(wl * 1.6), lazy)
+    _bake_cycle(arm, pre + "walk_l", wl, lambda t: _face(arm, _sample(arm, walk, t % wl)))     # foot-locked pack walk
 
     def trot(t):
         P = _sample(arm, walk, (t * 1.7) % wl)
         _mov(arm, P, "Body", (0, 0, 0.05 * abs(_osc(t, wl / 1.7))))
         _rot(arm, P, "Neck1", pitch=6)
         return _face(arm, P, "happy")
-    _bake(arm, pre + "trot", int(round(wl / 1.7)), trot, 1)
+    _bake_cycle(arm, pre + "trot", int(round(wl / 1.7)), trot)
 
     def chew(t, base=None, face="happy"):
         P = _copy(base or stand)
@@ -956,7 +1015,7 @@ def _build_actions(sp, arm):
         _mov(arm, P, "Body", (0, 0, -0.22)); _rot(arm, P, "Neck1", pitch=-18); _rot(arm, P, "Head", pitch=8, yaw=6 * _osc(t, wl * 2))
         for s in ("L", "R"): _rot(arm, P, f"Ear1.{s}", pitch=-20)
         return _face(arm, P, "sneaky", look=(30 * _osc(t, wl * 2), 0))
-    _bake(arm, pre + "creep", wl * 2, creep, 1)
+    _bake_cycle(arm, pre + "creep", wl * 2, creep)
 
     def startled(t):
         P = _copy(stand)
@@ -1123,9 +1182,9 @@ def _ease(t, a, b):
 #   pitch>0 on an ear = tip goes BACK;  pitch>0 on the tail = tip goes DOWN (toward a tuck);  roll = ear tips outward
 # ---------------------------------------------------------------------------------------------------------------------
 EARS = {   # (pitch, outward roll) per ear
-    "up":      dict(L=(-20, -4), R=(-20, -4)),     # alert / pricked forward
+    "up":      dict(L=(-7, -6), R=(-7, -6)),       # alert / pricked (-20 folded Sheru's ear onto his forehead)
     "back":    dict(L=(38, 34), R=(38, 34)),       # 'airplane ears': swung back AND out to the sides
-    "flat":    dict(L=(88, 6, 34), R=(88, 6, 34)), # pinned flat along the skull (scared, guilty): 3rd value bends Ear2/Ear3
+    "flat":    dict(L=(104, 10, 56), R=(104, 10, 56)),  # pinned flat along the skull (scared, guilty): 3rd value bends Ear2/Ear3
     "droop":   dict(L=(18, 58), R=(18, 58)),       # sad / bored: hanging sideways
     "relaxed": dict(L=(12, 14), R=(12, 14)),
     "one_up":  dict(L=(-12, 8), R=(28, 42)),       # confused (left ear stays clear of Chamki's horn)
@@ -1176,7 +1235,10 @@ def _posture(arm, P, t, c):
     em = c.get("ears")
     if em and "Ear1.L" in bones:
         for s, sg in (("L", 1), ("R", -1)):
-            e_ = EARS[em][s]; p, o = e_[0], e_[1]; _rot(arm, P, f"Ear1.{s}", pitch=p, roll=sg * o)
+            e_ = EARS[em][s]; p, o = e_[0], e_[1]
+            if arm.get("species") == "chamki" and p > 0:      # her horns sit right behind the ears: swing them out, not back
+                p, o = p * 0.55, o + 0.25 * p
+            _rot(arm, P, f"Ear1.{s}", pitch=p, roll=sg * o)
             if len(e_) > 2:
                 for k_ in ("2", "3"):
                     if f"Ear{k_}.{s}" in bones: _rot(arm, P, f"Ear{k_}.{s}", pitch=e_[2] * 0.5)
