@@ -17,9 +17,11 @@ Names: LE.SHEET (canonical list) + LE.ALIASES (old names / synonyms). Scene JSON
 """
 import bpy, math, random, re
 from mathutils import Vector, Quaternion, Matrix
+import os
 import lib_anim as A
 
 R = math.radians
+DEBUG = bool(os.environ.get("LE_DEBUG"))
 
 
 def _b(name, v):
@@ -38,20 +40,21 @@ PRESET = {
     "hip":       {"arm": {"aim": (-0.25, 0.85, -0.55)}, "forearm": {"aim": (0.35, -0.75, -0.55)}, "hand": {}},
     "behind":    {"arm": {"aim": (-0.45, 0.22, -0.85)}, "forearm": {"aim": (-0.35, -0.85, -0.25)}, "hand": {}},
     "scared_up": {"arm": {"aim": (0.7, 0.25, 0.6)}, "forearm": {"fwd": 110, "out": -25}, "hand": {"fwd": -40}},
-    "shrug":     {"arm": {"aim": (0.25, 0.45, -0.85)}, "forearm": {"fwd": 70, "out": 35, "twist": 60}, "hand": {}},
+    "shrug":     {"arm": {"aim": (0.25, 0.45, -0.85)}, "forearm": {"fwd": 70, "out": 35, "twist": 60}, "hand": {}, "palm": (0, 0.2, 1)},
     "out_low":   {"arm": {"aim": (0.3, 0.6, -0.7)}, "forearm": {"fwd": 40}, "hand": {"fwd": -20}},
     "balance":   {"arm": {"aim": (0.1, 0.75, -0.6)}, "forearm": {"fwd": 15}, "hand": {}},
     "fist_side": {"arm": {"aim": (0.08, 0.2, -1)}, "forearm": {"fwd": 35}, "hand": {}},
     "wide_down": {"arm": {"aim": (0.05, 0.42, -0.9)}, "forearm": {"fwd": 8}, "hand": {}},
-    "palm_up":   {"arm": {"aim": (0.35, 0.4, -0.85)}, "forearm": {"fwd": 75, "twist": 70}, "hand": {}},
+    "palm_up":   {"arm": {"aim": (0.35, 0.4, -0.85)}, "forearm": {"fwd": 75, "twist": 70}, "hand": {}, "palm": (0, 0.2, 1)},
 }
 CROSS = A.GESTURES["cross_arms"]
 
 # IK hand spec: at=landmark (mouth chin nose eye cheek forehead top head_side head_back chest heart belly back_low thigh shoulder world),
 # off=(fwd, out, up) in HEAD units (out = toward that hand's side), tip=where the landmark sits along the hand (0 wrist .. 1 fingertip),
 # pole=elbow hint (fwd, out, up), curl=finger shape, twist=forearm roll (palm), wrist=hand bone spec
-def H(at, off=(0, 0, 0), tip=0.45, pole=(0.1, 0.8, -0.6), curl="relaxed", twist=0, wrist=None, clear=0.06):
-    return dict(at=at, off=off, tip=tip, pole=pole, curl=curl, twist=twist, wrist=wrist or {}, clear=clear)
+def H(at, off=(0, 0, 0), tip=0.45, pole=(0.1, 0.8, -0.6), curl="relaxed", twist=0, wrist=None, clear=0.06, haim=None, palm=None):
+    """haim = direction the hand / fingers point (fwd, out, up); palm = direction the palm faces (fwd, out, up) - both side-relative"""
+    return dict(at=at, off=off, tip=tip, pole=pole, curl=curl, twist=twist, wrist=wrist or {}, clear=clear, haim=haim, palm=palm)
 
 
 def E(face, body=None, L="idle", R="idle", eyes=None, blush=0.0, anim=None, curl=None, cross=False, desc=""):
@@ -68,7 +71,7 @@ EXPR = {
     "big_laugh": E({"jawOpen": 0.8, **_b("mouthSmile", 1.0), **_b("cheekSquint", 1.0), **_b("eyeBlink", 0.8), **_b("eyeSquint", 0.8), **_b("mouthUpperUp", 0.4),
                     "browInnerUp": 0.45, **_b("browOuterUp", 0.3)},
                    {"spine": {"fwd": -10}, "head": {"fwd": -18}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
-                   H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="relaxed"), H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4)),
+                   H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="relaxed", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
                    anim="laugh", desc="head back, eyes shut, hands on belly, shoulders bounce"),
     "giggle": E({**_b("mouthSmile", 0.95), **_b("eyeSquint", 0.75), **_b("cheekSquint", 0.85), **_b("eyeBlink", 0.45), "browInnerUp": 0.4},
                 {"head": {"fwd": 8, "out": 12}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}, "spine": {"fwd": 4}},
@@ -85,16 +88,16 @@ EXPR = {
                  anim="bounce", desc="fists pumping, bouncing on the toes"),
     "love": E({**_b("mouthSmile", 0.75), **_b("eyeBlink", 0.45), **_b("eyeSquint", 0.3), "browInnerUp": 0.7, **_b("cheekSquint", 0.5)},
               {"head": {"out": 15, "fwd": 2}, "spine": {"fwd": -2}},
-              H("heart", off=(0.0, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08), H("heart", off=(0.05, 0.0, -0.08), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.1),
+              H("heart", off=(0.0, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08, haim=(0.1, -0.6, 0.8), palm=(-1, 0, 0)), H("heart", off=(0.04, 0.0, -0.1), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.14, haim=(0.1, -0.6, 0.8), palm=(-1, 0, 0)),
               blush=0.75, anim="sway", desc="hands on heart, head tilt, soft eyes, blush"),
     "relieved": E({"browInnerUp": 0.8, **_b("eyeBlink", 0.55), **_b("mouthSmile", 0.45), "mouthFunnel": 0.3, "jawOpen": 0.12, "cheekPuff": 0.2},
                   {"head": {"fwd": -10, "out": 6}, "spine": {"fwd": -4}},
-                  "idle", H("forehead", off=(0.05, 0.1, 0.02), tip=0.5, pole=(0.1, 0.9, -0.3), curl="flat", twist=60),
+                  "idle", H("forehead", off=(0.03, 0.1, 0.02), tip=0.5, pole=(0.1, 0.9, -0.3), curl="flat", haim=(0.05, -1, 0.15), palm=(1, 0, 0)),
                   anim="exhale", desc="phew: wipes the brow, shoulders drop"),
     "grateful": E({**_b("mouthSmile", 0.65), **_b("eyeBlink", 0.4), "browInnerUp": 0.55, **_b("cheekSquint", 0.4)},
                   {"head": {"fwd": 14}, "spine": {"fwd": 10}},
-                  H("chest", off=(0.6, -0.08, 0.25), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
-                  H("chest", off=(0.6, -0.08, 0.25), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  H("chest", off=(0.55, 0.05, 0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
+                  H("chest", off=(0.55, 0.05, 0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
                   eyes=(0, 6), desc="namaste: palms together, small bow"),
     # ---------------- surprise / fear ----------------
     "surprised": E({**_b("eyeWide", 1.0), "browInnerUp": 0.9, **_b("browOuterUp", 1.0), "jawOpen": 0.4, "mouthFunnel": 0.35},
@@ -102,7 +105,7 @@ EXPR = {
                    desc="eyebrows up, round mouth, hands open"),
     "shocked": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 1.0), "jawOpen": 0.5, "mouthFunnel": 0.55, **_b("mouthStretch", 0.2)},
                  {"head": {"fwd": -9}, "neck": {"fwd": -5}, "spine": {"fwd": -8}, "clav_L": {"lift": 12}, "clav_R": {"lift": 12}},
-                 H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="spread", clear=0.08),
+                 H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="spread", clear=0.08, haim=(0.1, -0.6, 0.8), palm=(-1, 0, 0)),
                  H("mouth", off=(0.02, 0.0, -0.05), tip=0.4, pole=(0.2, 0.7, -0.7), curl="spread", twist=-40, clear=0.1),
                  desc="gasp: hand to the open mouth, other to the chest, leaning back"),
     "scared": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 0.5), **_b("mouthStretch", 0.85), "jawOpen": 0.18, **_b("mouthFrown", 0.35)},
@@ -137,9 +140,9 @@ EXPR = {
              H("belly", off=(0.3, -0.28, -0.4), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.3, -0.28, -0.35), tip=0.6, pole=(0, 0.6, -0.8)),
              eyes=(-4, 22), blush=0.65, anim="sway", desc="head down, eyes up, hands together, twisting"),
     # ---------------- sadness ----------------
-    "sad": E({"browInnerUp": 1.0, **_b("mouthFrown", 1.0), "mouthShrugLower": 0.45, **_b("mouthPress", 0.2), **_b("browDown", 0.05), **_b("eyeSquint", 0.1)},
-             {"head": {"fwd": 8}, "neck": {"fwd": 3}, "spine": {"fwd": 9}, "clav_L": {"lift": -8}, "clav_R": {"lift": -8}}, "limp", "limp",
-             eyes=(0, 2), desc="worried brows, deep frown, shoulders dropped (eyes still up)"),
+    "sad": E({"browInnerUp": 0.9, **_b("mouthFrown", 1.0), "mouthShrugLower": 0.6, **_b("mouthPress", 0.15), **_b("browDown", 0.3), **_b("eyeBlink", 0.12)},
+             {"head": {"fwd": 4, "out": 5}, "spine": {"fwd": 5}, "clav_L": {"lift": -9}, "clav_R": {"lift": -9}}, "limp", "limp",
+             eyes=(0, 7), desc="worried brows, deep frown, shoulders dropped (eyes still up)"),
     "crying": E({"browInnerUp": 1.0, **_b("mouthFrown", 0.9), **_b("mouthStretch", 0.5), "jawOpen": 0.25, **_b("eyeSquint", 0.9), **_b("eyeBlink", 0.55),
                  **_b("cheekSquint", 0.6), "mouthShrugLower": 0.4},
                 {"head": {"fwd": 10}, "spine": {"fwd": 10}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
@@ -167,7 +170,7 @@ EXPR = {
                  desc="eye roll, mouth to one side, hand on hip"),
     "disgusted": E({**_b("noseSneer", 1.0), **_b("mouthUpperUp", 0.7), "tongueOut": 0.9, "jawOpen": 0.35, **_b("eyeSquint", 0.85), **_b("browDown", 0.7), **_b("mouthFrown", 0.5)},
                    {"head": {"turn": -18, "fwd": -10, "out": 8}, "spine": {"fwd": -6}},
-                   "idle", H("chest", off=(0.75, 0.3, 0.1), tip=0.4, pole=(0, 0.8, -0.6), curl="flat", twist=-80, wrist={"fwd": -50}),
+                   "idle", H("chest", off=(0.75, 0.3, 0.15), tip=0.4, pole=(0, 0.8, -0.6), curl="flat", haim=(0.3, 0.0, 1), palm=(1, 0, 0)),
                    eyes=(-10, 0), desc="karela eww: nose wrinkled, tongue out, hand pushing it away"),
     # ---------------- thinking / scheming ----------------
     "confused": E({"browInnerUp": 0.35, "browDownRight": 0.85, "browOuterUpLeft": 0.95, "mouthLeft": 0.5, **_b("mouthPress", 0.3), "mouthFrownRight": 0.45, "eyeSquintRight": 0.35},
@@ -175,8 +178,8 @@ EXPR = {
                   eyes=(0, 6), anim="scratch", desc="head tilt, one brow up, scratching the head"),
     "thinking": E({"browDownRight": 0.45, "browInnerUp": 0.35, "browOuterUpLeft": 0.3, "mouthPucker": 0.35, "mouthLeft": 0.35, **_b("mouthPress", 0.2)},
                   {"head": {"out": 8, "fwd": -6}},
-                  H("belly", off=(0.3, -0.45, 0.1), tip=0.5, pole=(0, 0.8, -0.6), curl="relaxed", twist=-40),
-                  H("chin", off=(0.0, 0.0, -0.02), tip=0.88, pole=(0.3, 0.6, -0.75), curl="point", twist=-60, clear=0.03),
+                  H("belly", off=(0.3, -0.45, 0.15), tip=0.5, pole=(0, 0.8, -0.6), curl="relaxed", haim=(0.1, -1, 0.1), palm=(0, 0, 1)),
+                  H("chin", off=(0.02, 0.0, -0.02), tip=0.45, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.15, -0.2, 1), palm=(-1, -0.3, 0)),
                   eyes=(14, 20), anim="tap", desc="finger on the chin, eyes up and away"),
     "curious": E({"browInnerUp": 0.65, **_b("browOuterUp", 0.65), **_b("eyeWide", 0.5), "mouthPucker": 0.2, **_b("mouthSmile", 0.2), "jawOpen": 0.08},
                  {"spine": {"fwd": 14}, "neck": {"fwd": 4}, "head": {"out": 12, "fwd": -8}}, "behind", "behind", eyes=(0, -2),
@@ -189,8 +192,8 @@ EXPR = {
                    {"head": {"fwd": 8, "turn": 8, "out": -6}}, "idle", "hip", eyes=(-10, 3), desc="one-sided smirk, half-lidded, hand on hip"),
     "scheming": E({"browOuterUpLeft": 1.0, "browDownRight": 1.0, "mouthSmileLeft": 0.75, "mouthSmileRight": 0.45, "eyeSquintRight": 0.7, **_b("eyeSquint", 0.2)},
                   {"head": {"fwd": 13}, "spine": {"fwd": 4}},
-                  H("chest", off=(0.55, -0.02, -0.15), tip=0.92, pole=(-0.1, 1.0, -0.6), curl="steeple", twist=-75),
-                  H("chest", off=(0.55, -0.02, -0.15), tip=0.92, pole=(-0.1, 1.0, -0.6), curl="steeple", twist=-75),
+                  H("chest", off=(0.6, 0.02, -0.05), tip=0.95, pole=(-0.1, 1.0, -0.6), curl="steeple", haim=(0.55, -0.45, 0.7), palm=(0, -1, 0)),
+                  H("chest", off=(0.6, 0.02, -0.05), tip=0.95, pole=(-0.1, 1.0, -0.6), curl="steeple", haim=(0.55, -0.45, 0.7), palm=(0, -1, 0)),
                   eyes=(0, 14), anim="slow_grin", desc="one brow up, chin down, steepled fingers"),
     "fake_innocent": E({**_b("eyeWide", 0.8), "browInnerUp": 0.9, **_b("mouthSmile", 0.25), "mouthPucker": 0.4},
                        {"head": {"out": 14, "fwd": -6}, "spine": {"fwd": -3}}, "behind", "behind", eyes=(0, 20), anim="sway",
@@ -198,8 +201,8 @@ EXPR = {
     "mischievous_grin": E({"mouthSmileLeft": 1.0, "mouthSmileRight": 0.75, **_b("mouthDimple", 0.5), **_b("eyeSquint", 0.6), **_b("cheekSquint", 0.6), "browDownRight": 0.5,
                            "browOuterUpLeft": 0.65, **_b("mouthUpperUp", 0.2)},
                           {"head": {"out": -8, "fwd": 8}, "spine": {"fwd": 5}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
-                          H("chest", off=(0.5, -0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", twist=-60),
-                          H("chest", off=(0.5, -0.05, -0.25), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", twist=-60),
+                          H("chest", off=(0.5, 0.04, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", haim=(0.5, -0.3, 0.8), palm=(0, -1, 0)),
+                          H("chest", off=(0.5, 0.04, -0.25), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", haim=(0.5, -0.3, 0.8), palm=(0, -1, 0)),
                           eyes=(-12, 6), anim="rubhands", desc="wide grin, rubbing hands together"),
     "determined": E({**_b("browDown", 0.75), **_b("mouthPress", 0.6), **_b("mouthSmile", 0.35), **_b("eyeSquint", 0.35), "jawForward": 0.2, **_b("noseSneer", 0.2)},
                     {"head": {"fwd": -4}, "spine": {"fwd": -6}},
@@ -219,17 +222,17 @@ EXPR = {
                anim="breathe", desc="heavy lids, hunched, arms hanging forward"),
     "hungry": E({**_b("mouthSmile", 0.6), "jawOpen": 0.25, "tongueOut": 0.5, **_b("eyeBlink", 0.35), "browInnerUp": 0.75},
                 {"head": {"out": 14, "fwd": -12}},
-                H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"),
+                H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
                 eyes=(10, 24), anim="rub", desc="Chhotu 'मुझे भूख लगी है!': dreamy eyes up, licking lips, hands on tummy"),
     "satisfied": E({**_b("mouthSmile", 0.85), **_b("eyeBlink", 0.85), **_b("cheekSquint", 0.6), "browInnerUp": 0.25, **_b("mouthPress", 0.2), "cheekPuff": 0.15},
                    {"spine": {"fwd": -8}, "head": {"fwd": -8}},
-                   H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"),
+                   H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
                    anim="pat", desc="eyes closed content, leaning back, patting the tummy"),
     "in_pain": E({**_b("eyeSquint", 1.0), **_b("eyeBlink", 0.6), "browInnerUp": 0.85, **_b("browDown", 0.55), **_b("mouthStretch", 0.8), **_b("mouthFrown", 0.4), "jawOpen": 0.2,
                   **_b("noseSneer", 0.45), **_b("mouthUpperUp", 0.3)},
                  {"spine": {"fwd": 16, "out": -6}, "head": {"fwd": -6, "out": -6}},
-                 H("thigh", off=(0.1, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.4), curl="relaxed"),
-                 H("back_low", off=(0.0, 0.25, 0.0), tip=0.5, pole=(-0.4, 0.9, -0.2), curl="flat", twist=60),
+                 H("thigh", off=(0.1, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.4), curl="relaxed", haim=(0.2, -0.2, -1), palm=(-1, 0, 0)),
+                 H("back_low", off=(0.0, 0.25, 0.0), tip=0.5, pole=(-0.4, 0.9, -0.2), curl="flat", haim=(0.0, -0.7, -0.4), palm=(1, 0, 0)),
                  anim="rub", desc="ouch! (Raju after falling): wince, hunched, rubbing the lower back"),
     "dizzy": E({"jawOpen": 0.2, "mouthLeft": 0.4, **_b("mouthSmile", 0.2), "browInnerUp": 0.55, **_b("browOuterUp", 0.45), **_b("eyeBlink", 0.2)},
                {"head": {"out": 10, "fwd": 4}, "spine": {"out": 4}}, "balance", "balance", eyes=(0, 0), anim="dizzy",
@@ -242,36 +245,36 @@ EXPR = {
                           {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'अच्छा' wobble, palm up"),
     "nod_yes": E({**_b("mouthSmile", 0.55), "browInnerUp": 0.3, **_b("eyeSquint", 0.2)}, {"head": {"fwd": 10}}, "idle", "idle", anim="nod", desc="nodding yes"),
     "shake_no": E({**_b("mouthFrown", 0.45), **_b("mouthPress", 0.45), **_b("browDown", 0.35), "browInnerUp": 0.3},
-                  {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.15), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", twist=-80, wrist={"fwd": -40}),
+                  {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.2), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", haim=(0.2, 0.0, 1), palm=(1, 0, 0)),
                   anim="shake", desc="shaking the head no, hand waving 'nahi'"),
     "shrug": E({"browInnerUp": 0.55, **_b("browOuterUp", 0.85), "mouthShrugUpper": 0.4, "mouthShrugLower": 0.65, **_b("mouthFrown", 0.35), **_b("mouthPress", 0.3)},
                {"head": {"out": 14}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}, "neck": {"fwd": -4}}, "shrug", "shrug", curl="open",
                desc="'पता नहीं' shrug: shoulders up, palms up, brows up"),
     "whisper_secret": E({"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.55, **_b("eyeWide", 0.3), **_b("mouthSmile", 0.2)},
                         {"head": {"turn": 14, "out": -8}, "spine": {"fwd": 10, "out": -6}},
-                        "idle", H("mouth", off=(0.05, 0.42, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", twist=-90),
+                        "idle", H("mouth", off=(0.05, 0.4, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", haim=(0.1, 0.0, 1), palm=(0, -1, 0)),
                         eyes=(-22, 0), anim="dart", desc="leaning in, hand beside the mouth, eyes checking"),
     "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
                   {"head": {"fwd": 4}, "spine": {"fwd": 6}},
-                  "idle", H("mouth", off=(0.0, 0.0, 0.0), tip=0.86, pole=(0.3, 0.6, -0.75), curl="point", twist=-90, clear=0.03),
+                  "idle", H("mouth", off=(0.0, 0.0, -0.02), tip=0.85, pole=(0.3, 0.6, -0.75), curl="point", clear=0.04, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
                   desc="'श्श्श!' finger on the lips"),
     "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
                   {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
-                  H("chin", off=(0.5, -0.08, -0.3), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
-                  H("chin", off=(0.5, -0.08, -0.3), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  H("chin", off=(0.5, 0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
+                  H("chin", off=(0.5, 0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
                   eyes=(0, 10), anim="bob", desc="puppy eyes, folded hands under the chin"),
     "comforting": E({**_b("mouthSmile", 0.5), "browInnerUp": 0.75, **_b("eyeSquint", 0.2)},
                     {"head": {"out": 14, "fwd": 6}, "spine": {"fwd": 6, "turn": 8}},
-                    H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08),
-                    H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.7, -0.8), curl="flat", twist=-30, wrist={"fwd": -20}),
+                    H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08, haim=(0.1, -0.6, 0.8), palm=(-1, 0, 0)),
+                    H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.7, -0.8), curl="relaxed", haim=(0.8, 0.0, -0.5), palm=(0, 0, -1)),
                     eyes=(-8, -4), anim="pat", desc="hand on a friend's shoulder (target=...), kind eyes"),
     "elder_blessing": E({**_b("mouthSmile", 0.65), **_b("eyeBlink", 0.4), "browInnerUp": 0.55, **_b("cheekSquint", 0.4)},
                         {"head": {"fwd": 14}, "spine": {"fwd": 8}},
-                        "idle", H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.6, -0.8), curl="flat", twist=-10, wrist={"fwd": -35}),
+                        "idle", H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.6, -0.8), curl="flat", haim=(0.9, -0.1, -0.3), palm=(0, 0, -1)),
                         eyes=(0, -10), anim="pat", desc="Dadi's hand on the child's head (target=...), warm smile"),
     "teacher_stern": E({**_b("browDown", 0.95), **_b("mouthPress", 0.6), **_b("eyeSquint", 0.3), **_b("eyeWide", 0.3), **_b("mouthFrown", 0.55), **_b("noseSneer", 0.3)},
                        {"head": {"fwd": 6}, "spine": {"fwd": -4}},
-                       "hip", H("shoulder", off=(0.45, 0.1, 0.55), tip=0.9, pole=(0, 0.9, -0.5), curl="point", twist=-60),
+                       "hip", H("shoulder", off=(0.5, 0.1, 0.6), tip=0.5, pole=(0, 0.9, -0.5), curl="point", haim=(0.15, 0.0, 1), palm=(1, -0.5, 0)),
                        anim="wag", desc="Masterji 'शांति!': stern brows, finger up, hand on hip"),
 }
 
@@ -340,7 +343,8 @@ def gain_for(rig):
     return 1.65 if a <= 12 else 1.35 if a <= 17 else 1.2 if a >= 60 else 1.0
 
 
-CAPS = {"eyeBlinkLeft": 1.0, "eyeBlinkRight": 1.0, "jawOpen": 0.95, "tongueOut": 1.0, "mouthFunnel": 1.2, "mouthPucker": 1.3, "cheekPuff": 1.3, "mouthClose": 0.6,
+CAPS = {"mouthSmileLeft": 1.35, "mouthSmileRight": 1.35, "cheekSquintLeft": 1.25, "cheekSquintRight": 1.25, "browInnerUp": 1.4,
+        "eyeBlinkLeft": 1.0, "eyeBlinkRight": 1.0, "jawOpen": 0.95, "tongueOut": 1.0, "mouthFunnel": 1.2, "mouthPucker": 1.3, "cheekPuff": 1.3, "mouthClose": 0.6,
         "jawForward": 0.5, "eyeWideLeft": 1.6, "eyeWideRight": 1.6}
 FULL_GAIN = ("mouthSmile", "mouthFrown", "brow", "cheekSquint", "eyeSquint", "eyeWide", "noseSneer", "mouthDimple", "mouthStretch")
 
@@ -381,6 +385,9 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         if mouth: _mouth_bag(F)
         try: _fix_teeth(rig)
         except Exception as ex: print("FACE teeth fix fail", repr(ex)[:200])
+        if mouth:
+            try: _toon_teeth(F, rig)
+            except Exception as ex: print("FACE toon teeth fail", repr(ex)[:200])
         _blush_setup(F)
         for o in [h] + list(rig.children_recursive):
             sk = o.data.shape_keys if o.type == "MESH" else None
@@ -421,6 +428,30 @@ def _fix_teeth(rig):
                 for i, d in enumerate(kb.data):
                     if bco[i].z > zmid: d.co = bco[i]          # upper teeth never move
         print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}))
+
+
+def _toon_teeth(F, rig):
+    """cartoon upper-teeth band behind the upper lip (rigid with the head; shows when the mouth opens / smiles wide).
+    MPFB's teeth proxy is hidden: bound to the lips it made fangs / braces and poked through the chin in big smiles."""
+    import lib_hair as LH, bmesh
+    for o in rig.children_recursive:
+        if o.type == "MESH" and "teeth" in o.name.lower() and not o.get("toon_teeth"):
+            o.hide_render = True; o.hide_viewport = True
+    if any(o.get("toon_teeth") for o in rig.children_recursive): return
+    fc = F.face(); s = F.s; hw = 0.42 * fc["mouth_w"]
+    c = Vector((0, fc["lip_y"] + 0.011 * s, fc["mouth_z"] + 0.0042 * s))
+    bm = bmesh.new()
+    LH._ell(bm, c, Vector((hw, 0, 0)), Vector((0, 0.006 * s, 0)), Vector((0, 0, 0.0045 * s)), sub=3)
+    for v in bm.verts:   # follow the dental arch
+        t = v.co.x / hw; v.co.y += 0.011 * s * t * t
+    for _ in range(3):
+        for v in bm.verts:
+            loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
+            if loc is not None and (v.co - loc).dot(nrm) > -0.0025 * s: v.co = loc - nrm * 0.0025 * s
+    mat = LH.solid("teeth_toon", (0.97, 0.96, 0.92), 0.35)
+    o = LH._obj(F, bm, "toon_teeth", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=1, role="teeth")
+    o["facial_hair"] = 0; o["toon_teeth"] = 1
+    return o
 
 
 def _mouth_bag(F):
@@ -672,15 +703,50 @@ def _arm_ik(h, rig, R_, M, side, spec, target=None):
     P = _hand_point(h, rig, R_, M, side, spec, target)
     po = spec.get("pole", (0.1, 0.8, -0.6)); pole = R_.F * po[0] + Sv * po[1] + R_.U * po[2]
     a, b, hl = M["a"], M["b"], M["hand"]; tip = spec.get("tip", 0.45)
-    W = P - (P - S).normalized() * tip * hl
-    for _ in range(3):
-        E_, Wc = _ik(S, W, a, b, pole)
-        hd = (P - E_).normalized()
+    ha = spec.get("haim")
+    if ha:   # the hand points a given way: the wrist sits `tip` hand-lengths back along it
+        hd = (R_.F * ha[0] + Sv * ha[1] + R_.U * ha[2]).normalized()
         W = P - hd * tip * hl
+    else:
+        W = P - (P - S).normalized() * tip * hl
+        for _ in range(3):
+            E_, Wc = _ik(S, W, a, b, pole)
+            hd = (P - E_).normalized()
+            W = P - hd * tip * hl
     E_, Wc = _ik(S, W, a, b, pole)
     out = {f"arm_{side}": {"aim": _cs_inv(R_, E_ - S, side)}, f"forearm_{side}": {"aim": _cs_inv(R_, Wc - E_, side)}, f"hand_{side}": dict(spec.get("wrist") or {})}
+    if ha: out[f"hand_{side}"]["aim"] = tuple(ha)
     if spec.get("twist"): out[f"forearm_{side}"]["twist"] = spec["twist"]
+    if DEBUG: print("FACE ik", side, spec["at"], "S", tuple(round(x, 3) for x in S), "P", tuple(round(x, 3) for x in P), "W", tuple(round(x, 3) for x in W),
+                    "reach", round((W - S).length / (a + b), 2))
     return out
+
+
+def _palm_fix(rig, e, frame=None):
+    """turn each hand about its own axis so the palm faces the entry's `palm` direction (finger bones curl toward local +Z)"""
+    if e.get("cross"): return
+    R_ = rig_of(rig); upd = False
+    for side in ("L", "R"):
+        spec = e[side]
+        if isinstance(spec, str): spec = PRESET.get(spec)
+        if not isinstance(spec, dict) or not spec.get("palm"): continue
+        hb = R_.map.get(f"hand_{side}"); fb = rig.pose.bones.get(f"finger3-1.{side}")
+        if not hb or fb is None: continue
+        if not upd: bpy.context.view_layer.update(); upd = True
+        pb = rig.pose.bones[hb[0]]
+        Sv = R_.Lv if side != "R" else -R_.Lv
+        pl = spec["palm"]; nd = (R_.F * pl[0] + Sv * pl[1] + R_.U * pl[2]).normalized()
+        axis = (fb.head - pb.head).normalized()
+        nc = fb.matrix.to_3x3().col[2].normalized() * FINGER_SIGN
+        a1 = nc - axis * nc.dot(axis); a2 = nd - axis * nd.dot(axis)
+        if a1.length < 1e-4 or a2.length < 1e-4: continue
+        a1.normalize(); a2.normalize()
+        ang = math.atan2(axis.dot(a1.cross(a2)), a1.dot(a2))
+        pb.rotation_mode = "QUATERNION"
+        pb.matrix = Matrix.Translation(pb.head) @ Matrix.Rotation(ang, 4, axis) @ Matrix.Translation(-pb.head) @ pb.matrix
+        bpy.context.view_layer.update()
+        if frame is not None: pb.keyframe_insert("rotation_quaternion", frame=frame, group=pb.name)
+        if DEBUG: print("FACE palm", side, round(math.degrees(ang), 1))
 
 
 # ----------------------------------------------------------------------------------------------- fingers
@@ -713,7 +779,7 @@ UPPER = ["spine", "neck", "head", "clav_L", "clav_R", "arm_L", "arm_R", "forearm
 
 def _side_preset(name_or_dict, side):
     p = PRESET[name_or_dict] if isinstance(name_or_dict, str) else name_or_dict
-    return {f"{k}_{side}": dict(v) for k, v in p.items()}
+    return {f"{k}_{side}": dict(v) for k, v in p.items() if k in ("arm", "forearm", "hand")}
 
 
 def build_pose(h, rig, e, strength=1.0, body_delta=None, hand_off=None, target=None):
@@ -786,6 +852,7 @@ def apply_expression(basemesh, rig, name, strength=1.0, frame=None, blend_frames
         if frame is not None and blend_frames: _apply_pose(basemesh, rig, p, frame, blend_frames)
         else: rig_of(rig).apply(p, frame, layer=True)
         for side in ("L", "R"): set_fingers(rig, side, _curl_of(e, side), frame)
+        _palm_fix(rig, e, frame)
         rig["expr_segs"] = list(p.keys())
     if eyes:
         y, pch = e.get("eyes") or _eyes_from_face(e["face"])
@@ -807,6 +874,7 @@ class _Ctx:
     def pose(self, frame, body_delta=None, hand_off=None):
         p = build_pose(self.h, self.rig, self.e, self.s, body_delta, hand_off, self.target)
         self.R.apply(p, frame, layer=True)
+        _palm_fix(self.rig, self.e, frame)
 
     def facek(self, frame, **over):
         _keys_face(self.rig, {**self.face, **{k: v for k, v in over.items()}}, frame)
@@ -1093,7 +1161,7 @@ def blend(basemesh, rig, weights, frame=None, blend=4):
         for k, v in final_face(rig, EXPR[resolve(nm)]["face"], w).items(): tot[k] = min(CAPS.get(k, 1.8), tot.get(k, 0.0) + v)
     _set_face(rig, tot, frame, blend)
     e = EXPR[resolve(best)]
-    p = build_pose(basemesh, rig, e, weights[best]); _apply_pose(basemesh, rig, p, frame, blend if frame is not None else 0)
+    p = build_pose(basemesh, rig, e, weights[best]); _apply_pose(basemesh, rig, p, frame, blend if frame is not None else 0); _palm_fix(rig, e, frame)
     y, pch = e.get("eyes") or _eyes_from_face(e["face"]); set_eyes(rig, y * weights[best], pch * weights[best], frame, blend if frame is not None else 0)
 
 
