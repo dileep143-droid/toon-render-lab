@@ -240,7 +240,7 @@ def lining(h, rig, level="knee", gap=0.001, min_verts=200):
     for vg in h.vertex_groups: o.vertex_groups.new(name=vg.name)
     bm = bmesh.new(); bm.from_mesh(me)
     bm.faces.ensure_lookup_table()
-    dead = [f for f in bm.faces if not all(v.index in keep for v in f.verts)]
+    dead = [f for f in bm.faces if not any(v.index in keep for v in f.verts)]      # any: the edge rows count too
     mats = [g.active_material for g in gar]
     me.materials.clear()
     for m in mats: me.materials.append(m)
