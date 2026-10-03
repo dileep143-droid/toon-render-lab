@@ -96,7 +96,43 @@ def demo_effects():
     return C.write_video(frames, os.path.join(OUT, "effects.mp4"), fps, crf=28)
 
 
-DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects}
+def demo_camera():
+    import puppet as PU, camera as CM, effects as FX
+    from PIL import Image
+    fps = C.FPS; PW, PH = 2560, 1440
+    L = T.make_scene_layers((1280, 720)); up = lambda a: np.asarray(Image.fromarray(a).resize((PW, PH), Image.LANCZOS))
+    far = up(L["far"]); mid = up(L["mid"][..., :3]); mid_rgba = np.dstack([mid, np.where(L["mid"][..., 3] > 0, 255, 0).astype(np.uint8) if False else np.asarray(Image.fromarray(L["mid"][..., 3]).resize((PW, PH)))])
+    ground = np.asarray(Image.fromarray(L["ground"]).resize((PW, PH), Image.LANCZOS)); fg = np.asarray(Image.fromarray(L["fg"]).resize((PW, PH), Image.LANCZOS))
+    plate_back = [{"img": far, "depth": 0.35}, {"img": mid_rgba, "depth": 0.7}, {"img": ground, "depth": 1.0}]; plate_fg = [{"img": fg, "depth": 1.5}]
+    man, rm = T.make_human("man"); kid, rk = T.make_human("kid"); dadi, rd = T.make_human("dadi")
+    A = [dict(x=0.30, foot_y=0.93, height=0.50), dict(x=0.52, foot_y=0.95, height=0.42), dict(x=0.78, foot_y=0.92, height=0.46)]
+    perf = [PU.Performer(man, rm, [dict(motion="wave", start=3.0, dur=1.6), dict(motion="nod", start=8.5, dur=1.0)]), PU.Performer(kid, rk, [dict(motion="clap", start=5.5, dur=1.5)], idle="idle_breathe"),
+            PU.Performer(dadi, rd, [dict(motion="namaste", start=6.5, dur=2.0), dict(motion="point", start=10.5, dur=1.2)])]
+    rigs = [rm, rk, rd]
+    cs_close = CM.solve_framing("close", A, speaker=2); cs_two = CM.solve_framing("two_shot", A[:2]); cs_full = CM.solve_framing("full", A)
+    tr = CM.CameraTrack.from_events([
+        dict(camera="ken_burns", start=0.0, dur=3.0, to=[0.5, 0.5, 1.25]),
+        dict(camera="push_in", start=3.2, dur=1.6, target=(0.30, 0.62), amount=1.5),
+        dict(camera="whip_pan", start=5.2, dur=0.45, to=cs_close.as_list()),
+        dict(camera="ken_burns", start=6.1, dur=1.8, to=cs_two.as_list()),
+        dict(camera="dutch", start=8.3, dur=0.8, angle=7.0),
+        dict(camera="ken_burns", start=9.4, dur=0.8, to=[0.5, 0.5, 1.15, 0.0]),
+        dict(camera="pull_out", start=10.4, dur=2.2),
+    ], start=[0.5, 0.5, 1.0])
+    frames = []
+    for i in range(int(13 * fps)):
+        t = i / fps; cam = tr.at(t); focus = 1.0 if t < 9 else 0.5
+        f = CM.render_view(plate_back, cam, focus=focus if t < 3.0 else None, focus_amount=5.0)
+        for p, rig, a in sorted(zip(perf, rigs, A), key=lambda z: z[2]["foot_y"]):
+            sx, sy, sc = CM.to_screen(cam, a["x"], a["foot_y"], (PW, PH)); sp, info = p.frame(t, flip=(a["x"] > 0.6))
+            PU.draw_character(f, sp, info, rig, sx, sy, a["height"] * PH * sc, flip=(a["x"] > 0.6))
+        if cam.z < 1.7: f = CM.render_view(plate_fg, cam, base=f)      # foreground leaves only on wider shots
+        if cam.blur > 1: f = C.box_blur_dir(f, cam.blur, cam.blur_angle, 7)
+        frames.append(f)
+    return C.write_video(frames, os.path.join(OUT, "camera.mp4"), fps, crf=28)
+
+
+DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
