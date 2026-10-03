@@ -566,15 +566,95 @@ def do_hold(a):
     log("HOLD", a["obj"], "grab", fg, "release", fr, "hand at grab", tuple(round(x, 2) for x in hw), "object at grab", tuple(round(x, 2) for x in start))
 
 
+def rest_on_props():
+    """props with "rest_on": {who, frame, parts?, radius?, gap?} sit on that character (e.g. a thali on Dadi's lap): the prop's
+    origin z is set to the highest vertex of the named garment/body parts inside its footprint, at that (posed) frame"""
+    for p in S.get("props", []):
+        ro = p.get("rest_on")
+        if not ro or p["id"] not in PROPS: continue
+        try:
+            o = PROPS[p["id"]]; ch = CH[ro["who"]]; sc.frame_set(ro.get("frame", F0)); bpy.context.view_layer.update()
+            parts = ro.get("parts", ["skirt", "pleats"]); rad = ro.get("radius", 0.1)
+            c = o.matrix_world.translation.copy(); top = -1e9; n = 0; dg = bpy.context.evaluated_depsgraph_get()
+            tx = math.tan(R(ro.get("tilt_x", 0.0)))           # tilt (deg) about x: +y side up (a thali on a sloping lap)
+            for m in ch["rig"].meshes:
+                if m.type != "MESH" or not any(k in m.name for k in parts): continue
+                ev = m.evaluated_get(dg); me = ev.to_mesh()
+                for v in me.vertices:
+                    q = m.matrix_world @ v.co
+                    if (q.x - c.x) ** 2 + (q.y - c.y) ** 2 < rad * rad: top = max(top, q.z - (q.y - c.y) * tx); n += 1
+                ev.to_mesh_clear()
+            if n:
+                o.location.z += top + ro.get("gap", 0.004) - c.z; o.rotation_euler.x = R(ro.get("tilt_x", 0.0)); bpy.context.view_layer.update()
+            log("REST_ON", p["id"], "on", ro["who"], "verts", n, "top z", round(top, 3), "prop z", round(o.matrix_world.translation.z, 3))
+        except Exception as ex: err("rest_on " + p["id"], ex)
+
+
+HAND_ACTS = ("hand_pick_place", "count_objects", "carry_to", "hand_give", "hand_eat")
+
+
+def _child(cont, key):
+    return next((o for o in [cont] + descendants(cont) if o.name.endswith("." + key) or o.name == key), None)
+
+
+def do_hand(a):
+    """hand-object actions (lib_handobj): the hand really reaches, grips, carries and places (IK + Child Of + contact solve)"""
+    import lib_handobj as HO
+    t = a["t"]; fps = S.get("fps", 24)
+    if t in ("hand_give", "hand_eat"):
+        log("HANDOBJ", t, "is a documented stub (lib_handobj) - skipped"); return
+    ch = CH[a["who"]]; rig = ch["rig"]; arm = ch["arm"]
+    fr_t = lambda x: int(round(a.get("line_frame", 0) + x * fps))
+    if t == "count_objects":
+        cont = PROPS[a["container"]]; objs = [_child(cont, k) for k in a["objs"]]
+        if any(o is None for o in objs): raise RuntimeError(f"count_objects: missing {[k for k, o in zip(a['objs'], objs) if o is None]}")
+        b0 = a["blend"][0]; sc.frame_set(b0); bpy.context.view_layer.update()
+        M = cont.matrix_world.copy(); c = M.translation.copy(); A3 = arm.matrix_world.to_3x3(); Mi3 = M.to_3x3().inverted()
+        left = (A3 @ rig.cs((0, 1, 0))).normalized(); fwd = (A3 @ rig.cs((1, 0, 0))).normalized(); up = Vector((0, 0, 1))
+        rl = Mi3 @ -left; rl.z = 0; rl.normalize(); fl = Mi3 @ fwd; fl.z = 0; fl.normalize()     # her right / forward, container-local
+        ring = a["ring"]; n = len(objs); step = R(ring.get("step_deg", 360.0 / n)); a0 = R(ring.get("start_deg", 0))
+        dests = [M @ (ring["radius"] * (math.cos(a0 + i * step) * rl + math.sin(a0 + i * step) * fl) + Vector((0, 0, ring["z"]))) for i in range(n)]
+        words = [fr_t(x) for x in a.get("word_times", [])]
+        beats = [{"word": w} for w in words]
+        nf = n - len(words)
+        if nf > 0:
+            f0, f1 = (fr_t(x) for x in a["ff_times"])
+            beats += [{"fast": int(round(f0 + k * (f1 - f0) / nf))} for k in range(nf)]
+        pats = [fr_t(x) for x in a.get("pat_times", [])]
+        steady = None
+        if a.get("steady"):
+            sd = a["steady"]; lat = left if sd == "L" else -left
+            steady = (sd, c + lat * a.get("steady_r", 0.12) + up * 0.012)
+        bl = a["blend"]
+        HO.count_objects(rig, objs, dests, beats, hand_side=a.get("hand", "R"), steady=steady, pats=pats,
+                         blend=(bl[0], bl[1], bl[2], bl[3]), container=cont, radius=a.get("obj_radius", 0.021))
+    elif t == "hand_pick_place":
+        cont = PROPS.get(a.get("container")); o = _child(cont, a["obj"]) if cont else PROPS[a["obj"]]
+        to = P(a["to"]) if "to" in a else cont.matrix_world @ Vector(a["to_local"])
+        fr = a["frames"]; bl = a.get("blend", [fr["hover"] - 8, fr["hover"], fr["off"], fr["off"] + 8])
+        hd = HO.hand(rig, a.get("hand", "R")); hd.clear_fk(bl[0] + 1, bl[3] - 1)
+        hd.influence(*bl); HO.look(rig).influence(bl[0], bl[1], bl[2], bl[3])
+        sc.frame_set(bl[0]); w0, y0 = hd.wrist_world(); hd.key_wrist(bl[0], w0, y0)
+        HO.reach_grab_move_place(rig, a.get("hand", "R"), o, to, fr, look_rig=rig, radius=a.get("obj_radius", 0.021), tag="pick")
+    elif t == "carry_to":
+        HO.carry_to(rig, PROPS[a["obj"]], a["f_grab"], a["f_lift"], a["f_place"], a["f_release"], P(a["place"]),
+                    carry=tuple(a.get("carry", (0.3, -0.28))), rim=a.get("rim", 0.125))
+
+
 ACTS = S.get("actions", [])
 for a in ACTS:
-    if a["t"] == "hold": continue
+    if a["t"] == "hold" or a["t"] in HAND_ACTS: continue
     try: do_action(a)
     except Exception as ex: err(f"action {a.get('t')} {a.get('who', a.get('obj', ''))} @{a.get('frame', a.get('f0', ''))}", ex)
+rest_on_props()
 for a in ACTS:
     if a["t"] != "hold": continue
     try: do_hold(a)
     except Exception as ex: err(f"hold {a.get('obj')}", ex)
+for a in ACTS:
+    if a["t"] not in HAND_ACTS: continue
+    try: do_hand(a)
+    except Exception as ex: err(f"hand action {a['t']} {a.get('who', '')}", ex)
 log("ACTIONS done", len(ACTS))
 
 
