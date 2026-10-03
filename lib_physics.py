@@ -395,7 +395,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
     is_char = {g: g.type == "ARMATURE" for g in groups}
     bvhs = {g: _bvh([o for o in ms if not _is_ground(o)], dg)[0] for g, ms in groups.items()}   # floors may touch everything
     rep = {"frame": sc.frame_current, "penetrations": [], "floating": [], "sunk": [], "unsupported": [], "cloth_explosions": [],
-           "garment_through_body": [], "foot_slide": {}, "contacts": []}
+           "garment_through_body": [], "foot_slide": {}, "contacts": [], "hand_off_object": []}
     seat_roots = {_owner(s) for s in seats}
     # 1) thing through thing (different owners); the ground is allowed to touch everything
     keys = [g for g in groups if bvhs[g] is not None]
@@ -437,6 +437,19 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
     if autofix and (rep["floating"] or rep["sunk"]):   # animated / constrained objects (in a hand, keyed) are only reported
         fix = [bpy.data.objects[n] for n, _ in rep["floating"] + rep["sunk"] if not _animated(bpy.data.objects[n])]
         if fix: rep["fixed"] = ground_snap(fix)
+    # 3b) held objects: the hand must really touch what it holds (CHILD_OF a hand bone, active now)
+    for o in sc.objects:
+        for c in o.constraints:
+            if c.type != "CHILD_OF" or c.influence < 0.5 or c.target is None or c.target.type != "ARMATURE" or not c.subtarget: continue
+            pb = c.target.pose.bones.get(c.subtarget)
+            if pb is None: continue
+            hp = c.target.matrix_world @ pb.matrix.translation
+            ms = _meshes_of(o)
+            if not ms: continue
+            bv_, _ = _bvh(ms, dg)
+            r_ = bv_.find_nearest(hp, 1.0) if bv_ else None
+            d_ = r_[3] if r_ and r_[0] is not None else 1.0
+            if d_ > 0.03: rep["hand_off_object"].append((o.name, c.target.name, c.subtarget, round(d_, 3)))
     # 4) cloth explosions
     for o in meshes:
         if any(m.type == "CLOTH" for m in o.modifiers):
@@ -449,7 +462,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
                 import lib_anim as A
                 rep["foot_slide"][rw.arm.name] = {s: round(A.foot_slide_report(rw, slide_range[0], slide_range[1], s)[0], 4) for s in ("L", "R")}
             except Exception as ex: rep["foot_slide"][rw.arm.name] = "check failed: " + repr(ex)[:80]
-    rep["ok"] = not (rep["penetrations"] or rep["floating"] or rep["sunk"] or rep["unsupported"] or rep["cloth_explosions"] or rep["garment_through_body"]
+    rep["ok"] = not (rep["penetrations"] or rep["floating"] or rep["sunk"] or rep["unsupported"] or rep["cloth_explosions"] or rep["garment_through_body"] or rep["hand_off_object"]
                      or any(isinstance(v, dict) and max(v.values()) > 0.02 for v in rep["foot_slide"].values()))
     if not quiet: log("CHECK", rep)
     return rep

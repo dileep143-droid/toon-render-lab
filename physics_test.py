@@ -73,7 +73,7 @@ def world_props():
     m = asset("lib_props", "matka", "test_matka", (1.2, -1.5, 0.35), (R(12), 0, 0))     # 35 cm in the air, tilted
     b = asset("lib_props", "bucket", "test_bucket", (2.0, -1.2, -0.06))                  # 6 cm sunk into the floor
     c = asset("lib_props", "charpai", "test_charpai", (0.0, -2.4, 0.0))
-    p = asset("lib_props2", "laddoo_plate", "test_plate", (0.35, -2.68, 0.75))          # hovering over the cot, near its front edge
+    p = asset("lib_props2", "laddoo_plate", "test_plate", (0.35, -2.76, 0.75))          # hovering over the cot, at its front edge
     return [m, b, p], c
 
 
@@ -131,8 +131,10 @@ def mode_demo():
     LH.add_hair(girl, grig, "tied_long_jada")
     gw = A.Rig(grig); A.walk(gw, 1, cycles=3, move=True)
     # the boy picks up the laddoo plate from the cot (hand-holding = lib_handobj, laptop-owned: called, never edited)
-    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.35, -3.08, 0.0), rot_z=R(180))   # in front of the cot, facing it (+y)
+    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.32, -3.0, 0.0), rot_z=R(180))   # right at the cot, facing it (+y)
     bw = A.Rig(brig)
+    A.pose_at(bw, 12, {"spine": {"fwd": 28}, "neck": {"fwd": 10}}, layer=True)   # he bends down towards the low cot
+    A.pose_at(bw, 30, {"spine": {"fwd": 10}}, layer=True)
     plate = props[2]
     try:
         import lib_handobj as HO
