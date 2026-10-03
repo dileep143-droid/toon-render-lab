@@ -64,20 +64,26 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 
 ## Function reference (generated from the registry)
 
-### Human motions (`who` kind `human`) (27)
+### Human motions (`who` kind `human`) (33)
 
 | name | parameters (default) | what it does |
 |---|---|---|
 | `carry_object` | `hands`='both', `height`=0.55 | arms hold something in front of the chest; Pose.tags['hold'] = joints whose midpoint is the object anchor |
 | `clap` | `hz`=3.0 |  |
+| `clap_dance` | `hz`=1.6 | side-step sway with a clap on every beat: hands meet in front of the chest, then open wide; knees dip on the beat |
 | `cry_rub_eyes` | `hz`=3.2 |  |
 | `dance_simple` | `hz`=1.4 |  |
 | `fall_comic` |  | topples backwards: arms windmill, slams down, one squashy bounce, stays lying |
+| `fall_sit_bump` |  | loses balance and plops down on the bottom: a wobble, a quick drop with a squash 'bump', hands fly up, then sits dazed with the legs splayed |
+| `fall_slip_peel` |  | slips on a banana peel: the feet shoot forward and up, the body hangs in the air arms flailing, then slams down flat on the back with one bounce |
+| `fall_trip_forward` |  | trips and pitches forward: a stumble lunge or two, arms thrown ahead, then a flop face-down (lies along the walking direction) with a squashy bounce |
+| `garba_turn_clap` | `hz`=2.0 | garba step: three claps (hands right, left, centre of the chest) then a quick turn on the spot; a cut-out cannot rotate in depth, so the turn is a nar |
 | `give` | `side`='r' |  |
 | `hand_to_mouth` | `side`='r', `bites`=3 |  |
 | `hands_on_hips` |  |  |
 | `head_shake` | `times`=3, `amount`=10.0 |  |
 | `head_tilt` | `amount`=14.0, `side`='r' |  |
+| `hop_dance` | `hz`=1.5, `height`=0.05 | happy hopping: both feet leave the ground on every beat, arms up and out in the air, a small squash on landing |
 | `idle_breathe` | `rate`=0.28, `amount`=1.0, `sway`=1.0 |  |
 | `jump` | `height`=0.18 | crouch (anticipation) -> launch -> air (stretch) -> land (squash) -> settle; height = jump height in character heights |
 | `laugh_bounce` | `hz`=4.0 |  |
@@ -142,7 +148,7 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `monkey_jump` |  |  |
 | `swing` | `hz`=0.8 | hangs from both hands and swings like a pendulum: arms stay up (absolute aim), body and legs trail |
 
-### Effects (53)
+### Effects (56)
 
 | name | parameters (default) | what it does |
 |---|---|---|
@@ -152,8 +158,11 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `bonfire` | `pos`=(0.5, 0.82), `size`=1.0, `light`=0.6 | a big campfire: logs, 5 large flames, rising sparks, flickering light on the surroundings, smoke |
 | `chulha` | `pos`=(0.5, 0.82), `size`=1.0, `smoke_on`=True | a clay stove fire: three flames, flying sparks, a warm glow and rising smoke |
 | `clouds` | `count`=4, `speed`=14.0, `y`=(0.04, 0.3), `tintc`=(255, 255, 255), `opacity`=0.9 | soft clouds drifting right to left (or left to right with a negative speed) |
+| `dawn_grade` | `amount`=1.0, `softness`=0.5, `horizon`=0.6, `haze`=0.25 | early-morning look: lifted lavender shadows, pink-gold light low on the horizon, a milky haze and a soft bloom (amount 0..1) |
 | `diya` | `pos`=(0.5, 0.8), `size`=46.0, `light`=0.5 | a clay diya with a flame; casts a warm flickering light on what is around it |
 | `dizzy_stars` | `anchor`, `size`=26.0, `count`=4, `dur` | stars circling above the head (knocked silly) |
+| `dusk_grade` | `amount`=1.0, `softness`=0.5, `horizon`=0.62, `vignette`=0.5 | warm evening look: orange-amber light, deep purple-brown shadows, a glowing horizon, darker corners and a soft bloom (amount 0..1) |
+| `evening_lamp_grade` | `lamps`, `amount`=1.0, `darkness`=0.55, `color`=(255, 205, 120), `flicker`=0.1 | lamp-lit evening: the scene falls into a blue-brown dusk and each lamp [(x, y, radius), ...] (px or fractions) lights its surroundings in warm colour, |
 | `exclaim` | `anchor`, `size`=70.0, `dur`=1.6, `color`=(255, 70, 60) | a '!' slamming in above the head (startled / realised) |
 | `exclaim_question` | `anchor`, `size`=60.0, `dur`=2.0 | '!?' - surprised and confused |
 | `festival_lights` | `points`, `count`=16, `speed`=2.2, `sag`=0.06 | Diwali / mela string lights along a sagging wire: bulbs chase in colour |
@@ -200,11 +209,12 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `zoom_punch` | `start`=0.0, `dur`=0.35, `amount`=0.12, `center`=(0.5, 0.5) | a quick punch-in on a beat: zoom up by `amount` and settle back (t is local time) |
 | `zzz` | `anchor`, `size`=46.0, `dur`, `color`=(235, 245, 255) | sleeping Z's rising and growing from the head |
 
-### Camera moves (8)
+### Camera moves (9)
 
 | name | parameters (default) | what it does |
 |---|---|---|
 | `dutch` | `start`, `angle`=8.0, `ease`='smooth' | comic dutch tilt (rotates the frame; render_view zooms in just enough to hide the corners) |
+| `focus_pull` | `start`, `to`, `from_focus`, `amount`, `ease`='smooth' | rack focus: the sharp depth glides from `from_focus` (default: the Cam's current focus, else near) to `to` (a depth, or 'sky' / 'far' / 'near'); every |
 | `follow` | `path`, `zoom`=1.6, `lag`=0.3, `taps`=14, `offset`=(0.0, -0.05) | track a moving point: path = [[t, x, y], ...] (plate fractions). The camera sits on a low-passed copy of the path (exponential kernel of time constant |
 | `hold` | `cam` |  |
 | `ken_burns` | `ease`='smooth' | slow pan + zoom from Cam a to Cam b (zoom is interpolated geometrically so it feels constant) |
@@ -229,7 +239,7 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `star_wipe` | `center`=(0.5, 0.5), `turns`=0.5, `points`=5 | a star grows from `center`, spinning, and b shows inside it (cartoon scene change) |
 | `wipe` | `direction`='left', `soft`=0.08, `ease`=True | b wipes over a, the edge travelling toward `direction` (left / right / up / down / diag) with a soft edge |
 
-### Prop motions (17)
+### Prop motions (19)
 
 | name | parameters (default) | what it does |
 |---|---|---|
@@ -241,6 +251,8 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `fall_bounce` | `x`=0.0, `y0`=0.0, `ground_y`=400.0, `fall_time`=0.5, `restitution`=0.5, `bounces`=3, `squash`=0.28, `scale`=1.0, `shadow`=True | drops from y0 to the ground and bounces `bounces` times (each lower by `restitution`^2), squashing on impact and stretching in flight. The sprite's bo |
 | `fan` | `center`=(0, 0), `rpm`=120.0, `spin_up`=1.0, `blur`=True, `scale`=1.0 | ceiling-fan blades (a sprite of the whole fan head seen from below): rotation with spin-up; above ~240 deg/frame it smears into a disc |
 | `flag` | `pole_top`=(0, 0), `amp`=14.0, `wavelength`=0.55, `speed`=5.0, `scale`=1.0 | a flag / banner waving: vertical sine displacement growing toward the free end, with light and shade along the folds. Left edge sits on the pole. |
+| `food_disappear` | `pos`=(0, 0), `start`=0.0, `bites`=3, `bite_every`=0.5, `mouth`, `crumbs`=True, `scale`=1.0, `ground`, `anchor`=(0.5, 0.5) | a laddoo / roti / fruit eaten in `bites` (default 3): every bite cuts a scalloped tooth-mark chunk from the side facing `mouth` (or a varied side), th |
+| `food_eaten_by_animal` | `pos`=(0, 0), `mouth`=(0, 0), `start`=0.0, `snatch`=0.22, `chomps`=3, `chomp_every`=0.3, `crumbs`=True, `scale`=1.0, `hop`=60.0, `ground`, `anchor`=(0.5, 0.5) | an animal snatches the food: it zips from `pos` to the animal's `mouth` in `snatch` s on a short arc (stretching along the way), is held in the mouth  |
 | `food_vanish` | `pos`=(0, 0), `start`=0.0, `bites`=3, `bite_every`=0.45, `crumbs`=True, `scale`=1.0, `anchor`=(0.5, 0.5) | a laddoo / roti / fruit eaten: `bites` round bites (one every bite_every s) are taken from its edge, crumbs fall; after the last bite it is gone |
 | `kite` | `hand`=(0, 0), `kite_pos`=(0, 0), `bob`=26.0, `sway`=40.0, `tail`=True, `string_color`=(250, 250, 250), `scale`=1.0 | a kite on a string: the kite drifts and tilts in the wind, the string hangs in a curve from the hand, a ribbon tail waves below it |
 | `paper_fly` | `p0`=(0, 0), `p1`=(100, 0), `flutter`=1.0, `scale`=1.0 | a sheet of paper fluttering from p0 to p1: it flips over (width shrinks and returns), rocks, and sways side to side |
@@ -251,12 +263,13 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `swing` | `pivot`=(0, 0), `rope`=300.0, `amp`=30.0, `period`=2.4, `decay`=0.0, `seat_gap`=0.0, `rope_width`=4.0, `spread`=0.0, `scale`=1.0, `rope_color`=(120, 85, 50) | jhula: ropes from `pivot` to a seat that swings like a pendulum (amp degrees, period s, optional decay). spread = distance between the two ropes |
 | `throw` | `p0`=(0, 0), `p1`=(100, 0), `height`=200.0, `spin`=360.0, `vanish`=False, `scale`=1.0 | thrown object: a parabola from p0 to p1 reaching `height` px above the straight line, spinning `spin` degrees |
 
-### Scene life (8)
+### Scene life (9)
 
 | name | parameters (default) | what it does |
 |---|---|---|
 | `birds` | `count`=5, `y`=(0.08, 0.3), `speed`=70.0, `direction`=1, `size`=34, `formation`='v', `color`=(40, 40, 50), `flap_hz`=2.6 | flocks of birds crossing the sky. formation 'v' (leader + two trailing lines) or 'scatter' |
 | `cattle` | `pos`=(0.3, 0.8), `count`=3, `size`=110, `spread`=150.0 | cows grazing: each one lowers its head, chews, lifts it, looks round; tails swish; a slow drift. pos = centre of the herd |
+| `chimney_smoke` | `pos`=(0.2, 0.42), `wind`=1.0, `height`=280.0, `count`=22, `size`=44.0, `opacity`=0.62, `color`=(150, 148, 152), `gust`=1.0, `life_s`=4.5 | a smoke column rising from a chimney point and leaning with the wind: `wind` (-2..2, + = to the right) bends it more the higher it climbs, gusts trave |
 | `crowd` | `region`=(0.05, 0.7, 0.95, 0.95), `count`=40, `height`=(40, 76), `waving`=0.12 | a mela / gathering: `count` small figures standing and bobbing (some wave, some sway), back rows smaller, drawn back to front |
 | `cycle` | `y`=0.8, `start`=0.0, `direction`=1, `size`=170, `repeat`=False, `body`=(200, 50, 50), `shirt`=(240, 200, 60) | a bicycle with a rider crossing the frame in `dur` s; wheels turn and legs pedal (repeat=True loops it) |
 | `smoke` | `pos`=(0.5, 0.45), `count`=10, `size`=44.0, `drift`=18.0 | smoke curling out of a chimney / chulha (effects.smoke) |
@@ -309,7 +322,7 @@ Configurable, never bundled: `audio_mix.SFX_LIBRARY = {name: file}`, `AMBIENCE_L
 | `missing_character` | `frames`, `plate`, `actors`, `fps`=24, `min_cover`=0.04, `thr`=24, `step`=3 | actors = [{"who", "box", "start", "end"}]. A box whose foreground coverage stays below min_cover is an empty spot -> the character is missing. plate:  |
 
 ## Coverage
-Checked against: built-in brief checklist (stories/hindi/ASSET_NEEDS.json not found) - 146 needs: **134 implemented, 9 weak, 3 not possible in 2D cut-out, 0 missing**.
+Checked against: built-in brief checklist (stories/hindi/ASSET_NEEDS.json not found) - 157 needs: **146 implemented, 8 weak, 3 not possible in 2D cut-out, 0 missing**.
 
 | area | status | what / reason |
 |---|---|---|
@@ -319,14 +332,18 @@ Checked against: built-in brief checklist (stories/hindi/ASSET_NEEDS.json not fo
 | birds: hen parrot | implemented | flap, fly, hop, peck, walk, squawk |
 | monkey | implemented | reuses the human rig + swing + jump |
 | 53 effects (weather, fire/light, marks, camera) | implemented | cached/low-res glows, all under ~0.1 s per frame |
-| camera moves, parallax, focus pull, dutch, framing rules | implemented / weak | parallax needs the artist to supply 2-4 depth layers; focus pull blurs whole layers, not single objects |
+| camera moves, dutch, framing rules | implemented | |
+| parallax from one background | implemented / weak | auto-split into sky / far / near by luminance + edge heuristics; hand-made depth layers look better |
+| focus pull (rack focus) | implemented / weak | blur per depth layer, not per object |
 | 11 transitions | implemented / weak | flashback = colour treatment + dissolve only; meanwhile = text card, no drawn art |
 | 17 prop motions | implemented | thrown / bounced / poured / swung / kite / door / coins ... |
 | scene life (8 elements, 5 presets) | implemented | birds, villagers, cattle, smoke, tree sway, water wheel, cycle, mela crowd |
 | audio mix (duck, SFX, ambience, -14 LUFS) | implemented | SFX/ambience files are the owner's; synthetic placeholders until then |
 | titles / subtitles / end card / thumbnail | implemented | Devanagari shaping via Raqm; font path configurable |
 | QA checks | implemented | no AI: heuristics on pixels and audio loudness |
-| fire / flame, dance, fall styles | weak | stylised sprites; dance is one simple loop; falls come in fixed styles |
+| flame | implemented | layered teardrop flame with flicker (still stylised) |
+| dance | weak | 4 simple loops (dance_simple, clap_dance, hop_dance, garba_turn_clap); real choreography needs hand-keyed poses |
+| falls | implemented | 4 styles (fall_comic, fall_slip_peel, fall_trip_forward, fall_sit_bump) |
 | turnarounds, side/back views | not possible in 2D cut-out | one drawn view per character; needs extra drawn art |
 | realistic fluid / cloth simulation | not possible in 2D cut-out | stylised water, flag and clothesline effects instead |
 | morphing / transformations | not possible in 2D cut-out | needs drawn in-betweens; hide a sprite swap behind a flash or dissolve |
@@ -335,13 +352,12 @@ Checked against: built-in brief checklist (stories/hindi/ASSET_NEEDS.json not fo
 ### Needs that are weak / not possible / missing
 | need | status | note |
 |---|---|---|
-| fall comic | weak | fixed fall styles |
-| dance garba | weak | one simple loop; real choreography needs hand-keyed poses |
-| falling petals | weak | fixed fall styles |
-| fire flame | weak | stylised flame sprites |
-| chulha cooking fire | weak | stylised flame sprites |
-| parallax depth layers | weak | needs the plate split into depth layers by the artist |
-| focus pull | weak | blur of whole layers, not per-object |
+| dance garba | weak | simple loops only; real choreography needs hand-keyed poses |
+| clap dance | weak | simple loops only; real choreography needs hand-keyed poses |
+| hop dance | weak | simple loops only; real choreography needs hand-keyed poses |
+| garba turn and clap | weak | the turn is a narrowing of the body, not a real rotation |
+| parallax depth layers | weak | layers are auto-split by heuristics; art with hand-made depth layers looks better |
+| focus pull | weak | blur is per depth layer, not per object |
 | flashback | weak | only a colour treatment + dissolve |
 | meanwhile card | weak | text card, no drawn art |
 | character turnaround 360 | not_possible | a cut-out has one drawn view; other views need extra drawn art (side/back sprites) |

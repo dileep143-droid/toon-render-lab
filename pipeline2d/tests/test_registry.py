@@ -13,7 +13,7 @@ SPEC = {"duration": 3.0,
 
 def test_registry_covers_every_module():
     a = R.list_all()
-    assert len(a["motion"]) >= 27 and len(a["animal_motion"]) >= 20 and len(a["bird_motion"]) >= 6 and len(a["effect"]) >= 50 and len(a["transition"]) >= 11 and len(a["prop_motion"]) == 17
+    assert len(a["motion"]) >= 27 and len(a["animal_motion"]) >= 20 and len(a["bird_motion"]) >= 6 and len(a["effect"]) >= 50 and len(a["transition"]) >= 11 and len(a["prop_motion"]) >= 19
     assert set(PU.MOTIONS) == set(a["motion"]) and "wave" in a["motion"] and "gallop" in a["animal_motion"] and "swing" in a["monkey_motion"] and "lightning" in a["effect"]
     d = R.describe("effect", "rain"); assert "intensity" in d["params"] and d["doc"]
     assert ("effect", "rain") in R.find("rain")
@@ -64,3 +64,28 @@ def test_strict_mode_rejects_bad_shot_and_speed():
 def test_freeze_event():
     spec = {"cast": {"k": {"kind": "human", "art": "kid", "x": 300, "y": 660, "height": 300}}, "duration": 3, "events": [{"motion": "walk_cycle", "who": "k", "start": 0, "dur": 3, "speed": 200}, {"freeze": True, "at": 1.0, "hold": 1.0}]}
     sh = R.Shot(spec, plate=BG); assert sh.duration == 4.0 and np.array_equal(sh.frame(1.0), sh.frame(1.8)) and not np.array_equal(sh.frame(1.0), sh.frame(2.5))
+
+
+def test_followup_names_are_registered_and_callable_by_json():
+    a = R.list_all()
+    for n in ("dawn_grade", "dusk_grade", "evening_lamp_grade"): assert n in a["effect"], n
+    for n in ("clap_dance", "hop_dance", "garba_turn_clap", "fall_slip_peel", "fall_trip_forward", "fall_sit_bump"): assert n in a["motion"], n
+    assert "food_disappear" in a["prop_motion"] and "food_eaten_by_animal" in a["prop_motion"] and "chimney_smoke" in a["life"] and "focus_pull" in a["camera"]
+    spec = {"duration": 2.0, "cast": {"k": {"kind": "human", "art": "kid", "x": 500, "y": 660, "height": 300}, "d": {"kind": "animal", "art": "dog", "x": 900, "y": 668, "height": 170, "flip": True}},
+            "events": [{"motion": "fall_slip_peel", "who": "k", "start": 0.2, "dur": 1.2}, {"effect": "dusk_grade", "start": 0, "dur": 2.0}, {"life": "chimney_smoke", "pos": [0.2, 0.5]},
+                       {"prop_motion": "food_eaten_by_animal", "prop": "ball", "start": 0.3, "pos": [500, 560], "mouth": "d.mouth", "ground": 668}]}
+    assert R.validate_shot(spec) == []
+    f = R.Shot(spec, plate=BG, props={"ball": T.make_prop("ball", 50)}).frame(1.0); assert f.shape == (720, 1280, 3) and np.abs(f.astype(int) - BG.astype(int)).mean() > 5
+
+
+def test_parallax_shot_uses_split_layers_and_keeps_the_cast_on_the_ground():
+    spec = {"duration": 3.0, "parallax": True, "cast": {"k": {"kind": "human", "art": "kid", "x": 640, "y": 640, "height": 300}},
+            "events": [{"camera": "push_in", "start": 0, "dur": 2, "target": [0.5, 0.6], "amount": 1.5}, {"camera": "focus_pull", "start": 0.5, "dur": 1, "to": "far", "from_focus": "near", "amount": 8},
+                       {"effect": "question", "who": "k", "start": 1.0, "dur": 1.0}]}
+    assert R.validate_shot(spec) == []
+    sh = R.Shot(spec, plate=BG); assert sh.parallax and [l["name"] for l in sh.layers] == ["sky", "far", "near"]
+    a = sh.frame(0.0); b = sh.frame(2.5); assert not np.array_equal(a, b)
+    fx = R.Shot({"cast": spec["cast"], "events": spec["events"][:1], "duration": 3.0}, plate=BG)                       # same shot without the flag: still renders (single plate)
+    assert fx.frame(2.5).shape == b.shape
+    ys, xs = np.nonzero(np.abs(b.astype(int) - sh.layers[0]["img"].astype(int)).sum(-1) > 80); assert len(ys) > 1000
+    assert np.array_equal(sh.frame(1.7), R.Shot(spec, plate=BG).frame(1.7)), "deterministic"

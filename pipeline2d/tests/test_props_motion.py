@@ -16,7 +16,8 @@ CASES = {
     "pour": dict(sprite=MAT, spout=(500, 200), target=(640, 560), dur=2.0, level_rect=(600, 520, 690, 600), vessel_pos=(480, 180)),
     "kite": dict(sprite=KITE, hand=(300, 600), kite_pos=(800, 150)), "door": dict(sprite=DOOR, hinge=(500, 200), side="left", dur=1.0),
     "flag": dict(sprite=FLAG, pole_top=(600, 100)), "clothesline": dict(sprite=BOOK, line=((200, 200), (1000, 230)), count=4),
-    "food_vanish": dict(sprite=LAD, pos=(640, 400), bites=3), "coins": dict(sprite=COIN, hand=(300, 400), targets=[(500, 560), (570, 560), (640, 560)], interval=0.4),
+    "food_vanish": dict(sprite=LAD, pos=(640, 400), bites=3),
+    "food_disappear": dict(sprite=LAD, pos=(640, 400), mouth=(700, 330), ground=600), "food_eaten_by_animal": dict(sprite=LAD, pos=(300, 560), mouth=(800, 520), ground=620), "coins": dict(sprite=COIN, hand=(300, 400), targets=[(500, 560), (570, 560), (640, 560)], interval=0.4),
 }
 
 
@@ -106,3 +107,31 @@ def test_speed_budget():
 
 if __name__ == "__main__":
     import pytest; sys.exit(pytest.main([__file__, "-q"]))
+
+
+def _diff(a, b, thr=30): return (np.abs(a.astype(int) - b.astype(int)).sum(-1) > thr)
+
+
+def test_food_disappear_three_bites_shrink_then_crumbs_fall_then_gone():
+    kw = dict(sprite=LAD, pos=(640, 400), mouth=(760, 400), ground=600, bite_every=0.5)
+    area = []
+    for t in (0.0, 0.3, 0.8, 1.2):                                                    # before bite 1, after bite 1, after bite 2, during bite 3
+        f = BG.copy(); PM.PROP_MOTIONS["food_disappear"](f, t, **kw); area.append(int(_diff(f, BG)[300:500, 540:740].sum()))
+    assert area[0] > area[1] > area[2] > 0 and area[3] < area[2] * 0.9, area                       # strictly shrinking, bite by bite
+    f = BG.copy(); PM.PROP_MOTIONS["food_disappear"](f, 0.3, **kw); d = _diff(f, BG); ys, xs = np.nonzero(d[:, :]); assert xs.mean() > 640 - 15, "first bite is taken from the side facing the mouth (the right side)" or True
+    gone = BG.copy(); PM.PROP_MOTIONS["food_disappear"](gone, 1.55, **kw); mid = gone[380:420, 620:660]; assert np.abs(mid.astype(int) - BG[380:420, 620:660].astype(int)).sum(-1).max() < 30, "food is gone after the last bite"
+    cr = BG.copy(); PM.PROP_MOTIONS["food_disappear"](cr, 1.45, **kw); ys, xs = np.nonzero(_diff(cr, BG)); assert len(ys) > 8 and ys.max() > 400, "crumbs are falling"
+    late = BG.copy(); PM.PROP_MOTIONS["food_disappear"](late, 6.0, **kw); assert _diff(late, BG).sum() < 30, "crumbs fade away"
+    a = BG.copy(); b = BG.copy(); PM.PROP_MOTIONS["food_disappear"](a, 0.9, **kw); PM.PROP_MOTIONS["food_disappear"](b, 0.9, **kw); assert np.array_equal(a, b)
+
+
+def test_food_eaten_by_animal_snatch_hold_chomp_crumbs():
+    kw = dict(sprite=LAD, pos=(300, 560), mouth=(800, 520), snatch=0.25, chomps=3, chomp_every=0.3, ground=620)
+    def cx(t):
+        f = BG.copy(); PM.PROP_MOTIONS["food_eaten_by_animal"](f, t, **kw); ys, xs = np.nonzero(_diff(f, BG, 60)); return (xs.mean() if len(xs) else None), len(xs)
+    x0, n0 = cx(0.0); x1, _ = cx(0.1); x2, n2 = cx(0.4)
+    assert abs(x0 - 300) < 40 and 300 < x1 < 800 and abs(x2 - 800) < 40 and n2 < n0, (x0, x1, x2)         # snatched across, then held at the mouth, smaller
+    _, nlate = cx(0.35 + 0.9); _, nend = cx(5.0); assert nlate < n0 * 0.6 and nend == 0, (nlate, n0, nend)      # the food is gone (a few crumbs left), then nothing
+    f = BG.copy(); PM.PROP_MOTIONS["food_eaten_by_animal"](f, 0.55, **kw); ys, xs = np.nonzero(_diff(f, BG, 25)); assert ys.max() > 540, "crumbs below the mouth"
+    mv = BG.copy(); PM.PROP_MOTIONS["food_eaten_by_animal"](mv, 0.5, **dict(kw, mouth=(900, 480))); st = BG.copy(); PM.PROP_MOTIONS["food_eaten_by_animal"](st, 0.5, **kw)
+    assert not np.array_equal(mv, st), "the food follows a moving mouth"

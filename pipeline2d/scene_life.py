@@ -3,6 +3,7 @@ LIFE[name](frame, t, **params) -> frame.   Everything is stateless in t and seed
 
 birds        flocks flying across (V formation or scattered), wings flapping       villagers   small distant villagers walking along the path (some carry a pot / bundle)
 cattle       a few cows grazing (head down / up, tail swish)                       smoke       chimney / chulha smoke (effects.smoke)
+chimney_smoke a smoke column from a point that leans and sways with the wind (wind=, gust=, height=)
 tree_sway    sway a tree / bush sprite in the wind (effects.sway_layer)            water_wheel a turning water wheel with falling water
 cycle        a bicycle with a rider passing across, wheels spinning, legs pedalling crowd     a mela crowd: many small figures bobbing, some waving
 ambient(frame, t, preset) plays a bundle: 'village_morning' 'village_evening' 'mela' 'farm' 'road'   (LIFE_PRESETS shows what each one contains)
@@ -133,6 +134,22 @@ def cattle(frame, t, pos=(0.3, 0.8), count=3, size=110, spread=150.0, seed=0, **
 def smoke(frame, t, pos=(0.5, 0.45), count=10, size=44.0, drift=18.0, seed=0, **k):
     """smoke curling out of a chimney / chulha (effects.smoke)"""
     return FX.smoke(frame, t, pos=pos, count=count, size=size, drift=drift, rise=70.0, opacity=0.42, seed=seed, life=3.4)
+
+
+@life("chimney_smoke")
+def chimney_smoke(frame, t, pos=(0.2, 0.42), wind=1.0, height=280.0, count=22, size=44.0, opacity=0.62, color=(150, 148, 152), gust=1.0, life_s=4.5, seed=0, **k):
+    """a smoke column rising from a chimney point and leaning with the wind: `wind` (-2..2, + = to the right) bends it more the higher it climbs,
+    gusts travel up the column as a slow wave, puffs widen, lighten and fade. height = how far it climbs (px)"""
+    x0, y0 = _S(pos[0], frame, 1), _S(pos[1], frame, 0); cache = {}
+    for j in range(int(count) - 1, -1, -1):                                           # oldest (highest) first so the young puffs sit on top
+        age = (t / life_s + j / count + _hash(j, seed, 1) * 0.03) % 1.0; cyc = math.floor(t / life_s + j / count); h = age * height
+        lean = wind * 70.0 * age ** 1.6 * (height / 280.0); gust_off = FX.wind_offset(t - age * 1.2, x0, amp=gust * 16.0 * age, freq=0.3, seed=seed)
+        wob = 7 * math.sin(age * 5 + j * 1.7 + cyc + seed) * (0.3 + age); r = size * (0.45 + 1.15 * age); a = opacity * min(1.0, age / 0.08) * (1 - age) ** 1.3
+        g = int(lerp(95, color[0], min(1.0, age * 1.4))), int(lerp(92, color[1], min(1.0, age * 1.4))), int(lerp(96, color[2], min(1.0, age * 1.4)))
+        key = (int(r) // 3, tuple(c // 8 for c in g))
+        if key not in cache: cache[key] = soft_circle(max(3, int(r)), g)
+        spr = cache[key]; alpha_over(frame, spr, x0 + lean + gust_off + wob - spr.shape[1] / 2, y0 - h - spr.shape[0] / 2, a)
+    return frame
 
 
 @life("tree_sway")

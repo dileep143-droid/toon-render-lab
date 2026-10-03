@@ -106,3 +106,46 @@ def test_speed_budget():
 
 if __name__ == "__main__":
     import pytest; sys.exit(pytest.main([__file__, "-q"]))
+
+
+def _bg(): return T.make_background("village_day")
+
+
+def test_split_depth_layers_makes_sky_far_near():
+    bg = _bg(); L = CM.split_depth_layers(bg); H, W = bg.shape[:2]
+    assert [l["name"] for l in L] == ["sky", "far", "near"] and [l["depth"] for l in L] == [0.2, 0.6, 1.0] and L[0]["img"].shape == (H, W, 3) and L[1]["img"].shape == (H, W, 4) and L[2]["img"].shape == (H, W, 4)
+    far_a, near_a = L[1]["img"][..., 3] / 255.0, L[2]["img"][..., 3] / 255.0
+    assert far_a[:int(H * .2)].mean() < 0.02 and near_a[:int(H * .5)].mean() < 0.01, "sky region is only in the sky layer"
+    assert far_a[int(H * .6):int(H * .72), 100:1200].mean() > 0.9, "hills and houses are far"
+    assert near_a[int(H * .9):, :].mean() > 0.95 and near_a[int(H * .6):int(H * .66), 100:1200].mean() < 0.5, "the foreground ground is near"
+    x0 = 900; hs = L[1]["img"][int(H * .4):int(H * .6), x0:x0 + 230, 3]; assert hs.min() > 200 or hs.mean() > 150, "a house is not sliced"
+    # flattening the three layers reproduces the picture
+    out = CM.render_view(L, Cam(), (W, H)); assert np.abs(out.astype(int) - bg.astype(int)).sum(-1).mean() < 6
+    assert CM.split_depth_layers(bg) is L, "cached"
+    assert C.bench(lambda: CM.split_depth_layers(bg.copy(), grad_thr=14.0), 2) < 0.4
+
+
+def test_parallax_from_a_single_background_moves_layers_differently():
+    bg = _bg(); a = CM.render_view(bg, Cam(0.45, 0.5, 1.5), parallax=True); b = CM.render_view(bg, Cam(0.55, 0.5, 1.5), parallax=True)
+    def lag(f, g, rows):                                                                           # horizontal shift (px) of the picture content in a band of rows between two frames
+        p = f[rows].astype(float).mean((0, 2)); q = g[rows].astype(float).mean((0, 2)); p -= p.mean(); q -= q.mean()
+        cc = np.correlate(p, q, "full"); return abs(int(np.argmax(cc)) - (len(p) - 1))
+    sky_band, far_band, near_band = slice(5, 60), slice(330, 420), slice(660, 700)
+    ls, lf, ln = lag(a, b, sky_band), lag(a, b, far_band), lag(a, b, near_band)
+    assert ln > lf > ls or (ln > lf and lf >= ls), f"near moves more than far, far more than sky: {ln} {lf} {ls}"
+    assert not np.array_equal(a, b) and a.shape == (720, 1280, 3) and a.min() >= 0
+    # no black borders even when panning to the edge with layers at other depths
+    e = CM.render_view(bg, Cam(0.8, 0.5, 1.5), parallax=True); assert e[:, -4:].mean() > 20 and e[:, :4].mean() > 20 and e[-4:].mean() > 20
+    assert C.bench(lambda: CM.render_view(bg, Cam(0.55, 0.5, 1.5), parallax=True), 3) < 0.25
+
+
+def test_focus_pull_blurs_by_layer_depth():
+    bg = _bg(); sharp = lambda f: np.abs(np.diff(f.astype(int), axis=1)).sum(-1)
+    near_f = CM.render_view(bg, Cam(0.5, 0.5, 1.2, focus=1.0, focus_amount=10), parallax=True); sky_f = CM.render_view(bg, Cam(0.5, 0.5, 1.2, focus=0.2, focus_amount=10), parallax=True)
+    top = slice(40, 200); bot = slice(560, 700)                                    # sky (far depth 0.2) vs ground (near, depth 1)
+    assert sharp(sky_f)[:, 100:1200].max() >= 0 and sharp(near_f)[bot].max() > sharp(sky_f)[bot].max() * 1.3, "ground crisp when near is in focus, soft when sky is"
+    assert np.abs(near_f.astype(int) - sky_f.astype(int)).mean() > 0.3
+    mv = CM.focus_pull(Cam(0.5, 0.5, 1.2), "far", 2.0, from_focus="near", amount=8); assert abs(mv.at(0).focus - 1.0) < 1e-9 and abs(mv.at(2.0).focus - 0.6) < 1e-9 and 0.6 < mv.at(1.0).focus < 1.0 and mv.at(1.0).cx == 0.5
+    tr = CM.CameraTrack.from_events([{"camera": "push_in", "start": 0, "dur": 2, "target": [0.6, 0.5], "amount": 1.3}, {"camera": "focus_pull", "start": 2, "dur": 1, "to": "sky", "from_focus": "near"}])
+    assert tr.at(0.0).focus is None and abs(tr.at(2.0).focus - 1.0) < 1e-6 and abs(tr.at(3.0).focus - 0.2) < 1e-6 and abs(tr.at(3.0).z - tr.at(2.0).z) < 1e-9
+    f = [tr.at(2 + i / 24).focus for i in range(25)]; assert all(f[i + 1] <= f[i] + 1e-9 for i in range(24)) and np.abs(np.diff(f)).max() < 0.12, "smooth rack"

@@ -295,7 +295,43 @@ def demo_registry():
     json.dump({"shot1": shot1, "shot2": shot2}, open(os.path.join(OUT, "registry_demo_shots.json"), "w"), ensure_ascii=False, indent=1)
     return C.write_video(gen(), os.path.join(OUT, "registry.mp4"), fps, crf=28)
 
-DEMOS = {"registry": demo_registry, "qa": demo_qa, "titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+
+def demo_followup():
+    """the follow-up additions, all driven by shot JSON: dawn / dusk / lamp grades, chimney smoke, layered flame, 3 new dances, 3 new falls, food eaten (bites / by an animal),
+    parallax from ONE background with a focus pull"""
+    import registry as R
+    F = "NotoSansDevanagari-Bold.ttf"; plate = bg_frame()
+    A = {"duration": 5.0, "parallax": True, "cast": {"kid": {"kind": "human", "art": "kid", "x": 560, "y": 640, "height": 300}, "dadi": {"kind": "human", "art": "dadi", "x": 840, "y": 640, "height": 340, "flip": True}},
+         "events": [{"effect": "dawn_grade", "start": 0, "dur": 5.0, "fade": 0.8}, {"life": "chimney_smoke", "pos": [0.14, 0.52], "wind": 1.2}, {"motion": "garba_turn_clap", "who": "kid", "start": 0.3, "dur": 4.4},
+                    {"motion": "clap_dance", "who": "dadi", "start": 0.3, "dur": 4.4}, {"camera": "push_in", "start": 0.3, "dur": 3.5, "target": [0.62, 0.55], "amount": 1.45},
+                    {"camera": "focus_pull", "start": 1.2, "dur": 0.9, "to": "far", "from_focus": "near", "amount": 9}, {"camera": "focus_pull", "start": 2.8, "dur": 0.9, "to": "near", "amount": 9},
+                    {"title": "lower_third", "name": "सुबह", "role": "dawn_grade + parallax", "start": 0.6, "dur": 3.0}]}
+    B = {"duration": 5.0, "cast": {"man": {"kind": "human", "art": "man", "x": 720, "y": 650, "height": 380}, "kid": {"kind": "human", "art": "kid", "x": 480, "y": 660, "height": 290}},
+         "events": [{"effect": "dusk_grade", "start": 0, "dur": 5.0, "fade": 0.8}, {"effect": "bonfire", "pos": [0.22, 0.86], "size": 0.9}, {"life": "chimney_smoke", "pos": [0.14, 0.52], "wind": -1.0},
+                    {"motion": "hop_dance", "who": "kid", "start": 0.3, "dur": 4.4}, {"motion": "clap_dance", "who": "man", "start": 0.3, "dur": 4.4}, {"effect": "flame", "pos": [0.88, 0.88], "size": 150},
+                    {"title": "lower_third", "name": "शाम", "role": "dusk_grade + flames", "start": 0.6, "dur": 3.0}]}
+    Cc = {"duration": 5.0, "cast": {"kid": {"kind": "human", "art": "kid", "x": 420, "y": 660, "height": 300}, "man": {"kind": "human", "art": "man", "x": 760, "y": 650, "height": 380}, "dadi": {"kind": "human", "art": "dadi", "x": 1040, "y": 640, "height": 340, "flip": True}},
+          "events": [{"effect": "evening_lamp_grade", "lamps": [[0.3, 0.55, 260], [0.82, 0.5, 220]], "start": 0, "dur": 5.0, "fade": 0.6}, {"motion": "fall_slip_peel", "who": "kid", "start": 0.8, "dur": 1.5},
+                     {"motion": "fall_trip_forward", "who": "man", "start": 1.8, "dur": 1.6}, {"motion": "fall_sit_bump", "who": "dadi", "start": 3.0, "dur": 1.5}, {"effect": "impact_star", "who": "kid", "start": 2.1, "dur": 0.7},
+                     {"effect": "dizzy_stars", "who": "dadi", "start": 4.3, "dur": 0.7}, {"title": "lower_third", "name": "रात", "role": "evening_lamp_grade + 3 falls", "start": 0.6, "dur": 3.0}]}
+    D = {"duration": 5.0, "cast": {"kid": {"kind": "human", "art": "kid", "x": 330, "y": 660, "height": 300}, "sheru": {"kind": "animal", "art": "dog", "x": 880, "y": 668, "height": 170, "flip": True}, "dadi": {"kind": "human", "art": "dadi", "x": 1120, "y": 640, "height": 330, "flip": True}},
+         "events": [{"motion": "give", "who": "kid", "start": 0.3, "dur": 1.2}, {"prop_motion": "food_eaten_by_animal", "prop": "laddoo", "start": 1.2, "pos": [470, 540], "mouth": "sheru.mouth", "ground": 668, "chomps": 3},
+                    {"motion": "bark", "who": "sheru", "start": 1.2, "dur": 0.6}, {"motion": "wag_tail", "who": "sheru", "start": 1.8, "dur": 2.4}, {"prop_motion": "food_disappear", "prop": "laddoo", "start": 1.8, "pos": [1010, 430], "mouth": [1080, 380], "ground": 668, "bites": 3},
+                    {"motion": "hand_to_mouth", "who": "dadi", "start": 1.8, "dur": 2.0}, {"effect": "hearts", "who": "dadi", "start": 3.7, "dur": 1.2}, {"title": "lower_third", "name": "लड्डू", "role": "food_eaten_by_animal + food_disappear", "start": 0.6, "dur": 3.0}]}
+    import testart as TA
+    props = {"laddoo": TA.make_prop("laddoo", 80)}
+    shots = [R.Shot(x, plate=plate, props=props, font=F) for x in (A, B, Cc, D)]; fps = C.FPS; fade = int(0.4 * fps)
+    def gen():
+        for si, sh in enumerate(shots):
+            n = int(sh.duration * fps)
+            for i in range(n):
+                f = sh.frame(i / fps)
+                if si < len(shots) - 1 and i >= n - fade:
+                    k = (i - (n - fade) + 1) / fade; g = shots[si + 1].frame((i - (n - fade)) / fps) if False else shots[si + 1].frame(0.0); f = (f.astype(np.float32) * (1 - k) + g.astype(np.float32) * k).astype(np.uint8)
+                yield f
+    return C.write_video(gen(), os.path.join(OUT, "followup.mp4"), fps, crf=28)
+
+DEMOS = {"followup": demo_followup, "registry": demo_registry, "qa": demo_qa, "titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():

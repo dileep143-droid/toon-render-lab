@@ -80,3 +80,45 @@ def test_lightning_flashes_sometimes():
 
 if __name__ == "__main__":
     import pytest; sys.exit(pytest.main([__file__, "-q"]))
+
+
+def _mean_rgb(f): return f.reshape(-1, 3).mean(0)
+
+
+def test_dawn_dusk_lamp_grades_look_right():
+    for n in ("dawn_grade", "dusk_grade", "evening_lamp_grade"):
+        assert n in FX.EFFECTS
+        f = BG.copy(); out = FX.apply(f, n, 0.5); assert out.shape == BG.shape and out.dtype == np.uint8 and not np.array_equal(out, BG), n
+        z = BG.copy(); FX.apply(z, n, 0.5, amount=0.0); assert np.abs(z.astype(int) - BG.astype(int)).mean() < 1.5, f"{n} amount=0 is (almost) a no-op"
+        assert C.bench(lambda: FX.apply(BG.copy(), n, 0.5), 3) < 0.12, f"{n} is slower than 0.1 s"
+    dawn = BG.copy(); FX.apply(dawn, "dawn_grade", 0); dusk = BG.copy(); FX.apply(dusk, "dusk_grade", 0)
+    rb = lambda f: _mean_rgb(f)[0] / _mean_rgb(f)[2]
+    assert rb(dawn) > rb(BG) * 1.1 and rb(dusk) > rb(dawn) * 1.15, "warm: dawn warmer than the day, dusk warmer than dawn"
+    assert dusk.mean() < BG.mean() and dawn.std() < BG.std() * 1.02, "dusk is darker; dawn is soft (no more contrast than the original)"
+    h = BG.shape[0]; assert _mean_rgb(dusk[int(h * .55):int(h * .62)])[0] > _mean_rgb(dusk[:int(h * .1)])[0] + 20, "horizon glows"
+
+
+def test_lamp_grade_lights_around_the_lamps_and_flickers():
+    lamps = [(0.25, 0.6, 200.0)]
+    f = BG.copy(); FX.apply(f, "evening_lamp_grade", 0.7, lamps=lamps); H, W = BG.shape[:2]
+    near = f[int(.6 * H) - 30:int(.6 * H) + 30, int(.25 * W) - 30:int(.25 * W) + 30].mean(); far = f[int(.6 * H) - 30:int(.6 * H) + 30, int(.9 * W) - 30:int(.9 * W) + 30].mean()
+    assert near > far * 1.5 and f.mean() < BG.mean() * 0.85, (near, far)
+    a = BG.copy(); b = BG.copy(); FX.apply(a, "evening_lamp_grade", 0.1, lamps=lamps); FX.apply(b, "evening_lamp_grade", 0.4, lamps=lamps); assert not np.array_equal(a, b), "flicker"
+    assert np.array_equal(a, FX.apply(BG.copy(), "evening_lamp_grade", 0.1, lamps=lamps)), "deterministic"
+    e = dict(effect="dusk_grade", start=0.0, dur=2.0, fade=0.5); mid = FX.run_event(BG.copy(), e, 1.0); start = FX.run_event(BG.copy(), e, 0.0)
+    assert np.abs(start.astype(int) - BG.astype(int)).mean() < 1.5 and np.abs(mid.astype(int) - BG.astype(int)).mean() > 8, "event fades in softly"
+
+
+def test_layered_flame_has_teardrop_layers_and_flickers():
+    dark = np.full_like(BG, (24, 20, 30)); frames = []
+    for i in range(12):
+        f = dark.copy(); FX.apply(f, "flame", i / 24, pos=(0.5, 0.8), size=240, glow=0.0); frames.append(f)
+    f = frames[0]; H, W = f.shape[:2]; cx, by = W // 2, int(0.8 * H)
+    colour_at = lambda dy: f[by - dy, cx].astype(int)
+    core, mid, base = colour_at(50), colour_at(115), colour_at(215)
+    assert core.sum() > 600 and core[1] > 180, "pale-yellow core in the middle"                                               # R,G,B high -> yellow/white
+    assert colour_at(10)[1] > colour_at(10)[2] and (np.abs(f.astype(int) - dark).sum(-1) > 60)[by - 230:by, :].any()
+    outer = np.abs(f.astype(int) - dark).sum(-1) > 60; ys, xs = np.nonzero(outer); assert 130 < ys.max() - ys.min() < 260 and xs.max() - xs.min() < 170, "a teardrop, taller than wide"
+    w_top = outer[by - int(0.85 * (ys.max() - ys.min())) - 5:by - int(0.85 * (ys.max() - ys.min())) + 5].sum(); w_low = outer[by - 40:by - 30].sum(); assert w_top < w_low * 0.6, "narrow tip, round belly"
+    d = [np.abs(frames[i + 1].astype(int) - frames[i].astype(int)).sum() for i in range(11)]; assert min(d) > 0, "flickers every frame"
+    assert np.array_equal(frames[3], (lambda g: (FX.apply(g, "flame", 3 / 24, pos=(0.5, 0.8), size=240, glow=0.0), g)[1])(dark.copy()))

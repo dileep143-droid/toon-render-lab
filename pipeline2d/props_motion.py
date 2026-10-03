@@ -12,6 +12,7 @@ fan          rotating blades (motion blur at speed)             clock_hands  clo
 kite         flying kite with a curved string and tail          door         a door opening / closing (perspective)
 flag         waving flag / banner                               clothesline  washing swaying on a line
 paper_fly    a paper fluttering through the air                food_vanish  laddoo / roti eaten in bites with crumbs
+food_disappear  3 scalloped bite marks, shrinking remains, crumbs fall   food_eaten_by_animal  an animal snatches it, chomps, crumbs
 coins        coins / sweets counted out of a hand onto targets
 JSON: {"prop_motion": "throw", "prop": "ball", "start": 2.0, "dur": 1.0, "p0": [300, 500], "p1": [900, 520], "height": 220}"""
 import functools, math, os, sys
@@ -355,6 +356,76 @@ def coins(frame, t, sprite=None, hand=(0, 0), targets=((100, 100),), start=0.0, 
         else:
             b = u - 1; bounce = max(0.0, math.sin(min(1.0, b / 0.35) * math.pi)) * (1 - min(1.0, b / 0.35)) * 10 if b < 0.35 else 0.0; st = PropState(p[0], p[1] - bounce, 0.0)
         draw_state(frame, sprite, st, scale=scale)
+    return frame
+
+
+# ===================================================================================================== food: bites, animal snatch, crumbs
+def _mean_colour(sprite):
+    a = sprite[..., 3] > 128
+    return tuple(int(v) for v in sprite[..., :3][a].mean(0)) if a.any() else (190, 140, 70)
+
+
+def _crumbs(frame, x, y, tt, colour, n=9, seed=0, spread=46.0, up=70.0, gravity=520.0, life=0.8, ground=None, size=4.2):
+    """tt seconds after the burst: n crumbs fly out, fall with gravity, bounce once on `ground` (y px) and fade. Stateless."""
+    if tt <= 0 or tt > life + 0.2: return frame
+    for c in range(n):
+        r = np.random.default_rng(int(seed) * 977 + c); vx, vy = r.uniform(-spread, spread), -r.uniform(0.2, 1.0) * up; px = x + r.uniform(-6, 6) + vx * tt; py = y + vy * tt + 0.5 * gravity * tt * tt
+        if ground is not None and py > ground:                            # first hit, then one small bounce, then it rests on the ground
+            tb = (-vy + math.sqrt(vy * vy - 2 * gravity * (y - ground))) / gravity; vb = -0.35 * (vy + gravity * tb); u2 = tt - tb; py = min(ground, ground + vb * u2 + 0.5 * gravity * u2 * u2)
+        col = tuple(int(max(0, min(255, v * r.uniform(0.75, 1.15)))) for v in colour); spr = soft_circle(int(size * r.uniform(0.7, 1.3)) + 1, col, 0.9, 1.0)
+        alpha_over(frame, spr, px - spr.shape[1] / 2, py - spr.shape[0] / 2, float(min(1.0, (life - tt) / 0.25 + 0.0)) if tt > life - 0.25 else 1.0)
+    return frame
+
+
+def _bitten(sprite, cuts):
+    """sprite with scalloped bites removed; cuts = [(cx, cy, r, grow 0..1)] in sprite px. A light 'doughy' rim marks every fresh bite edge."""
+    h, w = sprite.shape[:2]; yy, xx = np.mgrid[0:h, 0:w].astype(np.float32); spr = sprite.copy(); alive = spr[..., 3] > 0; col = np.array(_mean_colour(sprite), np.float32); rim = np.zeros((h, w), bool); gone = np.zeros((h, w), bool)
+    for cx, cy, r, g in cuts:
+        rr = r * g
+        if rr < 0.5: continue
+        for k in range(3):                                               # three overlapping circles = a scalloped tooth-mark edge
+            a = k * 2.2 + cx * 0.05; ox, oy = cx + math.cos(a) * rr * 0.55, cy + math.sin(a) * rr * 0.55; d = np.hypot(xx - ox, yy - oy)
+            rim |= (d < rr * 0.62 + 2.2) & (d >= rr * 0.62); gone |= d < rr * 0.62
+    rim &= alive & ~gone; spr[..., 3][gone] = 0
+    spr[..., :3][rim] = (spr[..., :3][rim] * 0.45 + (col * 0.5 + 255 * 0.5) * 0.55).astype(np.uint8); return spr
+
+
+@prop_motion("food_disappear")
+def food_disappear(frame, t, sprite=None, pos=(0, 0), start=0.0, bites=3, bite_every=0.5, mouth=None, crumbs=True, scale=1.0, ground=None, seed=0, anchor=(0.5, 0.5), **k):
+    """a laddoo / roti / fruit eaten in `bites` (default 3): every bite cuts a scalloped tooth-mark chunk from the side facing `mouth` (or a varied side),
+    the food squashes a little on each bite and the remains shrink; after the last bite it is gone and crumbs fall (and bounce once on `ground`).
+    pos / mouth: px or fractions (mouth may be 'who.mouth' via run_event). Stateless in t."""
+    p = _pt(pos, frame); tt = t - start; mouth_p = _pt(mouth, frame) if mouth is not None else None
+    if tt < 0: return place_sprite(frame, sprite, p[0], p[1], anchor, scale=scale)
+    h, w = sprite.shape[:2]; r = rng("food_disappear", seed); base = math.atan2(mouth_p[1] - p[1], mouth_p[0] - p[0]) if mouth_p else None; col = _mean_colour(sprite); last = bites - 1; cuts = []; nb = 0
+    for j in range(bites):
+        ang = (base if base is not None else r.uniform(0, 2 * math.pi)) + r.uniform(-0.5, 0.5); frac = (j + 1) / bites; dist = (0.62 - 0.42 * frac) * min(w, h) / 2 * 1.6 if j < last else 0.0; rad = min(w, h) * (0.30 + 0.12 * j) if j < last else max(w, h) * 0.75
+        g = float(smooth((tt - j * bite_every) / 0.14)); cuts.append((w / 2 + math.cos(ang) * dist, h / 2 + math.sin(ang) * dist, rad, g)); nb += g > 0.01
+    t_end = last * bite_every + 0.14; spr = _bitten(sprite, cuts)
+    pulse_ = max([math.sin(math.pi * min(1.0, max(0.0, (tt - j * bite_every) / 0.18))) for j in range(bites)]) if tt < t_end else 0.0           # a squash on every bite
+    if tt < t_end - 0.01: place_sprite(frame, spr, p[0], p[1], anchor, scale=scale, sx=1 - 0.06 * pulse_, sy=1 - 0.05 * pulse_)
+    if crumbs:
+        for j in range(bites): _crumbs(frame, p[0], p[1] + h * scale * 0.2, tt - j * bite_every - 0.06, col, n=6 if j < last else 12, seed=seed * 10 + j, ground=ground, spread=30 + 10 * j)
+    return frame
+
+
+@prop_motion("food_eaten_by_animal")
+def food_eaten_by_animal(frame, t, sprite=None, pos=(0, 0), mouth=(0, 0), start=0.0, snatch=0.22, chomps=3, chomp_every=0.3, crumbs=True, scale=1.0, hop=60.0, ground=None, seed=0, anchor=(0.5, 0.5), **k):
+    """an animal snatches the food: it zips from `pos` to the animal's `mouth` in `snatch` s on a short arc (stretching along the way), is held in the
+    mouth (follows it when `mouth` is a moving 'who.mouth' anchor), and is chomped away in `chomps` chomps, each spraying crumbs. Stateless in t."""
+    p = _pt(pos, frame); m = _pt(mouth, frame); tt = t - start
+    if tt < 0: return place_sprite(frame, sprite, p[0], p[1], anchor, scale=scale)
+    col = _mean_colour(sprite); u = _u(tt, snatch)
+    if u < 1.0:
+        e = float(smooth(u)) ** 1.4; x = lerp(p[0], m[0], e); y = lerp(p[1], m[1], e) - 4 * hop * e * (1 - e); stretch = 1 + 0.35 * math.sin(math.pi * u)
+        place_sprite(frame, sprite, x, y, anchor, scale=scale * (1 - 0.15 * e), rot=200 * u, sx=stretch ** 0.5, sy=1 / stretch ** 0.5)
+        return frame
+    c = tt - snatch; n = c / chomp_every; k_ = int(n)
+    if k_ < chomps:
+        v = n - k_; size = 1 - (k_ + float(smooth(min(1.0, v / 0.35)))) / chomps * 0.9; bite = math.sin(math.pi * min(1.0, v / 0.35)); size = max(0.08, size)
+        place_sprite(frame, sprite, m[0], m[1], anchor, scale=scale * 0.85 * size, rot=-8 * bite, sx=1 + 0.12 * bite, sy=1 - 0.12 * bite)
+    if crumbs:
+        for j in range(chomps): _crumbs(frame, m[0], m[1] + 4, c - j * chomp_every - 0.05, col, n=7, seed=seed * 10 + j, ground=ground, spread=34, up=40)
     return frame
 
 

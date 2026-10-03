@@ -15,7 +15,8 @@ SHOT JSON (all times in seconds, relative to the shot start)
   "events": [ {"motion": "wave", "who": "dadi", "start": 2.0, "dur": 1.5},                  # human / animal / bird / monkey motion, chosen by the cast kind
               {"effect": "rain", "start": 0, "intensity": 0.7},
               {"effect": "question", "who": "dadi", "start": 3, "dur": 1.2},                # who -> its head anchor ("dadi.hand_r" etc. also work)
-              {"camera": "push_in", "start": 1, "dur": 2, "target": [0.7, 0.5], "amount": 1.4},
+              {"camera": "push_in", "start": 1, "dur": 2, "target": [0.7, 0.5], "amount": 1.4},            # + "parallax": true at the top level splits the plate into sky/far/near layers
+              {"camera": "focus_pull", "start": 2, "dur": 1, "to": "far"},                       # rack focus: sharp depth glides to the far layer (others blur)
               {"prop_motion": "throw", "prop": "ball", "start": 2, "dur": 1, "p0": "dadi.hand_r", "p1": [300, 600]},
               {"life": "birds", "start": 0}, {"ambient": "village_morning"},
               {"transition": "dissolve", "start": 5.5, "dur": 0.5},                          # needs shot.frame(t, next_frame=...)
@@ -170,6 +171,8 @@ class Shot:
             self.perf[who] = (AN.AnimalPerformer if c["kind"] != "human" else PU.Performer)(img, rig, evs)
         cams = [e for e in self.events if "camera" in e]
         self.track = CA.CameraTrack.from_events(cams, spec.get("camera_start")) if cams else None
+        self.parallax = bool(spec.get("parallax")) and self.track is not None and isinstance(plate, np.ndarray)
+        self.layers = CA.split_depth_layers(plate) if self.parallax else None
         self.freezes = [(e["at"], e.get("hold", 1.0)) for e in self.events if "freeze" in e]
         self.duration = spec.get("duration", max([e.get("start", 0) + e.get("dur", 0) for e in self.events] + [1.0])) + sum(h for _, h in self.freezes)
 
@@ -178,15 +181,17 @@ class Shot:
         p = self.plate(t) if callable(self.plate) else self.plate
         return C.blank() if p is None else p.copy()
 
-    def draw_cast(self, f, t):
+    def draw_cast(self, f, t, cam=None):
+        """draw the cast; with cam (parallax mode) the cast is placed through the camera (screen space) and scaled by its zoom"""
         anchors = {}
         for who, c in self.cast.items():
             flip = bool(c.get("flip", False)); sp, info = self.perf[who].frame(t, flip=flip); img, rig = self.art[who]
-            k = c["height"] / float(rig["size"][1]); x = c["x"] + (-1 if flip else 1) * info["travel"] * k
-            an = PU.draw_character(f, sp, info, rig, x, c["y"], c["height"], flip=flip)
+            k = c["height"] / float(rig["size"][1]); x = c["x"] + (-1 if flip else 1) * info["travel"] * k; y = c["y"]; hgt = c["height"]
+            if cam is not None: sx, sy, sc = CA.to_screen(cam, x / C.W, y / C.H); x, y, hgt = sx, sy, hgt * sc
+            an = PU.draw_character(f, sp, info, rig, x, y, hgt, flip=flip)
             for j, p in an.items(): anchors[f"{who}.{j}"] = p
-            head = an.get("head_center") or an.get("head") or an.get("head_top") or (x, c["y"] - c["height"] * 0.9); anchors[who] = (head[0], head[1] - c["height"] * (0.08 if c["kind"] == "human" else 0.0))
-            anchors[f"{who}.feet"] = (x, c["y"])
+            head = an.get("head_center") or an.get("head") or an.get("head_top") or (x, y - hgt * 0.9); anchors[who] = (head[0], head[1] - hgt * (0.08 if c["kind"] == "human" else 0.0))
+            anchors[f"{who}.feet"] = (x, y)
         return anchors
 
     def _screen(self, anchors, cam):
@@ -198,6 +203,14 @@ class Shot:
 
     def frame(self, t, next_frame=None):
         if self.freezes: t = FX.freeze_time(t, self.freezes)
+        if self.parallax:
+            cam = self.track.at(t); f = CA.render_view(self.layers, cam)                                   # one background, 3 depth layers; life / cast / props drawn in screen space
+            for e in self.events:
+                if "life" in e or "ambient" in e: f = SL.run_event(f, e, t, self.sprites)
+            anchors = self.draw_cast(f, t, cam); local = dict(anchors)
+            for e in self.events:
+                if "prop_motion" in e: f = PM.run_event(f, e, t, self.props, local)
+            return self._finish(f, t, anchors, next_frame)
         f = self._plate(t)
         for e in self.events:                                                                              # scene life behind the characters
             if "life" in e or "ambient" in e: f = SL.run_event(f, e, t, self.sprites)
@@ -206,7 +219,9 @@ class Shot:
             if "prop_motion" in e: f = PM.run_event(f, e, t, self.props, local)
         cam = self.track.at(t) if self.track else None
         if cam is not None: f = CA.render_view(f, cam)
-        scr = self._screen(anchors, cam)
+        return self._finish(f, t, self._screen(anchors, cam), next_frame)
+
+    def _finish(self, f, t, scr, next_frame):
         for e in self.events:
             if "effect" in e: f = FX.run_event(f, e, t, scr)
         for e in self.events:

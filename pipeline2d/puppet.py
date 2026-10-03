@@ -688,6 +688,100 @@ def dance_simple(t, dur, rig, hz=1.4, **k):
     P.squash = (1 + 0.015 * math.sin(2 * ph) * e, 1 - 0.02 * math.sin(2 * ph) * e); return P
 
 
+# ---- more dance loops: simple, readable cut-out dances (all loop; fade in/out with the event)
+@motion("clap_dance", loop=True)
+def clap_dance(t, dur, rig, hz=1.6, **k):
+    """side-step sway with a clap on every beat: hands meet in front of the chest, then open wide; knees dip on the beat"""
+    e = _env(t, dur, .4, .4); ph = 2 * math.pi * hz * t; beat = abs(math.sin(ph / 2)) ** 3; c = 0.5 + 0.5 * math.cos(ph); P = Pose()      # c = 1 at the clap
+    P.lift = -3 * c * e + 4 * (1 - c) * e * 0.4; P.dx = 5 * math.sin(ph / 2) * e; P.rel["torso"] = 4 * math.sin(ph / 2) * e; P.rel["head"] = -5 * math.sin(ph / 2) * e
+    for s in "lr":
+        _arm(P, s, lerp(_rest_abd(rig, s), lerp(70, 30, c), e), flex=lerp(0, lerp(70, 112, c), e), wrist=0, w=e)
+        if rig.get("has_legs", True): _leg(P, s, abd=_rest_abd_leg(rig, s) + sgn(s) * 5 * e, flex=10 * c * e)
+    P.squash = (1 - 0.01 * c * e, 1 + 0.015 * (1 - c) * e); return P
+
+
+@motion("hop_dance", loop=True)
+def hop_dance(t, dur, rig, hz=1.5, height=0.05, **k):
+    """happy hopping: both feet leave the ground on every beat, arms up and out in the air, a small squash on landing"""
+    e = _env(t, dur, .35, .35); Hh = rig["size"][1]; u = (hz * t) % 1.0; air = math.sin(math.pi * min(1.0, u / 0.7)) if u < 0.7 else 0.0; land = math.sin(math.pi * (u - 0.7) / 0.3) if u >= 0.7 else 0.0
+    P = Pose(); P.lift = Hh * height * air * e - 0.015 * Hh * land * e; P.squash = (1 - 0.03 * air * e + 0.05 * land * e, 1 + 0.05 * air * e - 0.07 * land * e)
+    P.rel["torso"] = 3 * math.sin(2 * math.pi * hz * t * 0.5) * e
+    for s in "lr":
+        _arm(P, s, lerp(_rest_abd(rig, s), lerp(40, 135, air), e), flex=lerp(0, 25 + 20 * air, e), w=e)
+        if rig.get("has_legs", True): _leg(P, s, abd=_rest_abd_leg(rig, s) + sgn(s) * 6 * air * e, flex=28 * air * e)
+    return P
+
+
+@motion("garba_turn_clap", loop=True)
+def garba_turn_clap(t, dur, rig, hz=2.0, **k):
+    """garba step: three claps (hands right, left, centre of the chest) then a quick turn on the spot; a cut-out cannot rotate in depth, so the
+    turn is a narrowing of the body (squash in x) with the arms swept up - it reads as a twirl at normal speed"""
+    e = _env(t, dur, .4, .4); beats = hz * t; b = int(math.floor(beats)) % 4; u = beats % 1.0; P = Pose()
+    clap = math.exp(-((u - 0.5) / 0.14) ** 2)                               # a clap peaks mid-beat
+    if b < 3:
+        side = (1, -1, 0)[b]; P.dx = 7 * side * e; P.rel["torso"] = 5 * side * e; P.lift = -2 * e * clap
+        for s in "lr": _arm(P, s, lerp(_rest_abd(rig, s), lerp(60, 26, clap), e), flex=lerp(0, lerp(80, 112, clap), e), w=e)
+        if rig.get("has_legs", True):
+            for s in "lr": _leg(P, s, abd=_rest_abd_leg(rig, s) + sgn(s) * 4 * e, flex=(14 if (s == "l") == (side >= 0) else 4) * e)
+    else:
+        tw = float(smooth(u)); spin = math.cos(2 * math.pi * tw); P.squash = (1 - (1 - max(0.38, abs(spin))) * e, 1 + 0.03 * math.sin(math.pi * tw) * e)
+        P.lift = 0.03 * rig["size"][1] * math.sin(math.pi * tw) * e; P.rel["torso"] = 6 * math.sin(2 * math.pi * tw) * e
+        for s in "lr": _arm(P, s, lerp(_rest_abd(rig, s), 125 + 25 * math.sin(math.pi * tw), e), flex=lerp(0, 30, e), w=e)
+        if rig.get("has_legs", True):
+            for s in "lr": _leg(P, s, abd=_rest_abd_leg(rig, s) + sgn(s) * 5 * e, flex=18 * math.sin(math.pi * tw) * e)
+    return P
+
+
+# ---- fall variants (hold: the last pose stays; use stand_up / another motion afterwards)
+def _bounce(v): return max(0.0, math.sin(math.pi * min(1.0, v) * 2.4) * (1 - v))
+
+
+@motion("fall_slip_peel", hold=True)
+def fall_slip_peel(t, dur, rig, **k):
+    """slips on a banana peel: the feet shoot forward and up, the body hangs in the air arms flailing, then slams down flat on the back with one bounce"""
+    u = min(1.0, t / max(dur, 1e-3)); Hh = rig["size"][1]; P = Pose(); a = 0.3
+    if u < a:                                                                # slip: feet fly out
+        v = float(smooth(u / a)); P.rot = -40 * v; P.lift = 0.10 * Hh * v
+    else:
+        v = (u - a) / (1 - a); drop = float(smooth(v / 0.35)); P.rot = lerp(-40, -90, drop); P.lift = 0.10 * Hh * (1 - drop); bn = _bounce((v - 0.35) / 0.65) if v > 0.35 else 0.0
+        P.rot += 4 * bn; P.lift += 0.025 * Hh * bn; P.squash = (1 + 0.12 * bn, 1 - 0.12 * bn)
+    fl = math.sin(math.pi * min(1.0, u * 1.6)) * (1 - float(smooth((u - 0.75) / 0.25))); sw = math.sin(u * 46)
+    for s in "lr":
+        _arm(P, s, lerp(_rest_abd(rig, s), 160 + 14 * sw * (1 if s == "l" else -1), fl), flex=22 * fl)
+        if rig.get("has_legs", True): _leg(P, s, abd=_rest_abd_leg(rig, s) + sgn(s) * 22 * min(1, u / a), flex=-20 * min(1, u / a) + 8 * sw * fl)
+    return P
+
+
+@motion("fall_trip_forward", hold=True)
+def fall_trip_forward(t, dur, rig, **k):
+    """trips and pitches forward: a stumble lunge or two, arms thrown ahead, then a flop face-down (lies along the walking direction) with a squashy bounce"""
+    u = min(1.0, t / max(dur, 1e-3)); Hh = rig["size"][1]; P = Pose(); a = 0.4
+    if u < a:                                                                # stumble
+        v = u / a; P.rot = 14 * float(smooth(v)) + 5 * math.sin(v * 3 * math.pi); P.travel = 0.10 * Hh * v; P.lift = 0.02 * Hh * abs(math.sin(v * 2 * math.pi)); fl = float(smooth(v))
+    else:
+        v = (u - a) / (1 - a); drop = float(smooth(v / 0.4)); P.rot = lerp(14, 86, drop); P.travel = 0.10 * Hh + 0.12 * Hh * drop; bn = _bounce((v - 0.4) / 0.6) if v > 0.4 else 0.0
+        P.rot -= 3 * bn; P.squash = (1 + 0.1 * bn, 1 - 0.1 * bn); fl = 1.0
+    for s in "lr":
+        _arm(P, s, lerp(_rest_abd(rig, s), 150, fl), flex=18 * fl)
+        if rig.get("has_legs", True): _leg(P, s, abd=_rest_abd_leg(rig, s), flex=(30 if s == "r" else 6) * min(1, u / a) * (1 - float(smooth((u - 0.6) / 0.4))))
+    return P
+
+
+@motion("fall_sit_bump", hold=True)
+def fall_sit_bump(t, dur, rig, **k):
+    """loses balance and plops down on the bottom: a wobble, a quick drop with a squash 'bump', hands fly up, then sits dazed with the legs splayed"""
+    u = min(1.0, t / max(dur, 1e-3)); Hh = rig["size"][1]; P = Pose(); a = 0.3
+    if u < a: v = u / a; P.rot = 9 * math.sin(v * 3 * math.pi) * (0.4 + v); P.lift = 0.0; sit = 0.0
+    else:
+        v = (u - a) / (1 - a); sit = float(smooth(v / 0.3)); bn = _bounce((v - 0.3) / 0.7) if v > 0.3 else 0.0
+        P.lift = -0.20 * Hh * sit + 0.03 * Hh * bn; P.rot = 5 * (1 - sit) * math.sin(v * 9); P.squash = (1 + 0.1 * bn, 1 - 0.13 * bn)
+    fl = float(smooth(u / a)) * (1 - float(smooth((u - 0.5) / 0.4)))
+    for s in "lr":
+        _arm(P, s, lerp(lerp(_rest_abd(rig, s), 55, sit), 150, fl), flex=lerp(55 * sit, 20, fl))
+        if rig.get("has_legs", True): P.aim[f"thigh_{s}"] = lerp(_rest_abd_leg(rig, s), sgn(s) * 70, sit); P.rel[f"shin_{s}"] = -sgn(s) * 38 * sit; P.rel[f"foot_{s}"] = sgn(s) * 10 * sit
+    return P
+
+
 # ============================================================================================================ API
 def _resolve(motion_name):
     if callable(motion_name): return motion_name

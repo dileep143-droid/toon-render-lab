@@ -4,7 +4,7 @@ import numpy as np
 import tk_core as C, testart as T, scene_life as SL
 
 BG = T.make_background("village_day")
-CASES = {"birds": {}, "villagers": {}, "cattle": {}, "smoke": {}, "tree_sway": dict(sprite=T.make_prop("matka", 200)), "water_wheel": {}, "cycle": dict(dur=4.0), "crowd": {}}
+CASES = {"birds": {}, "villagers": {}, "cattle": {}, "smoke": {}, "chimney_smoke": {}, "tree_sway": dict(sprite=T.make_prop("matka", 200)), "water_wheel": {}, "cycle": dict(dur=4.0), "crowd": {}}
 
 
 def test_every_life_element_draws_and_is_covered():
@@ -71,3 +71,14 @@ def test_speed_budget():
 
 if __name__ == "__main__":
     import pytest; sys.exit(pytest.main([__file__, "-q"]))
+
+
+def test_chimney_smoke_rises_leans_with_wind_and_gusts():
+    def col(wind, t=4.0, **kw):
+        f = BG.copy(); SL.LIFE["chimney_smoke"](f, t, pos=(0.5, 0.6), wind=wind, **kw); d = np.abs(f.astype(int) - BG.astype(int)).sum(-1) > 12; ys, xs = np.nonzero(d); return d, ys, xs
+    d0, ys, xs = col(0.0); assert d0.sum() > 400 and ys.max() <= 0.6 * 720 + 40 and ys.min() < 0.6 * 720 - 150, "a column above the chimney point"
+    top = lambda ys, xs: xs[ys < ys.min() + 60].mean()
+    _, yr, xr = col(1.5); _, yl, xl = col(-1.5)
+    assert top(yr, xr) > 640 + 25 and top(yl, xl) < 640 - 25 and top(ys, xs) - 640 < top(yr, xr) - 640, "leans downwind, more the higher it goes"
+    assert np.array_equal(col(1.0)[0], col(1.0)[0]) and not np.array_equal(col(1.0, t=4.0)[0], col(1.0, t=4.5)[0]) and not np.array_equal(col(1.0, gust=0)[0], col(1.0, gust=2)[0])
+    base = col(1.0, height=120)[1].min(); assert base > col(1.0, height=400)[1].min(), "height param controls how far it climbs"

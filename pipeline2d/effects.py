@@ -6,7 +6,7 @@ character's head (or any point) in pixels; fractions (0..1) are accepted where a
 `run_event(frame, ev, t_abs)` plays a shot-JSON event {"effect": "rain", "start": 0, "dur": 6, "fade": 0.5, "intensity": 0.7, ...}
 and adds the fade envelope + local time for you.
 
-WEATHER   rain storm lightning wind leaves petals snow fog sun_rays rainbow clouds night grade heat_shimmer water puddle wet
+WEATHER   rain storm lightning wind leaves petals snow fog sun_rays rainbow clouds night grade dawn_grade dusk_grade evening_lamp_grade heat_shimmer water puddle wet
 FIRE/LIGHT flame diya chulha bonfire smoke steam lamp_glow torch fireflies festival_lights fireworks sparklers holi_burst
 MARKS     sweat_drop anger_mark hearts dizzy_stars question exclaim exclaim_question zzz sparkles aura idea_bulb sweat_spray
           tears blush gloom_cloud music_notes speed_lines impact_star smear
@@ -48,6 +48,7 @@ def run_event(frame, ev, t_abs, anchors=None):
     e = EFFECTS[name]
     if "intensity" in e.defaults or "intensity" in ev: ev["intensity"] = ev.get("intensity", e.defaults.get("intensity", 1.0)) * env
     if "alpha" in e.defaults: ev["alpha"] = ev.get("alpha", e.defaults["alpha"]) * env
+    if dur is not None and "amount" in e.defaults and isinstance(e.defaults["amount"], (int, float)): ev["amount"] = ev.get("amount", e.defaults["amount"]) * env      # grades fade in / out softly
     if dur is not None: ev.setdefault("dur", dur)
     return apply(frame, name, t_abs - st, **ev)
 
@@ -443,24 +444,35 @@ def puddle(frame, t, center=(0.5, 0.88), size=(0.18, 0.045), rain=True, sky=(170
 
 
 # ======================================================================================================== fire & light
+def _teardrop(d, S, cx0, base_y, width, height, lean, wob, ph, rgb):
+    """one teardrop (round belly at the bottom, curling tip): the flame building block. S = supersampling factor"""
+    n = 30; L = []; Rr = []
+    for i in range(n + 1):
+        u = i / n; hw = width * 0.5 * math.sqrt(max(0.0, 4 * u * (1 - u))) * (1 - u) ** 0.5 * 1.3
+        cx = cx0 + lean * width * u ** 1.8 + wob * 0.07 * width * math.sin(u * 5 + ph) * u; y = base_y - height * u
+        L.append(((cx - hw) * S, y * S)); Rr.append(((cx + hw) * S, y * S))
+    d.polygon(L + Rr[::-1], fill=rgb + (255,))
+
+
+N_FLAME_VARIANTS = 8
+
+
 @functools.lru_cache(maxsize=32)
 def _flame_sprite(variant, h):
-    S = 4; w = int(h * 0.62); im = Image.new("RGBA", (w * S, h * S), (0, 0, 0, 0)); r = np.random.default_rng(variant * 31 + 7)
-    for (rgb, sc) in (((255, 120, 20), 1.0), ((255, 190, 40), 0.74), ((255, 245, 190), 0.42)):
-        d = ImageDraw.Draw(im); sway = r.uniform(-0.12, 0.12); pts = []
-        for a in np.linspace(-1, 1, 21):
-            wid = (1 - abs(a) ** 1.7) * w * 0.5 * sc; yy = h * (1 - 0.06) - (h * 0.94 * sc) * (1 - a * a) ** 0.9 * (0.55 + 0.45 * (1 - abs(a)))
-            pts.append((w / 2 + a * w * 0.5 * sc + sway * w * (1 - abs(a)) * 0.0, yy))
-        top = (w / 2 + sway * w * 0.5, h * 0.06 + (1 - sc) * h * 0.55); base = [(w / 2 - w * 0.42 * sc, h * 0.88), (w / 2 + w * 0.42 * sc, h * 0.88)]
-        poly = [base[0]] + [(w / 2 - w * 0.5 * sc * (1 - t_) ** 0.6 + sway * w * t_ * 0.5, h * 0.88 - (h * 0.82 * sc) * t_) for t_ in np.linspace(0, 1, 12)] + [top] + \
-               [(w / 2 + w * 0.5 * sc * (1 - t_) ** 0.6 + sway * w * t_ * 0.5, h * 0.88 - (h * 0.82 * sc) * t_) for t_ in np.linspace(1, 0, 12)] + [base[1]]
-        d.polygon([(x * S, y * S) for x, y in poly], fill=rgb + (255,))
-    return np.asarray(im.resize((w, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.8)))
+    """layered flame: 4 nested teardrops (red-orange, orange, yellow, pale core) each leaning and wobbling on its own, plus small side licks.
+    N_FLAME_VARIANTS different shapes are cross-faded in time by _flame (that is the flicker)"""
+    S = 3; w = int(h * 0.62); im = Image.new("RGBA", (w * S, h * S), (0, 0, 0, 0)); d = ImageDraw.Draw(im); r = np.random.default_rng(variant * 31 + 7); base = h * 0.94
+    for rgb, sc, lean_k in (((232, 62, 16), 1.0, 1.0), ((255, 138, 26), 0.80, 0.8), ((255, 205, 62), 0.58, 0.55), ((255, 248, 205), 0.34, 0.3)):
+        _teardrop(d, S, w / 2 + r.uniform(-0.03, 0.03) * w, base, w * 0.92 * sc, h * 0.90 * sc, r.uniform(-0.2, 0.2) * lean_k, r.uniform(0.5, 1.1), r.uniform(0, 6.28), rgb)
+        if sc == 1.0:                                                      # side licks only on the outer layer
+            for side in (-1, 1):
+                if r.random() < 0.6: _teardrop(d, S, w / 2 + side * w * r.uniform(0.2, 0.3), base, w * 0.3, h * r.uniform(0.3, 0.5), side * r.uniform(0.1, 0.35), 0.8, r.uniform(0, 6), (255, 110, 22))
+    return np.asarray(im.resize((w, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.7)))
 
 
 @functools.lru_cache(maxsize=256)
 def _flame_sized(variant, h):
-    spr = _flame_sprite(variant % 6, 256); return np.asarray(Image.fromarray(spr).resize((max(2, int(spr.shape[1] * h / 256)), max(2, h)), Image.LANCZOS))
+    spr = _flame_sprite(variant % N_FLAME_VARIANTS, 256); return np.asarray(Image.fromarray(spr).resize((max(2, int(spr.shape[1] * h / 256)), max(2, h)), Image.LANCZOS))
 
 
 @functools.lru_cache(maxsize=64)
@@ -476,8 +488,8 @@ def glow_at(frame, x, y, r, rgb, k=1.0):
 
 def _flame(frame, t, x, y, size, seed=0, glow=1.0, sway=1.0):
     """one flickering flame with its base at (x, y)"""
-    ph = t * 11 + seed * 3; k = int(ph) % 6; mixp = ph % 1.0; jitter = 1 + 0.07 * math.sin(t * 17 + seed) + 0.05 * math.sin(t * 29 + seed * 2); h = int(size * jitter) // 4 * 4 + 4
-    for kk, w in ((k, 1.0 - mixp * 0.5), ((k + 1) % 6, mixp)):
+    ph = t * 11 + seed * 3; k = int(ph) % N_FLAME_VARIANTS; mixp = ph % 1.0; jitter = 1 + 0.07 * math.sin(t * 17 + seed) + 0.05 * math.sin(t * 29 + seed * 2); h = int(size * jitter) // 4 * 4 + 4
+    for kk, w in ((k, 1.0 - mixp * 0.5), ((k + 1) % N_FLAME_VARIANTS, mixp)):
         spr = _flame_sized(kk, h); alpha_over(frame, spr, x + sway * size * 0.06 * math.sin(t * 7 + seed) - spr.shape[1] / 2, y - spr.shape[0] * 0.92, 0.55 + 0.45 * w if kk == k else 0.55 * w)
     if glow > 0: glow_at(frame, x, y - size * 0.45, size * 1.6, (255, 150, 50), 0.33 * glow * (0.85 + 0.15 * math.sin(t * 13 + seed)))
     return frame
@@ -888,6 +900,67 @@ def freeze_time(t, freezes):
         if t >= at + hold: out -= hold
         elif t > at: return at
     return out
+
+
+# ======================================================================================================== soft light looks
+def _bloom(frame, k=0.35, radius=5.0):
+    """soft glow: a blurred quarter-size copy screened over the frame (the 'soft light' look)"""
+    from PIL import ImageChops
+    H, W = frame.shape[:2]; im = Image.fromarray(np.ascontiguousarray(frame)); lo = im.resize((W // 4, H // 4), Image.BILINEAR).filter(ImageFilter.GaussianBlur(radius / 2)).resize((W, H), Image.BILINEAR)
+    frame[:] = np.asarray(ImageChops.screen(im, lo.point([int(v * k) for v in range(256)] * 3))); return frame
+
+
+@functools.lru_cache(maxsize=8)
+def _sky_gradient(W, H, rgb, centre, spread):
+    yy = np.linspace(0, 1, H, dtype=np.float32)[:, None, None]; g = np.exp(-((yy - centre) / spread) ** 2) * np.array(rgb, np.float32)
+    return Image.fromarray(np.clip(np.repeat(g, W, 1), 0, 255).astype(np.uint8))
+
+
+@functools.lru_cache(maxsize=4)
+def _corner_dark(W, H, k):
+    yy, xx = np.mgrid[0:H // 4, 0:W // 4].astype(np.float32); d = np.hypot((xx / (W / 4) - 0.5) * 1.15, (yy / (H / 4) - 0.5) * 1.5)
+    m = (255 * np.clip(1 - k * np.clip(d - 0.35, 0, None) ** 1.5 * 1.6, 0.0, 1.0)).astype(np.uint8); return Image.fromarray(m).resize((W, H), Image.BILINEAR)
+
+
+def _tone(frame, mul, add, amount):
+    im = Image.fromarray(np.ascontiguousarray(frame)); return im.point(_lut([1 + (m - 1) * amount for m in mul], [a * amount for a in add]))
+
+
+@effect("dawn_grade", amount=1.0, softness=0.5, horizon=0.6, haze=0.25)
+def dawn_grade(frame, t, amount=1.0, softness=0.5, horizon=0.6, haze=0.25, **k):
+    """early-morning look: lifted lavender shadows, pink-gold light low on the horizon, a milky haze and a soft bloom (amount 0..1)"""
+    from PIL import ImageChops, ImageEnhance
+    H, W = frame.shape[:2]; im = ImageEnhance.Color(_tone(frame, (1.04, 0.96, 0.90), (20, 12, 14), amount)).enhance(1 - 0.12 * amount)
+    im = ImageChops.add(im, _sky_gradient(W, H, (62, 34, 8), float(horizon), 0.22).point([int(v * amount) for v in range(256)] * 3))
+    if haze > 0: im = Image.blend(im, Image.fromarray(np.full((H, W, 3), (255, 222, 205), np.uint8)), 0.18 * haze * amount)
+    frame[:] = np.asarray(im); return _bloom(frame, 0.40 * softness * amount) if softness > 0 else frame
+
+
+@effect("dusk_grade", amount=1.0, softness=0.5, horizon=0.62, vignette=0.5)
+def dusk_grade(frame, t, amount=1.0, softness=0.5, horizon=0.62, vignette=0.5, **k):
+    """warm evening look: orange-amber light, deep purple-brown shadows, a glowing horizon, darker corners and a soft bloom (amount 0..1)"""
+    from PIL import ImageChops
+    H, W = frame.shape[:2]; im = _tone(frame, (1.05, 0.84, 0.80), (24, -2, 4), amount)
+    im = ImageChops.add(im, _sky_gradient(W, H, (78, 30, -8), float(horizon), 0.2).point([int(v * amount) for v in range(256)] * 3))
+    if vignette > 0: im = ImageChops.multiply(im, Image.merge("RGB", [_corner_dark(W, H, float(vignette) * amount)] * 3))
+    frame[:] = np.asarray(im); return _bloom(frame, 0.42 * softness * amount) if softness > 0 else frame
+
+
+@effect("evening_lamp_grade", lamps=None, amount=1.0, darkness=0.55, color=(255, 205, 120), flicker=0.1, seed=0)
+def evening_lamp_grade(frame, t, lamps=None, amount=1.0, darkness=0.55, color=(255, 205, 120), flicker=0.1, seed=0, **k):
+    """lamp-lit evening: the scene falls into a blue-brown dusk and each lamp [(x, y, radius), ...] (px or fractions) lights its surroundings in warm colour,
+    flickering a little; the light fades smoothly with distance"""
+    H, W = frame.shape[:2]; lamps = [(0.5, 0.4, 260.0)] if lamps is None else lamps; dk = float(darkness) * amount
+    dark = _tone(frame, (1 - 0.78 * dk, 1 - 0.72 * dk, 1 - 0.42 * dk), (-6 * dk, -3 * dk, 14 * dk), 1.0)
+    lit = _tone(frame, (1.08, 1.0, 0.84), (10, 4, -8), amount)
+    h4, w4 = H // 4, W // 4; yy, xx = np.mgrid[0:h4, 0:w4].astype(np.float32) * 4; L = np.zeros((h4, w4), np.float32)
+    for i, (lx, ly, lr) in enumerate(lamps):
+        x, y = _fx_xy(frame, lx, ly); f = 1 - flicker * (0.5 + 0.5 * math.sin(t * 11 + seed + i * 2.3) * math.sin(t * 5.3 + seed * 2 + i)); L += np.exp(-(((xx - x) ** 2 + (yy - y) ** 2) / (lr * lr)) * 1.6) * f
+    mask = Image.fromarray((np.clip(L, 0, 1) * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)
+    out = np.asarray(Image.composite(lit, dark, mask)).copy()
+    for i, (lx, ly, lr) in enumerate(lamps):
+        x, y = _fx_xy(frame, lx, ly); glow_at(out, x, y, lr * 0.55, color, 0.35 * amount)
+    frame[:] = out; return frame
 
 
 if __name__ == "__main__":

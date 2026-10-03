@@ -32,9 +32,13 @@ class Cam:
     rot: float = 0.0
     blur: float = 0.0            # motion-blur length in px (set by whip_pan), applied by render_view
     blur_angle: float = 0.0
+    focus: float = None          # depth that stays sharp (None = everything sharp); layers away from it blur by |depth - focus| * focus_amount px
+    focus_amount: float = 6.0
 
     def lerp(self, o, u):
-        return Cam(lerp(self.cx, o.cx, u), lerp(self.cy, o.cy, u), self.z * (o.z / self.z) ** u if self.z > 0 and o.z > 0 else lerp(self.z, o.z, u), lerp(self.rot, o.rot, u))
+        fo = self.focus if o.focus is None else (o.focus if self.focus is None else lerp(self.focus, o.focus, u))
+        return Cam(lerp(self.cx, o.cx, u), lerp(self.cy, o.cy, u), self.z * (o.z / self.z) ** u if self.z > 0 and o.z > 0 else lerp(self.z, o.z, u), lerp(self.rot, o.rot, u),
+                   focus=fo, focus_amount=o.focus_amount if o.focus is not None else self.focus_amount)
 
     def as_list(self): return [self.cx, self.cy, self.z]
 
@@ -46,10 +50,18 @@ class Cam:
         hw, hh = 0.5 / self.z, 0.5 / self.z / aspect; return replace(self, cx=min(max(self.cx, hw), 1 - hw), cy=min(max(self.cy, hh), 1 - hh))
 
 
+DEPTH_NAMES = {"sky": 0.2, "far": 0.6, "mid": 0.6, "near": 1.0, "front": 1.0}
+
+
+def depth_value(d):
+    """a depth number, or one of the names sky / far / mid / near / front (the layers made by split_depth_layers)"""
+    return None if d is None else (DEPTH_NAMES[d] if isinstance(d, str) else float(d))
+
+
 def as_cam(c):
     if c is None: return Cam()
     if isinstance(c, Cam): return c
-    if isinstance(c, dict): return Cam(c.get("cx", c.get("x", 0.5)), c.get("cy", c.get("y", 0.5)), c.get("z", c.get("zoom", 1.0)), c.get("rot", 0.0))
+    if isinstance(c, dict): return Cam(c.get("cx", c.get("x", 0.5)), c.get("cy", c.get("y", 0.5)), c.get("z", c.get("zoom", 1.0)), c.get("rot", 0.0), focus=depth_value(c.get("focus")))
     return Cam(float(c[0]), float(c[1]), float(c[2]) if len(c) > 2 else 1.0, float(c[3]) if len(c) > 3 else 0.0)
 
 
@@ -119,7 +131,15 @@ def dutch(start, angle=8.0, dur=0.8, ease="smooth"):
     a = as_cam(start); b = replace(a, rot=angle); return ken_burns(a, b, dur, ease).named("dutch")
 
 
-MOVES = {"hold": hold, "ken_burns": ken_burns, "push_in": push_in, "pull_out": pull_out, "whip_pan": whip_pan, "two_shot": two_shot, "follow": follow, "dutch": dutch}
+def focus_pull(start, to, dur=1.2, from_focus=None, amount=None, ease="smooth"):
+    """rack focus: the sharp depth glides from `from_focus` (default: the Cam's current focus, else near) to `to` (a depth, or 'sky' / 'far' / 'near');
+    every depth layer blurs by |layer depth - focus| * amount px (render_view does it), so the plane in focus is crisp and the others soften. The camera itself stays put."""
+    a = as_cam(start); f0 = depth_value(from_focus) if from_focus is not None else (a.focus if a.focus is not None else 1.0); f1 = depth_value(to); e = _ease(ease)
+    am = a.focus_amount if amount is None else float(amount); end = replace(a, focus=f1, focus_amount=am)
+    return Move("focus_pull", lambda t: replace(a, focus=lerp(f0, f1, float(e(t / dur))), focus_amount=am), dur, end)
+
+
+MOVES = {"hold": hold, "ken_burns": ken_burns, "push_in": push_in, "pull_out": pull_out, "whip_pan": whip_pan, "two_shot": two_shot, "follow": follow, "dutch": dutch, "focus_pull": focus_pull}
 
 
 class CameraTrack:
@@ -151,6 +171,7 @@ class CameraTrack:
             elif kind == "two_shot": mv = two_shot(frm, ev["a"], ev["b"], dur, ev.get("margin", 0.2))
             elif kind == "follow": mv = follow(ev["path"], ev.get("zoom", 1.6), ev.get("lag", 0.3), dur)
             elif kind == "dutch": mv = dutch(frm, ev.get("angle", 8.0), dur)
+            elif kind == "focus_pull": mv = focus_pull(frm, ev["to"], dur, ev.get("from_focus"), ev.get("amount"), ev.get("ease", "smooth"))
             elif kind == "hold": mv = hold(frm, dur)
             else: raise KeyError(f"unknown camera move {kind!r}; known: {sorted(MOVES)}")
             tr.add(st, mv); cur = mv.end
@@ -162,6 +183,7 @@ def view_matrix(cam, layer_size, out_size=(FW, FH), depth=1.0):
     """2x3 matrix: layer px -> screen px. depth 1 = the reference plane (identical to compose.py); <1 pans / zooms less (far), >1 more (near)"""
     Wl, Hl = layer_size; OW, OH = out_size; z = 1.0 + (cam.z - 1.0) * depth; cx = 0.5 + (cam.cx - 0.5) * depth; cy = 0.5 + (cam.cy - 0.5) * depth
     zr = z
+    if depth != 1.0 and not cam.rot: hh = 0.5 * OH * Wl / (z * OW * Hl); cx, cy = min(max(cx, 0.5 / z), 1 - 0.5 / z), min(max(cy, hh), 1 - hh)       # a far / near layer must still cover the frame
     if cam.rot: zr = z * (abs(math.cos(math.radians(cam.rot))) + abs(math.sin(math.radians(cam.rot))) * max(OW / OH, OH / OW)) if depth > 0 else z    # hide the corners
     sc = zr * OW / Wl; r = math.radians(cam.rot) if depth > 0 else 0.0; c, s = math.cos(r) * sc, math.sin(r) * sc
     px, py = cx * Wl, cy * Hl
@@ -189,13 +211,17 @@ def _warp(img, M, out_size, resample):
     return np.asarray(im) if img.shape[2] == 3 else np.asarray(im.convert("RGBA"))
 
 
-def render_view(layers, cam, out_size=(FW, FH), focus=None, focus_amount=6.0, resample=Image.BILINEAR, base=None):
+def render_view(layers, cam, out_size=(FW, FH), focus=None, focus_amount=None, resample=Image.BILINEAR, base=None, parallax=False):
     """render a stack of depth layers (back to front) seen through `cam`.
     layers = [{"img": RGB or RGBA array, "depth": 0.4}, ...]  (a bare array = one reference layer; the first layer must be opaque RGB unless base= is given).
     focus = depth that stays sharp; layers away from it blur by |depth - focus| * focus_amount px (focus pull). Motion blur from cam.blur.
-    base = a frame to draw the layers over (e.g. foreground leaves over the characters)."""
+    base = a frame to draw the layers over (e.g. foreground leaves over the characters).
+    focus / focus_amount default to cam.focus / cam.focus_amount (set by the focus_pull move). parallax=True: a bare array is first split into sky / far / near
+    layers by split_depth_layers (cached), so a single background gets real parallax."""
     cam = as_cam(cam)
-    if isinstance(layers, np.ndarray): layers = [{"img": layers, "depth": 1.0}]
+    if focus is None: focus = cam.focus
+    if focus_amount is None: focus_amount = cam.focus_amount
+    if isinstance(layers, np.ndarray): layers = split_depth_layers(layers) if parallax else [{"img": layers, "depth": 1.0}]
     out = None if base is None else base.copy()
     for L in layers:
         img = L["img"]; d = L.get("depth", 1.0); M = view_matrix(cam, (img.shape[1], img.shape[0]), out_size, d); w = _warp(img, M, out_size, resample)
@@ -208,6 +234,63 @@ def render_view(layers, cam, out_size=(FW, FH), focus=None, focus_amount=6.0, re
         else: out = w.copy()
     if cam.blur > 1.0 and base is None: out = box_blur_dir(out, cam.blur, cam.blur_angle, 7)
     return out
+
+
+# ============================================================================================================ one background -> 3 depth layers
+_SPLIT = {}
+
+
+def split_depth_layers(img, near_frac=0.45, depths=(0.2, 0.6, 1.0), grad_thr=14.0, small=4):
+    """auto-split ONE background (RGB) into three depth layers for parallax: [sky (opaque RGB), far (RGBA), near (RGBA)] -> [{"img","depth","name"}] for render_view.
+    Heuristics (no AI, all at 1/4 resolution):
+      * flat regions = connected pixels with little colour change (luminance/colour gradient < grad_thr); the regions touching the top edge are SKY
+        (enclosed things such as a sun or cloud are filled in);
+      * the horizon is where the sky ends; below it, a plane-like region (big ground, path) is cut at `near_frac` of the way from the horizon to the bottom edge;
+        a small object (house, tree) is NEAR only if its base sits below that cut, otherwise FAR, and is never sliced in half;
+      * edge pixels join the nearest region. The parts of a layer hidden behind a nearer one are filled with the nearest visible colour, so
+        nothing opens up when the layers slide against each other. Results are cached per image."""
+    from scipy import ndimage as ndi
+    key = (id(img), near_frac, tuple(depths), grad_thr, small); e = _SPLIT.get(key)
+    if e is not None and e[0] is img: return e[1]
+    H, W = img.shape[:2]; lo = np.asarray(Image.fromarray(img[..., :3]).resize((W // small, H // small), Image.BILINEAR)).astype(np.float32); h, w = lo.shape[:2]
+    g = np.abs(np.diff(lo, axis=0, prepend=lo[:1])).sum(-1) + np.abs(np.diff(lo, axis=1, prepend=lo[:, :1])).sum(-1)
+    lab, n = ndi.label(g < grad_thr); idx = np.arange(1, n + 1); area = ndi.sum(np.ones_like(g), lab, idx); rows = np.repeat(np.arange(h)[:, None], w, 1).astype(np.float32)
+    top = ndi.minimum(rows, lab, idx); bot = ndi.maximum(rows, lab, idx); cy = ndi.mean(rows, lab, idx)
+    sky_ids = idx[(top < 1.0) & (area > 0.01 * h * w)]; sky = ndi.binary_fill_holes(np.isin(lab, sky_ids)) if len(sky_ids) else np.zeros((h, w), bool)
+    if len(sky_ids) == 0: sky[: int(h * 0.3)] = True                                                       # no clear sky: assume the top 30 %
+    col_bot = np.where(sky.any(0), h - 1 - np.argmax(sky[::-1], axis=0), 0); horizon = float(np.median(col_bot)) if sky.any() else 0.3 * h; cut = horizon + near_frac * (h - horizon)
+    cls = np.full((h, w), -1, np.int8); cls[sky] = 0
+    for k, i in enumerate(idx):
+        m = (lab == i) & ~sky
+        if not m.any(): continue
+        big = area[k] > 0.08 * h * w or (bot[k] - top[k]) > 0.35 * h
+        if big: cls[m & (rows >= cut)] = 2; cls[m & (rows < cut)] = 1
+        else: cls[m] = 2 if bot[k] >= cut else 1
+    known = cls >= 0; confident = known.copy()                                                              # flat-region pixels only: edge pixels are blends and must not colour a fill
+    if not known.all(): _, (iy, ix) = ndi.distance_transform_edt(~known, return_indices=True); cls = cls[iy, ix]
+    cls = ndi.median_filter(cls, size=3)
+    def soft(mask): return np.asarray(Image.fromarray((ndi.gaussian_filter(mask.astype(np.float32), 0.6) * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR), np.float32) / 255.0
+    def fill(mask_ok):                                                                                      # hidden parts take the nearest visible colour IN THE SAME ROW (no diagonal fans); empty rows copy the row above
+        out = lo.copy(); xs = np.arange(w)[None, :].repeat(h, 0); li = np.maximum.accumulate(np.where(mask_ok, xs, -1), axis=1); ri = np.minimum.accumulate(np.where(mask_ok, xs, w + 99)[:, ::-1], axis=1)[:, ::-1]
+        use_l = (li >= 0) & ((ri > w) | (xs - li <= ri - xs)); src = np.where(use_l, li, np.minimum(ri, w - 1)); has = mask_ok.any(1)
+        out = np.take_along_axis(lo, src[..., None].repeat(3, 2), 1); last = None
+        for y in range(h):
+            if has[y]: last = out[y]
+            elif last is not None: out[y] = last
+        if not has.any(): return lo
+        first = int(np.argmax(has)); out[:first] = out[first]; return out
+    up = lambda a: np.asarray(Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).resize((W, H), Image.BILINEAR))
+    sm, nm = soft(cls == 0), soft(cls == 2); rgb = img[..., :3]; msk = lambda a: (a > 0.5)[..., None]
+    sky_rgb = np.where(msk(soft(ndi.binary_erosion((cls == 0) & confident, iterations=1))), rgb, up(fill((cls == 0) & confident))); far_rgb = np.where(msk(1 - sm - nm), rgb, up(fill((cls == 1) & confident)))
+    far = np.dstack([far_rgb, (np.clip(1 - sm, 0, 1) * 255).astype(np.uint8)]); near = np.dstack([rgb, (np.clip(nm, 0, 1) * 255).astype(np.uint8)])
+    out = [{"img": sky_rgb.astype(np.uint8), "depth": depths[0], "name": "sky"}, {"img": far, "depth": depths[1], "name": "far"}, {"img": near, "depth": depths[2], "name": "near"}]
+    if len(_SPLIT) > 6: _SPLIT.pop(next(iter(_SPLIT)))
+    _SPLIT[key] = (img, out); return out
+
+
+def render_parallax(plate, cam, out_size=(FW, FH), focus=None, focus_amount=None, base=None, **split_kw):
+    """a single background rendered with real parallax: split_depth_layers(plate) + render_view (focus pull and motion blur included)"""
+    return render_view(split_depth_layers(plate, **split_kw), cam, out_size, focus, focus_amount, base=base)
 
 
 # ============================================================================================================ framing rules
