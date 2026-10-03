@@ -113,7 +113,12 @@ def face_dims(h, rig):
     return out
 
 
+if JOB.startswith("girl_expr_"):        # A/B: _np = teeth/tongue NOT pre-added before the warp, _nr = face keys NOT rescaled
+    if JOB.endswith("_np"): os.environ["TOON_PREADD_MOUTH"] = "0"
+    if JOB.endswith("_nr"): os.environ["TOON_RESCALE_KEYS"] = "0"
+    JOBS[JOB] = JOBS["girl_expr"]
 body, outfit, oo, calls, views, full = JOBS[JOB]
+EXPR = JOB.startswith("girl_expr")
 rep = {}; t0 = time.time()
 try:
     bpy.ops.wm.read_factory_settings(use_empty=True); MC._SKIN_DONE.clear(); LO._BODIES.clear()
@@ -127,7 +132,7 @@ try:
     rep["face_dims"] = face_dims(h, rig); print("FACE dims", rep["face_dims"])
     rep["check_rest"] = surface_check(h, rig, JOB + " rest")
     tag = f"{JOB}_{body}"
-    if JOB != "girl_expr":
+    if not EXPR:
         for v, ang, field, up in views:
             shoot(sc, cam, h, rig, outfit, os.path.join(OUT, f"{tag}_{v}.png"), *head_cam(h, rig, ang, field, up))
     if full:
@@ -138,7 +143,7 @@ try:
         rep["check_turn"] = surface_check(h, rig, JOB + " turn45")
         shoot(sc, cam, h, rig, outfit, os.path.join(OUT, f"{tag}_turn45_back34.png"), *head_cam(h, rig, 145))
         LO.set_pose(rig, "apose"); bpy.context.view_layer.update()
-    if JOB == "girl_expr":
+    if EXPR:
         import lib_expressions as LE, lib_anim as AN
         LE.ensure_face(h, rig)
         for k, name in enumerate(("neutral", "happy", "big_laugh", "shy", "sad")):
