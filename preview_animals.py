@@ -1,76 +1,83 @@
-"""Contact sheets for CHAMKI and SHERU: one row per action, several frames per row (Workbench or Eevee).
+"""Contact sheets + checks for CHAMKI / SHERU (and the generic Quaternius animals' body-language emotions).
 
-  blender -b -noaudio --python preview_animals.py -- OUT_DIR [chamki,sheru] [action,action|all] [cols] [workbench|eevee] [cell_w]
-  e.g. blender -b --python preview_animals.py -- animals_out chamki walk,bleat,chew 6
+  blender -b -noaudio --python preview_animals.py -- OUT_DIR WHO [parts]
+     WHO   = chamki | sheru | generic
+     parts = comma list of: actions, emotions, language, clip   (default: all four; generic ignores it)
 
-Writes OUT_DIR/<animal>_sheet_<n>.png (rows of up to 8 actions) + OUT_DIR/<animal>_stills/*.png + a walk_along test.
+Writes OUT_DIR/<who>_actions_<n>.png, <who>_emotions_<n>.png, <who>_language.png, <who>_clip.mp4 + <who>_clip_strip.png,
+<who>_ALL.png (everything stacked) and checks.txt.  Checks printed as CHECK lines:
+  GROUND  lowest point of the deformed body per rendered frame (FLOAT/SINK beyond 1.5 cm; airborne frames of hop/jump excused)
+  CLIP    accessory (beard / horns / tuft / tongue / eyes) overlapping the body MORE than in the rest pose
+  NOOP    an emotion that moves its posture bones < 3 degrees vs plain idle
+  MISSING a bone an action/emotion asked for that the rig doesn't have (exit code 3)
 """
 import bpy, sys, os, math, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = os.path.abspath(argv[0] if len(argv) > 0 else "animals_out")
-WHO = (argv[1] if len(argv) > 1 else "chamki,sheru").split(",")
-ACTS = argv[2] if len(argv) > 2 else "all"
-COLS = int(argv[3]) if len(argv) > 3 else 6
-ENGINE = argv[4] if len(argv) > 4 else "workbench"
-CW = int(argv[5]) if len(argv) > 5 else 240
-CH = int(CW * 0.75)
+WHO = argv[1] if len(argv) > 1 else "chamki"
+PARTS = (argv[2] if len(argv) > 2 else "actions,emotions,language,clip").split(",")
 os.makedirs(OUT, exist_ok=True)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 import lib_animals as LA
 
 sc = bpy.context.scene
-sc.render.resolution_x, sc.render.resolution_y = CW, CH
+sc.render.fps = 24
 sc.render.image_settings.file_format = "PNG"
-if ENGINE == "eevee":
-    for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
-        try: sc.render.engine = eng; break
+CHECKS = []
+
+
+def check(msg):
+    CHECKS.append(msg); print("CHECK", msg)
+
+
+w = bpy.data.worlds.new("sky"); sc.world = w; w.use_nodes = True
+w.node_tree.nodes["Background"].inputs[0].default_value = (0.55, 0.75, 1.0, 1); w.node_tree.nodes["Background"].inputs[1].default_value = 0.9
+sd = bpy.data.lights.new("sun", "SUN"); sd.energy = 4.0; sun = bpy.data.objects.new("sun", sd); sc.collection.objects.link(sun)
+sun.rotation_euler = (math.radians(42), math.radians(10), math.radians(-30))
+
+
+def engine(kind, cw, ch):
+    sc.render.resolution_x, sc.render.resolution_y = cw, ch
+    if kind == "eevee":
+        for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
+            try: sc.render.engine = eng; break
+            except Exception: pass
+        try: sc.eevee.taa_render_samples = 12
         except Exception: pass
-    try: sc.eevee.taa_render_samples = 16
-    except Exception: pass
-    w = bpy.data.worlds.new("sky"); sc.world = w; w.use_nodes = True
-    w.node_tree.nodes["Background"].inputs[0].default_value = (0.55, 0.75, 1.0, 1); w.node_tree.nodes["Background"].inputs[1].default_value = 0.9
-    sd = bpy.data.lights.new("sun", "SUN"); sd.energy = 4.0; sun = bpy.data.objects.new("sun", sd); sc.collection.objects.link(sun)
-    sun.rotation_euler = (math.radians(48), math.radians(8), math.radians(35))
-    try: sc.view_settings.view_transform = "AgX"
-    except Exception: pass
-else:
-    sc.render.engine = "BLENDER_WORKBENCH"
-    sc.display.shading.light = "STUDIO"; sc.display.shading.color_type = "MATERIAL"
-    sc.display.shading.show_shadows = True; sc.display.shading.show_cavity = False
-    sc.display.shading.show_object_outline = True; sc.display.shading.object_outline_color = (0.18, 0.11, 0.08)
-    sc.display.shading.background_type = "VIEWPORT"; sc.display.shading.background_color = (0.80, 0.90, 0.98)
-    try: sc.view_settings.view_transform = "Standard"
-    except Exception: pass
+        try: sc.view_settings.view_transform = "AgX"
+        except Exception: pass
+    else:
+        sc.render.engine = "BLENDER_WORKBENCH"
+        sh = sc.display.shading
+        sh.light = "STUDIO"; sh.color_type = "MATERIAL"; sh.show_shadows = False; sh.show_cavity = False
+        sh.show_object_outline = True; sh.object_outline_color = (0.18, 0.11, 0.08)
+        sh.background_type = "VIEWPORT"; sh.background_color = (0.80, 0.90, 0.98)
+        try: sc.view_settings.view_transform = "Standard"
+        except Exception: pass
 
-# ground
-bpy.ops.mesh.primitive_plane_add(size=30); g = bpy.context.active_object; g.name = "ground"
-gm = bpy.data.materials.new("ground"); gm.diffuse_color = (0.55, 0.72, 0.35, 1); g.data.materials.append(gm)
-gm.use_nodes = True; gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.32, 0.55, 0.15, 1)
 
+bpy.ops.mesh.primitive_plane_add(size=40); g = bpy.context.active_object; g.name = "ground"
+gm = bpy.data.materials.new("ground"); gm.use_nodes = True
+gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.32, 0.55, 0.15, 1); gm.diffuse_color = (0.45, 0.62, 0.30, 1)
+g.data.materials.append(gm)
 cam_d = bpy.data.cameras.new("cam"); cam = bpy.data.objects.new("cam", cam_d); sc.collection.objects.link(cam); sc.camera = cam
-cam_d.lens = 50
-
-# label
+cam_d.lens = 50; cam_d.clip_start = 0.02
 txt_d = bpy.data.curves.new("label", "FONT"); txt = bpy.data.objects.new("label", txt_d); sc.collection.objects.link(txt)
-txt_d.size = 0.06; txt.parent = cam; txt.location = (-0.33, -0.22, -1.0) if True else (0, 0, 0)
-lm = bpy.data.materials.new("label"); lm.diffuse_color = (0.1, 0.05, 0.05, 1); txt_d.materials.append(lm)
+txt_d.size = 0.055; txt.parent = cam; txt.location = (-0.33, 0.20, -1.0)
+try: txt.visible_shadow = False
+except Exception: pass
+lm = bpy.data.materials.new("label"); lm.diffuse_color = (0.1, 0.05, 0.05, 1); lm.use_nodes = True
+lm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.02, 0.01, 0.01, 1); txt_d.materials.append(lm)
 
 
-def frame_cam(root, h, body=None):
-    t = root.matrix_world.translation + Vector((0, 0, h * 0.5))
-    if body is not None:          # aim at the deformed body (lying / rolling / jumping poses)
-        ev = body.evaluated_get(bpy.context.evaluated_depsgraph_get())
-        bb = [ev.matrix_world @ Vector(c) for c in ev.bound_box]
-        t = sum(bb, Vector()) / 8; t.z = max(t.z, h * 0.3)
-    d = h * 2.1
-    cam.location = t + Vector((d * 0.80, -d * 0.62, d * 0.22))
-    cam.rotation_euler = (t - cam.location).to_track_quat("-Z", "Y").to_euler()
-    txt.location = (-0.33, 0.205, -1.0); txt.scale = (1, 1, 1)
+def label(s, aspect):
+    txt_d.body = s; txt.location = (-0.33 * aspect / 1.333, 0.20, -1.0)
 
 
 def to_np(path):
@@ -81,76 +88,287 @@ def to_np(path):
 
 
 def save_np(a, path):
-    h, w = a.shape[:2]
-    im = bpy.data.images.new("sheet", w, h, alpha=True)
-    im.pixels.foreach_set(a.ravel()) if hasattr(im.pixels, "foreach_set") else setattr(im, "pixels", a.ravel().tolist())
-    im.filepath_raw = path; im.file_format = "PNG"; im.save()
-    bpy.data.images.remove(im)
+    h, w_ = a.shape[:2]
+    im = bpy.data.images.new("sheet", w_, h, alpha=True)
+    im.pixels.foreach_set(a.ravel())
+    im.filepath_raw = path; im.file_format = "PNG"; im.save(); bpy.data.images.remove(im)
 
 
-report = []
-for who in WHO:
+def render(path):
+    sc.render.filepath = path; bpy.ops.render.render(write_still=True); return to_np(path)
+
+
+def grid(cells, cols):
+    h, w_ = cells[0].shape[:2]
+    while len(cells) % cols: cells.append(np.ones((h, w_, 4), np.float32))
+    rows = [np.concatenate(cells[i:i + cols], axis=1) for i in range(0, len(cells), cols)]
+    return rows
+
+
+def save_rows(rows, name, per=8):
+    out = []
+    for k in range(0, len(rows), per):
+        p = os.path.join(OUT, f"{name}_{k // per + 1}.png"); save_np(np.concatenate(rows[k:k + per][::-1], axis=0), p); out.append(p)
+    return out
+
+
+def ev_body(body):
+    return body.evaluated_get(bpy.context.evaluated_depsgraph_get())
+
+
+def bbox_world(objs):
+    lo = Vector((1e9,) * 3); hi = Vector((-1e9,) * 3)
+    for o in objs:
+        e = ev_body(o)
+        for c in e.bound_box:
+            p = e.matrix_world @ Vector(c); lo = Vector(map(min, lo, p)); hi = Vector(map(max, hi, p))
+    return lo, hi
+
+
+def min_z(body):
+    e = ev_body(body); me = e.to_mesh(); M = e.matrix_world
+    z = min((M @ v.co).z for v in me.vertices); e.to_mesh_clear(); return z
+
+
+def aim(target, direction, dist):
+    cam.location = target + direction.normalized() * dist
+    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+
+
+def frame_box(lo, hi, view=(0.80, -0.62, 0.30), fill=0.80):
+    c = (lo + hi) / 2; r = max((hi - lo).length / 2, 0.15)
+    aspect = sc.render.resolution_x / sc.render.resolution_y
+    fov = 2 * math.atan(18 / cam_d.lens) if aspect >= 1 else 2 * math.atan(18 / cam_d.lens * aspect)
+    aim(c, Vector(view), r / math.tan(fov / 2) / fill)
+
+
+def new_objs_since(before):
+    return [o for o in bpy.data.objects if o not in before]
+
+
+def wipe(objs):
+    for o in objs:
+        try: bpy.data.objects.remove(o, do_unlink=True)
+        except Exception: pass
+    for c in list(bpy.data.collections):
+        if c.name.startswith("FX_") and not c.objects: bpy.data.collections.remove(c)
+
+
+def reset(rig, root):
+    LA.clear(rig)
+    if root.animation_data: root.animation_data_clear()
+    root.location = (0, 0, 0); root.rotation_euler = (0, 0, 0)
+
+
+def accessories(name):
+    return [o for o in bpy.data.objects if o.name.startswith(name + "_") and any(k in o.name for k in ("beard", "horn", "tuft", "tongue", "eye_"))]
+
+
+def overlaps(body, accs):
+    dg = bpy.context.evaluated_depsgraph_get()
+    B = BVHTree.FromObject(body, dg)
+    out = {}
+    for a in accs:
+        A = BVHTree.FromObject(a, dg); out[a.name] = len(B.overlap(A))
+    return out
+
+
+ALL_IMAGES = []
+
+# =====================================================================================================================
+if WHO in ("chamki", "sheru"):
     t0 = time.time()
-    root, rig = (LA.make_chamki if who == "chamki" else LA.make_sheru)(loc=(0, 0, 0))
-    print("BUILT", who, round(time.time() - t0, 1), "s; actions:", len(LA.ACTIONS[who]))
-    h = 0.95 if who == "chamki" else 0.7
-    names = LA.action_names(rig) if ACTS == "all" else [a for a in ACTS.split(",") if a in LA.ACTIONS[who]]
-    names = [n for n in names if n not in ("death", "attack")] if ACTS == "all" else names
-    sd = os.path.join(OUT, who + "_stills"); os.makedirs(sd, exist_ok=True)
-    rows = []
-    for an in names:
-        LA.clear(rig)
-        root.location = (0, 0, 0); root.rotation_euler = (0, 0, 0)
-        if root.animation_data: root.animation_data_clear()
-        overlay = an in LA.OVERLAY or an.startswith("expr_")
-        if overlay:
-            LA.play(rig, "idle", 1, loops=3)
-        act = bpy.data.actions[LA.ACTIONS[who][an]]
-        L = act.frame_range[1] - act.frame_range[0]
-        end = LA.play(rig, an, 1, loops=1)
-        frames = [1 + round(L * k / max(1, COLS - 1)) for k in range(COLS)] if L > 0 else [1] * COLS
-        if overlay: frames = [1 + round(min(L, 10) * k / max(1, COLS - 1)) for k in range(COLS)]
-        sc.frame_set(int(frames[len(frames) // 2])); frame_cam(root, h, bpy.data.objects.get(root.name + "_body"))
-        txt_d.body = f"{who} : {an}"
-        row = []
-        for f in frames:
-            sc.frame_set(int(f))
-            p = os.path.join(sd, f"{an}_{int(f):03d}.png"); sc.render.filepath = p
-            bpy.ops.render.render(write_still=True)
-            row.append(to_np(p))
-        rows.append(np.concatenate(row, axis=1))
-        print("ROW", who, an, "frames", frames)
-    # walk_along demo: a curved path, check foot sliding numerically
-    LA.clear(rig); root.location = (0, 0, 0)
-    cu = bpy.data.curves.new("path_" + who, "CURVE"); cu.dimensions = "3D"; sp_ = cu.splines.new("BEZIER"); sp_.bezier_points.add(2)
-    for i, p in enumerate(((-2, 0, 0), (0, -1.2, 0), (2, 0, 0))):
-        bp = sp_.bezier_points[i]; bp.co = p; bp.handle_left_type = bp.handle_right_type = "AUTO"
-    co = bpy.data.objects.new("path_" + who, cu); sc.collection.objects.link(co)
-    end = LA.walk_along(rig, co, start_frame=1, action="walk")
-    nat = LA.natural_speed(rig, "walk")
-    # foot slide: world motion of the front-left IK foot while it is planted (lowest)
-    pts = []
-    for f in range(1, int(end)):
-        sc.frame_set(f)
-        m = rig.matrix_world @ rig.pose.bones["IKFrontLeg.L"].matrix
-        pts.append(m.translation.copy())
-    zs = [p.z for p in pts]; zmin = min(zs)
-    planted = [i for i in range(1, len(pts)) if pts[i].z < zmin + 0.01 and pts[i - 1].z < zmin + 0.01]
-    slide = sum((pts[i] - pts[i - 1]).xy.length for i in planted) / max(1, len(planted))
-    report.append(f"{who}: walk natural speed {nat:.3f} m/s, path end frame {end}, planted-foot slide {slide * 1000:.1f} mm/frame over {len(planted)} frames")
-    print("WALKALONG", report[-1])
-    row = []
-    for f in [1 + round((end - 1) * k / max(1, COLS - 1)) for k in range(COLS)]:
-        sc.frame_set(int(f)); frame_cam(root, h * 2.4)
-        txt_d.body = f"{who} : walk_along"
-        p = os.path.join(sd, f"walk_along_{int(f):03d}.png"); sc.render.filepath = p
-        bpy.ops.render.render(write_still=True); row.append(to_np(p))
-    rows.append(np.concatenate(row, axis=1))
-    for k in range(0, len(rows), 8):
-        sheet = np.concatenate(rows[k:k + 8][::-1], axis=0)          # images are bottom-up: reverse so row 1 is on top
-        save_np(sheet, os.path.join(OUT, f"{who}_sheet_{k // 8 + 1}.png"))
-    print("SHEETS", who, len(rows), "rows", round(time.time() - t0, 1), "s")
-    # hide this animal before the next one
-    for o in bpy.data.collections[root.users_collection[0].name].objects: o.hide_render = True
-open(os.path.join(OUT, "report.txt"), "w").write("\n".join(report) + "\n")
+    root, rig = (LA.make_chamki if WHO == "chamki" else LA.make_sheru)(loc=(0, 0, 0))
+    body = bpy.data.objects[root.name + "_body"]
+    H = 0.95 if WHO == "chamki" else 0.7
+    print("BUILT", WHO, round(time.time() - t0, 1), "s; body actions:", LA.action_names(rig))
+    accs = accessories(root.name)
+    sc.frame_set(1); base_ov = overlaps(body, accs)
+    print("REST OVERLAP", base_ov)
+    miss = sorted(b for a, b in LA.MISSING if a == rig.name)
+    if miss: check(f"MISSING bones on {rig.name}: {miss}")
+
+    # ---------------- actions ----------------
+    if "actions" in PARTS:
+        engine("workbench", 240, 180); COLS = 5
+        rows = []
+        box = None
+        for an in LA.action_names(rig):
+            reset(rig, root); before = set(bpy.data.objects)
+            act = bpy.data.actions[LA.ACTIONS[WHO][an]]; L = int(act.frame_range[1] - act.frame_range[0])
+            airborne = ()
+            if an == "hop":
+                bpy.ops.mesh.primitive_cube_add(size=1); box = bpy.context.active_object; box.name = "hop_box"
+                box.scale = (0.5, 0.5, 0.225); box.location = (0, -0.75, 0.225)
+                bm = bpy.data.materials.new("box"); bm.diffuse_color = (0.6, 0.4, 0.2, 1); box.data.materials.append(bm)
+                root.location = (0, 0.15, 0); end = LA.hop_to(rig, 1, (0, -0.75, 0.45)); airborne = range(6, 26)
+            elif an in ("run", "run_to_food"):
+                end = LA.walk_along(rig, [(0, 1.5, 0), (0, -2.5, 0)], start_frame=1, action=an, settle=None)
+                LA.dust_trail(rig, 1, end, every=6); L = int(end - 1)
+            elif an == "sleep":
+                end = LA.sleep(rig, 1, 49)
+            elif an in ("steal_run", "tug_of_war"):
+                LA.play(rig, an, 1, loops=1)
+                if an == "steal_run":
+                    bpy.ops.mesh.primitive_cylinder_add(radius=0.035, depth=0.09); prop = bpy.context.active_object; prop.rotation_euler = (0, math.pi / 2, 0)
+                    off = (0, -0.01, -0.01)
+                else:
+                    bpy.ops.mesh.primitive_cylinder_add(radius=0.012, depth=1.4); prop = bpy.context.active_object; prop.rotation_euler = (math.pi / 2, 0, 0)
+                    off = (0, -0.70, -0.01)
+                pm = bpy.data.materials.new("prop"); pm.diffuse_color = (0.85, 0.15, 0.1, 1); prop.data.materials.append(pm); prop.name = "prop_" + an
+                LA.grab(rig, prop, 1, offset=off, rot=tuple(prop.rotation_euler))
+                ds = []
+                for f in (1, max(2, L // 2), L):
+                    sc.frame_set(f); ds.append((prop.matrix_world.translation - LA.mouth_of(rig).matrix_world.translation).length)
+                d0 = math.hypot(off[0], math.hypot(off[1], off[2]))
+                print("MOUTH", an, "prop-to-mouth distance (m):", [round(d, 3) for d in ds], "expected", round(d0, 3))
+                if max(abs(d - d0) for d in ds) > 0.01: check(f"MOUTH {an}: prop drifts from the mouth {ds}")
+            else:
+                LA.play(rig, an, 1, loops=1)
+            frames = [1 + round(L * k / max(1, COLS - 1)) for k in range(COLS)] if L > 0 else [1] * COLS
+            lo, hi = None, None; gz = []
+            for f in frames:
+                sc.frame_set(f); l_, h_ = bbox_world([body])
+                lo = l_ if lo is None else Vector(map(min, lo, l_)); hi = h_ if hi is None else Vector(map(max, hi, h_))
+                z = min_z(body); gz.append(round(z * 100, 1))
+                flies = an in ("hop", "run", "run_to_food", "steal_run", "startled_jump", "jump_pack", "trot") and z < 0.25
+                if (z < -0.015) or (z > 0.015 and not flies and f not in airborne):
+                    check(f"GROUND {WHO}:{an} frame {f}: lowest body point {z * 100:+.1f} cm ({'FLOAT' if z > 0 else 'SINK'})")
+                ov = overlaps(body, accs)
+                bad = {k: v for k, v in ov.items() if v > base_ov.get(k, 0) * 1.5 + 12}
+                if bad: check(f"CLIP {WHO}:{an} frame {f}: {bad} (rest {[base_ov.get(k) for k in bad]})")
+            if an == "hop":
+                lo = Vector(map(min, lo, Vector((-0.3, -1.1, 0)))); hi = Vector(map(max, hi, Vector((0.3, 0.3, 0.5))))
+            frame_box(lo, hi)
+            label(f"{WHO} : {an}", 1.333)
+            row = []
+            for f in frames:
+                sc.frame_set(f); row.append(render(os.path.join(OUT, "stills", f"{WHO}_{an}_{f:03d}.png")))
+            rows.append(np.concatenate(row, axis=1))
+            print("ROW", WHO, an, "frames", frames, "lowest z cm", gz)
+            wipe(new_objs_since(before) if an != "hop" else new_objs_since(before))
+        ALL_IMAGES += save_rows(rows, f"{WHO}_actions")
+        # walk_along foot-slide check
+        reset(rig, root)
+        end = LA.walk_along(rig, [(-2, 0, 0), (0, -1.2, 0), (2, 0, 0)], start_frame=1, action="walk", settle=None)
+        pts = []
+        for f in range(1, int(end)):
+            sc.frame_set(f); pts.append((rig.matrix_world @ rig.pose.bones["IKFrontLeg.L"].matrix).translation.copy())
+        zmin = min(p.z for p in pts)
+        planted = [i for i in range(1, len(pts)) if pts[i].z < zmin + 0.01 and pts[i - 1].z < zmin + 0.01]
+        slide = sum((pts[i] - pts[i - 1]).xy.length for i in planted) / max(1, len(planted))
+        print("WALKALONG", WHO, f"planted-foot slide {slide * 1000:.1f} mm/frame over {len(planted)} frames")
+        if slide > 0.006: check(f"SLIDE {WHO}: walk_along planted foot slides {slide * 1000:.1f} mm/frame")
+
+    # ---------------- emotions: front close-up + 3/4 full body, one frame each ----------------
+    def head_pos():
+        return LA.head_of(rig).matrix_world.translation.copy()
+
+    if "emotions" in PARTS:
+        engine("eevee", 300, 240)
+        reset(rig, root); LA.play(rig, "idle", 1, loops=3); sc.frame_set(14)
+        base_m = {b: rig.pose.bones[b].matrix.copy() for b in LA.POSTURE_BONES if b in rig.pose.bones}
+        cells = []
+        for e in LA.EMO:
+            reset(rig, root); before = set(bpy.data.objects)
+            LA.play(rig, "idle", 1, loops=3); LA.emotion(rig, e, 1, hold=40)
+            sc.frame_set(14)
+            dmax = max((base_m[b].to_quaternion().rotation_difference(rig.pose.bones[b].matrix.to_quaternion()).angle for b in base_m), default=0)
+            dloc = (rig.pose.bones["Body"].matrix.translation - base_m["Body"].translation).length
+            if math.degrees(dmax) < 3 and dloc < 0.01: check(f"NOOP {WHO}:{e} posture moves only {math.degrees(dmax):.1f} deg")
+            z = min_z(body)
+            if abs(z) > 0.015: check(f"GROUND {WHO}:emotion {e}: lowest body point {z * 100:+.1f} cm")
+            ov = overlaps(body, accs); bad = {k: v for k, v in ov.items() if v > base_ov.get(k, 0) * 1.5 + 12}
+            if bad: check(f"CLIP {WHO}:emotion {e}: {bad}")
+            hp = head_pos()
+            aim(hp - Vector((0, 0, H * 0.10)), Vector((0.30, -1.0, 0.10)), H * 1.25); label(f"{e}", 1.25)
+            cells.append(render(os.path.join(OUT, "stills", f"{WHO}_emo_{e}_front.png")))
+            lo, hi = bbox_world([body]); hi.z = max(hi.z, hp.z + 0.25)
+            frame_box(lo, hi, view=(0.85, -0.75, 0.30), fill=0.85); label(f"{e}", 1.25)
+            cells.append(render(os.path.join(OUT, "stills", f"{WHO}_emo_{e}_34.png")))
+            print("EMO", WHO, e, f"posture max {math.degrees(dmax):.1f} deg, body moved {dloc * 100:.1f} cm")
+            wipe(new_objs_since(before))
+        ALL_IMAGES += save_rows(grid(cells, 8), f"{WHO}_emotions", per=6)
+
+    # ---------------- ear + tail language ----------------
+    if "language" in PARTS:
+        engine("eevee", 300, 240); cells = []
+        for kind, modes in (("ears", LA.EARS), ("tail", LA.TAIL)):
+            for m in modes:
+                reset(rig, root); LA.play(rig, "idle", 1, loops=3); getattr(LA, kind)(rig, m, 1, 40); sc.frame_set(14)
+                if kind == "ears":
+                    hp = head_pos(); aim(hp - Vector((0, 0, H * 0.08)), Vector((0.25, -1.0, 0.25)), H * 1.2)
+                else:
+                    lo, hi = bbox_world([body]); frame_box(lo, hi, view=(0.9, 0.75, 0.35), fill=0.9)
+                label(f"{kind}: {m}", 1.25); cells.append(render(os.path.join(OUT, "stills", f"{WHO}_{kind}_{m}.png")))
+        ALL_IMAGES += save_rows(grid(cells, 7), f"{WHO}_language")
+
+    # ---------------- 3 s action clip ----------------
+    if "clip" in PARTS:
+        reset(rig, root); before = set(bpy.data.objects)
+        if WHO == "chamki":
+            LA.play(rig, "chew", 1, loops=36 / 16.0); LA.play(rig, "bleat", 37); LA.play(rig, "idle", 67, loops=1)
+            LA.blink_loop(rig, 1, 72, min_gap=30, max_gap=40); f_end = 72
+        else:
+            LA.sleep(rig, 1, 25); LA.play(rig, "wake_sniff", 25); LA.emotion(rig, "excited", 70, hold=20, fx=False)
+            LA.play(rig, "idle", 85); LA.wag(rig, 62, 90, speed=1.6); FX = LA.FX
+            if FX: FX.mark("!", LA.fx_of(rig), 34, 60, size=LA._fx_size(rig))
+            f_end = 90
+        engine("eevee", 480, 360)
+        lo = hi = None
+        for f in range(1, f_end + 1, 6):
+            sc.frame_set(f); l_, h_ = bbox_world([body]); lo = l_ if lo is None else Vector(map(min, lo, l_)); hi = h_ if hi is None else Vector(map(max, hi, h_))
+        hi.z += 0.3
+        frame_box(lo, hi, view=(0.75, -0.85, 0.25), fill=0.8); label(f"{WHO} clip", 1.333); txt_d.body = ""
+        strip = []
+        for f in [1 + round((f_end - 1) * k / 5) for k in range(6)]:
+            sc.frame_set(f); strip.append(render(os.path.join(OUT, "stills", f"{WHO}_clip_{f:03d}.png")))
+        p = os.path.join(OUT, f"{WHO}_clip_strip.png"); save_np(np.concatenate(strip, axis=1), p); ALL_IMAGES.append(p)
+        sc.frame_start, sc.frame_end = 1, f_end
+        try:
+            sc.render.image_settings.file_format = "FFMPEG"; sc.render.ffmpeg.format = "MPEG4"; sc.render.ffmpeg.codec = "H264"
+            sc.render.ffmpeg.constant_rate_factor = "MEDIUM"
+            sc.render.filepath = os.path.join(OUT, f"{WHO}_clip.mp4"); bpy.ops.render.render(animation=True)
+            print("CLIP written", sc.render.filepath)
+        except Exception as ex:
+            print("CLIP mp4 failed", ex)
+        sc.render.image_settings.file_format = "PNG"
+
+# =====================================================================================================================
+else:   # generic animals: body-language emotions
+    engine("eevee", 260, 200); rows = []
+    for kind in ("Cow", "Bull", "Donkey", "Horse", "Husky"):
+        try:
+            root, arm = LA.load_animal(kind, length=None)
+        except Exception as ex:
+            check(f"GENERIC {kind} failed to load: {ex!r}"); continue
+        body = next(o for o in root.children_recursive if o.type == "MESH")
+        print("GENERIC", kind, "bones:", len(arm.data.bones), "ears" if "Ear1.L" in arm.data.bones else "NO EAR BONES")
+        cells = []
+        for e in ("idle",) + LA.GENERIC_EMOTIONS[:5]:
+            ad = arm.animation_data
+            for t in list(ad.nla_tracks):
+                if t.name.startswith("emo_"): ad.nla_tracks.remove(t)
+            before = set(bpy.data.objects)
+            if e != "idle": LA.animal_emotion(arm, e, 1, hold=40)
+            sc.frame_set(14); lo, hi = bbox_world([body]); hi.z += 0.2
+            frame_box(lo, hi, view=(0.85, -0.7, 0.3), fill=0.85); label(f"{kind}: {e}", 1.3)
+            cells.append(render(os.path.join(OUT, "stills", f"generic_{kind}_{e}.png")))
+            wipe(new_objs_since(before))
+        rows.append(np.concatenate(cells, axis=1))
+        for o in root.children_recursive + [root]: o.hide_render = True
+    ALL_IMAGES += save_rows(rows, "generic_emotions")
+
+# combined sheet (everything stacked, padded to the widest)
+imgs = [to_np(p) for p in ALL_IMAGES if p.endswith(".png")]
+if imgs:
+    W = max(a.shape[1] for a in imgs)
+    padded = [np.concatenate([a, np.ones((a.shape[0], W - a.shape[1], 4), np.float32)], axis=1) if a.shape[1] < W else a for a in imgs]
+    save_np(np.concatenate(padded[::-1], axis=0), os.path.join(OUT, f"{WHO}_ALL.png"))
+open(os.path.join(OUT, f"checks_{WHO}.txt"), "w").write("\n".join(CHECKS) + "\n")
+print("SUMMARY", WHO, len(CHECKS), "checks flagged")
+miss = sorted(LA.MISSING)
+print("MISSING_ALL", miss)
+if WHO in ("chamki", "sheru") and any(a.startswith(("Chamki", "Sheru")) for a, b in miss):
+    print("FAIL: missing bones"); sys.exit(3)
 print("DONE", OUT)
