@@ -153,7 +153,39 @@ def demo_transitions():
     return C.write_video(frames, os.path.join(OUT, "transitions.mp4"), fps, crf=28)
 
 
-DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions}
+def demo_props():
+    import puppet as PU, props_motion as PM
+    fps = C.FPS; bg = T.make_background("village_day"); P = {n: T.make_prop(n) for n in ("ball", "laddoo", "matka", "kite", "paper", "coin", "plate", "bowl", "spoon", "book", "bucket")}
+    man, rm = T.make_human("man"); kid, rk = T.make_human("kid"); pm = PU.Performer(man, rm, [dict(motion="reach_take", start=0.1, dur=1.0), dict(motion="hand_to_mouth", start=9.0, dur=2.4)]); pk = PU.Performer(kid, rk, [dict(motion="clap", start=1.8, dur=1.5)])
+    door = np.zeros((300, 150, 4), np.uint8); door[..., :3] = (140, 90, 50); door[..., 3] = 255; door[130:170, 100:120] = (230, 200, 60, 255); door[20:60, 20:130, :3] = (110, 70, 40)
+    flagS = np.zeros((90, 170, 4), np.uint8); flagS[..., :3] = (255, 150, 30); flagS[30:60, :, :3] = (255, 255, 255); flagS[..., 3] = 255; cloth = np.zeros((90, 60, 4), np.uint8); cloth[..., :3] = (60, 120, 220); cloth[..., 3] = 255
+    fanS = np.zeros((300, 300, 4), np.uint8)
+    from PIL import Image, ImageDraw
+    im = Image.new("RGBA", (300, 300), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    for k in range(3): a = math.radians(k * 120); d.polygon([(150, 150), (150 + 140 * math.cos(a - .18), 150 + 140 * math.sin(a - .18)), (150 + 140 * math.cos(a + .18), 150 + 140 * math.sin(a + .18))], fill=(210, 210, 215, 255), outline=(70, 50, 40, 255))
+    d.ellipse((130, 130, 170, 170), fill=(90, 70, 60, 255)); fanS = np.asarray(im); clockface = None
+    EV = [dict(prop_motion="throw", prop="ball", start=0.2, dur=1.0, p0="man.hand_r", p1="kid.hand_l", height=160), dict(prop_motion="ball_bounce", prop="ball", start=2.4, x0=250, x1=1000, y_top=250, ground_y=690, dur=3.0, scale=0.55),
+          dict(prop_motion="fall_bounce", prop="matka", start=1.0, x=640, y0=150, ground_y=520, scale=0.8), dict(prop_motion="roll", prop="ball", start=5.6, p0=(300, 600), p1=(700, 640), dur=1.6, scale=0.5),
+          dict(prop_motion="pour", prop="bucket", start=3.0, dur=2.4, spout=(1010, 330), target=(1060, 480), color=(240, 240, 235), level_rect=(1010, 460, 1110, 520), vessel_pos=(985, 310), tilt=35, scale=0.9),
+          dict(prop_motion="stir", prop="spoon", start=0, center=(1060, 470), radius=22, bowl=(1060, 500, 60, 20), scale=0.7), dict(prop_motion="swing", prop="plate", start=0, pivot=(150, 80), rope=250, amp=32, period=2.4, scale=0.7, decay=0.05),
+          dict(prop_motion="kite", prop="kite", start=0, hand=(420, 640), kite_pos=(520, 130), scale=1.1), dict(prop_motion="flag", prop="flagS", start=0, pole_top=(1180, 110), scale=0.8),
+          dict(prop_motion="clothesline", prop="cloth", start=0, line=((560, 170), (900, 190)), count=3, scale=0.7), dict(prop_motion="door", prop="door", start=6.0, hinge=(790, 330), dur=1.2, close_at=9.0, scale=0.55),
+          dict(prop_motion="paper_fly", prop="paper", start=7.0, dur=3.0, p0=(300, 120), p1=(450, 600), scale=0.8), dict(prop_motion="food_vanish", prop="laddoo", start=9.0, pos="man.hand_r", bites=3, scale=0.5),
+          dict(prop_motion="coins", prop="coin", start=11.0, hand="kid.hand_r", targets=[(900, 660), (950, 660), (1000, 660), (1050, 660)], interval=0.5, scale=0.6), dict(prop_motion="fan", prop="fanS", start=0, center=(700, 70), rpm=240, scale=0.5),
+          dict(prop_motion="clock_hands", start=0, center=(1180, 330), radius=48, speed=240)]
+    frames = []
+    for i in range(int(14 * fps)):
+        t = i / fps; f = bg.copy(); sp, info = pm.frame(t); a1 = PU.draw_character(f, sp, info, rm, 330, 650, 380); sp2, info2 = pk.frame(t, flip=True); a2 = PU.draw_character(f, sp2, info2, rk, 800, 650, 300, flip=True)
+        anc = {"man.hand_r": a1["hand_r"], "man.hand_l": a1["hand_l"], "kid.hand_r": a2["hand_r"], "kid.hand_l": a2["hand_l"]}; props = dict(P, door=door, flagS=flagS, cloth=cloth, fanS=fanS)
+        for e in EV:
+            e = dict(e); 
+            if e["prop_motion"] in ("clock_hands",): PM.run_event(f, e, t, props, anc)
+            elif t >= e.get("start", 0) - 0.01 or e["prop_motion"] in ("kite", "flag", "clothesline", "swing", "fan", "stir"): PM.run_event(f, e, t, props, anc)
+        frames.append(f)
+    return C.write_video(frames, os.path.join(OUT, "props_motion.mp4"), fps, crf=28)
+
+
+DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
