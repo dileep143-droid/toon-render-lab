@@ -754,11 +754,11 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34, ripple=rip[0], nrip=rip[1])
     return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick, post_smooth=4)
 
-def underlayer(B, name, rgb, waist_z=None, leg_t=0.95):
+def underlayer(B, name, rgb, waist_z=None, leg_t=0.95, mat=None):
     """petticoat / inner layer under a skirt, saree, langa or lungi: snug ankle-length leg tubes that follow the legs
     (same colour family, a shade darker), so no skin can show in a walking stride even where a leg passes the outer skirt"""
     Hs = B.Hs
-    return bottoms(B, name, fabric(name, _darker(rgb, 0.8), 0.85, 0.35), waist_z if waist_z is not None else B.zw,
+    return bottoms(B, name, mat or fabric(name, _darker(rgb, 0.8), 0.85, 0.35), waist_z if waist_z is not None else B.zw,
                    leg_t=leg_t, style="snug", offset=0.004, ease=0.003, clear=0.003, thick=0.003)
 
 def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
@@ -1526,8 +1526,8 @@ def _build(B, outfit, C, o):
         lm = fabric("lungi", C["lungi"], 0.85, 0.4, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.045 * s, "lw": 0.1, "c3": C["check2"]}, coord="uv")
         short = o.get("lungi_short", False)
         hem = (B.zk - 0.03 * Hs) if short else max(0.012, 0.6 * B.za)
-        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.008, top_ease=0.003, contain_to=B.zk)   # straight wrap: room for the legs only to the knee, then a straight fall (the A-pose feet apart no longer widen the hem; the inner layer covers any gap)
-        G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95))
+        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.008, top_ease=0.003, contain_to=B.zx)   # straight wrap: room for the legs only to the knee, then a straight fall (the A-pose feet apart no longer widen the hem; the inner layer covers any gap)
+        G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95, mat=lm))   # same checked cloth: reads as the lungi wrapped close to the leg
         G.append(lathe(B, "lungi", lm, rings, segs=96, sim=SKIRT_SIM))
         G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.02 * Hs, name="lungi_roll", pad=0.002, thick=0.004))
         if short:   # folded up to the knee: a thick rolled hem
