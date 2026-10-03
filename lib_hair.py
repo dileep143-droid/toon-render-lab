@@ -342,6 +342,34 @@ class Fit:
         out["head"] = out.get("head", 0) + t
         return out
 
+    def _mouth_from_keys(self, nose_z):
+        """(mouth_z, lip_y, chin_z) from the basemesh jawOpen face unit, or None"""
+        try:
+            h = self.h; sk = h.data.shape_keys; kb = sk.key_blocks.get("jawOpen") if sk else None
+            if kb is None: return None
+            n = len(h.data.vertices); a = [0.0] * (3 * n); r = [0.0] * (3 * n)
+            kb.data.foreach_get("co", a); kb.relative_key.data.foreach_get("co", r)
+            co = self.B.co; s = self.s
+            dl = lambda i: ((a[3 * i] - r[3 * i]) ** 2 + (a[3 * i + 1] - r[3 * i + 1]) ** 2 + (a[3 * i + 2] - r[3 * i + 2]) ** 2) ** 0.5
+            mid = [i for i in self.head_ids if abs(co[i].x) < 0.006 * s and co[i].y < self.cy - 0.35 * self.ry
+                   and self.ze - 1.3 * self.HH < co[i].z < nose_z]
+            if len(mid) < 6: return None
+            mx = max(dl(i) for i in mid)
+            if mx < 1e-5: return None
+            low = [i for i in mid if dl(i) > 0.5 * mx]
+            lo_top = max(co[i].z for i in low)
+            ups = [co[i].z for i in mid if dl(i) < 0.25 * mx and lo_top - 0.002 * s < co[i].z < lo_top + 0.02 * s]
+            mz = 0.5 * (lo_top + max(min(ups) if ups else lo_top, lo_top))
+            lip = [co[i].y for i in mid if abs(co[i].z - mz) < 0.008 * s]
+            ly = min(lip) if lip else None
+            # chin bottom: the lowest FRONT point that still moves with the jaw (in front of the lip-y + 3 cm plane)
+            chin = [co[i].z for i in low if co[i].y < (ly if ly is not None else co[low[0]].y) + 0.03 * s]
+            cz = min(chin) if chin else None
+            if ly is None or cz is None or not (cz < mz < nose_z): return None
+            return mz, ly, cz
+        except Exception as ex:
+            print("HAIR face keys fail", repr(ex)[:120]); return None
+
     # ---------- face landmarks (front profile at x = 0) ----------
     def face(self):
         if self._face: return self._face
@@ -366,6 +394,12 @@ class Fit:
         if len(mid) > 4:
             mz, my = max(mid, key=lambda t: t[1]); mouth_z = 0.5 * mouth_z + 0.5 * mz
         lip_y = min([y for z, y in pr if abs(z - mouth_z) < 0.25 * L] or [nose_y + 0.02])
+        # the profile scan above finds no under-chin jump on toon faces and falls back to nose - 0.85 HH, which put the
+        # 'mouth' on the chin (3 Oct: the dark mouth bag became a black goatee; beards / hand-to-mouth marks were low).
+        # Prefer the face units: the lower lip + chin are what jawOpen moves, the upper lip is not.
+        mk = self._mouth_from_keys(nose_z)
+        if mk:
+            mouth_z, lip_y, chin_z = mk; L = max(0.3 * (nose_z - mouth_z), nose_z - chin_z)
         # ears: the most lateral head points between eye and jaw
         ear = [self.B.co[i] for i in self.head_ids if self.ze - 0.75 * HH < self.B.co[i].z < self.ze + 0.15 * HH]
         xm = max(abs(p.x) for p in ear); ear = [p for p in ear if abs(p.x) > 0.9 * xm]
