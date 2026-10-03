@@ -653,8 +653,9 @@ def _lock_leg(Wb, Ph, rig, g, c, thigh, shin, blend):
     m = w > 0
     if not m.any(): return 0
     Hp, K, A = Ph[m, hipj], Ph[m, kj], Ph[m, aj]
+    target[:, 2] = Ph[:, aj, 2]                 # pin only the horizontal position; the heel keeps its own height
     At = A + (target[m] - A) * w[m, None]
-    d = At - Hp; dl = np.linalg.norm(d, axis=-1); fail = int((dl > (L1 + L2) * 0.999).sum())
+    d = At - Hp; dl = np.linalg.norm(d, axis=-1); fail = int((dl > (L1 + L2) * 1.015).sum())
     dl = np.clip(dl, abs(L1 - L2) + 1e-4, (L1 + L2) * 0.999); u = _n(d)
     pole = K - Hp; v = _n(pole - np.sum(pole * u, -1, keepdims=True) * u)
     ca = (L1 ** 2 + dl ** 2 - L2 ** 2) / (2 * L1 * dl); sa = np.sqrt(np.clip(1 - ca ** 2, 0, 1))
