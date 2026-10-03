@@ -37,6 +37,9 @@ STYLES = {
                       blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.8, lip_rgb=(0.84, 0.40, 0.42),
                       iris_r=0.80, pupil_r=0.36, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
                       brow_x=1.10, brow_z=1.55,
+                      # cute RESTING face baked from the face units (x (0.5 + 0.5 k): adults get about 70 %)
+                      rest_face={"eyeWideLeft": 0.45, "eyeWideRight": 0.45, "browInnerUp": 0.35, "browOuterUpLeft": 0.3,
+                                 "browOuterUpRight": 0.3, "mouthSmileLeft": 0.35, "mouthSmileRight": 0.35},
                       hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
 }
@@ -162,9 +165,10 @@ class _Warp:
         knees = [c for c in (bh("lowerleg01.L"), bh("lowerleg01.R")) if c is not None]
         self.knee = sum(c.z for c in knees) / len(knees) if knees else self.ground + 0.28 * (top - self.ground)
         self.lm = self._landmarks(body, head) if self.eyes else None
+        self._prep_bake(h, hq)
         self.info = dict(kid=kid, k=round(self.k, 3), head_scale=round(self.sh, 3), eye_scale=round(self.se, 3), leg_k=round(self.legk, 3),
                          ipd=round(self.d, 4), height=round(top - self.ground, 3), knee=round(self.knee - self.ground, 3),
-                         neck_drop_mm=round(self.neck_dz * 1000, 1),
+                         neck_drop_mm=round(self.neck_dz * 1000, 1), rest_face=getattr(self, "bake_info", None),
                          landmarks={a: [round(x, 4) for x in b] for a, b in (self.lm or {}).items() if isinstance(b, Vector)})
 
     def _landmarks(self, body, head):
@@ -193,11 +197,49 @@ class _Warp:
         lip_y = min([p.y for p in prof if abs(p.z - mz) < 0.25 * L] or [nose.y + 0.2 * d0])
         cheeks = []
         for sd in (1, -1):
-            cx, cz = hx + sd * 0.62 * d0, ez - 0.8 * d0
+            cx, cz = hx + sd * 0.8 * d0, ez - 0.6 * d0      # apple of the cheek, under the OUTER half of the eye (blush sat on the nose)
             near = [p for p in body if abs(p.x - cx) < 0.08 * d0 and abs(p.z - cz) < 0.08 * d0 and p.y < head.y]
             cheeks.append(Vector((cx, min(p.y for p in near), cz)) if near else Vector((cx, lip_y + 0.25 * d0, cz)))
         H = self._head
         return dict(nose=H(nose), mouth=H(Vector((hx, lip_y, mz))), chin=H(chin), cheekL=H(cheeks[0]), cheekR=H(cheeks[1]))
+
+    def _prep_bake(self, h, hq):
+        """the cute RESTING face (wide-open eyes, raised soft brows, a small smile) baked into toon_proportions from the
+        basemesh's own face units (so it is anatomically placed); brows / lashes get the same deltas by nearest vertex"""
+        from mathutils.kdtree import KDTree
+        self.bake = {}; self.bake_kd = None
+        rf = self.st.get("rest_face") or {}
+        sk = h.data.shape_keys
+        if not rf or not sk or self.k <= 0: return
+        n = len(h.data.vertices); R3 = (self.Mri @ h.matrix_world).to_3x3(); used = []
+        for name, v in rf.items():
+            kb = sk.key_blocks.get(name)
+            if kb is None: continue
+            A = [0.0] * (3 * n); Bv = [0.0] * (3 * n)
+            kb.data.foreach_get("co", A); kb.relative_key.data.foreach_get("co", Bv)
+            w = v * (0.5 + 0.5 * self.k); used.append(name)
+            for i in range(n):
+                dx, dy, dz = A[3 * i] - Bv[3 * i], A[3 * i + 1] - Bv[3 * i + 1], A[3 * i + 2] - Bv[3 * i + 2]
+                if dx * dx + dy * dy + dz * dz < 1e-14: continue
+                d = R3 @ Vector((dx * w, dy * w, dz * w))
+                self.bake[i] = self.bake.get(i, Vector()) + d
+        if self.bake:
+            kd = KDTree(len(self.bake))
+            for i in self.bake: kd.insert(hq[i], i)
+            kd.balance(); self.bake_kd = kd; self.hq = hq
+        self.bake_info = dict(keys=used, verts=len(self.bake), max_mm=round(max((d.length for d in self.bake.values()), default=0) * 1000, 2))
+
+    def _baked(self, p_rig, i=None, reach=None):
+        """p + the baked resting-face delta (body vertex index i, or nearest body vertex for proxies)"""
+        if not self.bake: return p_rig
+        if i is not None:
+            d = self.bake.get(i)
+            return p_rig + d if d is not None else p_rig
+        if self.bake_kd is None: return p_rig
+        co, j, dist = self.bake_kd.find(p_rig)
+        r = reach or 0.12 * self.d
+        if j is None or dist > r: return p_rig
+        return p_rig + self.bake[j] * (1 - _smooth(0.35 * r, r, dist))
 
     def _head(self, p):
         w = _smooth(self.z0, self.z1, p.z)
@@ -260,7 +302,13 @@ class _Warp:
     def apply_mesh(self, o, kind="other"):
         Mo = o.matrix_world; R = self.Mri @ Mo; Ri = R.inverted()
         q = _rest_coords(o)
-        new = [Ri @ self(R @ c) for c in q]
+        if kind == "body" and self.bake:
+            base = [self._baked(R @ c, i) for i, c in enumerate(q)]
+        elif kind in ("brow", "lash") and self.bake:
+            base = [self._baked(R @ c) for c in q]
+        else: base = [R @ c for c in q]
+        qb = [Ri @ p for p in base]                      # baked rest (local)
+        new = [Ri @ self(p) for p in base]
         if kind == "lash" and self.eyes and self.st.get("lash"):
             # longer lashes: points beyond the lid edge (min distance to that eye centre) move further out
             ws = [R @ c for c in new]                   # rig space
@@ -275,7 +323,7 @@ class _Warp:
         if o.data.shape_keys:
             kb = o.data.shape_keys.key_blocks
             basis = o.data.shape_keys.reference_key
-            if kind == "body" and os.environ.get("TOON_RESCALE_KEYS", "1") == "1": self.rescale_keys(o, q, new, R, Ri)
+            if kind == "body" and os.environ.get("TOON_RESCALE_KEYS", "1") == "1": self.rescale_keys(o, qb, new, R, Ri)
             k = kb.get("toon_proportions") or o.shape_key_add(name="toon_proportions", from_mix=False)
             k.relative_key = basis
             for i, (a, b) in enumerate(zip(q, new)): k.data[i].co = basis.data[i].co + (b - a)
@@ -291,6 +339,9 @@ class _Warp:
         for kb in sk.key_blocks:
             nm = kb.name
             if kb == sk.reference_key or nm.startswith("$") or nm.lower().startswith(("macro", "toon", "basis")): continue
+            # only the EYE units (lids travel over the 30 % bigger eyeball); rescaling the mouth units too deepened the
+            # smile creases into dark lines (run 3 A/B) and the mouth is not resized any more
+            if not nm.startswith("eye"): continue
             rel = kb.relative_key
             A = [0.0] * (3 * n); Bv = [0.0] * (3 * n)
             kb.data.foreach_get("co", A); rel.data.foreach_get("co", Bv)
@@ -567,7 +618,7 @@ def _skin_attrs(h, W, k):
     cs = [lm["cheekL"] + Vector((0, 0, 0.08 * d)), lm["cheekR"] + Vector((0, 0, 0.08 * d))]
     m = lm["mouth"]; bl = []; lp = []
     for p in pts:
-        g = max(math.exp(-((p - c).length / (0.42 * d)) ** 2) for c in cs) if p.y < W.pivot.y else 0.0
+        g = max(math.exp(-((p - c).length / (0.34 * d)) ** 2) for c in cs) if p.y < W.pivot.y else 0.0
         bl.append(g * k)
         q = p - m
         lw = math.exp(-((q.x / (0.42 * d)) ** 2 + (q.z / (0.16 * d)) ** 2)) * (1 - _smooth(m.y + 0.12 * d, m.y + 0.3 * d, p.y))
@@ -650,7 +701,9 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
         if kid is None:
             z = [c.z for c in _rest_coords(h)]; kid = (max(z) - min(z)) * rig.matrix_world.to_scale().z < 1.5
         if proportions and strength > 0 and not h.get("toon_proportions"):
-            if os.environ.get("TOON_PREADD_MOUTH", "1") == "1": info["mouth_proxies_added"] = _ensure_mouth_proxies(h)
+            # teeth / tongue belong to lib_expressions; A/B run 3: pre-adding them here made no difference to the
+            # open-mouth white block -> off by default
+            if os.environ.get("TOON_PREADD_MOUTH", "0") == "1": info["mouth_proxies_added"] = _ensure_mouth_proxies(h)
             bpy.context.view_layer.update()
             W = _Warp(h, rig, st, strength, kid, k=kf); info.update(W.info)
             before = h.dimensions.z
