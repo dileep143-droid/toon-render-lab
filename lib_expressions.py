@@ -437,7 +437,7 @@ def _fix_teeth(rig, F=None):
         nm = o.name.lower()
         kind = "teeth" if "teeth" in nm else "tongue" if "tongue" in nm else None
         if not kind: continue
-        mat = LH.solid("teeth_toon", (0.97, 0.96, 0.92), 0.35) if kind == "teeth" else LH.solid("tongue_toon", (0.86, 0.36, 0.40), 0.45)
+        mat = LH.solid("teeth_toon", (0.97, 0.96, 0.92), 0.35) if kind == "teeth" else LH.solid("tongue_toon2", (0.93, 0.45, 0.50), 0.5)
         if kind == "teeth" and not o.get("toon_teeth") and not SHOW_MPFB_TEETH: o.hide_render = True; o.hide_viewport = True
         o.data.materials.clear(); o.data.materials.append(mat)
         sk = o.data.shape_keys
@@ -463,7 +463,7 @@ def _fix_teeth(rig, F=None):
             bmesh.ops.delete(bm, geom=low, context="VERTS"); bm.to_mesh(o.data); bm.free(); o.data.update()
             print("FACE teeth lower row removed", len(low))
         elif F is not None:
-            moved = _tuck(F, o, [(lambda c: True, 0.92, 0.003, 0.001)])
+            moved = _tuck(F, o, [(lambda c: True, 0.95, 0.0, -0.0015)])   # tongue a little up + forward: it read only as a sliver
         else: moved = 0
         print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}), "tucked", moved)
 
@@ -703,6 +703,27 @@ def _contain_mouth(F, rig, mm=None, gain=1.25):
     return rep
 
 
+def _mouth_mat():
+    """warm red-brown cartoon mouth cavity, darker toward the throat (point attribute mouth_depth 0..1); mostly
+    self-lit + matte so the folds of the bag do not read as grey creases"""
+    m = bpy.data.materials.get("mouth_cavity_toon")
+    if m: return m
+    m = bpy.data.materials.new("mouth_cavity_toon"); m.use_nodes = True; nt = m.node_tree; N = nt.nodes; L = nt.links
+    b = next(n for n in N if n.bl_idname == "ShaderNodeBsdfPrincipled")
+    at = N.new("ShaderNodeAttribute"); at.attribute_name = "mouth_depth"
+    cr = N.new("ShaderNodeValToRGB"); el = cr.color_ramp.elements
+    el[0].position = 0.0; el[0].color = (0.30, 0.055, 0.05, 1)      # warm red-brown at the lips (linear)
+    el[1].position = 1.0; el[1].color = (0.045, 0.008, 0.008, 1)    # near-black throat
+    L.new(at.outputs["Fac"], cr.inputs["Fac"]); L.new(cr.outputs["Color"], b.inputs["Base Color"])
+    if "Emission Color" in b.inputs:
+        L.new(cr.outputs["Color"], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 0.35
+    b.inputs["Roughness"].default_value = 0.9
+    for nm in ("Specular IOR Level", "Specular"):
+        if nm in b.inputs: b.inputs[nm].default_value = 0.05
+    m.diffuse_color = (0.2, 0.04, 0.04, 1)
+    return m
+
+
 def _mouth_bag(F, mm=None):
     """dark mouth interior sized + placed from the MEASURED lips of the warped face (see _mouth_measure), then kept
     hidden in every face key by _contain_mouth"""
@@ -713,9 +734,10 @@ def _mouth_bag(F, mm=None):
     LH._ell(bm, c, Vector((0.95 * mm["hw"], 0, 0)), Vector((0, sy, 0)), Vector((0, 0, 0.011 * s)), sub=3)
     # open the front cap: a dark BACKDROP behind the teeth + tongue (a closed bag hid them = a dark lump in the laugh)
     bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.y - c.y < -0.3 * sy], context="VERTS")
-    mat = LH.solid("mouth_inside_dark", (0.11, 0.015, 0.025), 0.8)
-    o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
+    depth = [max(0.0, min(1.0, (v.co.y - (c.y - 0.3 * sy)) / (1.3 * sy))) for v in bm.verts]   # 0 at the lips -> 1 at the throat
+    o = LH._obj(F, bm, "mouth_inside", _mouth_mat(), [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=1, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
+    a = o.data.attributes.new("mouth_depth", "FLOAT", "POINT"); a.data.foreach_set("value", depth)
     LH.bind_face_keys(F, o, max_d=0.03 * s, k=6, use_all=False)
     return o
 
