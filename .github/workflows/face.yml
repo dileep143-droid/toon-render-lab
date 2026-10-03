@@ -1,0 +1,49 @@
+name: face
+# face fix check (face_check.py): which characters + expressions run is read from face_jobs.txt ("char:expr,expr" lines)
+on:
+  workflow_dispatch:
+jobs:
+  face:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        char: [girl, boy, dadi]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip?
+        id: skip
+        run: |
+          L=$(grep -E "^${{ matrix.char }}:" face_jobs.txt | head -n1 | cut -d: -f2 | tr -d ' \r')
+          if [ -n "$L" ]; then echo "run=1" >> $GITHUB_OUTPUT; echo "ex=$L" >> $GITHUB_OUTPUT; else echo "run=0" >> $GITHUB_OUTPUT; fi
+      - name: Libraries
+        if: steps.skip.outputs.run == '1'
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS + MPFB2
+        if: steps.skip.outputs.run == '1'
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+          python3 - <<'EOF'
+          import json, urllib.request
+          H = {"User-Agent": "Blender/4.2.3 (toon-render-lab)"}
+          d = json.load(urllib.request.urlopen(urllib.request.Request("https://extensions.blender.org/api/v1/extensions/", headers=H), timeout=60))
+          e = next(x for x in d.get("data", d) if x.get("id") == "mpfb")
+          print("MPFB", e.get("version"))
+          open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
+          EOF
+          ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
+      - name: MakeHuman CC0 packs
+        if: steps.skip.outputs.run == '1'
+        run: |
+          curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+          mkdir -p pack functional && unzip -q pack.zip -d pack
+          for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+      - name: Face (${{ matrix.char }})
+        if: steps.skip.outputs.run == '1'
+        run: |
+          ./blender/blender -b -noaudio --python face_check.py -- pack functional out ${{ matrix.char }} ${{ steps.skip.outputs.ex }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|HAIR face|FACE|LEAK|SHOT|DONE|Error|Traceback|line [0-9]|Exception|WARN" | cut -c1-3000 | tail -n 300
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.skip.outputs.run == '1'
+        with: { name: "face-${{ matrix.char }}", path: out, retention-days: 7, if-no-files-found: ignore }
