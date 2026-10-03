@@ -7,7 +7,7 @@
     LE.apply_expression(h, rig, "happy")                          # static pose (no keys)
     LE.apply_expression(h, rig, "angry", frame=40, blend_frames=6)   # keyed, blends from whatever was there
     info = LE.animate_expression(h, rig, "giggle", 40, 100)       # onset -> hold (acting + micro-motion) -> settle
-    LE.talk_emotion(h, rig, 52, text="à¤®à¥à¤à¥‡ à¤­à¥‚à¤– à¤²à¤—à¥€ à¤¹à¥ˆ!", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
+    LE.talk_emotion(h, rig, 52, text="Ã Â¤Â®Ã Â¥ÂÃ Â¤ÂÃ Â¥â€¡ Ã Â¤Â­Ã Â¥â€šÃ Â¤â€“ Ã Â¤Â²Ã Â¤â€”Ã Â¥â‚¬ Ã Â¤Â¹Ã Â¥Ë†!", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
     LE.eye_look(h, rig, target=other_rig_head_point, frame=60)  # or direction="left" / "up_right" / "camera"
     LE.set_blush(h, 0.8, frame=70)                                # animatable cheek tint
     LE.animate_expression(h, rig, "comforting", 10, 80, target=friend_shoulder_world_point)
@@ -37,8 +37,8 @@ HALF_KEYS = {"mouthLeft", "mouthRight", "mouthShrugLower", "mouthShrugUpper", "m
 
 # ----------------------------------------------------------------------------------------------- hand / arm presets (one side, side-relative)
 PRESET = {
-    "idle":      {"arm": {"aim": (0.04, 0.16, -1)}, "forearm": {"fwd": 14}, "hand": {}},
-    "limp":      {"arm": {"aim": (0.06, 0.07, -1)}, "forearm": {"fwd": 3}, "hand": {}},
+    "idle":      {"arm": {"aim": (0.1, 0.26, -1)}, "forearm": {"fwd": 20}, "hand": {}},          # clear of flared skirts / saree
+    "limp":      {"arm": {"aim": (0.1, 0.2, -1)}, "forearm": {"fwd": 8}, "hand": {}},
     "hip":       {"arm": {"aim": (-0.25, 0.85, -0.55)}, "forearm": {"aim": (0.35, -0.75, -0.55)}, "hand": {}},
     "behind":    {"arm": {"aim": (-0.45, 0.22, -0.85)}, "forearm": {"aim": (-0.35, -0.85, -0.25)}, "hand": {}},
     "scared_up": {"arm": {"aim": (0.7, 0.25, 0.6)}, "forearm": {"fwd": 110, "out": -25}, "hand": {"fwd": -40}},
@@ -119,7 +119,7 @@ EXPR = {
                    {"head": {"fwd": -10}, "neck": {"fwd": -4}, "spine": {"fwd": -10}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}},
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
-                   anim="tremble", desc="'à¤­à¥‚à¤¤!' scream: hands on the cheeks, jaw dropped"),
+                   anim="tremble", desc="'Ã Â¤Â­Ã Â¥â€šÃ Â¤Â¤!' scream: hands on the cheeks, jaw dropped"),
     "nervous": E({**_b("mouthStretch", 1.0), **_b("mouthUpperUp", 0.3), **_b("mouthLowerDown", 0.3), "browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.3), "jawOpen": 0.05},
                  {"head": {"fwd": 6, "turn": -6}, "clav_L": {"lift": 11}, "clav_R": {"lift": 11}, "spine": {"fwd": 4}},
                  H("belly", off=(0.5, -0.25, -0.05), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
@@ -154,7 +154,7 @@ EXPR = {
     "wailing": E({"jawOpen": 0.85, **_b("mouthStretch", 0.85), **_b("mouthFrown", 1.0), **_b("eyeSquint", 1.0), **_b("eyeBlink", 0.9), "browInnerUp": 1.0,
                   **_b("cheekSquint", 0.6), **_b("mouthUpperUp", 0.45), **_b("mouthLowerDown", 0.55)},
                  {"head": {"fwd": -20}, "spine": {"fwd": -6}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}}, "wide_down", "wide_down", curl="fist",
-                 anim="wail", desc="head thrown back, mouth wide, fists down: 'à¤‰à¤à¤Šà¤à¤Šà¤!'"),
+                 anim="wail", desc="head thrown back, mouth wide, fists down: 'Ã Â¤â€°Ã Â¤ÂÃ Â¤Å Ã Â¤ÂÃ Â¤Å Ã Â¤Â!'"),
     "sulking": E({"mouthPucker": 0.6, "mouthShrugLower": 1.0, **_b("mouthFrown", 0.7), **_b("browDown", 0.6), "browInnerUp": 0.4, "cheekPuff": 0.35},
                  {"head": {"fwd": 10, "turn": 22}, "spine": {"turn": 6}}, None, None, cross=True, eyes=(-18, -2),
                  desc="pout, arms crossed, turned away, side glance"),
@@ -209,7 +209,7 @@ EXPR = {
     "determined": E({**_b("browDown", 0.75), **_b("mouthPress", 0.6), **_b("mouthSmile", 0.35), **_b("eyeSquint", 0.35), "jawForward": 0.2, **_b("noseSneer", 0.2)},
                     {"head": {"fwd": -4}, "spine": {"fwd": -6}},
                     "fist_side", H("shoulder", off=(0.35, 0.15, 0.55), tip=0.3, pole=(0, 0.9, -0.5), curl="fist", twist=-30),
-                    curl="fist", desc="'à¤šà¤²à¥‹, à¤ªà¥à¤²à¤¾à¤¨ à¤¬à¤¨à¤¾à¤¤à¥‡ à¤¹à¥ˆà¤‚!' raised fist, set jaw"),
+                    curl="fist", desc="'Ã Â¤Å¡Ã Â¤Â²Ã Â¥â€¹, Ã Â¤ÂªÃ Â¥ÂÃ Â¤Â²Ã Â¤Â¾Ã Â¤Â¨ Ã Â¤Â¬Ã Â¤Â¨Ã Â¤Â¾Ã Â¤Â¤Ã Â¥â€¡ Ã Â¤Â¹Ã Â¥Ë†Ã Â¤â€š!' raised fist, set jaw"),
     # ---------------- low energy ----------------
     "bored": E({**_b("eyeBlink", 0.55), "mouthLeft": 0.35, **_b("mouthPress", 0.3), **_b("mouthFrown", 0.25), "cheekPuff": 0.15},
                {"head": {"out": 16, "fwd": 4}, "spine": {"fwd": 10}, "clav_L": {"lift": -6}, "clav_R": {"lift": -6}}, "limp", "limp", eyes=(14, 12),
@@ -225,7 +225,7 @@ EXPR = {
     "hungry": E({**_b("mouthSmile", 0.6), "jawOpen": 0.25, "tongueOut": 0.5, **_b("eyeBlink", 0.35), "browInnerUp": 0.75},
                 {"head": {"out": 14, "fwd": -12}},
                 H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
-                eyes=(10, 24), anim="rub", desc="Chhotu 'à¤®à¥à¤à¥‡ à¤­à¥‚à¤– à¤²à¤—à¥€ à¤¹à¥ˆ!': dreamy eyes up, licking lips, hands on tummy"),
+                eyes=(10, 24), anim="rub", desc="Chhotu 'Ã Â¤Â®Ã Â¥ÂÃ Â¤ÂÃ Â¥â€¡ Ã Â¤Â­Ã Â¥â€šÃ Â¤â€“ Ã Â¤Â²Ã Â¤â€”Ã Â¥â‚¬ Ã Â¤Â¹Ã Â¥Ë†!': dreamy eyes up, licking lips, hands on tummy"),
     "satisfied": E({**_b("mouthSmile", 0.85), **_b("eyeBlink", 0.85), **_b("cheekSquint", 0.6), "browInnerUp": 0.25, **_b("mouthPress", 0.2), "cheekPuff": 0.15},
                    {"spine": {"fwd": -8}, "head": {"fwd": -8}},
                    H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
@@ -244,14 +244,14 @@ EXPR = {
                           desc="jaw on the floor, arms dropped straight"),
     # ---------------- Indian gestures + social ----------------
     "head_wobble_acha": E({**_b("mouthSmile", 0.65), **_b("cheekSquint", 0.4), "browInnerUp": 0.35, **_b("eyeSquint", 0.2)},
-                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'à¤…à¤šà¥à¤›à¤¾' wobble, palm up"),
+                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'Ã Â¤â€¦Ã Â¤Å¡Ã Â¥ÂÃ Â¤â€ºÃ Â¤Â¾' wobble, palm up"),
     "nod_yes": E({**_b("mouthSmile", 0.55), "browInnerUp": 0.3, **_b("eyeSquint", 0.2)}, {"head": {"fwd": 10}}, "idle", "idle", anim="nod", desc="nodding yes"),
     "shake_no": E({**_b("mouthFrown", 0.45), **_b("mouthPress", 0.45), **_b("browDown", 0.35), "browInnerUp": 0.3},
                   {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.2), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", haim=(0.2, 0.0, 1), palm=(1, 0, 0)),
                   anim="shake", desc="shaking the head no, hand waving 'nahi'"),
     "shrug": E({"browInnerUp": 0.55, **_b("browOuterUp", 0.85), "mouthShrugUpper": 0.4, "mouthShrugLower": 0.65, **_b("mouthFrown", 0.35), **_b("mouthPress", 0.3)},
                {"head": {"out": 14}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}, "neck": {"fwd": -4}}, "shrug", "shrug", curl="open",
-               desc="'à¤ªà¤¤à¤¾ à¤¨à¤¹à¥€à¤‚' shrug: shoulders up, palms up, brows up"),
+               desc="'Ã Â¤ÂªÃ Â¤Â¤Ã Â¤Â¾ Ã Â¤Â¨Ã Â¤Â¹Ã Â¥â‚¬Ã Â¤â€š' shrug: shoulders up, palms up, brows up"),
     "whisper_secret": E({"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.55, **_b("eyeWide", 0.3), **_b("mouthSmile", 0.2)},
                         {"head": {"turn": 14, "out": -8}, "spine": {"fwd": 10, "out": -6}},
                         "idle", H("mouth", off=(0.05, 0.4, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", haim=(0.1, 0.0, 1), palm=(0, -1, 0)),
@@ -259,7 +259,7 @@ EXPR = {
     "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
                   {"head": {"fwd": 4}, "spine": {"fwd": 6}},
                   "idle", H("mouth", off=(0.0, 0.0, 0.1), tip=0.95, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
-                  desc="'à¤¶à¥à¤¶à¥à¤¶!' finger on the lips"),
+                  desc="'Ã Â¤Â¶Ã Â¥ÂÃ Â¤Â¶Ã Â¥ÂÃ Â¤Â¶!' finger on the lips"),
     "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
                   {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
                   H("chin", off=(0.5, 0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
@@ -277,7 +277,7 @@ EXPR = {
     "teacher_stern": E({**_b("browDown", 0.95), **_b("mouthPress", 0.6), **_b("eyeSquint", 0.3), **_b("eyeWide", 0.3), **_b("mouthFrown", 0.55), **_b("noseSneer", 0.3)},
                        {"head": {"fwd": 6}, "spine": {"fwd": -4}},
                        "hip", H("shoulder", off=(0.5, 0.1, 0.6), tip=0.5, pole=(0, 0.9, -0.5), curl="point", haim=(0.15, 0.0, 1), palm=(1, -0.5, 0)),
-                       anim="wag", desc="Masterji 'à¤¶à¤¾à¤‚à¤¤à¤¿!': stern brows, finger up, hand on hip"),
+                       anim="wag", desc="Masterji 'Ã Â¤Â¶Ã Â¤Â¾Ã Â¤â€šÃ Â¤Â¤Ã Â¤Â¿!': stern brows, finger up, hand on hip"),
 }
 
 SHEET = list(EXPR.keys())
