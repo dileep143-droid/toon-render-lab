@@ -459,7 +459,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
             if c.type != "CHILD_OF" or c.influence < 0.5 or c.target is None or c.target.type != "ARMATURE" or not c.subtarget: continue
             pb = c.target.pose.bones.get(c.subtarget)
             if pb is None: continue
-            hp = c.target.matrix_world @ pb.matrix.translation
+            hp = c.target.matrix_world @ ((pb.head + pb.tail) / 2)      # palm centre (the wrist joint itself sits ~4 cm back)
             ms = _meshes_of(o)
             if not ms: continue
             bv_, _ = _bvh(ms, dg)
