@@ -41,8 +41,8 @@ STYLES = {
                       # inner brows >= outer (outer-higher read as a stern / angry tilt); lids just touching the iris top
                       # (eyeWide 0.45 showed white above the iris = staring); a small gentle smile (the mouth bag is now
                       # measured from the warped lips + kept hidden per key by lib_expressions._contain_mouth, 3 Oct)
-                      rest_face={"eyeWideLeft": 0.2, "eyeWideRight": 0.2, "browInnerUp": 0.55, "browOuterUpLeft": 0.25,
-                                 "browOuterUpRight": 0.25, "mouthSmileLeft": 0.28, "mouthSmileRight": 0.28},
+                      rest_face={"eyeWideLeft": 0.2, "eyeWideRight": 0.2, "browInnerUp": 0.35, "browOuterUpLeft": 0.2,
+                                 "browOuterUpRight": 0.2, "mouthSmileLeft": 0.28, "mouthSmileRight": 0.28},
                       hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
 }
@@ -284,10 +284,12 @@ class _Warp:
                     p = c + Vector((q.x * (1 + s), q.y * (1 + s), q.z * (1 + s * self.st.get("eye_tall", 1.0))))
             # softer, slightly raised brows (the toon face read as frowning): the brow band above each eye moves up
             lift = self.st.get("brow_lift", 0.0) * self.d * (0.5 + 0.5 * self.k)
-            if lift:
+            # never the eyeballs / lids / lashes: the old band started 0.22 d above the eye centre, inside the 1.3 x 1.35
+            # eyeball, and stretched its top 59 mm tall -> no front-facing iris = blank white eyes (face run 1, 3 Oct)
+            if lift and getattr(self, "_cur_kind", None) not in ("eyes", "lash"):
                 for c in self.eyes:
                     dx = abs(p.x - c.x); dz = p.z - c.z
-                    w = (1 - _smooth(0.45 * self.d, 0.7 * self.d, dx)) * _smooth(0.22 * self.d, 0.4 * self.d, dz) * (1 - _smooth(0.75 * self.d, 1.0 * self.d, dz))
+                    w = (1 - _smooth(0.45 * self.d, 0.7 * self.d, dx)) * _smooth(0.42 * self.d, 0.58 * self.d, dz) * (1 - _smooth(0.95 * self.d, 1.25 * self.d, dz))
                     # inner brow ends rise most: soft arched brows instead of the angled-down "frown" (run 5)
                     mx = (self.eyes[0].x + self.eyes[1].x) / 2
                     inner = 1 - _smooth(0.15 * self.d, 0.55 * self.d, abs(p.x - mx))
@@ -307,6 +309,7 @@ class _Warp:
 
     def apply_mesh(self, o, kind="other"):
         Mo = o.matrix_world; R = self.Mri @ Mo; Ri = R.inverted()
+        self._cur_kind = kind
         q = _rest_coords(o)
         if kind == "body" and self.bake:
             base = [self._baked(R @ c, i) for i, c in enumerate(q)]
@@ -366,6 +369,7 @@ class _Warp:
         hid = rig.hide_get(); rig.hide_set(False); vl.objects.active = rig
         try:
             bpy.ops.object.mode_set(mode="EDIT")
+            self._cur_kind = "bones"
             pts = {eb.name: (self(eb.head.copy()), self(eb.tail.copy())) for eb in rig.data.edit_bones}   # armature space == rig space
             for eb in rig.data.edit_bones:
                 hd, tl = pts[eb.name]
