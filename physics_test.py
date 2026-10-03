@@ -139,8 +139,14 @@ def mode_demo():
     try:
         import lib_handobj as HO
         # he picks it up and holds it in front of his chest for the rest of the shot (place / release after the shot)
+        fr = dict(hover=10, grab=20, mid=40, place=95, off=105); bl = [fr["hover"] - 8, fr["hover"], fr["off"], fr["off"] + 8]
+        for f in (sc.frame_start, fr["grab"] - 1):                 # the plate stays on the cot until his hand closes on it
+            plate.keyframe_insert("location", frame=f); plate.keyframe_insert("rotation_euler", frame=f)
+        hd = HO.hand(bw, "R"); hd.clear_fk(bl[0] + 1, bl[3] - 1)  # arm IK switched on (same set-up as episode_scene hand_pick_place)
+        hd.influence(*bl); HO.look(bw).influence(*bl)
+        sc.frame_set(bl[0]); w0, y0 = hd.wrist_world(); hd.key_wrist(bl[0], w0, y0)
         REPORT["handobj"] = HO.reach_grab_move_place(bw, "R", plate, plate.matrix_world.translation + Vector((0.0, -0.25, 0.22)),
-                                                     dict(hover=10, grab=20, mid=40, place=95, off=105))
+                                                     fr, look_rig=bw)
     except Exception as ex:
         REPORT["handobj"] = "lib_handobj call failed: " + repr(ex)[:200]; PH.log("WARN handobj", repr(ex)[:200])
     chars = [(dadi, drig), (girl, grig), (boy, brig)]

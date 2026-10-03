@@ -384,6 +384,12 @@ def _cloth_explosion(o, dg, ratio=2.5):
     return worst
 
 
+def _parents(o):
+    out = []
+    while o.parent is not None: o = o.parent; out.append(o)
+    return out
+
+
 def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_range=None, max_pairs=12, quiet=False, seats=()):
     """report everything that breaks physics at a frame. Returns a dict; autofix snaps floating / sunk props."""
     sc = bpy.context.scene
@@ -402,7 +408,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
     for i, a in enumerate(keys):
         for b in keys[i + 1:]:
             if all(_is_ground(o) for o in groups[a]) or all(_is_ground(o) for o in groups[b]): continue
-            held = any(c.type == "CHILD_OF" and c.influence > 0.5 for o in groups[a] + groups[b] for c in o.constraints)
+            held = any(c.type == "CHILD_OF" and c.influence > 0.5 for o in groups[a] + groups[b] + [a, b] for c in o.constraints)
             n = len(bvhs[a].overlap(bvhs[b]))
             if n > 20 and not held:
                 kind = "person/person" if is_char[a] and is_char[b] else ("person/prop" if is_char[a] or is_char[b] else "prop/prop")
@@ -425,7 +431,7 @@ def check_scene(frame=None, tol=TOL, autofix=False, rigs_for_slide=(), slide_ran
     # 3) floating / sunk / unsupported props
     for g, ms in groups.items():
         if is_char[g] or all(_is_ground(o) for o in ms): continue
-        if any(c.type == "CHILD_OF" and c.influence > 0.5 for o in ms for c in o.constraints): continue   # held in a hand
+        if any(c.type == "CHILD_OF" and c.influence > 0.5 for o in ms + [g] + _parents(g) for c in o.constraints): continue   # held in a hand
         bv = _static_world([g], dg)
         sup, pts, zmin = support_under(g, bv, dg)
         if zmin is None: continue
