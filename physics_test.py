@@ -131,7 +131,7 @@ def mode_demo():
     LH.add_hair(girl, grig, "tied_long_jada")
     gw = A.Rig(grig); A.walk(gw, 1, cycles=3, move=True)
     # the boy picks up the laddoo plate from the cot (hand-holding = lib_handobj, laptop-owned: called, never edited)
-    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.32, -3.0, 0.0), rot_z=R(180))   # right at the cot, facing it (+y)
+    boy, brig = V.make_villager("boy_10y", "kurta_pyjama", name="boy", loc=(0.32, -3.06, 0.0), rot_z=R(180))   # right at the cot (6 cm back: the plate must not touch his belly before the grab), facing it (+y)
     bw = A.Rig(brig)
     A.pose_at(bw, 12, {"spine": {"fwd": 28}, "neck": {"fwd": 10}}, layer=True)   # he bends down towards the low cot
     A.pose_at(bw, 30, {"spine": {"fwd": 10}}, layer=True)

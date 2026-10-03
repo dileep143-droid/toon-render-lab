@@ -199,6 +199,15 @@ def _char_parts(body, rig):
     return [o for o in set(rig.children_recursive) | set(body.children_recursive) if o.type == "MESH" and o != body]
 
 
+def skin_guard(o, body, gap=0.003):
+    """skinned (non-cloth) garment pieces: when a bend (spine forward, deep squat) pushes skin up through the cloth, only the
+    vertices that ended up INSIDE the body are moved back out to `gap` above the skin; everything outside is untouched"""
+    if o.modifiers.get("PH_skin_guard"): return
+    m = o.modifiers.new("PH_skin_guard", "SHRINKWRAP")
+    m.target = body; m.wrap_method = "NEAREST_SURFACEPOINT"; m.wrap_mode = "OUTSIDE"; m.offset = gap
+    _move_before(o, m)
+
+
 def dress_physics(body, rig, f0=None, f1=None, sway=True, presets=None):
     """cloth + sway on everything this character wears that should move. Returns {object name: preset}"""
     body_collision(body)
@@ -209,6 +218,7 @@ def dress_physics(body, rig, f0=None, f1=None, sway=True, presets=None):
             pre = (presets or {}).get(n) or preset_for(n)
             if pre and len(o.data.vertices) > 8:
                 cloth_on(o, body, pre, f0, f1); done[o.name] = pre
+            else: skin_guard(o, body)
         elif sway and any(w in n for w in SWAY_PARTS) and len(o.data.vertices) > 8:
             sway_on(o, body, f0, f1); done[o.name] = "rope"
     if sway:   # tassels / ribbons ride on the nearest swinging braid (within 4 cm of it)
