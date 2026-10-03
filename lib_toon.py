@@ -32,15 +32,17 @@ STYLES = {
     "infobells": dict(head=0.17, eyes=0.30, jaw=0.06, legs=0.07, adult=0.6,
                       # mouth / chin warps OFF: lib_expressions sizes its mouth bag from the eye spacing, so a narrower
                       # mouth or a lifted chin let the dark bag poke through the skin (run 1, 3 Oct)
-                      nose=0.38, mouth=0.0, cheek=0.05, chin=0.0, neck=0.12, lash=0.35, eye_tall=1.35, brow_lift=0.14,
+                      nose=0.42, mouth=0.0, cheek=0.08, chin=0.0, neck=0.12, lash=0.35, eye_tall=1.35, brow_lift=0.26,
                       tex_mix=0.0, rim=0.12, emit=0.07, skin_gain=0.92, rough=0.72, spec=0.12, sss=0.10,
                       blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.8, lip_rgb=(0.84, 0.40, 0.42),
                       iris_r=0.80, pupil_r=0.36, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
-                      brow_x=1.10, brow_z=1.55,
+                      brow_x=1.10, brow_z=1.15,
                       # cute RESTING face baked from the face units (x (0.5 + 0.5 k): adults get about 70 %)
-                      # (no baked smile: it moved lib_expressions' mouth bag down through the chin, run 4)
-                      rest_face={"eyeWideLeft": 0.45, "eyeWideRight": 0.45, "browInnerUp": 0.3, "browOuterUpLeft": 0.35,
-                                 "browOuterUpRight": 0.35},
+                      # inner brows >= outer (outer-higher read as a stern / angry tilt); lids just touching the iris top
+                      # (eyeWide 0.45 showed white above the iris = staring); a small gentle smile (the mouth bag is now
+                      # measured from the warped lips + kept hidden per key by lib_expressions._contain_mouth, 3 Oct)
+                      rest_face={"eyeWideLeft": 0.2, "eyeWideRight": 0.2, "browInnerUp": 0.55, "browOuterUpLeft": 0.25,
+                                 "browOuterUpRight": 0.25, "mouthSmileLeft": 0.28, "mouthSmileRight": 0.28},
                       hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
 }
@@ -760,7 +762,9 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
                             if not vs: continue
                             c = sum((v.co for v in vs), Vector()) / len(vs)
                             # local axes of an MPFB proxy: x = left/right, y or z = up (MakeHuman meshes are Y-up before rotation)
-                            up = 2 if o.dimensions.z >= o.dimensions.y else 1
+                            # (was chosen from the WORLD bbox: a curved brow is deeper than tall -> it scaled depth)
+                            zl = o.matrix_world.inverted().to_3x3() @ Vector((0, 0, 1))
+                            up = 2 if abs(zl.z) >= abs(zl.y) else 1
                             for v in vs:
                                 d = v.co - c; d.x *= st["brow_x"]; d[up] *= st["brow_z"]; v.co = c + d
                         o.data.update()
