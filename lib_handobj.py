@@ -421,7 +421,7 @@ def reach_grab_move_place(rig, hand_side, obj, to_world, fr, show_at=None, look_
 # =====================================================================================================================
 # count objects one by one (explicit counts on words, then a comic fast-forward), free hand steadies the container
 # =====================================================================================================================
-def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), blend=None, container=None, show_up=0.12,
+def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), blend=None, container=None, show_up=0.10,
                   radius=0.021, look_off=None, lean=True):
     """objs: objects in pick order; dests: world origins they end at; beats: per object {"word": frame} (explicit: lifted
     ~15 cm above the container in front of her and shown on the word) or {"fast": frame} (quick pick, small arcs).
@@ -454,7 +454,7 @@ def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), 
             fr = {"hover": w - 15, "near": w - 11, "grab": w - 8, "lift": w - 4, "show": w + 1, "over": w + 3, "settle": w + 5,
                   "pre": w + 9, "place": w + 12, "off": w + 15}
             # shown just above the thali (~12 cm), on the hand's own side and a little forward: no arm across the chest
-            show = c0 + UP * show_up + _cs_world(rig, (0, 1, 0), hand_side) * 0.05 - body * 0.03
+            show = c0 + UP * show_up + _cs_world(rig, (0, 1, 0), hand_side) * 0.01 - body * 0.06
             reps.append(reach_grab_move_place(rig, hand_side, o, dst, fr, show_at=show, look_rig=rig, radius=radius, tag="count"))
         else:
             s = bt["fast"]
