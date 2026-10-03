@@ -32,86 +32,45 @@ jobs:
           mkdir -p pack functional && unzip -q pack.zip -d pack && rm pack.zip
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
 
-  rigs:
-    needs: mhpack
+  collect:     # the retarget shards run as private Kaggle CPU kernels (kaggle/motionpacks/kaggle_dispatch.py push); fetch their outputs
+    if: inputs.packs != 'quaternius'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 330
+    env:
+      K2: ${{ secrets.KAGGLE_KEY2 }}
+      K3: ${{ secrets.KAGGLE_KEY3 }}
+      K4: ${{ secrets.KAGGLE_KEY4 }}
+      K5: ${{ secrets.KAGGLE_KEY5 }}
+      K6: ${{ secrets.KAGGLE_KEY6 }}
+      K7: ${{ secrets.KAGGLE_KEY7 }}
+      K8: ${{ secrets.KAGGLE_KEY8 }}
+      K9: ${{ secrets.KAGGLE_KEY9 }}
+      K10: ${{ secrets.KAGGLE_KEY10 }}
+      K11: ${{ secrets.KAGGLE_KEY11 }}
+      K12: ${{ secrets.KAGGLE_KEY12 }}
+      K13: ${{ secrets.KAGGLE_KEY13 }}
+      K14: ${{ secrets.KAGGLE_KEY14 }}
+      K15: ${{ secrets.KAGGLE_KEY15 }}
+      K17: ${{ secrets.KAGGLE_KEY17 }}
+      K18: ${{ secrets.KAGGLE_KEY18 }}
+      K19: ${{ secrets.KAGGLE_KEY19 }}
+      K20: ${{ secrets.KAGGLE_KEY20 }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache/restore@v4
-        with:
-          path: |
-            pack
-            functional
-          key: mh-cc0-pack-v1
-      - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
+      - name: Wait for the Kaggle kernels and collect their outputs
         run: |
-          sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
-          bash kaggle/motionpacks/setup_blender.sh
-      - name: Export MPFB reference rigs
-        run: ./blender/blender -b -noaudio --python kaggle/motionpacks/blender_prep.py -- rigs pack functional rigs.json 2>&1 | grep -E "RIG|Error|Traceback|line [0-9]" | cut -c1-600
+          pip install -q --upgrade kaggle
+          python3 kaggle/motionpacks/collect.py $RUNNER_TEMP/out 320
+          cd $RUNNER_TEMP && tar -cf out.tar out && du -sh out.tar && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in out.tar -out md.enc
       - uses: actions/upload-artifact@v4
-        with: { name: rigs, path: rigs.json, retention-days: 3 }
-
-  build:
-    needs: rigs
-    runs-on: ubuntu-latest
-    timeout-minutes: 340
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { pack: cmu, shard: 0, n: 4 }
-          - { pack: cmu, shard: 1, n: 4 }
-          - { pack: cmu, shard: 2, n: 4 }
-          - { pack: cmu, shard: 3, n: 4 }
-          - { pack: style100, shard: 0, n: 4 }
-          - { pack: style100, shard: 1, n: 4 }
-          - { pack: style100, shard: 2, n: 4 }
-          - { pack: style100, shard: 3, n: 4 }
-          - { pack: bandai, shard: 0, n: 1 }
-          - { pack: lafan, shard: 0, n: 2 }
-          - { pack: lafan, shard: 1, n: 2 }
-          - { pack: zeggs, shard: 0, n: 2 }
-          - { pack: zeggs, shard: 1, n: 2 }
-          - { pack: motorica, shard: 0, n: 2 }
-          - { pack: motorica, shard: 1, n: 2 }
-          - { pack: interact, shard: 0, n: 3 }
-          - { pack: interact, shard: 1, n: 3 }
-          - { pack: interact, shard: 2, n: 3 }
-    steps:
-      - uses: actions/checkout@v4
-        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
-      - name: Build ${{ matrix.pack }} shard ${{ matrix.shard }}
-        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
-        run: |
-          pip install -q numpy remotezip requests
-          W=$RUNNER_TEMP/work; mkdir -p $W
-          if [ "${{ matrix.pack }}" = "cmu" ]; then git clone -q --depth 1 https://github.com/una-dinosauria/cmu-mocap.git $W/cmu-mocap; fi
-          if [ "${{ matrix.pack }}" = "bandai" ]; then git clone -q --depth 1 https://github.com/BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset.git $W/bandai; fi
-          du -sh $W/* 2>/dev/null || true
-      - uses: actions/download-artifact@v4
-        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
-        with: { name: rigs, path: rigsdl }
-      - name: Retarget
-        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
-        run: |
-          export MOTION_RIGS=$PWD/rigsdl/rigs.json
-          python3 kaggle/motionpacks/build_pack.py ${{ matrix.pack }} ${{ matrix.shard }} ${{ matrix.n }} $RUNNER_TEMP/work $RUNNER_TEMP/out 2>&1 | tail -n 60
-          cd $RUNNER_TEMP && tar -cf out.tar out && du -sh out.tar && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in out.tar -out md.enc && rm out.tar
-      - uses: actions/upload-artifact@v4
-        if: inputs.packs == 'all' || contains(inputs.packs, matrix.pack)
-        with: { name: "md-${{ matrix.pack }}-${{ matrix.shard }}", path: "${{ runner.temp }}/md.enc", retention-days: 3, compression-level: 0 }
+        with: { name: md-kaggle-0, path: "${{ runner.temp }}/md.enc", retention-days: 3, compression-level: 0 }
 
   quaternius:
-    needs: rigs
     if: inputs.packs == 'all' || contains(inputs.packs, 'quaternius')
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with: { name: rigs, path: rigsdl }
       - name: Blender 4.2
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6 > /dev/null
@@ -121,14 +80,14 @@ jobs:
           mkdir -p qz && cd qz
           curl -fsSL -A "Mozilla/5.0" -o ual1.zip https://opengameart.org/sites/default/files/universal_animation_librarystandard.zip
           curl -fsSL -A "Mozilla/5.0" -o ual2.zip https://opengameart.org/sites/default/files/universal_animation_library_2standard.zip
-          cd .. && export MOTION_RIGS=$PWD/rigsdl/rigs.json
+          cd .. && export MOTION_RIGS=$PWD/kaggle/motionpacks/rigs.json
           ./blender/blender -b -noaudio --python kaggle/motionpacks/blender_prep.py -- quaternius qz $RUNNER_TEMP/out 2>&1 | grep -E "ZIP|QUATERNIUS|PACK|ERR|Error|Traceback|line [0-9]" | cut -c1-3000
           cd $RUNNER_TEMP && tar -cf out.tar out && openssl enc -aes-256-cbc -pbkdf2 -salt -pass env:MP_KEY -in out.tar -out md.enc
       - uses: actions/upload-artifact@v4
         with: { name: md-quaternius-0, path: "${{ runner.temp }}/md.enc", retention-days: 3, compression-level: 0 }
 
   merge:
-    needs: [build, quaternius]
+    needs: [collect, quaternius]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
