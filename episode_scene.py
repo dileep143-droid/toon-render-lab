@@ -17,6 +17,13 @@ Scene JSON (coordinates are SET-LOCAL: the set's own layout before lib_props cen
   animals    [{id, kind: chamki|sheru, loc, rot_z, size?}]                                  lib_animals
   actions    [{t: seat|pose|move|talk|expr|blinks|gesture|lie_down|hold|show|glint|fx_mark|fx_zzz|
                   animal_play|animal_sleep|animal_walk|animal_turn|animal_expr|animal_blinks|animal_chew, ...}]
+             hand-object (lib_handobj: arm IK + grip + Child Of + solved contact, logged as "EPISODE HANDOBJ"):
+               count_objects {who, hand, container, objs[child names in pick order], ring{radius, z, start_deg}, line_frame,
+                              word_times[s] (explicit counts), ff_times[s0, s1] (fast-forward the rest), pat_times[s], blend[4], steady}
+               hand_pick_place {who, hand, obj (+container), to | to_local, frames{hover, grab, place, off[, mid]}}
+               carry_to {who, obj, f_grab, f_lift, f_place, f_release, place, carry[fwd, up]}     two hands, e.g. thali -> shelf
+               hand_give / hand_eat: documented stubs
+  props[].rest_on {who, frame, parts, radius, gap, tilt_x}: the prop sits on that character (a thali on Dadi's lap)
   shots      [{name, f0, f1, cam: {aim, dist, az, h, lens} | {loc, aim, lens}, end?: {...}}]
      aim = [x, y, z] | {who, seg, dz} | {obj, dz} | {animal, dz};  az = degrees around the aim, 0 = from the front (-Y)
 """
