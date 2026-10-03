@@ -634,6 +634,23 @@ def _contain_mouth(F, rig, mm=None, gain=1.25):
         for _ in range(4):
             if _legal(A, bvh0, 0.002 * s, op0): break
             A = A + Vector((0, 0.006 * s, 0))
+        if not o.get("mouth_inside"):
+            # teeth / tongue: RIGID set-back only (per-vertex pulls toward the anchor turned the teeth into fangs / spikes,
+            # face run 3); their jaw keys stay MPFB's own
+            off = Vector(); bad = 0
+            for _ in range(17):
+                bad = sum(1 for p in base if not _legal(p + off, bvh0, m, op0))
+                if bad <= 0.002 * len(base): break
+                off = off + Vector((0, 0.0005 * s, 0))
+            if off.length > 0:
+                d3 = Mi.to_3x3() @ off
+                if sk:
+                    for kb in sk.key_blocks:
+                        for d in kb.data: d.co = Vector(d.co) + d3
+                else:
+                    for v in o.data.vertices: v.co = v.co + d3
+            rep[o.name] = dict(set_back_mm=round(off.y * 1000, 1), still_bad=bad)
+            continue
         fixed = list(base); n0 = _pull_in(fixed, A, bvh0, m, op0)
         if n0:
             if sk:
