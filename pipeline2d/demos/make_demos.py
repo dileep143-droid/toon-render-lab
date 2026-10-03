@@ -132,7 +132,28 @@ def demo_camera():
     return C.write_video(frames, os.path.join(OUT, "camera.mp4"), fps, crf=28)
 
 
-DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera}
+def demo_transitions():
+    import puppet as PU, transitions as TR
+    man, rm = T.make_human("man"); kid, rk = T.make_human("kid"); dadi, rd = T.make_human("dadi"); fps = C.FPS
+    shots = []
+    for kind, (img, rig), hp in (("village_day", (man, rm), 400), ("village_evening", (dadi, rd), 380), ("village_night", (kid, rk), 330), ("pond", (man, rm), 400)):
+        bg = T.make_background(kind); perf = PU.Performer(img, rig, [dict(motion="wave", start=0.2, dur=1.4), dict(motion="nod", start=1.8, dur=1.0)])
+        def mk(bg=bg, perf=perf, rig=rig, hp=hp):
+            def f(t):
+                fr = bg.copy(); sp, info = perf.frame(t % 3.0); PU.draw_character(fr, sp, info, rig, 640, 650, hp); return fr
+            return f
+        shots.append(mk())
+    plan = [("dissolve", {}), ("wipe", dict(direction="left")), ("iris", dict(center=(0.5, 0.55))), ("page_turn", {}), ("star_wipe", {}), ("flashback", {}), ("meanwhile", dict(text="इसी बीच...", size=110, font="NotoSansDevanagari-Bold.ttf")),
+            ("clock_spin", {}), ("dip_white", {}), ("wipe", dict(direction="down", soft=0.12)), ("dip_black", {}), ("cut", {})]
+    frames = []; hold = 0.45; dur = 0.9
+    for i, (name, kw) in enumerate(plan):
+        fa, fb = shots[i % 4], shots[(i + 1) % 4]; t0 = 0.0
+        for k in range(int(hold * fps)): frames.append(fa(k / fps))
+        for fr in TR.render_transition(fa, fb, name, dur, fps, a_t0=hold, b_t0=0.0, **kw): frames.append(fr)
+    return C.write_video(frames, os.path.join(OUT, "transitions.mp4"), fps, crf=28)
+
+
+DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
