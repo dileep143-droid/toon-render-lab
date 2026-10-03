@@ -60,7 +60,7 @@ open(os.path.join(STAGE, "CREDITS.md"), "w", encoding="utf-8").write("\n".join(l
 # raw sources -------------------------------------------------------------------------------------------------------
 def publish(msg):
     meta = {"title": TITLE, "id": DS, "licenses": [{"name": "other"}],
-            "subtitle": "Private motion library for the Sonpur kids series (MPFB retarget data + raw sources)"}
+            "subtitle": "Private Sonpur motion library: MPFB retarget data + raw"}
     json.dump(meta, open(os.path.join(STAGE, "dataset-metadata.json"), "w", encoding="utf-8"))
     sh(f"du -sh {STAGE}/* ; df -h {STAGE} | tail -1")
     rc, out = sh(f"kaggle datasets status {DS}")
