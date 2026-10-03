@@ -675,9 +675,11 @@ def _mouth_bag(F, mm=None):
     hidden in every face key by _contain_mouth"""
     import lib_hair as LH, bmesh
     s = F.s; mm = mm or _mouth_measure(F)
-    c = Vector((0, mm["lip_y"] + 0.024 * s, mm["mouth_z"] - 0.002 * s))
+    c = Vector((0, mm["lip_y"] + 0.024 * s, mm["mouth_z"] - 0.002 * s)); sy = 0.016 * s
     bm = bmesh.new()
-    LH._ell(bm, c, Vector((0.95 * mm["hw"], 0, 0)), Vector((0, 0.015 * s, 0)), Vector((0, 0, 0.010 * s)), sub=3)
+    LH._ell(bm, c, Vector((0.95 * mm["hw"], 0, 0)), Vector((0, sy, 0)), Vector((0, 0, 0.011 * s)), sub=3)
+    # open the front cap: a dark BACKDROP behind the teeth + tongue (a closed bag hid them = a dark lump in the laugh)
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.y - c.y < -0.3 * sy], context="VERTS")
     mat = LH.solid("mouth_inside_dark", (0.11, 0.015, 0.025), 0.8)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
