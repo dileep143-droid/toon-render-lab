@@ -1,0 +1,8 @@
+# YouTube motion capture: downloaded videos and captured landmark data stay LOCAL / private Kaggle dataset.
+# Only code (mocap_youtube.py, lib_mocap.py, preview_mocap.py) and motion_library/CREDITS.md are public.
+motion_library/src/
+motion_library/data/
+motion_library/models/
+motion_library/candidates.json
+motion_library/clips.json
+motion_library/out/
