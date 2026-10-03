@@ -1,4 +1,4 @@
-"""Stage: cut-out compositor (PIL/numpy/cv2 + ffmpeg). Light CPU work, runs anywhere.
+﻿"""Stage: cut-out compositor (PIL/numpy/cv2 + ffmpeg). Light CPU work, runs anywhere.
   python compose.py <work_dir> <out.mp4> [--frames-only 0,48,...]
 work_dir = out/<ep>/ with plan.json, assets/{plates,props,poses}/ (from Kaggle) and poses/<id>/boxes.json (Gemini boxes).
 Audio: the unit WAVs named in plan["units"] (resolved against episodes/<ep>/audio_full/), music/sfx from out/series.json."""
@@ -191,6 +191,13 @@ def main(work, out_mp4, only=None):
         chosen = json.load(open(os.path.join(work, "choice.json"))).get(pl["id"]) if os.path.exists(os.path.join(work, "choice.json")) else None
         plates[pl["id"]] = np.asarray(Image.open(chosen or f[0]).convert("RGB").resize((2560, 1440), Image.LANCZOS))
     poses = {p["id"]: Pose(os.path.join(A, "poses", p["id"])) for p in plan["poses"] if os.path.exists(os.path.join(A, "poses", p["id"], "meta.json"))}
+    pose_char = {p["id"]: p["char"] for p in plan["poses"]}; pose_name = {p["id"]: p["pose"] for p in plan["poses"]}
+    try:
+        import keyactor
+        KEYCH = keyactor.load(os.path.join(work, "keys_selection.json") if os.path.exists(os.path.join(work, "keys_selection.json")) else None)
+    except Exception as e:
+        print("key drawings unavailable:", e); KEYCH = {}
+    print("key-drawing characters:", list(KEYCH))
     props = {os.path.splitext(os.path.basename(f))[0]: np.asarray(Image.open(f).convert("RGBA")) for f in glob.glob(os.path.join(A, "props", "*.png"))}
     for k, v in props.items():   # trim
         ys, xs = np.nonzero(v[:, :, 3] > 30)
@@ -268,9 +275,11 @@ def main(work, out_mp4, only=None):
         frame = cv2.warpAffine(plate, Mbg, (OW, OH), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT)
         hands = {}
         for ac in sorted(sh.get("actors", []), key=lambda a: a.get("z", 1)):
-            ps = poses.get(ac["pose"])
-            if ps is None: continue
-            char = ps.meta["char"]; mv = ac.get("moves", [])
+            ps = poses.get(ac["pose"]); char = pose_char.get(ac["pose"]) or (ps.meta["char"] if ps else None)
+            kc = KEYCH.get(char); pname = pose_name.get(ac["pose"], "stand")
+            use_keys = kc is not None and kc.covers(pname)
+            if ps is None and not use_keys: continue
+            mv = ac.get("moves", [])
             # who speaks now
             m_state = None; m_prev = None; speaking_shot = any(spk2char.get(sp["speaker"]) == char and sp["wav"] for sp in sh["spans"])
             expr, ew = None, 0.0
@@ -285,34 +294,40 @@ def main(work, out_mp4, only=None):
                         i = min(len(tr) - 1, int((t - sp["t0"]) * FPS)); m_state = int(tr[i]); m_prev = int(tr[max(0, i - 1)])
                     elif not sp["wav"]: m_state = 2 if (t - sp["t0"]) % 0.5 < 0.3 else 1   # animal sound
             if m_state is None and speaking_shot: m_state = 0
-            closed = any(0 <= tg - b < 0.13 for b in blinks[ac["pose"]])
-            arm_moves = [m for m in mv if m["type"] == "arm"]
-            use_arm = bool(arm_moves) and ps.arm is not None and ps.body is not None
-            peeking = any(m["type"] == "peek" and t <= m["t1"] + 0.3 for m in mv) and ps.body is not None
-            has_mouths = "mouth_open" in ps.sprites
-            img = ps.face(closed and not expr, None if has_mouths else m_state, use_arm or peeking).copy()   # peeking: arm hidden
-            if expr and expr in ps.sprites: ps.apply(img, expr, ew)
-            if has_mouths and m_state:
-                key = {1: "mouth_half", 2: "mouth_open"}
-                if m_prev is not None and m_prev != m_state:          # 2-frame cross-fade, no popping
-                    if m_prev: ps.apply(img, key[m_prev], .5)
-                    ps.apply(img, key[m_state], .5 if m_prev == 0 else .6)
-                else: ps.apply(img, key[m_state], 1.0)
-            elif has_mouths and m_prev and m_state == 0: ps.apply(img, {1: "mouth_half", 2: "mouth_open"}[m_prev], .45)
-            if use_arm:
-                ang = 0.0
-                for m in arm_moves:
-                    if m["t0"] <= t <= m["t1"]:
-                        uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); ang = m.get("angle", -30) * abs(math.sin(math.pi * m.get("count", 1) * uu))
-                    elif t > m["t1"] and m.get("hold"): ang = m.get("angle", -30)
-                armf = ps.face(closed, m_state, False) if False else ps.arm
-                img = paste_rot(img, armf, ps.shoulder, ang)
-                if ps.hand:
-                    r = math.radians(-ang); dx, dy = ps.hand[0] - ps.shoulder[0], ps.hand[1] - ps.shoulder[1]
-                    hand_sp = (ps.shoulder[0] + dx * math.cos(r) - dy * math.sin(r), ps.shoulder[1] + dx * math.sin(r) + dy * math.cos(r))
-                else: hand_sp = None
+            if use_keys:      # limited animation: a generated drawing per pose / gesture / walk phase (+ mouth and expression patches)
+                img, ps = kc.frame(pname, mv, t, m_state, expr, ew); hand_sp = ps.hand
+                arm_moves = []; use_arm = peeking = False
             else:
-                hand_sp = ps.hand
+                img, hand_sp = None, None
+            closed = any(0 <= tg - b < 0.13 for b in blinks.get(ac["pose"], []))
+            if not use_keys:
+              arm_moves = [m for m in mv if m["type"] == "arm"]
+              use_arm = bool(arm_moves) and ps.arm is not None and ps.body is not None
+              peeking = any(m["type"] == "peek" and t <= m["t1"] + 0.3 for m in mv) and ps.body is not None
+              has_mouths = "mouth_open" in ps.sprites
+              img = ps.face(closed and not expr, None if has_mouths else m_state, use_arm or peeking).copy()   # peeking: arm hidden
+              if expr and expr in ps.sprites: ps.apply(img, expr, ew)
+              if has_mouths and m_state:
+                  key = {1: "mouth_half", 2: "mouth_open"}
+                  if m_prev is not None and m_prev != m_state:          # 2-frame cross-fade, no popping
+                      if m_prev: ps.apply(img, key[m_prev], .5)
+                      ps.apply(img, key[m_state], .5 if m_prev == 0 else .6)
+                  else: ps.apply(img, key[m_state], 1.0)
+              elif has_mouths and m_prev and m_state == 0: ps.apply(img, {1: "mouth_half", 2: "mouth_open"}[m_prev], .45)
+              if use_arm:
+                  ang = 0.0
+                  for m in arm_moves:
+                      if m["t0"] <= t <= m["t1"]:
+                          uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); ang = m.get("angle", -30) * abs(math.sin(math.pi * m.get("count", 1) * uu))
+                      elif t > m["t1"] and m.get("hold"): ang = m.get("angle", -30)
+                  armf = ps.face(closed, m_state, False) if False else ps.arm
+                  img = paste_rot(img, armf, ps.shoulder, ang)
+                  if ps.hand:
+                      r = math.radians(-ang); dx, dy = ps.hand[0] - ps.shoulder[0], ps.hand[1] - ps.shoulder[1]
+                      hand_sp = (ps.shoulder[0] + dx * math.cos(r) - dy * math.sin(r), ps.shoulder[1] + dx * math.sin(r) + dy * math.cos(r))
+                  else: hand_sp = None
+              else:
+                  hand_sp = ps.hand
             # head moves
             hang = hdx = hdy = 0.0
             for m in mv:
@@ -339,9 +354,9 @@ def main(work, out_mp4, only=None):
                     x_from = m.get("from_x", ac.get("x", .5)); x_to = m.get("to_x", x_from)
                     if t >= m["t0"]:
                         uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); x = x_from + (x_to - x_from) * ease(uu)
-                        if uu < 1:
+                        if uu < 1 and not use_keys:
                             ph = (t - m["t0"]) * 2.2 * math.pi; lift += abs(math.sin(ph)) * .022; rot += 3 * math.sin(ph)
-                            flip = x_to < x_from
+                        if uu < 1: flip = x_to < x_from
                     else: x = x_from
                 if m["type"] == "hop" and m["t0"] <= t <= m["t1"]:
                     uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); lift += math.sin(math.pi * uu) * .12 * ac.get("height", .5)
