@@ -577,6 +577,30 @@ def find_segment(mos, kind, sec=2.5):
 # ---------------------------------------------------------------------------------------------------------------------
 # scene API
 # ---------------------------------------------------------------------------------------------------------------------
+SPECIES_WORDS = {"sheru": ("dog", "sheru", "puppy", "pup"), "chamki": ("goat", "chamki", "kid")}
+BEAT_WORDS = {"walk": ("walk",), "sniff": ("sniff", "smell"), "sit": ("sit",), "wag": ("wag", "tail"), "stop": ("stop", "stand"),
+              "chew": ("chew", "rumin", "eating", "graz"), "bleat": ("bleat", "call", "cry"), "hop": ("hop", "jump", "leap"),
+              "sleep": ("sleep",), "lie": ("lie", "lying"), "run": ("run", "trot", "gallop"), "steal": ("steal",)}
+
+
+def pick_kp(kpdir, who, beat, route="B"):
+    """keypoint file for a beat by NAME: any video folder works (owner's Veo/Flow clips, Commons, Wan) as long as the file
+    name says the animal and the action, e.g. 'goat_hop_02.mp4' -> kp/goat_hop_02.json.  Several matches -> best mean score.
+    route B_gen = generated clips only, B_real = 'real_*' clips only, anything else = all."""
+    best = (None, -1)
+    for p in glob.glob(os.path.join(kpdir, "*.json")):
+        n = os.path.basename(p).lower()
+        if route == "B_gen" and n.startswith("real_"): continue
+        if route == "B_real" and not n.startswith("real_"): continue
+        if not any(w in n for w in SPECIES_WORDS[who]) or not any(w in n for w in BEAT_WORDS.get(beat, (beat,))): continue
+        try:
+            fr = json.load(open(p))["frames"]; sc = float(np.mean([np.mean([k[2] for k in f]) if f else 0 for f in fr]))
+        except Exception:
+            continue
+        if sc > best[1]: best = (p, sc)
+    return best[0]
+
+
 BEATS = {"sheru": [("walk", 60), ("sniff", 48), ("sit", 48), ("wag", 48)],
          "chamki": [("walk", 60), ("stop", 24), ("chew", 48), ("bleat", 40), ("hop", 40)]}
 
@@ -653,19 +677,15 @@ def _bench(argv):
             seg, scv, inf = find_segment(mos, b, sec=n / 24.0) if mos else (None, 0, "")
             print("SEGMENT", b, round(float(scv), 3), inf); info["notes"].append(f"{b}: {inf} score {float(scv):.2f}"); src[b] = seg
         spans = perform(root, rig, beats, 1, "A_nc", src)
-    elif ROUTE in ("B_gen", "B_real"):
-        kp = opt.get("--kp", "kp"); sp = "dog" if WHO == "sheru" else "goat"
-        pick = {"walk": "walk", "sniff": "sniff", "sit": "sit", "wag": "wag", "stop": "stop", "chew": "chew", "bleat": "bleat", "hop": "hop"}
-        realq = {"walk": "walking", "sit": "sitting_down", "sniff": "sniffing_ground", "wag": "wagging_tail", "chew": "chewing", "bleat": "bleating", "hop": "jumping"}
+    elif ROUTE.startswith("B"):
         src = {}
         for b, n in beats:
-            if ROUTE == "B_gen": p = os.path.join(kp, f"{sp}_{pick[b]}.json")
-            else: p = os.path.join(kp, f"real_{sp}_{realq.get(b, 'none')}.json")
-            if os.path.exists(p):
+            p = pick_kp(opt.get("--kp", "kp"), WHO, b, ROUTE)
+            if p:
                 mo = from_kp2d(p); conf = float(np.mean(mo.conf)); info["notes"].append(f"{b}: {os.path.basename(p)} mean conf {conf:.2f}")
                 print("KP", b, p, "frames", mo.F, "conf", round(conf, 2), "ref", mo.ref); src[b] = mo
             else:
-                src[b] = None; info["notes"].append(f"{b}: no clip"); print("KP missing", p)
+                src[b] = None; info["notes"].append(f"{b}: no clip"); print("KP missing", WHO, b)
         spans = perform(root, rig, beats, 1, ROUTE, src)
     info["beats"] = spans; print("SPANS", spans)
     f_end = int(max(s[2] for s in spans))
