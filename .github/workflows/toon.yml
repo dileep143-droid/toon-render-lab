@@ -1,8 +1,10 @@
-﻿name: toon
+name: toon
+# cute toon faces + new jadalu on dressed villagers (cute_test.py). script=old runs the older toon_test.py before/after.
 on:
   workflow_dispatch:
     inputs:
-      strength: { description: "toon proportion strength", required: false, default: "1.0" }
+      jobs: { description: "comma list of jobs or all", required: false, default: "all" }
+      script: { description: "cute (cute_test.py) or old (toon_test.py girl/boy/dadi)", required: false, default: "cute" }
 jobs:
   toon:
     runs-on: ubuntu-latest
@@ -10,12 +12,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        who: [girl, boy, dadi]
+        job: [girl_langa, girl_school, boy, elder, girl_expr]
     steps:
       - uses: actions/checkout@v4
+      - name: Skip?
+        id: skip
+        run: |
+          J="${{ github.event.inputs.jobs || 'all' }}"
+          if [ "$J" = "all" ] || echo ",$J," | grep -q ",${{ matrix.job }},"; then echo "run=1" >> $GITHUB_OUTPUT; else echo "run=0" >> $GITHUB_OUTPUT; fi
       - name: Libraries
+        if: steps.skip.outputs.run == '1'
         run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
       - name: Blender 4.2 LTS + MPFB2
+        if: steps.skip.outputs.run == '1'
         run: |
           curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
           tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
@@ -29,12 +38,17 @@ jobs:
           EOF
           ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip
       - name: MakeHuman CC0 packs
+        if: steps.skip.outputs.run == '1'
         run: |
           curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
           mkdir -p pack functional && unzip -q pack.zip -d pack
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
-      - name: Toon before/after (${{ matrix.who }})
-        run: ./blender/blender -b -noaudio --python toon_test.py -- pack functional out ${{ matrix.who }} ${{ github.event.inputs.strength || '1.0' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|COVER|SKIP|SHOT|WALK|REPORT|DONE|PROP|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception" | cut -c1-3000 | tail -n 200
+      - name: Toon (${{ matrix.job }})
+        if: steps.skip.outputs.run == '1'
+        run: |
+          S="${{ github.event.inputs.script || 'cute' }}"
+          if [ "$S" = "old" ]; then CMD="toon_test.py -- pack functional out ${{ matrix.job }} 1.0"; else CMD="cute_test.py -- pack functional out ${{ matrix.job }}"; fi
+          ./blender/blender -b -noaudio --python $CMD 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|HAIR|FACE|CHECK|SKIP|SHOT|REPORT|DONE|CUTE|OUTFIT built|Error|Traceback|line [0-9]|refusing|Exception|WARN" | cut -c1-3000 | tail -n 400
       - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: "toon-${{ matrix.who }}", path: out, retention-days: 7, if-no-files-found: ignore }
+        if: always() && steps.skip.outputs.run == '1'
+        with: { name: "toon-${{ matrix.job }}", path: out, retention-days: 7, if-no-files-found: ignore }
