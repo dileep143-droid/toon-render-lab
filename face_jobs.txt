@@ -1,1 +1,3 @@
-girl:neutral,happy,big_laugh
+girl:neutral,happy,big_laugh,sad,surprised
+boy:neutral,happy,big_laugh,sad,surprised
+dadi:neutral,happy,big_laugh,sad,surprised
