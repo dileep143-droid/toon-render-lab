@@ -185,7 +185,24 @@ def demo_props():
     return C.write_video(frames, os.path.join(OUT, "props_motion.mp4"), fps, crf=28)
 
 
-DEMOS = {"puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+def demo_scene_life():
+    import scene_life as SL, effects as FX
+    fps = C.FPS; man, rm = T.make_human("man")
+    import puppet as PU
+    pm = PU.Performer(man, rm, [dict(motion="wave", start=1.0, dur=1.6)]); tree = T.make_prop("matka", 260); frames = []
+    segs = [("village_day", "village_morning", 0, 4), ("village_evening", "village_evening", 4, 8), ("village_day", "mela", 8, 11), ("village_day", "road", 11, 15)]
+    bgs = {k: T.make_background(k) for k in ("village_day", "village_evening")}
+    for i in range(int(15 * fps)):
+        t = i / fps; kind, preset, s0, s1 = next(s for s in segs if s[2] <= t < s[3]); f = bgs[kind].copy()
+        SL.ambient(f, t, preset)
+        if preset == "village_morning": SL.water_wheel(f, t, pos=(0.62, 0.52), radius=60, rpm=9); SL.tree_sway(f, t, sprite=tree, pos=(0.9, 0.62), amp=0.05)
+        if preset == "road": SL.cycle(f, t, y=0.9, start=11.5, dur=3.0, size=240)
+        sp, info = pm.frame(t); PU.draw_character(f, sp, info, rm, 640, 690 if preset != "mela" else 700, 360)
+        frames.append(f)
+    return C.write_video(frames, os.path.join(OUT, "scene_life.mp4"), fps, crf=28)
+
+
+DEMOS = {"scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
