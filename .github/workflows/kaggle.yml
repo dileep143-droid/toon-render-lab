@@ -7,7 +7,7 @@ name: kaggle
 on:
   workflow_dispatch:
     inputs:
-      action:     { description: "build | status | sync | list | check", default: "status" }
+      action:     { description: "build | status | sync | list | check | survey", default: "status" }
       kernel_dir: { description: "kaggle/library or kaggle/cast or kaggle/hunyuan", default: "kaggle/library" }
       only:       { description: "build: props | cast | animals", default: "props" }
       mods:       { description: "build: prop modules, e.g. lib_props4 or lib_props,lib_props2", default: "lib_props,lib_props2,lib_props3,lib_props4" }
@@ -58,6 +58,24 @@ jobs:
       - name: Check story needs against the database (read-only)
         if: inputs.action == 'check'
         run: python3 kaggle/check_needs.py ${{ inputs.dataset }} work
+      - name: Survey (read-only) - every kernel on this account, its status and the tail of its log
+        if: inputs.action == 'survey'
+        run: |
+          kaggle kernels list --mine --page-size 100 --csv > k.csv || true
+          head -n 60 k.csv
+          tail -n +2 k.csv | cut -d, -f1 | head -n 40 | while read ref; do
+            echo "================ $ref"; kaggle kernels status "$ref" 2>&1 | tail -n 2
+            rm -rf o && mkdir o && timeout 300 kaggle kernels output "$ref" -p o --file-pattern ".*[.](log|json|txt)$" > /dev/null 2>&1 || true
+            ls -la o | head -n 20
+            for f in o/*.log; do [ -f "$f" ] && python3 -c "
+          import json,sys
+          t=open(sys.argv[1],encoding='utf-8',errors='replace').read()
+          try:
+              L=[x.get('data','') for x in json.loads(t)]; t=''.join(L)
+          except Exception: pass
+          lines=[l for l in t.splitlines() if any(k in l for k in ('EPISODE','ALLOWED','COVERAGE','Error','Traceback','FRAMES','JOB DONE','Killed','No space','ENGINE','RENDER','SKIP','refusing','SCENE DATA'))]
+          print('\\n'.join(lines[-40:]))" "$f" || true; done
+          done
       - name: List
         if: inputs.action == 'list'
         run: kaggle kernels list --mine; kaggle datasets list --mine
