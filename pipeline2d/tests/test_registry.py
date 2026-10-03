@@ -59,3 +59,8 @@ def test_strict_mode_rejects_bad_shot_and_speed():
     try: R.Shot({"cast": {}, "events": [{"effect": "nope"}]}, plate=BG); assert False
     except ValueError as e: assert "unknown effect" in str(e)
     sh = R.Shot(SPEC, plate=BG); sh.frame(0.1); t = C.bench(lambda: sh.frame(1.3), 3); assert t < 0.6, t
+
+
+def test_freeze_event():
+    spec = {"cast": {"k": {"kind": "human", "art": "kid", "x": 300, "y": 660, "height": 300}}, "duration": 3, "events": [{"motion": "walk_cycle", "who": "k", "start": 0, "dur": 3, "speed": 200}, {"freeze": True, "at": 1.0, "hold": 1.0}]}
+    sh = R.Shot(spec, plate=BG); assert sh.duration == 4.0 and np.array_equal(sh.frame(1.0), sh.frame(1.8)) and not np.array_equal(sh.frame(1.0), sh.frame(2.5))

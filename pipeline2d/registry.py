@@ -20,6 +20,7 @@ SHOT JSON (all times in seconds, relative to the shot start)
               {"life": "birds", "start": 0}, {"ambient": "village_morning"},
               {"transition": "dissolve", "start": 5.5, "dur": 0.5},                          # needs shot.frame(t, next_frame=...)
               {"title": "lower_third", "name": "दादी", "role": "सबकी प्यारी", "start": 1, "dur": 3},
+              {"freeze": true, "at": 2.0, "hold": 0.8},                                       # freeze-frame (adds `hold` to the shot length)
               {"sfx": "pop", "start": 2.1}, {"voice": "line1.wav", "start": 0.4}, {"music": "theme.wav"}, {"ambience": "village_day", "start": 0, "end": 6} ] }
 `cast.kind`: human | animal (quadruped) | bird | monkey.  `art`: a testart name, or pass assets={id: (image, rig)} for real art.
 Event order does not matter; draw order is fixed: plate -> life -> characters -> props -> camera -> effects -> titles -> transition."""
@@ -49,7 +50,7 @@ def _doc(fn): return (inspect.getdoc(fn) or "").split("\n\n")[0]
 
 
 def _build():
-    R = {k: {} for k in ("motion", "animal_motion", "bird_motion", "monkey_motion", "effect", "camera", "transition", "prop_motion", "life", "ambient", "title", "sfx", "ambience", "qa")}
+    R = {k: {} for k in ("motion", "animal_motion", "bird_motion", "monkey_motion", "effect", "camera", "transition", "prop_motion", "life", "ambient", "title", "sfx", "ambience", "time", "qa")}
     for n, f in PU.MOTIONS.items(): R["motion"][n] = Entry("motion", n, f, _doc(f), _params(f))
     for n, f in AN.AM.items(): R["animal_motion"][n] = Entry("animal_motion", n, f, _doc(f), _params(f))
     for n, f in AN.BM.items(): R["bird_motion"][n] = Entry("bird_motion", n, f, _doc(f), _params(f))
@@ -63,6 +64,7 @@ def _build():
     for n, f in TI.TITLES.items(): R["title"][n] = Entry("title", n, f, _doc(f), _params(f))
     for n in AUDIO_NAMES["sfx"]: R["sfx"][n] = Entry("sfx", n, AM.synth_sfx, "sound effect (placeholder synth until SFX_LIBRARY has a file)")
     for n in AUDIO_NAMES["ambience"]: R["ambience"][n] = Entry("ambience", n, AM.synth_ambience, "ambience loop for a location")
+    R["time"]["freeze_time"] = Entry("time", "freeze_time", FX.freeze_time, "freeze-frame: {\"freeze\": true, \"at\": s, \"hold\": s} - the picture stops at `at` for `hold` seconds", {"at": None, "hold": 1.0})
     for n, f in QA.CHECKS.items(): R["qa"][n] = Entry("qa", n, f, _doc(f), _params(f))
     return R
 
@@ -70,7 +72,7 @@ def _build():
 REGISTRY = _build()
 # the key that names each event kind in a shot JSON
 EVENT_KEYS = {"motion": None, "effect": "effect", "camera": "camera", "transition": "transition", "prop_motion": "prop_motion", "life": "life", "ambient": "ambient", "title": "title",
-              "sfx": "sfx", "voice": "voice", "music": "music", "ambience": "ambience"}
+              "sfx": "sfx", "voice": "voice", "music": "music", "ambience": "ambience", "freeze": "freeze"}
 CAST_KINDS = {"human": "motion", "animal": "animal_motion", "bird": "bird_motion", "monkey": "monkey_motion"}
 
 
@@ -89,7 +91,7 @@ def find(name):
 
 # ============================================================================================================ JSON schema + validation
 def event_kind(ev):
-    for k in ("motion", "effect", "camera", "transition", "prop_motion", "life", "ambient", "title", "sfx", "voice", "music", "ambience"):
+    for k in ("motion", "effect", "camera", "transition", "prop_motion", "life", "ambient", "title", "sfx", "voice", "music", "ambience", "freeze"):
         if k in ev: return k
     return None
 
@@ -130,6 +132,7 @@ def validate_event(ev, cast=None):
                 if p in ("effect", "start", "dur", "fade", "who", "anchor", "anchor_joint"): continue
                 if p not in REGISTRY["effect"][name].params: errs.append(f"effect {name!r} has no parameter {p!r}; has {sorted(REGISTRY['effect'][name].params)}")
         elif k == "prop_motion" and "prop" not in ev and "sprite" not in ev: errs.append("prop_motion needs 'prop' (id of a sprite in props=)")
+    elif k == "freeze" and "at" not in ev: errs.append("freeze needs \"at\" (and optional \"hold\")")
     elif k == "sfx" and not isinstance(name, str): errs.append("sfx must be a name or path")
     return errs
 
@@ -167,7 +170,8 @@ class Shot:
             self.perf[who] = (AN.AnimalPerformer if c["kind"] != "human" else PU.Performer)(img, rig, evs)
         cams = [e for e in self.events if "camera" in e]
         self.track = CA.CameraTrack.from_events(cams, spec.get("camera_start")) if cams else None
-        self.duration = spec.get("duration", max([e.get("start", 0) + e.get("dur", 0) for e in self.events] + [1.0]))
+        self.freezes = [(e["at"], e.get("hold", 1.0)) for e in self.events if "freeze" in e]
+        self.duration = spec.get("duration", max([e.get("start", 0) + e.get("dur", 0) for e in self.events] + [1.0])) + sum(h for _, h in self.freezes)
 
     # --- helpers
     def _plate(self, t):
@@ -193,6 +197,7 @@ class Shot:
         return out
 
     def frame(self, t, next_frame=None):
+        if self.freezes: t = FX.freeze_time(t, self.freezes)
         f = self._plate(t)
         for e in self.events:                                                                              # scene life behind the characters
             if "life" in e or "ambient" in e: f = SL.run_event(f, e, t, self.sprites)
