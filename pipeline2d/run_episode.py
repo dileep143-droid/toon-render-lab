@@ -195,7 +195,7 @@ def do_frame_qa(work, out_mp4):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("ep"); ap.add_argument("--start", type=float, default=0); ap.add_argument("--seconds", type=float, default=60)
-    ap.add_argument("--key", type=int, default=12); ap.add_argument("--kernel"); ap.add_argument("--out"); ap.add_argument("--cfg"); ap.add_argument("--sheet")
+    ap.add_argument("--key", type=int, default=12); ap.add_argument("--kernel"); ap.add_argument("--out"); ap.add_argument("--cfg"); ap.add_argument("--sheet"); ap.add_argument("--retries", type=int, default=2)
     ap.add_argument("--skip-kaggle", action="store_true", help="assets already downloaded"); a = ap.parse_args()
     a.kernel = a.kernel or f"p2d-{a.ep}-full"
     work = os.path.join(HERE, "out", a.ep); os.makedirs(work, exist_ok=True)
@@ -204,7 +204,7 @@ def main():
     if not a.skip_kaggle and not os.path.exists(os.path.join(work, "assets", "poses")):
         do_kaggle(a, work, pp)
     fails = qa_images(work, plan)
-    for retry in (1, 2):
+    for retry in range(1, a.retries + 1):
         if not fails or a.skip_kaggle: break
         print("QA FAIL -> regenerate:", fails)
         do_kaggle(a, work, pp, only_poses=fails, seed0=1000 * retry + 7, retry=retry)
