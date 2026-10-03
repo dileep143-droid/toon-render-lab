@@ -1,4 +1,4 @@
-﻿"""Stage: cut-out compositor (PIL/numpy/cv2 + ffmpeg). Light CPU work, runs anywhere.
+"""Stage: cut-out compositor (PIL/numpy/cv2 + ffmpeg). Light CPU work, runs anywhere.
   python compose.py <work_dir> <out.mp4> [--frames-only 0,48,...]
 work_dir = out/<ep>/ with plan.json, assets/{plates,props,poses}/ (from Kaggle) and poses/<id>/boxes.json (Gemini boxes).
 Audio: the unit WAVs named in plan["units"] (resolved against episodes/<ep>/audio_full/), music/sfx from out/series.json."""
@@ -179,8 +179,10 @@ def blend(dst, rgba, clip_x=None):
 
 
 # ------------------------------------------------------------------ main
-def main(work, out_mp4, only=None):
+def main(work, out_mp4, only=None, units=None):
     plan = json.load(open(os.path.join(work, "plan.json"), encoding="utf-8-sig"))
+    if units:   # render only the shots whose units fall in [a, b] (GitHub slices)
+        plan["shots"] = [s for s in plan["shots"] if units[0] <= int(s["units"][0]) <= units[1]]
     S = json.load(open(os.path.join(HERE, "out", "series.json"), encoding="utf-8-sig"))
     ep_audio = os.path.join(REPO, "episodes", plan["ep"], "audio_full")
     spk2char = {c.get("speaker", k): k for k, c in S["characters"].items()}
@@ -191,7 +193,17 @@ def main(work, out_mp4, only=None):
         chosen = json.load(open(os.path.join(work, "choice.json"))).get(pl["id"]) if os.path.exists(os.path.join(work, "choice.json")) else None
         plates[pl["id"]] = np.asarray(Image.open(chosen or f[0]).convert("RGB").resize((2560, 1440), Image.LANCZOS))
     poses = {p["id"]: Pose(os.path.join(A, "poses", p["id"])) for p in plan["poses"] if os.path.exists(os.path.join(A, "poses", p["id"], "meta.json"))}
+    for sh_ in plan["shots"]:          # moves given as an instant ("t") also get t0/t1
+        for ac_ in sh_.get("actors", []):
+            for m_ in ac_.get("moves", []):
+                if "t0" not in m_: m_["t0"] = m_.get("t", 0.0)
+                if "t1" not in m_: m_["t1"] = m_.get("t", m_["t0"])
     pose_char = {p["id"]: p["char"] for p in plan["poses"]}; pose_name = {p["id"]: p["pose"] for p in plan["poses"]}
+    for p in plan["poses"]:          # animals: reuse an existing cut-out of the same animal (lie -> lying one, else the standing side view)
+        if p["id"] in poses or p["char"] not in ("chamki", "sheru"): continue
+        want = "lie" if ("lie" in p["id"] or "lie" in p["pose"] or "sit" in p["id"]) else "side"
+        alt = sorted(glob.glob(os.path.join(A, "poses", p["char"] + "_*", "meta.json")), key=lambda f: want not in f)
+        if alt: poses[p["id"]] = Pose(os.path.dirname(alt[0]))
     try:
         import keyactor
         KEYCH = keyactor.load(os.path.join(work, "keys_selection.json") if os.path.exists(os.path.join(work, "keys_selection.json")) else None)
@@ -204,15 +216,29 @@ def main(work, out_mp4, only=None):
         if len(xs): props[k] = v[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 
     # ---- timeline
-    T = 0.0; shots = []; audio_events = []
+    # silent inserts (no dialogue beats) go after the shot that holds their unit
+    ins = {}
+    for si in plan.get("silent_inserts", []): ins.setdefault(int(si["after_unit"]), []).append(si)
+    src_shots = []
     for sh in plan["shots"]:
+        src_shots.append(sh)
+        for si in ins.get(max([int(u) for u in sh["units"]] or [-1]), []):
+            acts = []
+            for j, a in enumerate(si.get("actors", [])):
+                tok = a.split()[0]; walk = "walk" in a
+                mv = [{"type": "walk", "t0": .3, "t1": max(.5, si["dur"] - .4), "from_x": .25 + .1 * j, "to_x": .75}] if walk else []
+                acts.append({"pose": tok, "x": .4 + .2 * j, "foot_y": .88, "height": .5, "z": 2 + j, "moves": mv})
+            src_shots.append({"id": f"ins_{si.get('beat')}", "units": [], "plate": si["plate"], "camera": {"from": [.5, .5, 1.0], "to": [.5, .5, 1.06]},
+                              "actors": acts, "objects": [], "sfx": [], "fixed_dur": float(si.get("dur", 3))})
+    T = 0.0; shots = []; audio_events = []
+    for sh in src_shots:
         t = LEAD; spans = []
         for ui in sh["units"]:
             u = plan["units"][str(ui)]; d = u.get("dur") or NOAUDIO
             wav = os.path.join(ep_audio, u["wav"]) if u.get("wav") else None
             spans.append(dict(unit=ui, t0=t, t1=t + d, speaker=u["speaker"], wav=wav if wav and os.path.exists(wav) else None))
             t += d + GAP
-        dur = t - GAP + TAIL; shots.append(dict(sh, T0=T, dur=dur, spans=spans)); T += dur
+        dur = sh.get("fixed_dur") or (t - GAP + TAIL); shots.append(dict(sh, T0=T, dur=dur, spans=spans)); T += dur
     total = T; nF = int(math.ceil(total * FPS))
     print(f"timeline {total:.1f}s, {len(shots)} shots, {nF} frames")
 
@@ -275,8 +301,8 @@ def main(work, out_mp4, only=None):
         frame = cv2.warpAffine(plate, Mbg, (OW, OH), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT)
         hands = {}
         for ac in sorted(sh.get("actors", []), key=lambda a: a.get("z", 1)):
-            ps = poses.get(ac["pose"]); char = pose_char.get(ac["pose"]) or (ps.meta["char"] if ps else None)
-            kc = KEYCH.get(char); pname = pose_name.get(ac["pose"], "stand")
+            ps = poses.get(ac["pose"]); char = pose_char.get(ac["pose"]) or (ps.meta["char"] if ps else ac["pose"].split("_")[0])
+            kc = KEYCH.get(char); pname = pose_name.get(ac["pose"]) or ("_".join(ac["pose"].split("_")[1:]) or "stand")
             use_keys = kc is not None and kc.covers(pname)
             if ps is None and not use_keys: continue
             mv = ac.get("moves", [])
@@ -355,7 +381,9 @@ def main(work, out_mp4, only=None):
                     if t >= m["t0"]:
                         uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); x = x_from + (x_to - x_from) * ease(uu)
                         if uu < 1 and not use_keys:
-                            ph = (t - m["t0"]) * 2.2 * math.pi; lift += abs(math.sin(ph)) * .022; rot += 3 * math.sin(ph)
+                            ph = (t - m["t0"]) * 2.2 * math.pi
+                            if char in ("chamki", "sheru"): ph *= 1.8; lift += abs(math.sin(ph)) * .004; rot += 1.2 * math.sin(ph)   # trot bob, not a hop
+                            else: lift += abs(math.sin(ph)) * .022; rot += 3 * math.sin(ph)
                         if uu < 1: flip = x_to < x_from
                     else: x = x_from
                 if m["type"] == "hop" and m["t0"] <= t <= m["t1"]:
@@ -419,4 +447,5 @@ def main(work, out_mp4, only=None):
 if __name__ == "__main__":
     a = sys.argv[1:]
     only = [int(x) for x in a[a.index("--frames-only") + 1].split(",")] if "--frames-only" in a else None
-    main(a[0], a[1], only)
+    units = tuple(int(x) for x in a[a.index("--units") + 1].split(":")) if "--units" in a else None
+    main(a[0], a[1], only, units)
