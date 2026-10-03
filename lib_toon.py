@@ -30,7 +30,9 @@ STYLES = {
     # 3 Oct (owner: "make that girl too cute"): head 17 %, eyes 30 % + procedural big dark iris with a catch-light, smaller
     # nose / mouth, fuller cheeks, shorter chin + neck, matte warm skin (no albedo pores), permanent soft blush + lip tint.
     "infobells": dict(head=0.17, eyes=0.30, jaw=0.06, legs=0.07, adult=0.6,
-                      nose=0.30, mouth=0.17, cheek=0.075, chin=0.12, neck=0.30, lash=0.7,
+                      # mouth / chin warps OFF: lib_expressions sizes its mouth bag from the eye spacing, so a narrower
+                      # mouth or a lifted chin let the dark bag poke through the skin (run 1, 3 Oct)
+                      nose=0.30, mouth=0.0, cheek=0.05, chin=0.0, neck=0.12, lash=0.35,
                       tex_mix=0.0, rim=0.12, emit=0.07, skin_gain=0.92, rough=0.72, spec=0.12, sss=0.10,
                       blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.5, lip_rgb=(0.80, 0.40, 0.38),
                       iris_r=0.60, pupil_r=0.27, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
@@ -149,9 +151,7 @@ class _Warp:
         cs = []
         if eyes:
             pts = [self.Mri @ (eyes[0].matrix_world @ c) for c in _rest_coords(eyes[0])]
-            for side in (1, -1):
-                s_ = [p for p in pts if (p.x - head.x) * side > 0]
-                if s_: cs.append(sum(s_, Vector()) / len(s_))
+            cs = [c for c, r in _eyeball_centres(pts, head.x)]
         if len(cs) != 2:
             cs = [c for c in (bh("eye.L"), bh("eye.R")) if c is not None]
         self.eyes0 = cs if len(cs) == 2 else []
@@ -261,6 +261,7 @@ class _Warp:
             L = self.st["lash"] * (0.6 + 0.4 * self.k)
             for i, p in enumerate(ws):
                 c = self.eyes[side[i]]; v = p - c; ex = (v.length - r0[side[i]]) * L
+                if p.z < c.z: continue          # only the UPPER lashes (longer lower lashes drooped over the cheeks)
                 if ex > 0 and v.length > 1e-6: new[i] = Ri @ (p + v.normalized() * ex)
         if o.data.shape_keys:
             kb = o.data.shape_keys.key_blocks
@@ -514,19 +515,37 @@ def toon_eye_material(st, name="toon_eye"):
     return m
 
 
+def _eyeball_centres(pts, cx):
+    """eyeball centre per side from the bounding box (the vertex CENTROID is biased by the dense cornea / iris rings):
+    x, z = box middle, y = back of the ball + radius (front of the character is -y). Returns [(centre, radius)]"""
+    out = []
+    for side in (1, -1):
+        s_ = [p for p in pts if (p.x - cx) * side > 0]
+        if not s_: continue
+        x0, x1 = min(p.x for p in s_), max(p.x for p in s_); z0, z1 = min(p.z for p in s_), max(p.z for p in s_)
+        y1 = max(p.y for p in s_); y0 = min(p.y for p in s_)
+        r = 0.25 * ((x1 - x0) + (z1 - z0))
+        out.append((Vector(((x0 + x1) / 2, y1 - r, (z0 + z1) / 2)), r))
+        print("TOON eyeball", side, "n", len(s_), "box mm", round((x1 - x0) * 1000, 1), round((y1 - y0) * 1000, 1), round((z1 - z0) * 1000, 1))
+    return out
+
+
 def _eye_attr(o, W):
     """write toon_eye = (x, z, -y) of the unit direction from the nearest eyeball centre (rig space) on the eyes proxy"""
     R = W.Mri @ o.matrix_world
     pts = [R @ c for c in _rest_coords(o)]
+    cen = [c for c, r in _eyeball_centres(pts, W.pivot.x)] or W.eyes
     vals = []
     for p in pts:
-        c = min(W.eyes, key=lambda c_: (p - c_).length); dv = p - c
+        c = min(cen, key=lambda c_: (p - c_).length); dv = p - c
         n = dv.normalized() if dv.length > 1e-9 else Vector((0, -1, 0))
         vals += [n.x, n.z, -n.y]
     me = o.data
     a = me.attributes.get("toon_eye") or me.attributes.new("toon_eye", "FLOAT_VECTOR", "POINT")
     a.data.foreach_set("vector", vals)
-    fr = sum(1 for i in range(2, len(vals), 3) if vals[i] > 0.85) / max(1, len(pts))
+    fs = vals[2::3]
+    fr = sum(1 for x in fs if x > 0.85) / max(1, len(pts))
+    print("TOON eye attr centres", [[round(x, 4) for x in c] for c in cen], "front min/max", round(min(fs), 3), round(max(fs), 3), "frac>0.85", round(fr, 3))
     return round(fr, 3)
 
 
