@@ -43,7 +43,7 @@ jobs:
       - name: Face (${{ matrix.char }})
         if: steps.skip.outputs.run == '1'
         run: |
-          ./blender/blender -b -noaudio --python face_check.py -- pack functional out ${{ matrix.char }} ${{ steps.skip.outputs.ex }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|HAIR face|FACE|LEAK|SHOT|DONE|Error|Traceback|line [0-9]|Exception|WARN" | cut -c1-3000 | tail -n 300
+          ./blender/blender -b -noaudio --python face_check.py -- pack functional out ${{ matrix.char }} ${{ steps.skip.outputs.ex }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "TOON|TALK|HAIR face|FACE|LEAK|SHOT|DONE|Error|Traceback|line [0-9]|Exception|WARN" | cut -c1-3000 | tail -n 300
       - uses: actions/upload-artifact@v4
         if: always() && steps.skip.outputs.run == '1'
         with: { name: "face-${{ matrix.char }}", path: out, retention-days: 7, if-no-files-found: ignore }
