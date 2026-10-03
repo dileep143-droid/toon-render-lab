@@ -21,7 +21,19 @@ EXPR_OF = {"laugh": "happy"}   # compose expression keys -> generated expression
 def _load(i, f="rgba.png"):
     p = os.path.join(KEYS, i.replace("/", os.sep), f)
     if not os.path.exists(p): return None
-    a = np.asarray(Image.open(p).convert("RGBA")).copy(); a[:, :, 3] = np.where(a[:, :, 3] > 24, a[:, :, 3], 0); return a
+    a = np.asarray(Image.open(p).convert("RGBA")).copy(); a[:, :, 3] = np.where(a[:, :, 3] > 24, a[:, :, 3], 0); return clean(a) if f == "rgba.png" else a
+
+
+def clean(a):
+    """keep the main figure only (BiRefNet sometimes keeps slivers of a second figure at the canvas edge)"""
+    import cv2
+    n, lab, st, _ = cv2.connectedComponentsWithStats((a[:, :, 3] > 64).astype(np.uint8))
+    if n > 2:
+        big = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA])); area = st[big, cv2.CC_STAT_AREA]
+        keep = np.isin(lab, [i for i in range(1, n) if i == big or st[i, cv2.CC_STAT_AREA] > 0.08 * area])   # props held in hand stay
+        keep = cv2.dilate(keep.astype(np.uint8), np.ones((7, 7), np.uint8)) > 0
+        a[:, :, 3] = np.where(keep, a[:, :, 3], 0)
+    return a
 
 
 def _patch(src_rgba, edit_id):
@@ -112,6 +124,6 @@ def load(sel_path=None):
     sel_path = sel_path or os.path.join(KEYS, "selection.json")
     if not os.path.exists(sel_path): return {}
     S = json.load(open(sel_path)); out = {}
-    for cid, body in (("dadi", "adult"), ("chhotu", "child")):
-        if cid in S and S[cid].get("actions"): out[cid] = KeyChar(cid, S[cid], body)
+    for cid, e in S.items():
+        if isinstance(e, dict) and e.get("actions"): out[cid] = KeyChar(cid, e, e.get("body", "child"))
     return out
