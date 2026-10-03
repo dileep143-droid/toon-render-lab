@@ -20,6 +20,7 @@ def bodies():
 
 def setup(pack_dir, functional_dir):
     import mpfb_child as MC
+    if not pack_dir: return            # packs already installed in MPFB's user data (e.g. a local Blender)
     MC.install_packs(pack_dir, functional_dir)
 
 def _delete(objs):
