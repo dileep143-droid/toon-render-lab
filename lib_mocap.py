@@ -364,7 +364,7 @@ def apply_clip(rig, basemesh, clip_name, start_frame, parts=("body", "hands", "f
             Gt = cur.rotation_difference(want.normalized()) @ pc
             set_chain(seg, pc.inverted() @ Gt, w)
 
-        M_chest = None
+        M_chest = None; prayer = False
         if fr is not None and drive_body:
             # pelvis
             if drive_legs:
@@ -377,6 +377,11 @@ def apply_clip(rig, basemesh, clip_name, start_frame, parts=("body", "hands", "f
             set_chain("spine", pc.inverted() @ Gt, 1.0, spread=True)
             Gchest = G(sb("spine")[-1])
             M_chest = Gchest.to_matrix() @ RI.chest_rest() @ Cs.transposed()
+            # pressed palms (namaste / pleading): the hand tracker loses touching hands, so when both wrists are together in
+            # front of the chest use a pose prior - flat palms meeting at the midline, fingers up, thumbs towards the chest
+            kk = min(n_src - 1, k_src)
+            prayer = (P(fr, "wr_L") - P(fr, "wr_R")).length < 0.16 and min(W_arm["L"][kk], W_arm["R"][kk]) > 0.5 \
+                and (M_chest @ ((P(fr, "wr_L") + P(fr, "wr_R")) / 2 - (P(fr, "sh_L") + P(fr, "sh_R")) / 2)).dot(RI.F) > 0.05
             # arms
             for s in ("L", "R"):
                 w = W_arm[s][min(n_src - 1, k_src)]
@@ -386,6 +391,12 @@ def apply_clip(rig, basemesh, clip_name, start_frame, parts=("body", "hands", "f
                 aim(f"forearm_{s}", fa, w)
                 # hand frame: hand landmarks if tracked, else pose wrist / index / pinky
                 hf = _sample(D.get(f"hand_{_src_side(s, mirror)}"), ft, hold=int(fps_src * 0.4))
+                if prayer:
+                    hb = sb(f"hand_{s}")[0]
+                    a_r = (RI.U * 0.92 + RI.F * 0.3).normalized(); b_r = -RI.F
+                    Gt = (_frame(a_r, b_r) @ RI.hand_rest(s).transposed()).to_quaternion()
+                    setL(hb, G(RI.parent[hb]).inverted() @ Gt, w)
+                    continue
                 if hf is not None and hand_cov[s] > 0.3:
                     hp = hand_pts(hf); a, bb = (hp[5] + hp[17]) / 2 - hp[0], hp[5] - hp[17]
                 else:
@@ -421,7 +432,7 @@ def apply_clip(rig, basemesh, clip_name, start_frame, parts=("body", "hands", "f
 
         # fingers (palm-relative, so they work on any arm pose)
         for s in ("L", "R"):
-            if not drive_fingers[s]: continue
+            if not drive_fingers[s] or prayer: continue          # pressed palms keep the base (straight) fingers
             hf = _sample(D.get(f"hand_{_src_side(s, mirror)}"), ft, hold=int(fps_src * 0.5))
             if hf is None: continue
             hp = hand_pts(hf)
