@@ -56,25 +56,45 @@ def _angdiff(a, b):
 
 
 # ----------------------------------------------------------------------------------------------- materials
-def hair_material(colour="black", oiled=False):
-    rgb = COLOURS.get(colour, (0.05, 0.04, 0.035)) if isinstance(colour, str) else tuple(colour)
-    key = "toonhair_%s_%s" % (colour if isinstance(colour, str) else "%02x%02x%02x" % tuple(int(c * 255) for c in rgb), "oil" if oiled else "matte")
+BLACK_HAIR = (0.075, 0.05, 0.038)    # cartoon "black" hair = dark brown-black (pure black reads as a plastic helmet)
+
+
+def hair_material(colour="black", oiled=False, kind="vol"):
+    """MATTE cartoon hair (3 Oct, owner: braids looked like shiny plastic ropes): roughness ~0.6, low specular, no coat, a
+    soft sheen, fine strand lines (bump + colour). kind='cap': strand lines + anisotropic sheen follow the cap's UV
+    (U runs along the combed strands, hairline -> crown -> nape); kind='vol': object-space strand noise (braids, buns)."""
+    rgb = (BLACK_HAIR if colour == "black" else COLOURS.get(colour, BLACK_HAIR)) if isinstance(colour, str) else tuple(colour)
+    key = "toonhair2_%s_%s_%s" % (colour if isinstance(colour, str) else "%02x%02x%02x" % tuple(int(c * 255) for c in rgb), "oil" if oiled else "matte", kind)
     m = bpy.data.materials.get(key)
     if m: return m
     m = bpy.data.materials.new(key); m.use_nodes = True
     nt = m.node_tree; N, L = nt.nodes, nt.links
     b = next(n for n in N if n.bl_idname == "ShaderNodeBsdfPrincipled")
     base = _lin(rgb)
-    tc = N.new("ShaderNodeTexCoord"); mp = N.new("ShaderNodeMapping"); mp.inputs["Scale"].default_value = (260.0, 260.0, 22.0)
-    nz = N.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 1.0; nz.inputs["Detail"].default_value = 1.0
-    L.new(tc.outputs["Object"], mp.inputs["Vector"]); L.new(mp.outputs["Vector"], nz.inputs["Vector"])
+    tc = N.new("ShaderNodeTexCoord"); mp = N.new("ShaderNodeMapping")
+    nz = N.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 1.0; nz.inputs["Detail"].default_value = 2.0
+    if kind == "cap":
+        mp.inputs["Scale"].default_value = (2.5, 520.0, 1.0); L.new(tc.outputs["UV"], mp.inputs["Vector"])
+    else:
+        mp.inputs["Scale"].default_value = (420.0, 420.0, 40.0); L.new(tc.outputs["Object"], mp.inputs["Vector"])
+    L.new(mp.outputs["Vector"], nz.inputs["Vector"])
     mx = N.new("ShaderNodeMix"); mx.data_type = "RGBA"
-    lo = tuple(c * 0.72 for c in base); hi = tuple(min(1.0, c * 1.35 + 0.004) for c in base)
+    lo = tuple(c * 0.7 for c in base); hi = tuple(min(1.0, c * 1.45 + 0.006) for c in base)
     mx.inputs[6].default_value = (*lo, 1); mx.inputs[7].default_value = (*hi, 1)
     L.new(nz.outputs["Fac"], mx.inputs[0]); L.new(mx.outputs[2], b.inputs["Base Color"])
-    b.inputs["Roughness"].default_value = 0.24 if oiled else 0.42
-    for nm, v in (("Specular IOR Level", 0.6 if oiled else 0.45), ("Coat Weight", 0.15 if oiled else 0.0), ("Coat Roughness", 0.2), ("Sheen Weight", 0.0)):
-        if nm in b.inputs: b.inputs[nm].default_value = v
+    bump = N.new("ShaderNodeBump"); bump.inputs["Strength"].default_value = 0.22 if kind == "cap" else 0.15
+    bump.inputs["Distance"].default_value = 0.002
+    L.new(nz.outputs["Fac"], bump.inputs["Height"]); L.new(bump.outputs["Normal"], b.inputs["Normal"])
+    b.inputs["Roughness"].default_value = 0.5 if oiled else 0.62
+    for nm, v in (("Specular IOR Level", 0.36 if oiled else 0.28), ("Coat Weight", 0.0), ("Sheen Weight", 0.35), ("Sheen Roughness", 0.45),
+                  ("Sheen Tint", (0.62, 0.5, 0.42, 1.0))):
+        if nm in b.inputs:
+            try: b.inputs[nm].default_value = v
+            except Exception: pass
+    if kind == "cap" and "Anisotropic" in b.inputs:
+        tg = N.new("ShaderNodeTangent"); tg.direction_type = "UV_MAP"
+        b.inputs["Anisotropic"].default_value = 0.6
+        if "Tangent" in b.inputs: L.new(tg.outputs["Tangent"], b.inputs["Tangent"])
     if "Emission Color" in b.inputs:
         L.new(mx.outputs[2], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 0.05
     m.diffuse_color = (*base, 1)
@@ -428,11 +448,14 @@ def _cap(F, name, mat, line, thick, parting=None, ridge=0.6, hang=0.0, band_top=
                 else: rho_max = max(rho_max, rho)
         grid.append([bm.verts.new(p) for p in col])
     cols = range(ncol) if wrap else range(ncol - 1)
+    uvl = bm.loops.layers.uv.new("UVMap")      # U = along the strands (crown -> hairline), V = around the head
     for i in cols:
         a, b = grid[i], grid[(i + 1) % ncol]
         for j in range(M):
-            try: bm.faces.new((a[j], b[j], b[j + 1], a[j + 1]))
-            except ValueError: pass
+            try: f = bm.faces.new((a[j], b[j], b[j + 1], a[j + 1]))
+            except ValueError: continue
+            for lp, (jj, ii) in zip(f.loops, ((j, i), (j, i + 1), (j + 1, i + 1), (j + 1, i))):
+                lp[uvl].uv = (jj / M, ii / ncol)
     bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-6)
     bm.normal_update()
     bad = sum(1 for f in bm.faces if f.normal.dot(f.calc_center_median() - F.c) < 0)
@@ -459,19 +482,38 @@ def _back_path(F, root, z_end, r_fn, x_fn=lambda u: 0.0, slope=0.45, n=40):
     return pts
 
 
-def _braid(F, name, mat, path, r0, r1, ref=Vector((0, 1, 0)), wfun=None):
-    bm = bmesh.new(); P = _resample(_catmull(path, 4), 0.9 * r0)
+def _braid(F, name, mat, path, r0, r1, ref=Vector((0, 1, 0)), wfun=None, period=4.4):
+    """real three-strand cartoon jada (3 Oct; the old one was a string of round beads): three flattened strands woven
+    over / under each other (strand k: lateral A sin(t + 2 pi k / 3), depth D sin 2(t + 2 pi k / 3)), plumper at the outer
+    bends so the alternating overlapping lobes read clearly, tapering from r0 at the nape to r1 at the tie, plus a thin
+    core that closes the gaps. One full weave every `period` x the local radius (the pattern shrinks with the taper).
+    ref = the facing direction (lobes face it: +y for a braid down the back)."""
+    bm = bmesh.new()
+    P = _resample(_catmull(path, 4), 0.1 * r0)
     n = len(P)
-    for k, p in enumerate(P):
-        u = k / max(1, n - 1); r = r0 + (r1 - r0) * u
-        T = (P[min(n - 1, k + 1)] - P[max(0, k - 1)]).normalized()
-        side = T.cross(ref)
-        if side.length < 1e-6: side = T.orthogonal()
-        side.normalize(); nrm = side.cross(T).normalized()
-        sg = 1 if k % 2 else -1; ang = R(34) * sg
-        a = (T * math.cos(ang) + side * math.sin(ang)).normalized(); s2 = nrm.cross(a).normalized()
-        c = p + side * (0.3 * r * sg)
-        _ell(bm, c, s2 * 0.78 * r, nrm * 0.72 * r, a * 1.25 * r, sub=2)
+    if n < 4:
+        P = _resample(_catmull(path, 6), 0.03 * r0); n = len(P)
+    T = [(P[min(n - 1, k + 1)] - P[max(0, k - 1)]).normalized() for k in range(n)]
+    S = []; Nn = []; side_prev = None
+    for k in range(n):
+        side = T[k].cross(ref)
+        if side.length < 1e-6: side = side_prev if side_prev is not None else T[k].orthogonal()
+        side = side.normalized()
+        if side_prev is not None and side.dot(side_prev) < 0: side = -side
+        side_prev = side; S.append(side); Nn.append(side.cross(T[k]).normalized())
+    rad = [r0 + (r1 - r0) * (k / max(1, n - 1)) ** 0.85 for k in range(n)]
+    th = [0.0]
+    for k in range(1, n):
+        th.append(th[-1] + 2 * math.pi * (P[k] - P[k - 1]).length / (period * 0.5 * (rad[k] + rad[k - 1])))
+    for s in range(3):
+        ph = 2 * math.pi * s / 3
+        pts = []; rr = []
+        for k in range(n):
+            t = th[k] + ph; r = rad[k]
+            pts.append(P[k] + S[k] * (0.56 * r * math.sin(t)) + Nn[k] * (0.30 * r * math.sin(2 * t)))
+            rr.append(0.43 * r * (0.82 + 0.3 * abs(math.sin(t))))
+        _tube(bm, pts, lambda u, rr=rr: rr[min(len(rr) - 1, int(round(u * (len(rr) - 1))))], nseg=10, flat=0.72, ref=ref, tip=False)
+    _tube(bm, P, lambda u: 0.5 * rad[min(n - 1, int(round(u * (n - 1))))], nseg=10, flat=0.7, ref=ref, tip=False)
     for f in bm.faces: f.smooth = True
     w = [(wfun(v.co) if wfun else F.w_hang(v.co)) for v in bm.verts]
     return _obj(F, bm, name, mat, w, subsurf=1, role="braid"), P
@@ -634,19 +676,24 @@ def _style_cap(F, style, mat):
 
 
 def _ribbon(F, p, side, out, size, colour, name="hair_ribbon_bow"):
-    return _rigid(F, name, solid("ribbon_%02x%02x%02x" % tuple(int(c * 255) for c in colour), colour, 0.35),
-                  lambda bm: _bow(bm, p, side, out, size), wfun=lambda co: F.w_hang(co), role="ribbon")
+    return _rigid(F, name, solid("ribbon2_%02x%02x%02x" % tuple(int(c * 255) for c in colour), colour, 0.55),
+                  lambda bm: _bow(bm, p, side, out, size), wfun=lambda co: F.w_hang(co), role="ribbon", subsurf=2)
 
 
-def _tassel(F, p, down, name="kuchulu"):
-    s = F.s; a, e1, e2 = _frame(down)
+def _tassel(F, p, down, name="kuchulu", k=2.0):
+    """kuchulu: gold cap + red silk tassel (3 Oct: k = 2x the old size so it reads at full-body distance); hangs straight
+    down, kept clear of the langa / blouse"""
+    s = F.s * k; a = Vector((0, 0, -1)) if down.z < -0.5 else down.normalized(); a, e1, e2 = _frame(a)
     gold = solid("kuchulu_gold", (1.0, 0.76, 0.28), 0.3, 0.85); red = solid("kuchulu_red", (0.8, 0.05, 0.12), 0.6)
-    o1 = _rigid(F, name + "_cap", gold, lambda bm: _ell(bm, p + a * 0.008 * s, e1 * 0.009 * s, e2 * 0.009 * s, a * 0.012 * s, sub=2), wfun=F.w_hang, role="tassel")
+    cp = p + a * 0.008 * s; _clear_point(F, cp, 0.009 * s)
+    o1 = _rigid(F, name + "_cap", gold, lambda bm: _ell(bm, cp, e1 * 0.009 * s, e2 * 0.009 * s, a * 0.012 * s, sub=2), wfun=F.w_hang, role="tassel", subsurf=1)
     def build(bm):
-        for k in range(3):
-            t = 2 * math.pi * k / 3; off = (e1 * math.cos(t) + e2 * math.sin(t)) * 0.005 * s
-            _tube(bm, [p + a * 0.016 * s + off, p + a * 0.04 * s + off * 1.6, p + a * 0.06 * s + off * 2.0], lambda u: 0.0045 * s * (1 - 0.6 * u), nseg=8)
-    o2 = _rigid(F, name + "_silk", red, build, wfun=F.w_hang, role="tassel")
+        for j in range(5):
+            t = 2 * math.pi * j / 5; off = (e1 * math.cos(t) + e2 * math.sin(t)) * 0.0045 * s
+            pts = [cp + a * 0.008 * s + off, cp + a * 0.03 * s + off * 1.5, cp + a * 0.052 * s + off * 1.9]
+            for q in pts: _clear_point(F, q, 0.004 * s)
+            _tube(bm, _catmull(pts, 4), lambda u: 0.0032 * s * (1 - 0.5 * u), nseg=8)
+    o2 = _rigid(F, name + "_silk", red, build, wfun=F.w_hang, role="tassel", subsurf=1)
     return [o1, o2]
 
 
@@ -658,10 +705,11 @@ def _style_volumes(F, style, mat, opts):
         root, d = _back_point(F, -0.56, out=0.006 * s)
         _ = out.append(_rigid(F, "hair_gather", mat, lambda bm: _ell(bm, root - d * 0.004 * s, Vector((0.03, 0, 0)) * s, Vector((0, 0.016, 0)) * s, Vector((0, 0, 0.032)) * s, sub=2)))
         # jada ends just above the waist so the kuchulu tassel hangs over the waistband (not hidden in the skirt top)
-        z_end = B.zw + 0.3 * (B.zc - B.zw) if style == "tied_long_jada" else B.zc - 0.35 * (B.zc - B.zw)
-        r0 = 0.0145 * s
-        path = _back_path(F, root + Vector((0, 0.006 * s, 0)), z_end, lambda u: r0 * (1 - 0.35 * u))
-        o, P = _braid(F, "hair_braid", mat, path, r0, r0 * 0.6); out.append(o)
+        # (3 Oct) the kuchulu is 2x bigger now: the braid ends higher so the tassel hangs down to the waistband
+        z_end = B.zw + 0.62 * (B.zc - B.zw) if style == "tied_long_jada" else B.zc - 0.35 * (B.zc - B.zw)
+        r0 = 0.0155 * s
+        path = _back_path(F, root + Vector((0, 0.006 * s, 0)), z_end, lambda u: r0 * (1 - 0.6 * u))
+        o, P = _braid(F, "hair_braid", mat, path, r0, r0 * 0.38); out.append(o)
         end = P[-1]; T = (P[-1] - P[-2]).normalized()
         if style == "tied_long_jada": out += _tassel(F, end, T)
         else: out.append(_ribbon(F, end + T * 0.004 * s + Vector((0, 0.006 * s, 0)), Vector((1, 0, 0)), Vector((0, 1, 0)), 0.018 * s, rib))
@@ -674,7 +722,7 @@ def _style_volumes(F, style, mat, opts):
             shx = sd * max(0.55 * B.sw, F.rx * 0.95)
             l1, _ = F.surf_from(Vector((shx, B.bh["neck01"].y + 0.01, B.zn + 0.3 * (F.ze - B.zn))), Vector((0, 0, -1)))
             l2, _ = F.surf_from(Vector((sd * 0.62 * B.sw, -3, B.zc + 0.02 * B.Hs)), Vector((0, 1, 0)))
-            r0 = 0.0125 * s * (1.25 if style == "side_braid" else 1.0)
+            r0 = (0.0155 if style == "side_braid" else 0.0088) * s     # the two forward plaits: thinner + lighter (3 Oct)
             p1 = (l1 + Vector((0, 0, r0 + 0.006 * s))) if l1 is not None else root + Vector((0, -0.02, -0.08)) * s
             p2 = (l2 + Vector((0, -(r0 + 0.006 * s), 0))) if l2 is not None else p1 + Vector((0, -0.05, -0.1)) * s
             p3 = p2 + Vector((0, -0.004 * s, -0.07 * s * (1.4 if style == "side_braid" else 1.0)))
@@ -682,15 +730,15 @@ def _style_volumes(F, style, mat, opts):
             path = [root, mid, p1, (p1 + p2) * 0.5 + Vector((0, -0.01 * s, 0.01 * s)), p2, p3]
             path = _catmull(path, 6)
             for p in path: _clear_point(F, p, r0 * 0.95)
-            o, P = _braid(F, f"hair_plait{'L' if sd > 0 else 'R'}", mat, path, r0, r0 * 0.65, ref=Vector((0, -1, 0)))
+            o, P = _braid(F, f"hair_plait{'L' if sd > 0 else 'R'}", mat, path, r0, r0 * 0.5, ref=Vector((0, -1, 0)))
             out.append(o)
             end = P[-1]; T = (P[-1] - P[-2]).normalized()
-            out.append(_ribbon(F, end + T * 0.006 * s + Vector((0, -0.006 * s, 0)), Vector((1, 0, 0)), Vector((0, -1, 0)), 0.016 * s, rib, name=f"hair_ribbon_{'L' if sd > 0 else 'R'}"))
+            out.append(_ribbon(F, end + T * 0.006 * s + Vector((0, -0.006 * s, 0)), Vector((1, 0, 0)), Vector((0, -1, 0)), 0.018 * s, rib, name=f"hair_ribbon_{'L' if sd > 0 else 'R'}"))
     elif style in ("two_plaits_looped", "girl_two_jadas_with_ribbons_folded"):
         fc = F.face()
         for sd in (1, -1):
             th = sd * R(125); root, d = _back_point(F, -0.45, theta=th, out=0.006 * s)
-            r0 = 0.0115 * s; outd = Vector((sd, 0.55, 0)).normalized()     # loops hang behind the ears, folded up to the ribbon
+            r0 = 0.0092 * s; outd = Vector((sd, 0.55, 0)).normalized()     # loops hang behind the ears, folded up to the ribbon
             zb = B.zn - 0.03 * B.Hs
             down = [root, root + Vector((0, 0, (zb - root.z) * 0.5)) + outd * 0.004 * s, Vector((root.x, root.y + 0.004 * s, zb)) + outd * 0.012 * s]
             loop_bot = Vector((root.x, root.y + 0.006 * s, zb - 0.012 * s)) + outd * 0.028 * s
@@ -1152,7 +1200,7 @@ def add_hair(basemesh, rig, style, colour=None, seed=0, **opts):
                 if style == "tuft_shikha":   # shaved head: a faint dark stubble tint
                     skin_overlay(h, "shaved", lambda p, F=F: _sm(F.f2z(0.45), F.f2z(0.62), p.z) if p.y > F.cy - 0.6 * F.ry or p.z > F.f2z(0.62) else 0.0,
                                  rgb=(0.32, 0.27, 0.25), amount=0.45, speckle=True)
-            cap = _style_cap(F, style, mat)
+            cap = _style_cap(F, style, hair_material(colour, oiled=opts.get("oiled", style in OILED), kind="cap"))
             if cap is not None: out.append(cap)
             out += _style_volumes(F, style, mat, opts)
             out += _refit_accessories(h, rig, F, style, opts)
