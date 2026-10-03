@@ -22,6 +22,8 @@ import lib_anim as A
 
 R = math.radians
 DEBUG = bool(os.environ.get("LE_DEBUG"))
+TOON_TEETH = False        # cartoon upper-teeth band: off (poked through the lower lip of the boy / Dadi at rest)
+SHOW_MPFB_TEETH = False   # MPFB teeth proxy: hidden (fangs / braces when bound to the lips); mouth = dark interior + tongue
 
 
 def _b(name, v):
@@ -118,7 +120,7 @@ EXPR = {
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
                    anim="tremble", desc="'à¤­à¥‚à¤¤!' scream: hands on the cheeks, jaw dropped"),
-    "nervous": E({**_b("mouthStretch", 0.6), **_b("mouthPress", 0.3), "browInnerUp": 0.85, **_b("eyeWide", 0.35), **_b("mouthFrown", 0.2)},
+    "nervous": E({**_b("mouthStretch", 1.0), **_b("mouthUpperUp", 0.3), **_b("mouthLowerDown", 0.3), "browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.3), "jawOpen": 0.05},
                  {"head": {"fwd": 6, "turn": -6}, "clav_L": {"lift": 11}, "clav_R": {"lift": 11}, "spine": {"fwd": 4}},
                  H("belly", off=(0.5, -0.25, -0.05), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
                  H("belly", off=(0.5, -0.25, 0.0), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
@@ -133,7 +135,7 @@ EXPR = {
                  eyes=(0, -14), desc="head hung low, shoulders dropped, arms limp"),
     "embarrassed": E({**_b("mouthSmile", 0.55), **_b("mouthStretch", 0.4), "browInnerUp": 0.65, **_b("cheekSquint", 0.45), **_b("eyeSquint", 0.3)},
                      {"head": {"fwd": 10, "out": -10}, "clav_R": {"lift": 8}},
-                     "idle", H("head_side", off=(-0.12, 0.0, 0.18), tip=0.5, pole=(0.3, 1.0, -0.2), curl="relaxed", twist=40),
+                     "idle", H("head_side", off=(-0.1, -0.05, -0.08), tip=0.3, pole=(0.3, 1.0, -0.3), curl="relaxed", clear=0.02, haim=(-0.1, -0.5, 0.85), palm=(0, -1, 0)),
                      eyes=(-14, -6), blush=1.0, anim="scratch", desc="blushing, sheepish grin, scratching the back of the head"),
     "shy": E({**_b("mouthSmile", 0.5), **_b("mouthPress", 0.3), "browInnerUp": 0.55, **_b("cheekSquint", 0.3)},
              {"head": {"fwd": 20, "out": 10}, "spine": {"turn": 8}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
@@ -174,7 +176,7 @@ EXPR = {
                    eyes=(-10, 0), desc="karela eww: nose wrinkled, tongue out, hand pushing it away"),
     # ---------------- thinking / scheming ----------------
     "confused": E({"browInnerUp": 0.35, "browDownRight": 0.85, "browOuterUpLeft": 0.95, "mouthLeft": 0.5, **_b("mouthPress", 0.3), "mouthFrownRight": 0.45, "eyeSquintRight": 0.35},
-                  {"head": {"out": 18}}, "idle", H("head_side", off=(0.0, 0.0, 0.3), tip=0.6, pole=(0.3, 1.0, 0.1), curl="relaxed", twist=40),
+                  {"head": {"out": 18}}, "idle", H("head_side", off=(0.02, -0.05, -0.05), tip=0.3, pole=(0.3, 1.0, -0.3), curl="relaxed", clear=0.02, haim=(0.0, -0.5, 0.85), palm=(0, -1, 0)),
                   eyes=(0, 6), anim="scratch", desc="head tilt, one brow up, scratching the head"),
     "thinking": E({"browDownRight": 0.45, "browInnerUp": 0.35, "browOuterUpLeft": 0.3, "mouthPucker": 0.35, "mouthLeft": 0.35, **_b("mouthPress", 0.2)},
                   {"head": {"out": 8, "fwd": -6}},
@@ -198,7 +200,7 @@ EXPR = {
     "fake_innocent": E({**_b("eyeWide", 0.8), "browInnerUp": 0.9, **_b("mouthSmile", 0.25), "mouthPucker": 0.4},
                        {"head": {"out": 14, "fwd": -6}, "spine": {"fwd": -3}}, "behind", "behind", eyes=(0, 20), anim="sway",
                        desc="big eyes to the sky, whistle mouth, hands behind back"),
-    "mischievous_grin": E({"mouthSmileLeft": 1.0, "mouthSmileRight": 0.75, **_b("mouthDimple", 0.5), **_b("eyeSquint", 0.6), **_b("cheekSquint", 0.6), "browDownRight": 0.5,
+    "mischievous_grin": E({"mouthSmileLeft": 1.0, "mouthSmileRight": 0.9, **_b("mouthDimple", 0.5), **_b("eyeSquint", 0.75), **_b("cheekSquint", 0.8), "browDownRight": 0.6, **_b("browDown", 0.25), "jawOpen": 0.12,
                            "browOuterUpLeft": 0.65, **_b("mouthUpperUp", 0.2)},
                           {"head": {"out": -8, "fwd": 8}, "spine": {"fwd": 5}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
                           H("chest", off=(0.5, 0.04, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", haim=(0.5, -0.3, 0.8), palm=(0, -1, 0)),
@@ -256,7 +258,7 @@ EXPR = {
                         eyes=(-22, 0), anim="dart", desc="leaning in, hand beside the mouth, eyes checking"),
     "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
                   {"head": {"fwd": 4}, "spine": {"fwd": 6}},
-                  "idle", H("mouth", off=(0.0, 0.0, -0.02), tip=0.85, pole=(0.3, 0.6, -0.75), curl="point", clear=0.04, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
+                  "idle", H("mouth", off=(0.0, 0.0, 0.1), tip=0.95, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
                   desc="'à¤¶à¥à¤¶à¥à¤¶!' finger on the lips"),
     "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
                   {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
@@ -385,7 +387,7 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         if mouth: _mouth_bag(F)
         try: _fix_teeth(rig)
         except Exception as ex: print("FACE teeth fix fail", repr(ex)[:200])
-        if mouth:
+        if mouth and TOON_TEETH:
             try: _toon_teeth(F, rig)
             except Exception as ex: print("FACE toon teeth fail", repr(ex)[:200])
         _blush_setup(F)
@@ -413,6 +415,7 @@ def _fix_teeth(rig):
         kind = "teeth" if "teeth" in nm else "tongue" if "tongue" in nm else None
         if not kind: continue
         mat = LH.solid("teeth_toon", (0.97, 0.96, 0.92), 0.35) if kind == "teeth" else LH.solid("tongue_toon", (0.86, 0.36, 0.40), 0.45)
+        if kind == "teeth" and not o.get("toon_teeth") and not SHOW_MPFB_TEETH: o.hide_render = True; o.hide_viewport = True
         o.data.materials.clear(); o.data.materials.append(mat)
         sk = o.data.shape_keys
         if not sk: continue
@@ -467,11 +470,11 @@ def _mouth_bag(F):
     fc = F.face(); s = F.s
     c = Vector((0, fc["lip_y"] + 0.034 * s, fc["mouth_z"] - 0.002 * s))
     bm = bmesh.new()
-    LH._ell(bm, c, Vector((0.55 * fc["mouth_w"] + 0.004 * s, 0, 0)), Vector((0, 0.017 * s, 0)), Vector((0, 0, 0.012 * s)), sub=3)
+    LH._ell(bm, c, Vector((0.55 * fc["mouth_w"] + 0.004 * s, 0, 0)), Vector((0, 0.016 * s, 0)), Vector((0, 0, 0.0105 * s)), sub=3)
     for _ in range(3):   # keep it well inside the head
         for v in bm.verts:
             loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
-            if loc is not None and (v.co - loc).dot(nrm) > -0.006 * s: v.co = loc - nrm * 0.006 * s
+            if loc is not None and (v.co - loc).dot(nrm) > -0.009 * s: v.co = loc - nrm * 0.009 * s
     mat = LH.solid("mouth_inside", (0.22, 0.03, 0.04), 0.7)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
