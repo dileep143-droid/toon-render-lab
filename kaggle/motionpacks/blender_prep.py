@@ -3,7 +3,7 @@
       MPFB 'default' rig rest data for reference bodies (used for numeric QC of every motion)
   blender -b -noaudio --python kaggle/motionpacks/blender_prep.py -- quaternius <dir with the UAL zips> <out_dir>
       sample every action of Quaternius Universal Animation Library 1+2 (CC0) -> md .npz + catalogue_quaternius_0.json"""
-import bpy, sys, os, json, glob, zipfile, time, traceback
+import bpy, sys, os, re, json, glob, zipfile, time, traceback
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, REPO); sys.path.insert(0, HERE)
@@ -58,7 +58,7 @@ def quaternius(zdir, out):
         rest_rot = [np.array((mw @ b.matrix_local).to_3x3().normalized()) for b in arm.data.bones]
         if not seen: print("QUATERNIUS BONES", names[:80])
         for act in list(bpy.data.actions):
-            key = f"{lib}_{PK.slug(act.name)}"
+            key = f"{lib}_{PK.slug(re.sub(r'[_ .]*(armature|rig)(\.\d+)?$', '', act.name, flags=re.I))}"
             if key in seen: continue
             seen.add(key)
             try:
