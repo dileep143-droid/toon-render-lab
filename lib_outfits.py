@@ -488,7 +488,7 @@ def _neck_profile(B, z, n=48, a0=0.0, a1=2 * math.pi, pad=0.003):
 
 def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.0015, thick=0.002, buttons_n=0, btn_colour=(0.9, 0.85, 0.7)):
     """mandarin / band collar: a low stand that sits ON the neck base and hugs the neck (front gap)"""
-    s = B.Hs / 1.6; h = h or 0.024 * s
+    s = B.Hs / 1.6; h = h or 0.02 * s
     zb = B.zn - 0.006 * B.Hs
     a0, a1 = -math.pi / 2 + gap, 1.5 * math.pi - gap
     c0, prof0 = _neck_profile(B, B.zn + 0.004 * B.Hs, 40, a0, a1, pad)
@@ -829,7 +829,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
     _register(B, o)
     return o
 
-def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=None):
+def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=None, contain_to=None):
     """measured rings: snug at the waist, widest at the hips, then a straight / flared fall to the hem"""
     step = step or 0.015 * B.Hs
     # 1) measured section: waist -> widest hip (searched between the crotch and the waist)
@@ -854,7 +854,7 @@ def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=Non
     zs = []; z = zH - step
     while z > z_hem: zs.append(z); z -= step
     zs.append(z_hem)
-    need = [(z, B.ring(z, ease, cy=cy)) for z in zs]
+    need = [(z, B.ring(z, ease, cy=cy)) for z in zs if contain_to is None or z >= contain_to]   # contain_to: only make room for the legs down to here (straight wraps)
     rxe, rye = rxH * flare, ryH * flare
     prof = lambda z, a, e: a + (e - a) * (((zH - z) / (zH - z_hem)) ** 0.85)
     for _ in range(60):
@@ -1137,13 +1137,14 @@ def waistband(B, z, mat, h=None, ease=0.006, name="waistband", pad=0.0015, thick
     ease is kept for old calls and only caps the pad."""
     h = h or 0.022 * B.Hs; rg = B.ring(z, 0.0)
     if rg is None: return None
-    cy = rg[0]; bv = B.bvh(); pad = min(pad, ease) if ease else pad
+    cy, rx0, ry0 = rg; bv = B.bvh(); pad = min(pad, ease) if ease else pad
     rows = []
     for zz in (z + h / 2, z, z - h / 2):
         c = Vector((0.0, cy, zz)); row = []
         for i in range(segs):
             a = 2 * math.pi * i / segs; d = Vector((math.cos(a), math.sin(a), 0))
-            loc, nrm, _, _ = bv.ray_cast(c + d * 0.8, -d, 0.8)
+            r0 = 1.35 / math.sqrt((d.x / rx0) ** 2 + (d.y / ry0) ** 2) + 0.025   # start just outside the clothed waist, inside the arms
+            loc, nrm, _, _ = bv.ray_cast(c + d * r0, -d, r0)
             row.append((loc + d * pad) if loc is not None else c + d * 0.12)
         rows.append(row)
     bm, G = _grid(rows, lambda r, c: (c / segs, 1 - r / 2), closed=True)
@@ -1525,7 +1526,7 @@ def _build(B, outfit, C, o):
         lm = fabric("lungi", C["lungi"], 0.85, 0.4, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.045 * s, "lw": 0.1, "c3": C["check2"]}, coord="uv")
         short = o.get("lungi_short", False)
         hem = (B.zk - 0.03 * Hs) if short else max(0.012, 0.6 * B.za)
-        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=0.9, ease=0.008, top_ease=0.003)   # straight wrap that falls close to the legs (inner layer covers any stride gap)
+        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.008, top_ease=0.003, contain_to=B.zk)   # straight wrap: room for the legs only to the knee, then a straight fall (the A-pose feet apart no longer widen the hem; the inner layer covers any gap)
         G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95))
         G.append(lathe(B, "lungi", lm, rings, segs=96, sim=SKIRT_SIM))
         G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.02 * Hs, name="lungi_roll", pad=0.002, thick=0.004))
