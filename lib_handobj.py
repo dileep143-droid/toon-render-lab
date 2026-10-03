@@ -221,7 +221,7 @@ def hand(rig, side):
 # head + eyes look-at
 # =====================================================================================================================
 class Look:
-    def __init__(self, rig, head_weight=0.6):
+    def __init__(self, rig, head_weight=0.4):
         self.rig = rig; arm = rig.arm; b = arm.data.bones; pb = arm.pose.bones
         self.t = _empty(f"{arm.name}_lookT", 0.02)
         self.cons = []
@@ -354,7 +354,8 @@ def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), 
             w = bt["word"]
             fr = {"hover": w - 13, "grab": w - 8, "show": w + 1, "show_hold": w + 4, "place": w + 11, "off": w + 14}
             _at(fr["show"]); head = rig.arm.matrix_world @ ((hb.head + hb.tail) / 2)
-            show = head + _cs_world(rig, (1.0, -0.25 if hand_side == "R" else 0.25, -0.9)) * show_dist
+            # lifted to chest height in front of her (not to the mouth - that reads as eating it)
+            show = head + _cs_world(rig, (1, 0, 0)) * show_dist + Vector((0, 0, -0.30)) + _cs_world(rig, (0, 1, 0), hand_side) * 0.05
             reps.append(reach_grab_move_place(rig, hand_side, o, dst, fr, show_at=show, look_rig=rig, radius=radius, tag="count"))
         else:
             s = bt["fast"]
@@ -370,6 +371,11 @@ def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), 
         hd.key_grip(pats[-1] + 4, c + up * 0.05, Yp)
         ep = hd.solve_grip(pats[0], c)
         log("PAT", pats, "err_mm", _mm(ep))
+        # then the hand rests on the near rim on its own side until the blend-out (no FK arm swinging through the thali)
+        rim = c + _cs_world(rig, (0, 1, 0), hand_side) * 0.122 + up * 0.006
+        Yr = _cs_world(rig, (0.55, -0.25, -0.8), hand_side)
+        hd.key_grip(pats[-1] + 10, rim, Yr); hd.key_grip(b2, rim, Yr); hd.fingers_key(pats[-1] + 10, 30, 15); hd.fingers_key(b2, 30, 15)
+        hd.solve_grip(pats[-1] + 10, rim); hd.solve_grip(b2, rim)
     if steady:
         side, G = steady
         sh = hand(rig, side); sh.clear_fk(b0 + 1, b3 - 1)
