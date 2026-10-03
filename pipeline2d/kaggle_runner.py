@@ -28,7 +28,7 @@ def sh(c, t=7200):
 
 NEG = ("text, watermark, letters, signature, photo, photorealistic, realistic skin texture, 3d render, cgi, blurry, deformed, extra limbs, "
        "extra fingers, nsfw, nude, cleavage, midriff, navel, bare belly, frame, border")
-NEG_CUT = NEG + ", wall, room, floor, scenery, background objects, shadow"
+NEG_CUT = NEG + ", wall, room, floor, scenery, background objects, shadow, multiple views, character sheet, duplicate, two people"
 STYLE_T = "2d cartoon illustration, flat colours, cel shading, clean bold outlines, cute kids animation style"
 
 
@@ -92,7 +92,7 @@ def draw_pose(k, W, H):
 
 
 # ---------------------------------------------------------------- model helpers
-def sdxl(lora=None, controlnet=False):
+def sdxl(lora=None, controlnet=False, ip=False):
     import torch
     from diffusers import AutoencoderKL, DPMSolverMultistepScheduler
     vae = AutoencoderKL.from_pretrained(CFG["vae"], torch_dtype=torch.float16)
@@ -106,7 +106,13 @@ def sdxl(lora=None, controlnet=False):
     p.scheduler = DPMSolverMultistepScheduler.from_config(p.scheduler.config, use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")
     if lora:
         p.load_lora_weights(lora); p.fuse_lora(lora_scale=0.9)
-    p.to("cuda"); p.set_progress_bar_config(disable=True)
+    if ip:   # reference-based: IP-Adapter Plus (Apache-2.0); CPU offload keeps SDXL + ControlNet + ViT-H inside a 15 GB T4
+        try:
+            p.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models", weight_name="ip-adapter-plus_sdxl_vit-h.safetensors", image_encoder_folder="models/image_encoder")
+            p.enable_model_cpu_offload(); p.set_progress_bar_config(disable=True); p._ip = True; return p
+        except Exception as e:
+            log("IP-Adapter load failed:", str(e)[:300])
+    p.to("cuda"); p.set_progress_bar_config(disable=True); p._ip = False
     return p
 
 
@@ -262,7 +268,7 @@ def pick_consistent(cid, cands):
         if "clip" not in _ref:
             from transformers import CLIPModel, CLIPProcessor
             _ref["clip"] = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to("cuda"); _ref["cp"] = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-            zs = glob.glob(f"{OUT}/train.zip") + glob.glob("/kaggle/input/*/out/train.zip") + glob.glob("/kaggle/input/*/train.zip")
+            zs = glob.glob(f"{OUT}/train.zip") + glob.glob("/kaggle/input/**/train.zip", recursive=True)
             _ref["imgs"] = {}
             if zs:
                 z = zipfile.ZipFile(zs[0])
@@ -284,14 +290,14 @@ def pick_consistent(cid, cands):
 def st_poses(gpu_share=(0, 1)):
     import numpy as np, torch, cv2
     from PIL import Image
-    lora = (glob.glob(f"{OUT}/lora/*.safetensors") or glob.glob("/kaggle/input/*/out/lora/*.safetensors") or glob.glob("/kaggle/input/*/lora/*.safetensors") or [None])[0]
+    lora = (glob.glob(f"{OUT}/lora/*.safetensors") or glob.glob("/kaggle/input/**/pytorch_lora_weights.safetensors", recursive=True) or [None])[0]
     log("lora:", lora)
-    p = sdxl(lora=lora, controlnet=True)
+    p = sdxl(lora=lora, controlnet=True, ip=CFG.get("ip_adapter", True))
     lama = None
     masters = {}
     if CFG.get("ip_adapter", True):   # reference-based generation: every pose is conditioned on the character's master image
         try:
-            p.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models", weight_name="ip-adapter-plus_sdxl_vit-h.safetensors", image_encoder_folder="models/image_encoder")
+            if not p._ip: raise RuntimeError("no ip-adapter")
             p.set_ip_adapter_scale(CFG.get("ip_scale", 0.55))
             pick_consistent("_init_", [None, None])                       # loads CLIP + the training crops
             import torch as _t
@@ -300,6 +306,8 @@ def st_poses(gpu_share=(0, 1)):
                 with _t.no_grad():
                     o = cl.vision_model(**cp(images=ims, return_tensors="pt").to("cuda")); e = _t.nn.functional.normalize(cl.visual_projection(o.pooler_output), dim=-1)
                     cen = _t.nn.functional.normalize(e.mean(0, keepdim=True), dim=-1); masters[cid_] = ims[int((e @ cen.T)[:, 0].argmax())]
+                mi = masters[cid_]; w_, h_ = mi.size; mi = mi.crop((int(w_ * .2), 0, int(w_ * .8), h_))   # sheet panels: keep the centre figure only
+                sq = Image.new("RGB", (h_, h_), mi.getpixel((2, 2))); sq.paste(mi, ((h_ - mi.size[0]) // 2, 0)); masters[cid_] = sq
                 masters[cid_].save(f"{OUT}/master_{cid_}.png")
             log("ip-adapter masters:", list(masters))
         except Exception as e:
@@ -329,7 +337,7 @@ def st_poses(gpu_share=(0, 1)):
         else:
             k, arm = skeleton(ps["pose"], child); ctl = draw_pose(k, W, H); scale = CFG["cn_scale"]
         ipk = {}
-        if masters or getattr(p, "image_encoder", None) is not None:
+        if p._ip:
             mi = masters.get(cid)
             p.set_ip_adapter_scale(CFG.get("ip_scale", 0.55) if mi is not None else 0.0)
             ipk = {"ip_adapter_image": mi if mi is not None else Image.new("RGB", (512, 512), (200, 200, 200))}
@@ -375,8 +383,8 @@ def st_poses(gpu_share=(0, 1)):
 
 def find_in(pid, fn):
     src = J.get("faces", {}).get(pid, {}).get("src")
-    for pat in ((f"/kaggle/input/{src}/out/poses/{pid}/{fn}", f"/kaggle/input/{src}/poses/{pid}/{fn}") if src else ()) + (f"{OUT}/poses/{pid}/{fn}", f"/kaggle/input/*/out/poses/{pid}/{fn}", f"/kaggle/input/*/poses/{pid}/{fn}"):
-        g = glob.glob(pat)
+    for pat in ((f"/kaggle/input/**/{src}/**/poses/{pid}/{fn}",) if src else ()) + (f"{OUT}/poses/{pid}/{fn}", f"/kaggle/input/**/poses/{pid}/{fn}"):
+        g = glob.glob(pat, recursive=True)
         if g: return g[0]
     return None
 
@@ -392,7 +400,7 @@ def st_faces(gpu_share=(0, 1)):
     import numpy as np, torch, cv2
     from PIL import Image, ImageFilter
     from diffusers import AutoPipelineForInpainting, DPMSolverMultistepScheduler
-    lora = (glob.glob(f"{OUT}/lora/*.safetensors") or glob.glob("/kaggle/input/*/out/lora/*.safetensors") or [None])[0]
+    lora = (glob.glob(f"{OUT}/lora/*.safetensors") or glob.glob("/kaggle/input/**/pytorch_lora_weights.safetensors", recursive=True) or [None])[0]
     p = AutoPipelineForInpainting.from_pretrained(CFG["base"], torch_dtype=torch.float16, variant="fp16")
     p.scheduler = DPMSolverMultistepScheduler.from_config(p.scheduler.config, use_karras_sigmas=True, algorithm_type="sde-dpmsolver++")
     if lora: p.load_lora_weights(lora); p.fuse_lora(lora_scale=0.8)
@@ -481,8 +489,86 @@ def st_limbs():
         log("limbs done", pid, list(rig))
 
 
+VARIANTS = ["stand", "stand_3q", "walk", "point", "salute", "reach", "hand_cheek", "hold_plate", "sit_cross"]
+VEXPR = ["smiling", "laughing", "talking", "surprised", "sad", "angry", "neutral"]
+
+
+def st_charlora_data():
+    """per character: ~28 reference-based variants (LoRA v1 + IP-Adapter master + ControlNet), keep the 18 closest to the master;
+    captions keep IDENTITY and OUTFIT as separate phrases so the outfit can be swapped later"""
+    import numpy as np, random, torch
+    from PIL import Image
+    lora = (glob.glob("/kaggle/input/**/pytorch_lora_weights.safetensors", recursive=True) or [None])[0]
+    p = sdxl(lora=lora, controlnet=True, ip=True)
+    pick_consistent("_init_", [None, None]); rnd = random.Random(3)
+    cl, cp = _ref["clip"], _ref["cp"]
+    def emb(ims):
+        with torch.no_grad():
+            o = cl.vision_model(**cp(images=ims, return_tensors="pt").to("cuda")); return torch.nn.functional.normalize(cl.visual_projection(o.pooler_output), dim=-1)
+    for cid, c in J["series"]["characters"].items():
+        mp = (glob.glob(f"/kaggle/input/**/master_{cid}.png", recursive=True) or [None])[0]
+        if not mp: continue
+        master = Image.open(mp).convert("RGB"); d = f"{W0}/cl_{cid}"; os.makedirs(d, exist_ok=True)
+        p.set_ip_adapter_scale(0.6); outs = []
+        for i in range(CFG.get("cl_gen", 28)):
+            ex = rnd.choice(VEXPR)
+            if c.get("animal"):
+                pose = rnd.choice(["standing side view", "walking", "sitting", "lying down", "front view", "three-quarter view"]); ctl = np.zeros((1024, 1024, 3), np.uint8); sc = 0.0; W = H = 1024
+            else:
+                pose = rnd.choice(VARIANTS); k, _ = skeleton(pose, c.get("child")); W, H = (1024, 1024) if pose.startswith("sit") else (832, 1216)
+                ctl = draw_pose(k, W, H); sc = CFG["cn_scale"]; pose = J["pose_text"].get(pose, pose)
+            pr = f"{STYLE_T}, {c['trigger']}, full body, {pose}, {ex}, plain light grey background, {c.get('identity', c['short'])}, wearing {c.get('outfit', '')}"
+            im = gen(p, pr, W, H, 9000 + i, neg=NEG_CUT, image=Image.fromarray(ctl), controlnet_conditioning_scale=sc, ip_adapter_image=master)
+            outs.append((im, f"{c['trigger']}, {c.get('identity', c['short'])}, wearing {c.get('outfit', '')}, {pose}, {ex}, {STYLE_T}, plain background"))
+        s = (emb([o[0] for o in outs]) @ emb([master]).T)[:, 0].cpu().numpy(); keep = np.argsort(-s)[:CFG.get("cl_keep", 18)]
+        meta = open(f"{d}/metadata.jsonl", "w")
+        for j, i in enumerate(sorted(keep)):
+            im = outs[i][0]; S_ = max(im.size); sq = Image.new("RGB", (S_, S_), im.getpixel((3, 3))); sq.paste(im, ((S_ - im.size[0]) // 2, (S_ - im.size[1]) // 2))
+            sq.resize((768, 768), Image.LANCZOS).save(f"{d}/{cid}_{j:02d}.png"); meta.write(json.dumps({"file_name": f"{cid}_{j:02d}.png", "text": outs[i][1]}) + "\n")
+        meta.close(); tlog("cl_data", char=cid, gen=len(outs), kept=len(keep)); log("cl data", cid)
+    sh(f"cd {W0} && zip -qr out/charlora_data.zip cl_*")
+
+
+def st_charlora_train(share):
+    import diffusers
+    chars = sorted(glob.glob(f"{W0}/cl_*"))[share[0]::share[1]]
+    if not os.path.exists(f"{W0}/train_lora.py"):
+        sh(f"curl -fsSL -o {W0}/train_lora.py https://raw.githubusercontent.com/huggingface/diffusers/v{diffusers.__version__.split('.dev')[0]}/examples/text_to_image/train_text_to_image_lora_sdxl.py")
+    for d in chars:
+        cid = d.split("cl_")[-1]; t = time.time()
+        rc = sh(f"cd {W0} && accelerate launch --num_processes 1 --mixed_precision fp16 train_lora.py --pretrained_model_name_or_path {CFG['base']} "
+                f"--variant fp16 --train_data_dir {d} --caption_column text --resolution 768 --random_flip --train_batch_size 1 "
+                f"--max_train_steps {CFG.get('cl_steps', 1000)} --learning_rate 1e-4 --lr_scheduler constant --lr_warmup_steps 0 --mixed_precision fp16 "
+                f"--rank 16 --gradient_checkpointing --use_8bit_adam --checkpointing_steps 100000 --seed 11 --output_dir lora_{cid} 2>&1 | grep -vE 'it/s|s/it' | tail -n 20", 4 * 3600)
+        tlog("cl_train", char=cid, s=round(time.time() - t, 1), rc=rc)
+        f = glob.glob(f"{W0}/lora_{cid}/*.safetensors")
+        if f: sh(f"mkdir -p {OUT}/charlora && cp {f[0]} {OUT}/charlora/{cid}.safetensors")
+
+
+OUTFITS = {"dadi": ["green festive silk saree with gold border", "warm brown woollen shawl over a white saree"], "chhotu": ["school uniform, white shirt, navy blue shorts"]}
+
+
+def st_outfits():
+    """outfit test: the character LoRA keeps identity, the prompt changes only the clothes"""
+    import torch
+    from PIL import Image
+    os.makedirs(f"{OUT}/outfits", exist_ok=True)
+    for cid, outfits in OUTFITS.items():
+        lf = f"{OUT}/charlora/{cid}.safetensors"
+        if not os.path.exists(lf): continue
+        p = sdxl(lora=lf); c = J["series"]["characters"][cid]
+        for i, o in enumerate([c.get("outfit", "")] + outfits):
+            for s in range(2):
+                pr = f"{STYLE_T}, {c['trigger']}, full body, standing, front view, plain light grey background, {c.get('identity', c['short'])}, wearing {o}"
+                gen(p, pr, 832, 1216, 4242 + s, neg=NEG_CUT).save(f"{OUT}/outfits/{cid}_{i}_{s}.png")
+        del p; torch.cuda.empty_cache()
+
+
 def task(name):
     try:
+        if name == "cl_data": return st_charlora_data()
+        if name in ("cl_train0", "cl_train1"): return st_charlora_train((int(name[-1]), 2))
+        if name == "outfits": return st_outfits()
         {"sheets": st_sheets, "train": st_train, "plates": st_plates_props, "poses0": lambda: st_poses((0, 2)),
          "poses1": lambda: st_poses((1, 2)), "poses": lambda: st_poses((0, 1)),
          "faces0": lambda: st_faces((0, 2)), "faces1": lambda: st_faces((1, 2)), "limbs": st_limbs}[name]()
@@ -507,7 +593,8 @@ sh("pip install -q -U 'transformers>=4.56' 2>&1 | tail -n 2", 900)
 sh("python -c \"import torch, diffusers, transformers; print(torch.__version__, diffusers.__version__, transformers.__version__)\"")
 ngpu = int(subprocess.run("nvidia-smi -L | wc -l", shell=True, capture_output=True, text=True).stdout.strip() or 1)
 stages = J.get("stages", ["sheets", "train", "plates", "poses"])
-have_lora = bool(glob.glob("/kaggle/input/*/out/lora/*.safetensors"))
+have_lora = bool(glob.glob("/kaggle/input/**/pytorch_lora_weights.safetensors", recursive=True))
+sh("find /kaggle/input -maxdepth 6 -name '*.safetensors' -o -maxdepth 6 -name 'train.zip' | head -n 20")
 if "sheets" in stages and not have_lora:
     spawn("sheets", 1 if ngpu > 1 else 0).wait(); tlog("sheets_done")
 procs = []
@@ -519,10 +606,14 @@ if "plates" in stages:
 for q in procs: q.wait()
 tlog("train_plates_done")
 if "poses" in stages:
-    if ngpu > 1:
+    if ngpu > 1 and not CFG.get("ip_adapter", True):     # IP-Adapter runs with CPU offload: one process, or two would exhaust the 29 GB RAM
         a, b = spawn("poses0", 0), spawn("poses1", 1); a.wait(); b.wait()
     else:
         spawn("poses", 0).wait()
+if "charlora" in stages:
+    spawn("cl_data", 0).wait(); tlog("cl_data_done")
+    a = spawn("cl_train0", 0); b = spawn("cl_train1", 1 if ngpu > 1 else 0); a.wait(); b.wait(); tlog("cl_train_done")
+    spawn("outfits", 0).wait(); tlog("outfits_done")
 if "fx" in stages:
     a = spawn("faces0", 0); b = spawn("faces1", 1 if ngpu > 1 else 0) if ngpu > 1 else None
     a.wait()
