@@ -41,7 +41,8 @@ try:
 except Exception:
     FX = None
 
-FACE_BONES = ("Eye.L", "Eye.R", "Lid.L", "Lid.R", "Brow.L", "Brow.R", "Smile", "Jaw")
+FACE_BONES = ("Eye.L", "Eye.R", "Lid.L", "Lid.R", "Brow.L", "Brow.R", "Smile", "Jaw", "Tongue")
+MISSING = set()          # bones an action/emotion asked for that the rig doesn't have (the preview fails loudly on these)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # species definitions (rig units = the pack's units; the root scales them to metres)
@@ -52,7 +53,10 @@ SPECIES = {
         colours={"Main": (0.86, 0.60, 0.34), "Main_Light": (0.98, 0.91, 0.78), "Black": (0.10, 0.08, 0.08),
                  "Eyes_White": (0.86, 0.60, 0.34), "Eyes_Pupil": (0.86, 0.60, 0.34), "Eyes_Black": (0.86, 0.60, 0.34)},
         skin=(0.86, 0.60, 0.34), brow=(0.42, 0.25, 0.13), iris=(0.45, 0.26, 0.12),
-        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.11, eye_out=0.55, brow_len=1.25,
+        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.135, eye_out=0.45, brow_len=1.25, head_scale=1.2,
+        acts=("idle", "idle_flick", "sleep", "lie_down", "wake_sniff", "lazy_walk", "walk", "trot", "run_to_food", "bark", "growl",
+              "scratch_ear", "roll_over", "sit", "beg", "stretch_yawn", "lick", "cower", "sniff_ground", "eat", "look_around", "hop",
+              "startled_jump", "hit_left"),
         jaw=dict(hinge=(0, -2.06, 2.47), cut_z=2.47, cut_y=-2.13, tip=(0, -2.33, 2.36)),
         smile=[(0.15, -2.24, 2.50), (0.10, -2.33, 2.465), (0.0, -2.385, 2.462)], smile_off=0.03, brow_off=0.4,
         actions={  # our name -> pack action (renamed "<prefix><pack name>")
@@ -66,7 +70,9 @@ SPECIES = {
                  "Hooves": (0.12, 0.10, 0.10), "Muzzle": (0.95, 0.80, 0.74), "Eye_Lighter": (0.70, 0.40, 0.20),
                  "Eye_Black": (0.70, 0.40, 0.20), "Eye_White": (0.70, 0.40, 0.20), "Patch": (0.98, 0.96, 0.92)},
         skin=(0.70, 0.40, 0.20), brow=(0.30, 0.17, 0.09), iris=(0.62, 0.36, 0.14),
-        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.12, eye_out=0.5, brow_len=1.2,
+        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.145, eye_out=0.42, brow_len=1.2, head_scale=1.25,
+        acts=("idle", "idle_flick", "walk", "trot", "run", "hop", "chew", "eat_something", "eat_grass", "bleat", "creep",
+              "startled_jump", "butt", "push", "lie_down", "sleep", "look_around", "steal_run", "tug_of_war", "hit_left"),
         jaw=dict(hinge=(0, -2.18, 3.61), cut_z=3.61, cut_y=-2.24, tip=(0, -2.62, 3.52)),
         smile=[(0.13, -2.50, 3.62), (0.09, -2.64, 3.585), (0.0, -2.715, 3.58)], smile_off=-0.004,
         actions={
@@ -338,6 +344,9 @@ def _add_face(spec, sp, name, arm, mesh, coll):
                 b.use_deform = False; b.align_roll(up)
         b = eb.new("Smile"); b.head = smile_c; b.tail = smile_c + Vector((0, -0.08, 0)); b.parent = head; b.use_deform = False
         b.align_roll(up)
+        j_ = spec["jaw"]; hc_ = Vector(j_["hinge"]).lerp(Vector(j_["tip"]), 0.55)
+        b = eb.new("Tongue"); b.head = hc_ + Vector((0, 0.07, -0.025)); b.tail = hc_ + Vector((0, -0.06, -0.025))
+        b.parent = eb["Jaw"]; b.use_deform = False; b.align_roll(up)
     _edit(arm, mk)
     arm.data.pose_position = "REST"; bpy.context.view_layer.update()
     pb = arm.pose.bones
@@ -374,7 +383,11 @@ def _add_face(spec, sp, name, arm, mesh, coll):
     cav = _new_obj(f"{name}_mouth_inside", _sphere_mesh("toon_cavity", 1.0, 16, 10), coll, _mat("Toon_MouthIn", (0.35, 0.08, 0.10), 0.6))
     _parent_bone(cav, arm, "Head", Matrix.Translation(hc + Vector((0, 0, 0.02))) @ Matrix.Diagonal((0.13 if sp == "sheru" else 0.11, 0.17, 0.06, 1)))
     tg = _new_obj(f"{name}_tongue", _sphere_mesh("toon_tongue", 1.0, 16, 10), coll, _mat("Toon_Tongue", (0.93, 0.45, 0.50), 0.5))
-    _parent_bone(tg, arm, "Jaw", Matrix.Translation(hc + Vector((0, -0.02, -0.025))) @ Matrix.Diagonal((0.09 if sp == "sheru" else 0.075, 0.13, 0.03, 1)))
+    _parent_bone(tg, arm, "Tongue", Matrix.Translation(hc + Vector((0, -0.02, -0.025))) @ Matrix.Diagonal((0.09 if sp == "sheru" else 0.075, 0.13, 0.03, 1)))
+    # mouth contact point (things held in the mouth: grab() / release())
+    mo = bpy.data.objects.new(f"{name}_mouth", None); coll.objects.link(mo); mo.empty_display_size = 0.04
+    _parent_bone(mo, arm, "Jaw", Matrix.Translation(arm.matrix_world @ (Vector(j["tip"]) + Vector((0, -0.04, 0.05)))))
+    arm["mouth_obj"] = mo.name
     if sp == "chamki":
         horn = _mat("Chamki_Horn", (0.93, 0.85, 0.66), 0.45); beard = _mat("Chamki_Beard", (0.20, 0.13, 0.10), 0.8)
         for s in (1, -1):
@@ -405,8 +418,17 @@ def _make(sp, name, loc=(0, 0, 0), rot_z=0.0, size=1.0):
     arm, mesh = _append(spec, name, coll)
     root = bpy.data.objects.new(name, None); coll.objects.link(root); root.empty_display_size = 0.3
     _recolour(spec, sp, mesh)
+    if arm.data.bones["Ear1.L"].parent.name != "Head":          # ShibaInu hangs the ears off Neck3: make them follow the head
+        def rep(eb):
+            for s in ("L", "R"): eb[f"Ear1.{s}"].use_connect = False; eb[f"Ear1.{s}"].parent = eb["Head"]
+        _edit(arm, rep)
     _add_jaw(spec, arm, mesh)
     _add_face(spec, sp, name, arm, mesh, coll)
+    hs = spec.get("head_scale", 1.0)                        # cartoon proportions: a bigger head (eyes, horns, ears grow with it)
+    if hs != 1.0:
+        c = arm.pose.bones["Head"].constraints.new("LIMIT_SCALE"); c.name = "cartoon_head"; c.owner_space = "LOCAL"
+        for ax in "xyz":
+            setattr(c, f"use_min_{ax}", True); setattr(c, f"min_{ax}", hs); setattr(c, f"use_max_{ax}", True); setattr(c, f"max_{ax}", hs)
     arm.parent = root
     root.scale = (spec["scale"] * size,) * 3; root.location = loc; root.rotation_euler = (0, 0, R(rot_z))
     arm["species"] = sp; root["species"] = sp
@@ -416,6 +438,10 @@ def _make(sp, name, loc=(0, 0, 0), rot_z=0.0, size=1.0):
     arm.data.pose_position = "REST"; bpy.context.view_layer.update()
     _parent_bone(hf, arm, "Head", Matrix.Translation(arm.matrix_world @ (hb.head_local.lerp(hb.tail_local, 0.3) + Vector((0, 0, 0.25)))))
     arm.data.pose_position = "POSE"
+    # FX anchor: follows the head's POSITION only (world-aligned, unit scale) so lib_fx sizes/offsets stay in metres
+    fx = bpy.data.objects.new(name + "_fx", None); coll.objects.link(fx); fx.empty_display_size = 0.05
+    cl = fx.constraints.new("COPY_LOCATION"); cl.target = hf
+    arm["fx_obj"] = fx.name
     arm.show_in_front = False
     _build_actions(sp, arm)
     play(arm, "idle", bpy.context.scene.frame_start, loops=1, _default=True)
@@ -472,7 +498,8 @@ def _mix(A, B, t):
 
 def _rot(arm, P, bone, pitch=0.0, yaw=0.0, roll=0.0):
     """rotate a bone in CHARACTER axes: pitch>0 = tip/nose up, yaw>0 = to the animal's left (+X), roll about the long axis"""
-    if bone not in P: return
+    if bone not in P:
+        MISSING.add((arm.name, bone)); return
     rq = arm.data.bones[bone].matrix_local.to_quaternion()
     Q = Quaternion((0, 0, 1), R(yaw)) @ Quaternion((1, 0, 0), R(-pitch)) @ Quaternion((0, 1, 0), R(roll))
     P[bone][1] = (rq.inverted() @ Q @ rq) @ P[bone][1]
@@ -480,7 +507,8 @@ def _rot(arm, P, bone, pitch=0.0, yaw=0.0, roll=0.0):
 
 def _mov(arm, P, bone, d):
     """translate a bone by d=(x, y, z) in armature (character) space; y<0 = forward"""
-    if bone not in P: return
+    if bone not in P:
+        MISSING.add((arm.name, bone)); return
     m3 = arm.data.bones[bone].matrix_local.to_3x3()
     b = arm.data.bones[bone]
     if b.parent is not None:     # location is in the parent-relative rest frame
@@ -532,7 +560,7 @@ def _keyP(arm, frame, P, bones=None):
 EXPR = {   # lid: 0 open .. 1 closed;  brow: (up, inner_tilt);  smile: +1 smile / -1 frown (0 = hidden);  jaw 0..1;  look=(yaw,pitch);  eye=scale
     "neutral":  dict(lid=0.0, brow=(0.0, 0.0), smile=1.0, jaw=0.0),
     "happy":    dict(lid=0.15, brow=(0.35, -0.2), smile=1.25, jaw=0.15),
-    "guilty":   dict(lid=0.35, brow=(0.15, 1.0), smile=-0.8, jaw=0.0, look=(-25, -12)),
+    "guilty":   dict(lid=0.3, brow=(0.25, 1.2), smile=-0.7, jaw=0.0, look=(-18, 22)),    # eyes UP from a lowered head
     "sleepy":   dict(lid=0.6, brow=(-0.2, 0.3), smile=0.8, jaw=0.0),
     "asleep":   dict(lid=1.0, brow=(-0.1, 0.2), smile=0.8, jaw=0.0),
     "excited":  dict(lid=0.0, brow=(0.6, -0.3), smile=1.3, jaw=0.45, eye=1.15),
@@ -540,6 +568,26 @@ EXPR = {   # lid: 0 open .. 1 closed;  brow: (up, inner_tilt);  smile: +1 smile 
     "sneaky":   dict(lid=0.45, brow=(-0.1, -0.8), smile=1.1, jaw=0.0, look=(30, 0)),
     "angry":    dict(lid=0.3, brow=(-0.25, -1.0), smile=-1.0, jaw=0.0),
     "bliss":    dict(lid=0.85, brow=(0.2, 0.5), smile=1.3, jaw=0.1),
+    # --- emotion faces (the emotion() overlays add ears / tail / head / body posture on top) ---
+    "playful":  dict(lid=0.1, brow=(0.4, -0.2), smile=1.3, jaw=0.35, tongue=(0.7, 0.0), eye=1.1),
+    "cheeky":   dict(lid=0.4, brow=(0.1, -0.7), smile=1.3, jaw=0.0, look=(28, 4), lid_r=0.55, brow_l=(0.5, -0.3)),
+    "innocent": dict(lid=0.0, brow=(0.55, 0.8), smile=0.6, jaw=0.0, look=(0, 24), eye=1.22),
+    "scared":   dict(lid=0.0, brow=(0.8, 1.2), smile=-1.0, jaw=0.25, eye=1.25, look=(12, 0)),
+    "curious":  dict(lid=0.0, brow=(0.55, 0.0), smile=0.6, jaw=0.0, eye=1.15, look=(0, 6), brow_r=(0.85, 0.2)),
+    "confused": dict(lid=0.15, brow=(0.3, 0.0), smile=-0.4, jaw=0.0, look=(-14, 10), brow_l=(0.9, 0.6), brow_r=(-0.2, -0.6), lid_r=0.35),
+    "sad":      dict(lid=0.45, brow=(0.1, 1.3), smile=-1.1, jaw=0.0, look=(0, -14)),
+    "proud":    dict(lid=0.45, brow=(0.3, -0.4), smile=1.25, jaw=0.0, look=(0, -6)),
+    "satisfied": dict(lid=0.7, brow=(0.2, 0.4), smile=1.3, jaw=0.18, tongue=(0.55, 0.8)),
+    "disgusted": dict(lid=0.5, brow=(-0.2, -0.6), smile=-1.2, jaw=0.45, tongue=(0.9, -0.6), lid_l=0.75, look=(-20, 0)),
+    "love":     dict(lid=0.6, brow=(0.35, 0.7), smile=1.35, jaw=0.0, eye=1.1),
+    "surprised": dict(lid=0.0, brow=(1.0, 0.3), smile=0.0, jaw=0.75, eye=1.35),
+    "wink":     dict(lid=0.0, lid_l=1.0, brow=(0.3, -0.2), brow_l=(-0.2, -0.4), smile=1.35, jaw=0.0),
+    "one_eye_open": dict(lid=1.0, lid_r=0.25, brow=(-0.1, 0.2), brow_r=(0.4, 0.0), smile=0.6, jaw=0.0, look=(15, 0)),
+    "suspicious": dict(lid=0.55, brow=(-0.2, -0.9), smile=-0.3, jaw=0.0, look=(30, 0)),
+    "sulky":    dict(lid=0.45, brow=(0.0, 0.8), smile=-1.0, jaw=0.0, look=(-35, -10)),
+    "offended": dict(lid=0.6, brow=(0.4, -0.5), smile=-0.9, jaw=0.0, look=(-25, 6)),
+    "bored":    dict(lid=0.6, brow=(-0.1, 0.0), smile=0.15, jaw=0.0, look=(10, -5)),
+    "growl":    dict(lid=0.35, brow=(-0.4, -1.3), smile=-1.2, jaw=0.22, eye=0.95),
 }
 
 
@@ -547,9 +595,10 @@ def _face(arm, P, state=None, **over):
     st = dict(EXPR["neutral"]); st.update(EXPR.get(state or "neutral", {})); st.update(over)
     rr = SPECIES[_species(arm)]["eye_r"]
     for side, sg in (("L", -1), ("R", 1)):
-        P[f"Lid.{side}"][1] = Quaternion((1, 0, 0), R(-178 * max(0.0, min(1.0, st["lid"]))))
-        up, tilt = st["brow"]
-        P[f"Brow.{side}"][0] = Vector((0, 0, up * 0.5 * rr)) - Vector((0, 0, 0.35 * rr * max(0.0, st["lid"] - 0.3)))
+        lid = st.get("lid_" + side.lower(), st["lid"])
+        P[f"Lid.{side}"][1] = Quaternion((1, 0, 0), R(-178 * max(0.0, min(1.0, lid))))
+        up, tilt = st.get("brow_" + side.lower(), st["brow"])
+        P[f"Brow.{side}"][0] = Vector((0, 0, up * 0.5 * rr)) - Vector((0, 0, 0.35 * rr * max(0.0, lid - 0.3)))
         P[f"Brow.{side}"][1] = Quaternion((0, 1, 0), R(sg * 18 * tilt))
         yaw, pitch = st.get("look", (0, 0))
         P[f"Eye.{side}"][1] = Quaternion((0, 0, 1), R(yaw)) @ Quaternion((1, 0, 0), R(pitch))
@@ -558,6 +607,10 @@ def _face(arm, P, state=None, **over):
     P["Smile"][1] = Quaternion((0, 1, 0), R(180)) if s < 0 else Quaternion()
     a = max(0.05, abs(s)); P["Smile"][2] = Vector((1, 1, a))
     P["Jaw"][1] = Quaternion((1, 0, 0), R(-32 * st["jaw"]))
+    if "Tongue" in P:            # tongue=(out 0..1, up -1..1): lick, lick lips, 'bleh', panting
+        out, tup = st.get("tongue", (0.0, 0.0))
+        P["Tongue"][0] = Vector((0, 0.14 * out, -0.01 * out)); P["Tongue"][2] = Vector((1, 1 + 0.6 * out, 1))
+        P["Tongue"][1] = Quaternion((1, 0, 0), R(-18 * out + 35 * tup * out))
     return P
 
 
@@ -657,10 +710,17 @@ def _build_actions(sp, arm):
     for k, a in pack.items():
         A[k] = a.name
     for k in ("sleep", "lie_down", "wake_sniff", "bark", "scratch_ear", "roll_over", "sit", "lazy_walk", "trot", "chew", "eat_something",
-              "bleat", "creep", "startled_jump", "look_around", "idle_flick", "hop", "blink", "wag", "chew_face", "ear_flick", "beg"):
+              "bleat", "creep", "startled_jump", "look_around", "idle_flick", "hop", "blink", "wag", "chew_face", "ear_flick", "beg",
+              "push", "steal_run", "tug_of_war", "growl", "stretch_yawn", "lick", "cower", "sleep_side"):
         A[k] = pre + k
     for e in EXPR:
         A["expr_" + e] = pre + "expr_" + e
+    for e in EMO:
+        A["emo_" + e] = pre + "emo_" + e
+    for e in TAIL:
+        A["tail_" + e] = pre + "tail_" + e
+    for e in EARS:
+        A["ears_" + e] = pre + "ears_" + e
     if sp == "sheru": A["jump"] = pre + "hop"; A["run_to_food"] = pack["run"].name; A["startled"] = pre + "startled_jump"
     else: A["jump"] = pre + "hop"; A["butt"] = pack["headbutt"].name; A["startled"] = pre + "startled_jump"; A["sleep"] = pre + "sleep"
     if already:
@@ -684,19 +744,26 @@ def _build_actions(sp, arm):
         _rot(arm, P, "Neck1", pitch=-8)
         return P
     loaf = lying_tucked()
-    sleep_base = lying_side if sp == "sheru" else loaf
+    bones = arm.data.bones
+    T2z = bones["Torso2"].head_local.z
+    front_leg = bones["FrontUpperLeg.L"].length + bones["FrontLowerLeg.L"].length
+    if sp == "sheru":       # dog sleeping 'loaf': front paws stretched forward, chin resting on them
+        for s in ("L", "R"):
+            sx = 1 if s == "L" else -1
+            _mov(arm, loaf, f"IKFrontLeg.{s}", (-0.03 * sx, -0.30 - 0.45 * front_leg, -0.10))
+    loaf = _chin_to(arm, loaf, 0.17 * T2z if sp == "sheru" else 0.20 * T2z, yaw=0 if sp == "sheru" else 14)
+    sleep_base = loaf
 
-    def sleep_pose(t):
-        P = _copy(sleep_base)
+    def sleep_pose(t, base=None):
+        P = _copy(base or sleep_base)
         b = 1 + 0.045 * (0.5 + 0.5 * _osc(t, 48))
         P["Torso2"][2] = Vector((b, 1, b)); P["Torso"][2] = Vector((1 + (b - 1) * 0.6, 1, 1 + (b - 1) * 0.6))
-        if sp == "chamki":
-            _rot(arm, P, "Neck1", pitch=-14, yaw=22); _rot(arm, P, "Head", pitch=-18, roll=12)
-        _rot(arm, P, "Head", pitch=1.5 * _osc(t, 48))
+        _rot(arm, P, "Head", pitch=1.2 * _osc(t, 48))
         if 28 <= t <= 36:                                   # ear twitch
             _rot(arm, P, "Ear1.L", roll=25 * math.sin(math.pi * (t - 28) / 4))
-        return _face(arm, P, "asleep")
+        return _face(arm, P, "asleep", jaw=0.10 * max(0.0, _osc(t, 48, 0.1)) if sp == "sheru" else 0.0)   # snore: the mouth puffs open
     _bake(arm, pre + "sleep", 48, sleep_pose, 2)
+    _bake(arm, pre + "sleep_side", 48, lambda t: sleep_pose(t, lying_side), 2)
     _bake(arm, pre + "lie_down", 30, lambda t: _face(arm, _mix(stand, sleep_base, t / 26), "sleepy" if t > 12 else None), 2, loop=False)
 
     def wake(t):
@@ -859,10 +926,93 @@ def _build_actions(sp, arm):
         return _face(arm, P, "excited" if 4 < t < 22 else "happy")
     _bake(arm, pre + "hop", 32, hop, 1, loop=False)
 
+    def beg_pose():         # sit UP: chest raised, front paws off the ground, folded in front of the chest
+        P = _copy(stand)
+        T = _body_xform(arm, P, pitch=62, pivot=hip, move=(0, 0.10, -hip.z * 0.62))
+        for s in ("L", "R"):
+            sx = 1 if s == "L" else -1
+            sh = T @ bones[f"FrontUpperLeg.{s}"].head_local
+            _foot_to(arm, P, f"IKFrontLeg.{s}", (bones[f"IKFrontLeg.{s}"].head_local.x * 0.8, sh.y - 0.42 * front_leg, sh.z - 0.48 * front_leg))
+            bb = bones[f"IKBackLeg.{s}"]; hp = T @ bones[f"BackUpperLeg.{s}"].head_local
+            _foot_to(arm, P, f"IKBackLeg.{s}", (bb.head_local.x * 1.25, hp.y - 0.35 * front_leg, bb.head_local.z))
+        _rot(arm, P, "Neck1", pitch=-34); _rot(arm, P, "Head", pitch=-22)
+        return P
+    begP = beg_pose()
+
     def beg(t):
-        P = _copy(sit); _rot(arm, P, "Head", roll=12 * _osc(t, 24), pitch=8)
-        return _face(arm, P, "excited", look=(0, 8))
+        P = _copy(begP); _rot(arm, P, "Head", roll=12 * _osc(t, 24))
+        for s, ph in (("L", 0.0), ("R", 0.5)):     # paws paddle a little
+            _mov(arm, P, f"IKFrontLeg.{s}", (0, 0, 0.05 * front_leg * _osc(t, 12, ph)))
+        return _face(arm, P, "excited", look=(0, 12), tongue=(0.5, 0.0))
     _bake(arm, pre + "beg", 24, beg, 2)
+
+    # ---- new body actions ------------------------------------------------------------------------------------------
+    run = pack.get("run")
+
+    def steal_run(t):        # galloping off with something in the mouth: head up, jaw shut, cheeky eyes
+        P = _sample(arm, run, t % run.frame_range[1])
+        _rot(arm, P, "Neck1", pitch=8); _rot(arm, P, "Head", pitch=6)
+        _posture(arm, P, t, dict(ears="back"))
+        return _face(arm, P, "cheeky", jaw=0.0)
+    if run is not None:
+        _bake(arm, pre + "steal_run", int(run.frame_range[1]), steal_run, 1)
+
+    def braced(P, back, down, front_fwd, rear_back):
+        _mov(arm, P, "Body", (0, back, -down))
+        for s in ("L", "R"):
+            _mov(arm, P, f"IKFrontLeg.{s}", (0, -front_fwd, 0)); _mov(arm, P, f"IKBackLeg.{s}", (0, rear_back, 0))
+
+    def tug(t):              # tug-of-war: legs braced, leaning back, head yanking side to side, jaw clamped on the rope
+        P = _copy(stand); y = _osc(t, 24)
+        braced(P, (0.22 + 0.06 * y) * front_leg, 0.10 * T2z, 0.22 * front_leg, 0.18 * front_leg)
+        _rot(arm, P, "Body", pitch=6 + 3 * y)
+        _rot(arm, P, "Neck1", pitch=-14); _rot(arm, P, "Head", pitch=-8, yaw=16 * _osc(t, 12))
+        _posture(arm, P, t, dict(ears="back", tail="up"))
+        return _face(arm, P, "angry", jaw=0.0, lid=0.35)
+    _bake(arm, pre + "tug_of_war", 24, tug, 1)
+
+    def push(t):             # head-butt push: head down, horns forward, rear legs driving
+        P = _copy(stand); y = 0.5 + 0.5 * _osc(t, 24)
+        braced(P, -(0.10 + 0.08 * y) * front_leg, 0.08 * T2z, 0.05 * front_leg, 0.30 * front_leg)
+        _rot(arm, P, "Neck1", pitch=-26 - 4 * y); _rot(arm, P, "Head", pitch=-22)
+        _posture(arm, P, t, dict(ears="back"))
+        return _face(arm, P, "angry", jaw=0.0)
+    _bake(arm, pre + "push", 24, push, 1)
+
+    def growl(t):            # head low and forward, ears back, lip curled, jaw trembling, tail stiff
+        P = _copy(stand)
+        _mov(arm, P, "Body", (0, -0.04 * front_leg, -0.08 * T2z)); _rot(arm, P, "Body", pitch=-4)
+        _rot(arm, P, "Neck1", pitch=-14); _rot(arm, P, "Head", pitch=8)
+        _posture(arm, P, t, dict(ears="back", tail="up"))
+        return _face(arm, P, "growl", jaw=0.2 + 0.06 * _osc(t, 3))
+    _bake(arm, pre + "growl", 12, growl, 1)
+
+    def stretch_yawn(t):     # play-bow stretch (front down, rump up) then a big yawn
+        P = _copy(stand)
+        bow = _ease(t, 0, 12) * (1 - _ease(t, 24, 34))
+        T = _body_xform(arm, P, pitch=-16 * bow, pivot=hip, move=(0, 0.12 * front_leg * bow, -0.06 * T2z * bow))
+        for s in ("L", "R"):
+            _mov(arm, P, f"IKFrontLeg.{s}", (0, -0.40 * front_leg * bow, 0))
+        _rot(arm, P, "Neck1", pitch=10 * bow)
+        y = _ease(t, 30, 38) * (1 - _ease(t, 48, 56))
+        _rot(arm, P, "Neck1", pitch=18 * y); _rot(arm, P, "Head", pitch=22 * y)
+        _posture(arm, P, t, dict(ears="back" if y > 0.3 else None, tail="up" if bow > 0.3 else None))
+        return _face(arm, P, "bliss" if bow > 0.4 else None, jaw=1.25 * y, lid=max(0.85 * bow, 1.0 * y), tongue=(0.4 * y, 0.8))
+    _bake(arm, pre + "stretch_yawn", 60, stretch_yawn, 1, loop=False)
+
+    def lick(t):             # tongue out, licking upward (a hand, a face, a lota)
+        P = _copy(stand); _rot(arm, P, "Neck1", pitch=6); _rot(arm, P, "Head", pitch=4 + 4 * _osc(t, 8))
+        u = 0.5 + 0.5 * _osc(t, 8)
+        return _face(arm, P, "happy", jaw=0.32, lid=0.4, tongue=(0.55 + 0.45 * u, 0.9 * u - 0.2))
+    _bake(arm, pre + "lick", 16, lick, 1)
+
+    def cower(t):            # hide / cower: belly low, head tucked, ears flat, tail tucked, trembling
+        P = _copy(stand)
+        _mov(arm, P, "Body", (0.012 * T2z * _osc(t, 4), 0.06 * front_leg, -0.30 * T2z))
+        _rot(arm, P, "Neck1", pitch=-16); _rot(arm, P, "Head", pitch=-12, yaw=-10)
+        _posture(arm, P, t, dict(ears="flat", tail="tucked"))
+        return _face(arm, P, "scared", look=(-20, 18))
+    _bake(arm, pre + "cower", 8, cower, 1)
 
     # overlays (only their own bones get keyed) -------------------------------------------------------------------
     def only(name, n, fn, bones, step=1):
@@ -880,7 +1030,9 @@ def _build_actions(sp, arm):
         st = EXPR[e]; keep = ["Lid.L", "Lid.R", "Brow.L", "Brow.R", "Smile"]      # never fight the body action's jaw / eyes
         if st.get("jaw", 0) > 0: keep.append("Jaw")
         if "look" in st or "eye" in st: keep += ["Eye.L", "Eye.R"]
+        if "tongue" in st: keep.append("Tongue")
         only(pre + "expr_" + e, 10, lambda t, e=e: _face(arm, _rest(arm), e), tuple(keep), 10)
+    _build_posture_actions(arm, pre)
     arm["_built"] = 1
 
 
@@ -890,10 +1042,135 @@ def _ease(t, a, b):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+# body language: ears, tail, head, posture  (shared by Chamki, Sheru and the generic Quaternius animals)
+#   pitch>0 on an ear = tip goes BACK;  pitch>0 on the tail = tip goes DOWN (toward a tuck);  roll = ear tips outward
+# ---------------------------------------------------------------------------------------------------------------------
+EARS = {   # (pitch, outward roll) per ear
+    "up":      dict(L=(-20, -4), R=(-20, -4)),     # alert / pricked forward
+    "back":    dict(L=(42, 10), R=(42, 10)),
+    "flat":    dict(L=(72, 22), R=(72, 22)),       # pinned flat (scared, guilty)
+    "droop":   dict(L=(18, 58), R=(18, 58)),       # sad / bored: hanging sideways
+    "relaxed": dict(L=(12, 14), R=(12, 14)),
+    "one_up":  dict(L=(-24, -4), R=(28, 42)),      # confused
+}
+TAIL = {   # pitch per tail bone (+ optional wag (deg, period))
+    "up":        dict(pitch=(-28, -10, 0)),
+    "high_curl": dict(pitch=(-18, -22, -16)),
+    "down":      dict(pitch=(38, 22, 14)),
+    "tucked":    dict(pitch=(68, 42, 30)),
+    "wag_slow":  dict(pitch=(-6, 0, 0), wag=(20, 12)),
+    "wag_med":   dict(pitch=(-12, 0, 0), wag=(26, 8)),
+    "wag_fast":  dict(pitch=(-18, -6, 0), wag=(32, 6)),
+}
+EMO = {    # face (EXPR key) + posture; fx = lib_fx hook fired by emotion()
+    "happy":     dict(face="happy", ears="relaxed", tail="wag_med", head=(6, 0, 0), bounce=(0.015, 12)),
+    "excited":   dict(face="excited", ears="up", tail="wag_fast", head=(10, 0, 0), bounce=(0.04, 6)),
+    "playful":   dict(face="playful", ears="up", tail="wag_fast", lean=-7, crouch=0.06, head=(4, 0, 14), tilt_osc=(8, 24)),
+    "cheeky":    dict(face="cheeky", ears="up", tail="up", head=(4, 12, 12)),
+    "guilty":    dict(face="guilty", ears="flat", tail="down", neck=-22, head=(-14, -8, 8), crouch=0.08),
+    "innocent":  dict(face="innocent", ears="relaxed", tail="wag_slow", head=(10, 0, -14)),
+    "scared":    dict(face="scared", ears="flat", tail="tucked", crouch=0.2, neck=-12, head=(-6, 0, 0), tremble=1.5, fx="sweat"),
+    "startled":  dict(face="startled", ears="up", tail="up", head=(14, 0, 0), neck=8, lift=0.03, fx="!"),
+    "curious":   dict(face="curious", ears="up", tail="wag_slow", head=(4, 0, 18), neck=6),
+    "confused":  dict(face="confused", ears="one_up", head=(0, 0, -20), tilt_osc=(6, 24), fx="?"),
+    "sad":       dict(face="sad", ears="droop", tail="down", neck=-18, head=(-14, 0, 0), crouch=0.05),
+    "sleepy":    dict(face="sleepy", ears="relaxed", tail="down", neck=-10, nod=(6, 24)),
+    "angry":     dict(face="growl", ears="back", tail="up", crouch=0.06, neck=-12, head=(8, 0, 0), tremble=0.6, fx="#"),
+    "proud":     dict(face="proud", ears="up", tail="high_curl", head=(16, 0, 0), neck=10, lift=0.02),
+    "satisfied": dict(face="satisfied", ears="relaxed", tail="wag_slow", head=(8, 0, 6)),
+    "disgusted": dict(face="disgusted", ears="back", head=(6, -28, 8), neck=6, lean=4),
+    "love":      dict(face="love", ears="relaxed", tail="wag_slow", head=(4, 0, 16), sway=(10, 24), fx="hearts"),
+    "surprised": dict(face="surprised", ears="up", tail="up", head=(10, 0, 0), neck=10, fx="!?"),
+    "wink":      dict(face="wink", ears="up", head=(4, 0, 10)),
+    "one_eye_open": dict(face="one_eye_open", ears="relaxed"),
+    "suspicious": dict(face="suspicious", ears="back", head=(-4, 14, 0), neck=-6),
+    "sulky":     dict(face="sulky", ears="droop", tail="down", head=(-6, -30, 0)),
+    "offended":  dict(face="offended", ears="back", head=(18, -26, 0)),
+    "bored":     dict(face="bored", ears="droop", head=(-4, 0, 14), neck=-6),
+}
+POSTURE_BONES = ("Body", "Neck1", "Head", "Ear1.L", "Ear1.R", "Tail1", "Tail2", "Tail3")
+
+
+def _posture(arm, P, t, c):
+    """apply body-language components c (see EMO) to pose P at frame t (in place; works on any Quaternius rig)"""
+    bones = arm.data.bones
+    h = bones["Torso2"].head_local.z if "Torso2" in bones else 1.0
+    em = c.get("ears")
+    if em and "Ear1.L" in bones:
+        for s, sg in (("L", 1), ("R", -1)):
+            p, o = EARS[em][s]; _rot(arm, P, f"Ear1.{s}", pitch=p, roll=sg * o)
+    tm = c.get("tail")
+    if tm:
+        tt = TAIL[tm]
+        for i, a in enumerate(tt.get("pitch", ())):
+            if f"Tail{i + 1}" in bones: _rot(arm, P, f"Tail{i + 1}", pitch=a)
+        if "wag" in tt:
+            amp, per = tt["wag"]
+            _rot(arm, P, "Tail1", yaw=amp * _osc(t, per))
+            if "Tail2" in bones: _rot(arm, P, "Tail2", yaw=0.6 * amp * _osc(t, per, -0.15))
+    if "neck" in c: _rot(arm, P, "Neck1", pitch=c["neck"])
+    hp, hy, hr = c.get("head", (0, 0, 0))
+    if "nod" in c: hp += c["nod"][0] * _osc(t, c["nod"][1]) - c["nod"][0]
+    if "tilt_osc" in c: hr += c["tilt_osc"][0] * _osc(t, c["tilt_osc"][1])
+    if "sway" in c: hy += c["sway"][0] * _osc(t, c["sway"][1])
+    if hp or hy or hr: _rot(arm, P, "Head", pitch=hp, yaw=hy, roll=hr)
+    dz = -c.get("crouch", 0.0) * h + c.get("lift", 0.0) * h
+    if "bounce" in c: dz += c["bounce"][0] * h * abs(_osc(t, c["bounce"][1] * 2))
+    dx = c.get("tremble", 0.0) * 0.006 * h * _osc(t, 4) if c.get("tremble") else 0.0
+    if dz or dx: _mov(arm, P, "Body", (dx, 0, dz))
+    if c.get("lean"): _rot(arm, P, "Body", pitch=c["lean"])
+    return P
+
+
+def _pose_apply(arm, P):
+    _assign(arm, None)
+    for bn, (l, q, s) in P.items():
+        b = arm.pose.bones[bn]; b.rotation_mode = "QUATERNION"; b.location = l; b.rotation_quaternion = q; b.scale = s
+    bpy.context.view_layer.update()
+
+
+def _chin_to(arm, P, target_z, yaw=0.0):
+    """bend Neck1/Head down until the chin (Jaw tail) rests at target_z (rig units above the ground): lying poses"""
+    if "Jaw" not in arm.data.bones: return P
+    best = P
+    for p in range(0, 80, 3):
+        Q = _copy(P); _rot(arm, Q, "Neck1", pitch=-p, yaw=yaw); _rot(arm, Q, "Head", pitch=-0.45 * p)
+        _pose_apply(arm, Q); best = Q
+        if arm.pose.bones["Jaw"].tail.z <= target_z: break
+    _pose_apply(arm, _rest(arm))
+    return best
+
+
+def _key_only(arm, name, n, fn, bones, step=1):
+    act = _new_action(arm, name)
+    bones = [b for b in bones if b in arm.pose.bones]
+    for f in list(range(0, n + 1, step)) + ([n] if n % step else []):
+        _keyP(arm, f, fn(f), bones)
+    _assign(arm, None)
+    return act
+
+
+def _build_posture_actions(arm, pre):
+    """COMBINE overlays: emo_<name> (posture part of each emotion), pose_<ears/tail mode>; 24-frame loops"""
+    for e, c in EMO.items():
+        comp = {k: v for k, v in c.items() if k not in ("face", "fx")}
+        _key_only(arm, pre + "emo_" + e, 24, lambda t, comp=comp: _posture(arm, _rest(arm), t, comp), POSTURE_BONES, 2)
+    for m in EARS:
+        _key_only(arm, pre + "ears_" + m, 24, lambda t, m=m: _posture(arm, _rest(arm), t, dict(ears=m)), ("Ear1.L", "Ear1.R"), 12)
+    for m in TAIL:
+        _key_only(arm, pre + "tail_" + m, 24, lambda t, m=m: _posture(arm, _rest(arm), t, dict(tail=m)), ("Tail1", "Tail2", "Tail3"),
+                  1 if "wag" in TAIL[m] else 12)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
 # playing actions (NLA)
 # ---------------------------------------------------------------------------------------------------------------------
-def action_names(rig):
-    return sorted(ACTIONS[_species(rig)].keys())
+def action_names(rig, everything=False):
+    """the body actions that suit this animal (Chamki doesn't bark; everything=True lists every action + overlay)"""
+    sp = _species(rig)
+    if everything:
+        return sorted(ACTIONS[sp].keys())
+    return [a for a in SPECIES[sp]["acts"] if a in ACTIONS[sp]]
 
 
 def _resolve(rig, name):
@@ -907,19 +1184,26 @@ def _resolve(rig, name):
     raise KeyError(f"{rig.name}: no action '{name}'. Known: {', '.join(sorted(A))}")
 
 
-def play(rig, action_name, start_frame, loops=1, speed=1.0, blend=4, overlay=None, hold=True, _default=False):
+def _is_overlay(short):
+    return short in OVERLAY or short.startswith(("expr_", "emo_", "ears_", "tail_"))
+
+
+def play(rig, action_name, start_frame, loops=1, speed=1.0, blend=4, overlay=None, hold=True, _default=False, mode=None):
     """put an action on the rig's NLA at start_frame (repeated `loops` times, `speed` x faster).
     Body actions cross-fade over `blend` frames from whatever played before; the last one holds its final pose.
     Overlays (blink, wag, chew_face, ear_flick, expr_*) only drive their own bones and stop when they end.
-    Returns the frame where it ends."""
+    Body-language overlays (emo_*, ears_*, tail_*) are COMBINE strips: they ADD their rotation on top of whatever the
+    body is doing (a guilty head-drop works while walking).  Returns the frame where it ends."""
     act, short = _resolve(rig, action_name)
     if overlay is None:
-        overlay = short in OVERLAY or short.startswith("expr_")
+        overlay = _is_overlay(short)
+    if mode is None:
+        mode = "COMBINE" if short.startswith(("emo_", "ears_", "tail_")) else "REPLACE"
     plays = json.loads(rig.get("_plays", "[]"))
     if not overlay:   # the idle that make_*() puts on frame 1 gives way to the first real body action at that frame
         plays = [p for p in plays if not (p.get("d") and start_frame <= p["s"] + 1)]
     plays.append(dict(a=act.name, s=float(start_frame), n=float(loops), v=float(speed), b=int(blend), o=bool(overlay), h=bool(hold),
-                      i=max([p["i"] for p in plays] + [-1]) + 1, d=bool(_default)))
+                      i=max([p["i"] for p in plays] + [-1]) + 1, d=bool(_default), m=mode))
     rig["_plays"] = json.dumps(plays)
     _rebuild(rig, plays)
     f0, f1 = act.frame_range
@@ -945,7 +1229,7 @@ def _rebuild(rig, plays):
             except Exception: pass
         st.repeat = max(0.05, p["n"])
         st.scale = 1.0 / max(0.05, p["v"])
-        st.blend_type = "REPLACE"
+        st.blend_type = p.get("m", "REPLACE")
         if p["o"]:
             st.extrapolation = "NOTHING"; ln = st.frame_end - st.frame_start
             st.blend_in = min(2.0, ln / 3); st.blend_out = min(2.0, ln / 3)
@@ -988,9 +1272,104 @@ def wag(rig, f0, f1, speed=1.0):
 def sleep(rig, f0, f1, zzz=True):
     """sleep loop (lying, slow breathing, ear twitch) + 'Z z z' from the head (lib_fx)"""
     end = play(rig, "sleep", f0, loops=max(0.1, (f1 - f0) / 48.0))
-    if zzz and FX is not None and head_of(rig) is not None:
-        FX.zzz(head_of(rig), f0 + 6, f1, size=0.8 * SPECIES[_species(rig)]["scale"] / 0.2)
+    if zzz and FX is not None and fx_of(rig) is not None:
+        FX.zzz(fx_of(rig), f0 + 6, f1, size=_fx_size(rig))
     return end
+
+
+def fx_of(rig):
+    """world-aligned Empty that follows the head position: the anchor for every lib_fx effect on this animal"""
+    return bpy.data.objects.get(rig.get("fx_obj", "")) or head_of(rig)
+
+
+def _fx_size(rig):
+    sc = rig.parent.matrix_world.to_scale().z if rig.parent else 1.0
+    return max(0.35, min(1.2, 3.2 * sc))          # Chamki/Sheru ~0.6-0.65; a cow ~1
+
+
+def _emo_fx(rig, kind, frame, hold, anchor=None):
+    if FX is None or not kind: return None
+    a = anchor or fx_of(rig); s = _fx_size(rig)
+    if a is None: return None
+    if kind == "sweat": return FX.sweat_drops(a, frame + 2, count=3, size=s)
+    if kind == "hearts": return FX.hearts(a, frame, count=4, size=s)
+    if kind == "zzz": return FX.zzz(a, frame, frame + hold, size=s)
+    return FX.mark(kind, a, frame, frame + min(hold, 40), size=s, offset=(0, 0, 0.30))
+
+
+def emotion(rig, name, frame, hold=48, fx=True):
+    """FULL animal emotion = face (REPLACE on the face bones) + ears/tail/head/body posture (COMBINE, so it layers on
+    any body action) + the lib_fx hook (sweat=scared, hearts=love, ?=confused, !=startled, !?=surprised, #=angry).
+    names: see EMO (happy excited playful cheeky guilty innocent scared startled curious confused sad sleepy angry proud
+    satisfied disgusted love surprised wink one_eye_open suspicious sulky offended bored).  Returns the end frame."""
+    e = EMO[name]
+    expression(rig, e["face"], frame, hold)
+    end = play(rig, "emo_" + name, frame, loops=max(0.1, hold / 24.0), overlay=True)
+    if fx: _emo_fx(rig, e.get("fx"), frame, hold)
+    return end
+
+
+def ears(rig, mode, frame, hold=48):
+    """ear language overlay: up / back / flat / droop / relaxed / one_up"""
+    return play(rig, "ears_" + mode, frame, loops=max(0.1, hold / 24.0), overlay=True)
+
+
+def tail(rig, mode, frame, hold=48):
+    """tail language overlay: up / high_curl / down / tucked / wag_slow / wag_med / wag_fast"""
+    return play(rig, "tail_" + mode, frame, loops=max(0.1, hold / 24.0), overlay=True)
+
+
+def mouth_of(rig):
+    return bpy.data.objects.get(rig.get("mouth_obj", ""))
+
+
+def grab(rig, obj, frame, offset=(0, 0, 0), rot=(0, 0, 0)):
+    """the animal takes obj in its mouth at `frame` (snaps to the mouth contact point + offset, metres, then follows the
+    jaw).  release(rig, obj, frame) drops it where it is."""
+    m = mouth_of(rig)
+    c = obj.constraints.get("mouth") or obj.constraints.new("CHILD_OF"); c.name = "mouth"; c.target = m
+    c.inverse_matrix = Matrix.Identity(4)
+    for fr, inf in ((frame - 1, 0.0), (frame, 1.0)):
+        c.influence = inf; c.keyframe_insert("influence", frame=fr)
+    for p in ("location", "rotation_euler", "scale"): obj.keyframe_insert(p, frame=frame - 1)
+    bpy.context.scene.frame_set(frame); msc = m.matrix_world.to_scale().x
+    obj.location = Vector(offset) / max(1e-6, msc); obj.rotation_euler = rot
+    obj.scale = Vector(obj.scale) / max(1e-6, msc)
+    for p in ("location", "rotation_euler", "scale"): obj.keyframe_insert(p, frame=frame)
+    _constant_keys(obj)
+    return frame
+
+
+def release(rig, obj, frame):
+    c = obj.constraints.get("mouth")
+    if c is None: return frame
+    bpy.context.scene.frame_set(frame); M = obj.matrix_world.copy()
+    c.influence = 0.0; c.keyframe_insert("influence", frame=frame)
+    loc, rq, sc = M.decompose()
+    obj.location = loc; obj.rotation_euler = rq.to_euler(); obj.scale = sc
+    for p in ("location", "rotation_euler", "scale"): obj.keyframe_insert(p, frame=frame)
+    _constant_keys(obj)
+    return frame
+
+
+def _constant_keys(obj):
+    for idb in (obj,):
+        ad = idb.animation_data
+        if ad and ad.action:
+            for fc in action_fcurves(ad.action):
+                for k in fc.keyframe_points: k.interpolation = "CONSTANT"
+
+
+def dust_trail(rig, f0, f1, every=6, size=0.6):
+    """dust puffs kicked up behind a running animal (call AFTER its root motion is keyed: walk_along / hop_to)"""
+    if FX is None: return []
+    root = rig.parent; out = []
+    for f in range(int(f0), int(f1), every):
+        bpy.context.scene.frame_set(f)
+        M = root.matrix_world; fwd = (M.to_3x3() @ Vector((0, -1, 0))).normalized()
+        p = M.translation.copy(); p.z = max(0.0, p.z) + 0.02
+        out.append(FX.dust_puff(p - fwd * 0.15, f, count=5, size=size, seed=f, direction=(fwd.x, fwd.y)))
+    return out
 
 
 def chew(rig, f0, f1, full_body=False):
@@ -1085,5 +1464,68 @@ def hop_to(rig, frame, to, height=None, turn=True):
     return play(rig, "hop", frame)
 
 
-__all__ = ["make_chamki", "make_sheru", "play", "clear", "walk_along", "hop_to", "expression", "blink", "blink_loop", "wag",
-           "sleep", "chew", "natural_speed", "action_names", "head_of", "ACTIONS", "EXPR", "SPECIES"]
+# ---------------------------------------------------------------------------------------------------------------------
+# generic Quaternius animals (cow, bull, donkey, horse, husky/wolf/fox dogs ...): body-language emotions only
+# ---------------------------------------------------------------------------------------------------------------------
+GENERIC_EMOTIONS = ("happy", "scared", "curious", "sleepy", "angry", "sad", "excited", "startled", "proud", "confused")
+
+
+def load_animal(kind, loc=(0, 0, 0), rot_z=0.0, length=None, name=None):
+    """append a pack animal ('Cow', 'Bull', 'Donkey', 'Horse', 'Husky', 'Wolf', 'Fox', 'Alpaca', 'Deer', 'ShibaInu'...)
+    from assets/quaternius/<Kind>.blend (or the full pack folder). length = nose-to-tail metres (default: pack size x 0.2).
+    Returns (root, armature); the pack 'Idle' plays on an NLA base track."""
+    kind = kind[0].upper() + kind[1:]
+    rel = next((r for r in (f"{kind}.blend", os.path.join("ultimate_animated_animals_full", "Blends", f"{kind}.blend"))
+                if os.path.exists(os.path.join(ASSET_DIR, r))), f"{kind}.blend")
+    name = name or kind
+    coll = bpy.data.collections.new(name.upper()); bpy.context.scene.collection.children.link(coll)
+    arm, mesh = _append(dict(blend=rel, mesh=kind, prefix=kind + "_"), name, coll)
+    for p in mesh.data.polygons: p.use_smooth = True
+    for m in list(mesh.modifiers):
+        if m.type == "NODES": mesh.modifiers.remove(m)
+    root = bpy.data.objects.new(name, None); coll.objects.link(root); arm.parent = root
+    s = 0.2 if length is None else length / max(mesh.dimensions.y, 1e-3)
+    root.scale = (s, s, s); root.location = loc; root.rotation_euler = (0, 0, R(rot_z))
+    arm["generic_kind"] = kind
+    hb = arm.data.bones["Head"]
+    hf = bpy.data.objects.new(name + "_fx", None); coll.objects.link(hf)
+    cl = hf.constraints.new("COPY_LOCATION"); cl.target = arm; cl.subtarget = "Head"; cl.head_tail = 0.5
+    arm["fx_obj"] = hf.name
+    idle = bpy.data.actions.get(kind + "_Idle")
+    ad = arm.animation_data or arm.animation_data_create(); ad.action = None
+    if idle is not None:
+        tr = ad.nla_tracks.new(); tr.name = "base"; st = tr.strips.new("idle", 1, idle); st.repeat = 50; st.extrapolation = "HOLD"
+        if hasattr(st, "action_slot") and len(getattr(idle, "slots", [])):
+            try: st.action_slot = idle.slots[0]
+            except Exception: pass
+    return root, arm
+
+
+def animal_emotion(arm, name, frame, hold=48, fx=True):
+    """body-language emotion on ANY Quaternius armature (no cartoon face): head / neck / ears / tail / crouch as a
+    COMBINE overlay strip on top of whatever it plays.  Bones a species lacks (cows have no ear bones) are skipped and
+    reported in LA.MISSING.  Returns the end frame."""
+    c = {k: v for k, v in EMO[name].items() if k not in ("face", "fx")}
+    an = f"{arm.name}_emo_{name}"
+    act = bpy.data.actions.get(an)
+    if act is None:
+        keep = arm.animation_data.action if arm.animation_data else None
+        act = _key_only(arm, an, 24, lambda t: _posture(arm, _rest(arm), t, c), POSTURE_BONES, 2)
+        if keep is not None: _assign(arm, keep)
+    ad = arm.animation_data or arm.animation_data_create()
+    if ad.action is not None:                      # push the active action down so the overlay sits ON TOP of it
+        base = ad.action; ad.action = None
+        tr = ad.nla_tracks.new(); tr.name = "base"; st = tr.strips.new(base.name, 1, base); st.repeat = 50
+    tr = ad.nla_tracks.new(); tr.name = f"emo_{name}_{int(frame)}"
+    st = tr.strips.new(an, int(frame), act); st.blend_type = "COMBINE"; st.extrapolation = "NOTHING"
+    if hasattr(st, "action_slot") and len(getattr(act, "slots", [])):
+        try: st.action_slot = act.slots[0]
+        except Exception: pass
+    st.repeat = max(0.1, hold / 24.0); st.blend_in = st.blend_out = 3
+    if fx: _emo_fx(arm, EMO[name].get("fx"), frame, hold, anchor=bpy.data.objects.get(arm.get("fx_obj", "")))
+    return frame + hold
+
+
+__all__ = ["make_chamki", "make_sheru", "play", "clear", "walk_along", "hop_to", "expression", "emotion", "ears", "tail",
+           "blink", "blink_loop", "wag", "sleep", "chew", "grab", "release", "mouth_of", "fx_of", "dust_trail", "natural_speed",
+           "action_names", "head_of", "load_animal", "animal_emotion", "ACTIONS", "EXPR", "EMO", "EARS", "TAIL", "SPECIES"]
