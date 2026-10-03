@@ -6,3 +6,5 @@ motion_library/models/
 motion_library/candidates.json
 motion_library/clips.json
 motion_library/out/
+kaggle/mocap/jobs/
+
