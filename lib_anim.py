@@ -1535,4 +1535,11 @@ def assert_no_undressed_humans():
     return True
 
 
+def mocap(rig, clip, start_frame=1, parts=("body", "hands", "face"), strength=1.0, mirror=False, **kw):
+    """captured human motion (lib_mocap, MediaPipe data from motion_library/data or the private Kaggle dataset).
+    Scene JSON: {"t": "anim", "who": "Dadi", "fn": "mocap", "args": {"clip": "namaste", "start_frame": 40, "parts": ["body", "hands"]}}"""
+    import lib_mocap
+    return lib_mocap.apply_clip(rig, None, clip, start_frame, parts=tuple(parts), strength=strength, mirror=mirror, **kw)
+
+
 __all__ = [n for n in dir() if not n.startswith("_")]
