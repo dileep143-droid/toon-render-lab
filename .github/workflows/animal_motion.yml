@@ -1,0 +1,82 @@
+name: animal-motion
+# Side-by-side test of three ways to move Chamki + Sheru (lib_animal_motion.py):
+#   base = current lib_animals | A = Quaternius CC0 clips | A_nc = MANN dog mocap (CC BY-NC, comparison only)
+#   B_gen / B_real = video -> AP-10K keypoints (private Kaggle kernel output, fetched at run time) | C = procedural solver
+# Only renders (strips, mp4, info json) are uploaded. Mocap files, clips and keypoints are fetched at run time and
+# never committed or uploaded (artifacts of a public repo are downloadable by anyone logged in).
+on:
+  workflow_dispatch:
+    inputs:
+      routes: { description: "comma list: base,A,A_nc,B_gen,B_real,C", default: "base,A,A_nc,C" }
+      who:    { description: "comma list: sheru,chamki", default: "sheru,chamki" }
+      kp_dog:  { description: "Kaggle kernel with dog keypoints (key n:kernel ref)", default: "2:dileep143/animal-motion-dog" }
+      kp_goat: { description: "Kaggle kernel with goat keypoints (key n:kernel ref)", default: "3:wheeler123/animal-motion-goat" }
+      mp4:    { description: "render mp4 too (yes/no)", default: "yes" }
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      m: ${{ steps.m.outputs.m }}
+    steps:
+      - id: m
+        run: |
+          python3 - <<'EOF' >> $GITHUB_OUTPUT
+          import json
+          r = [x.strip() for x in "${{ inputs.routes }}".split(",") if x.strip()]
+          w = [x.strip() for x in "${{ inputs.who }}".split(",") if x.strip()]
+          inc = [dict(route=a, who=b) for a in r for b in w if not (a == "A_nc" and b != "sheru")]
+          print("m=" + json.dumps(dict(include=inc)))
+          EOF
+  bench:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.m) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Libraries
+        run: sudo apt-get update -q && sudo apt-get install -y -q libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libegl1 libxkbcommon0 libsm6
+      - name: Blender 4.2 LTS
+        run: |
+          curl -sSL -o b.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf b.tar.xz && mv blender-4.2.3-linux-x64 blender
+      - name: MANN dog mocap (CC BY-NC 4.0, fetched at run time, never committed)
+        if: matrix.route == 'A_nc'
+        run: |
+          mkdir -p /tmp/mann && curl -sSL -o /tmp/mann.zip https://starke-consult.de/AI4Animation/SIGGRAPH_2018/MotionCapture.zip
+          unzip -q /tmp/mann.zip -d /tmp/mann && find /tmp/mann -type f | head -n 20 && find /tmp/mann -name "*.bvh" | wc -l
+      - name: Keypoints from the private Kaggle kernel
+        if: startsWith(matrix.route, 'B')
+        env:
+          K1: ${{ secrets.KAGGLE_KEY1 }}
+          K2: ${{ secrets.KAGGLE_KEY2 }}
+          K3: ${{ secrets.KAGGLE_KEY3 }}
+          K4: ${{ secrets.KAGGLE_KEY4 }}
+        run: |
+          pip install -q kaggle
+          SPEC="${{ matrix.who == 'sheru' && inputs.kp_dog || inputs.kp_goat }}"
+          KEY="${SPEC%%:*}"; REF="${SPEC#*:}"; V="K$KEY"
+          export KAGGLE_API_TOKEN="${!V}"
+          mkdir -p /tmp/kg && kaggle kernels output "$REF" -p /tmp/kg > /dev/null
+          ls /tmp/kg/out/kp 2>/dev/null || ls -R /tmp/kg | head -n 40
+      - name: Bench ${{ matrix.route }} / ${{ matrix.who }}
+        run: |
+          set -o pipefail
+          git rev-parse HEAD
+          MP4=""; [ "${{ inputs.mp4 }}" = "yes" ] || MP4="--no-mp4 1"
+          ./blender/blender -b -noaudio --python-exit-code 1 --python lib_animal_motion.py -- bench out ${{ matrix.route }} ${{ matrix.who }} --kp /tmp/kg/out/kp --bvh /tmp/mann $MP4 2>&1 \
+            | grep -vE "^Fra:|Saved:|^\s*$|Append frame|Time:|Mem:" | tail -n 300
+          ls -la out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: "am-${{ matrix.route }}-${{ matrix.who }}"
+          path: |
+            out/strip_*.png
+            out/clip_*.mp4
+            out/info_*.json
+            out/licences.json
+          retention-days: 7
