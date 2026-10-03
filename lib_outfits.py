@@ -486,15 +486,16 @@ def _neck_profile(B, z, n=48, a0=0.0, a1=2 * math.pi, pad=0.003):
         out.append((a, min(r, rmax) + pad))
     return c, out
 
-def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004, buttons_n=0, btn_colour=(0.9, 0.85, 0.7)):
+def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.0015, thick=0.002, buttons_n=0, btn_colour=(0.9, 0.85, 0.7)):
     """mandarin / band collar: a low stand that sits ON the neck base and hugs the neck (front gap)"""
-    s = B.Hs / 1.6; h = h or 0.024 * s
+    s = B.Hs / 1.6; h = h or 0.02 * s
     zb = B.zn - 0.006 * B.Hs
     a0, a1 = -math.pi / 2 + gap, 1.5 * math.pi - gap
     c0, prof0 = _neck_profile(B, B.zn + 0.004 * B.Hs, 40, a0, a1, pad)
     rows = []
-    for k, (zz, sc_) in enumerate(((zb, 1.06), (zb + 0.4 * h, 1.0), (zb + h, 0.985), (zb + h + 0.002, 0.97))):
-        rows.append([Vector((r * sc_ * math.cos(a), c0.y + r * sc_ * math.sin(a), zz)) for a, r in prof0])
+    for k, (zz, sc_) in enumerate(((zb, 1.03), (zb + 0.4 * h, 1.0), (zb + h, 1.0), (zb + h + 0.002, 0.985))):
+        ck, pk = _neck_profile(B, max(zz, B.zn + 0.004 * B.Hs), 40, a0, a1, pad)   # the neck at this row's height
+        rows.append([Vector((r * sc_ * math.cos(a), ck.y + r * sc_ * math.sin(a), zz)) for a, r in pk])
     bm, G = _grid(rows, lambda r, c: (c / 39 * 0.3, r / 3))
     push_out(bm.verts, B.bvh(), 0.002)
     weights = [B.kd_weights(v.co, ("torso", "head"), drop=("arm",)) for v in bm.verts]
@@ -504,7 +505,7 @@ def collar_band(B, mat, h=None, gap=0.16, name="collar", pad=0.003, thick=0.004,
         out.append(buttons(B, B.zn - 0.004 * B.Hs, B.zn - 0.012 * B.Hs - 0.035 * s * (buttons_n - 1), buttons_n, btn_colour, name=name + "_buttons", r=0.0035))
     return out
 
-def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False, name="collar", pad=0.003, thick=0.0035):
+def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.0, rounded=False, name="collar", pad=0.0015, thick=0.0018):
     """turn-down shirt collar: stand + a fall that folds over and lies on the shoulders, pointed (or rounded) front ends"""
     s = B.Hs / 1.6; stand = stand or 0.02 * s; fall = fall or 0.052 * s
     zb = B.zn - 0.006 * B.Hs
@@ -517,13 +518,22 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
         if rounded: tip = 1.0 - 0.35 * max(0.0, 1 - min(i, n - 1 - i) / 6.0)
         d = Vector((math.cos(a), math.sin(a), 0)); C = Vector((0, c0.y, 0))
         ztop = zb + stand
-        prof_pts = [(r * 1.04, zb), (r, zb + stand * 0.6), (r + 0.001, ztop), (r + 0.006 * s, ztop + 0.003 * s),
+        prof_pts = [(r * 1.02, zb), (r, zb + stand * 0.6), (r + 0.0005, ztop), (r + 0.003 * s, ztop + 0.0015 * s),
                     (r + 0.5 * fall * tip, ztop - 0.25 * fall * tip), (r + 0.95 * fall * tip, ztop - 0.75 * fall * tip)]
         for k, (rr, zz) in enumerate(prof_pts): rows[k].append(C + d * rr + Vector((0, 0, zz)))
     bm, G = _grid(rows, lambda r, c: (c / (n - 1) * 0.3, r / 5))
     for _ in range(3):
         push_out([v for row in G[3:] for v in row], B.bvh(), 0.003)
         bmesh.ops.smooth_vert(bm, verts=[v for row in G[4:] for v in row], factor=0.4, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    bv = B.bvh()
+    for it in range(4):   # lay the fall on the shirt / shoulders: every fall vertex is pulled onto the surface below it
+        for k, row in enumerate(G[4:]):
+            for v in row:
+                loc, nrm, _, d = bv.find_nearest(v.co, 0.15)
+                if loc is None: continue
+                want = loc + nrm * (0.0012 + 0.0004 * k)
+                v.co = v.co.lerp(want, 0.7 if it < 3 else 1.0)
+        if it < 3: bmesh.ops.smooth_vert(bm, verts=[v for row in G[4:] for v in row], factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     push_out(bm.verts, B.bvh(), 0.002)
     weights = [B.kd_weights(v.co, ("torso", "head"), drop=("arm",)) for v in bm.verts]
     o = _finish(B, bm, name, mat, weights, thick); _register(B, o)
@@ -531,10 +541,8 @@ def collar_turn(B, mat, stand=None, fall=None, gap=0.2, point=1.2, rounded=False
 
 def placket(B, mat, z_top, z_bot, w=None, name="placket", x=0.0):
     s = B.Hs / 1.6; w = w or 0.024 * s
-    pts = [B.surf(x, z_top + (z_bot - z_top) * k / 4, "front") for k in range(5)]
-    pts = [p for p in pts if p is not None]
-    if len(pts) < 2: return None
-    return drape(B, name, mat, pts, w, clear=0.0015, thick=0.002, iters=2, n=4, m=3)
+    # flat strip ON the shirt front (a curled drape looked like a hanging tube)
+    return patch(B, mat, x - w / 2, x + w / 2, z_bot, z_top, name=name, nx=2, nz=14, clear=0.0008, thick=0.0012)
 
 def patch(B, mat, x0, x1, z0, z1, name="pocket", side="front", nx=6, nz=6, clear=0.0018, thick=0.002, wparts=("torso",)):
     """flat cloth patch (pocket, flap, badge) laid on the current outer surface; uv v = 1 along the top edge"""
@@ -746,6 +754,13 @@ def bottoms(B, name, mat, waist_z, leg_t=0.96, offset=0.008, style="straight", e
     tube = _tube_fn(B, "leg", rf, 0.14 if style != "dhoti" else 0.1, 0.34, ripple=rip[0], nrip=rip[1])
     return shell(B, name, mat, keep, offset=offset, smooth=3, cuts=cuts, tube=tube, clear=clear, thick=thick, post_smooth=4)
 
+def underlayer(B, name, rgb, waist_z=None, leg_t=0.95, mat=None):
+    """petticoat / inner layer under a skirt, saree, langa or lungi: snug ankle-length leg tubes that follow the legs
+    (same colour family, a shade darker), so no skin can show in a walking stride even where a leg passes the outer skirt"""
+    Hs = B.Hs
+    return bottoms(B, name, mat or fabric(name, _darker(rgb, 0.8), 0.85, 0.35), waist_z if waist_z is not None else B.zw,
+                   leg_t=leg_t, style="snug", offset=0.004, ease=0.003, clear=0.003, thick=0.003)
+
 def _skirt_weights(B, z_top, z_hem, x, z, rx_hip, stiff=1.0):
     """pelvis at the waist -> thighs -> shins at the hem; left/right split by x"""
     legw = 0.97 * _smoothstep(B.zh + 0.01 * B.Hs, B.zx - 0.3 * (B.zx - B.zk), z) * stiff
@@ -814,7 +829,7 @@ def lathe(B, name, mat, rings, segs=96, pleats=0, amp=0.0, front=0.0, clear=0.00
     _register(B, o)
     return o
 
-def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=None):
+def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=None, contain_to=None):
     """measured rings: snug at the waist, widest at the hips, then a straight / flared fall to the hem"""
     step = step or 0.015 * B.Hs
     # 1) measured section: waist -> widest hip (searched between the crotch and the waist)
@@ -839,7 +854,7 @@ def skirt_rings(B, z_top, z_hem, flare=1.25, ease=0.012, step=None, top_ease=Non
     zs = []; z = zH - step
     while z > z_hem: zs.append(z); z -= step
     zs.append(z_hem)
-    need = [(z, B.ring(z, ease, cy=cy)) for z in zs]
+    need = [(z, B.ring(z, ease, cy=cy)) for z in zs if contain_to is None or z >= contain_to]   # contain_to: only make room for the legs down to here (straight wraps)
     rxe, rye = rxH * flare, ryH * flare
     prof = lambda z, a, e: a + (e - a) * (((zH - z) / (zH - z_hem)) ** 0.85)
     for _ in range(60):
@@ -1108,19 +1123,35 @@ def collar(B, mat, style="turn", name="collar", **k):
     return collar_turn(B, mat, name=name, **k)
 
 def buttons(B, z_from, z_to, n=5, colour=(0.95, 0.95, 0.92), x=0.0, name="buttons", r=0.0042):
+    r = min(r, 0.003)   # small flat shirt buttons
     pts = [B.surf(x, z_from + (z_to - z_from) * k / max(1, n - 1), "front") for k in range(n)]
     pts = [p for p in pts if p is not None]
     if not pts: return None
     r = r * B.Hs / 1.6
-    return rigid(B, name, solid(name, colour, 0.35), lambda bm: [_ball(bm, p - Vector((0, 0.0012, 0)), r, (1, 0.3, 1)) for p in pts],
+    return rigid(B, name, solid(name, colour, 0.35), lambda bm: [_ball(bm, p - Vector((0, 0.0008, 0)), r, (1, 0.22, 1)) for p in pts],
                  wfun=lambda co: B.kd_weights(co, ("torso", "head"), drop=("arm",)))
 
-def waistband(B, z, mat, h=None, ease=0.006, name="waistband"):
-    h = h or 0.022 * B.Hs; rg = B.ring(z, ease)
+def waistband(B, z, mat, h=None, ease=0.006, name="waistband", pad=0.0015, thick=0.003, segs=64):
+    """belt / rolled waist / sash: each ring is traced round the CLOTHED waist at its own height (inward rays against
+    the body + garments already on) and sits pad above it, so it lies on the clothes instead of floating.
+    ease is kept for old calls and only caps the pad."""
+    h = h or 0.022 * B.Hs; rg = B.ring(z, 0.0)
     if rg is None: return None
-    cy, rx, ry = rg
-    rings = [(z + h / 2, cy, rx, ry), (z - h / 2, cy, rx * 1.01, ry * 1.01)]
-    return lathe(B, name, mat, rings, segs=64, clear=0.004, thick=0.004)
+    cy, rx0, ry0 = rg; bv = B.bvh(); pad = min(pad, ease) if ease else pad
+    rows = []
+    for zz in (z + h / 2, z, z - h / 2):
+        c = Vector((0.0, cy, zz)); row = []
+        for i in range(segs):
+            a = 2 * math.pi * i / segs; d = Vector((math.cos(a), math.sin(a), 0))
+            r0 = 1.35 / math.sqrt((d.x / rx0) ** 2 + (d.y / ry0) ** 2) + 0.025   # start just outside the clothed waist, inside the arms
+            loc, nrm, _, _ = bv.ray_cast(c + d * r0, -d, r0)
+            row.append((loc + d * pad) if loc is not None else c + d * 0.12)
+        rows.append(row)
+    bm, G = _grid(rows, lambda r, c: (c / segs, 1 - r / 2), closed=True)
+    orient_outward(bm, bv)
+    weights = [B.kd_weights(v.co, ("torso",), drop=("arm",)) for v in bm.verts]
+    o = _finish(B, bm, name, mat, weights, thick); _register(B, o)
+    return o
 
 # ----------------------------------------------------------------------------------------------- drape paths
 def _pallu_anchors(B, kind="nivi"):
@@ -1350,13 +1381,9 @@ def hair_ribbon(B, colour=(0.9, 0.1, 0.15)):
 
 def cardboard_badge(B, colour=(0.82, 0.68, 0.45)):
     """flat card pinned on the left chest (blank: add text/texture in the scene if needed)"""
-    p = B.surf(0.5 * B.sw, B.zc + 0.02 * B.Hs, "front")
-    if p is None: return None
-    s = B.Hs / 1.6
-    def build(bm):
-        bmesh.ops.create_cube(bm, size=1.0, matrix=Matrix.Translation(p - Vector((0, 0.004, 0))) @ Matrix.Diagonal((0.06 * s, 0.003, 0.04 * s, 1)))
-        _ball(bm, p - Vector((0, 0.007, -0.016 * s)), 0.003 * s)
-    return rigid(B, "cardboard_badge", solid("cardboard", colour, 0.85), build, wfun=lambda co: B.kd_weights(co, ("torso",), drop=("arm",)))
+    s = B.Hs / 1.6; x, z = 0.5 * B.sw, B.zc + 0.02 * B.Hs
+    return patch(B, solid("cardboard", colour, 0.85), x - 0.03 * s, x + 0.03 * s, z - 0.02 * s, z + 0.02 * s, name="cardboard_badge",
+                 nx=6, nz=4, clear=0.001, thick=0.0025)
 
 SKIRT_SIM = {"frames": 40, "bend": 0.35, "mass": 0.22, "pin_rows": 2}
 SILK_SIM = {"frames": 40, "bend": 0.7, "mass": 0.2, "pin_rows": 2}
@@ -1389,7 +1416,7 @@ def _kurta(B, C, key="kurta", name="kurta", hem_z=None, pattern=None, collar_sty
     """straight-cut kurta: slim body, side slits from the hip, soft cloth fall, mandarin collar + short placket"""
     Hs = B.Hs; s = Hs / 1.6
     km = fabric(name, C[key], 0.8, 0.45, pattern=pattern)
-    out = [top(B, name, km, B.zh - 0.02 * Hs, sleeve_t=sleeve, neck_depth=0.006 * Hs, offset=0.006, sleeve_loose=0.1, loose=0.003)]
+    out = [top(B, name, km, B.zh - 0.02 * Hs, sleeve_t=sleeve, neck_depth=0.006 * Hs, offset=0.006, sleeve_loose=0.1, loose=0.0015)]
     kz = hem_z if hem_z is not None else B.zk
     rings = skirt_rings(B, B.zh, kz, flare=1.0, ease=0.012, top_ease=0.008)
     out.append(lathe(B, name + "_tail", fabric(name + "_tail", C[key], 0.8, 0.45, pattern=pattern, coord="uv" if pattern is None or pattern.get("kind") != "stripes" else "uv"),
@@ -1404,10 +1431,11 @@ def _saree(B, C, o, pallu_w=0.09, elder=False):
     G += _blouse(B, C, hem=B.zub - 0.01 * Hs, sleeve=0.3 if elder else 0.26, neck=0.03 if elder else 0.04, trim=C["border"])
     zari = C["border"] == GOLD
     pat = None if elder else {"kind": "buti", "c2": C["border"], "scale": 0.045 * s, "r": 0.1}
-    G.append(top(B, "saree_wrap", fabric("saree_wrap", C["saree"], 0.8, 0.5, pattern=pat), B.zw - 0.04 * Hs, sleeveless=True, top_z=B.zub + 0.012 * Hs, offset=0.009, clear=0.006))
+    G.append(top(B, "saree_wrap", fabric("saree_wrap", C["saree"], 0.8, 0.5, pattern=pat), B.zw - 0.04 * Hs, sleeveless=True, top_z=B.zub + 0.012 * Hs, offset=0.007, clear=0.005))
     rings = skirt_rings(B, B.zw - 0.005 * Hs, max(0.008, 0.25 * B.za), flare=1.3, ease=0.014, top_ease=0.004)
     sm = fabric("saree", C["saree"], 0.8, 0.5, border={"c": C["border"], "mode": "v_hi", "w": 0.07, "zari": zari, "stripe": True},
                 pattern=None if elder else {"kind": "buti", "c2": C["border"], "scale": 0.05, "r": 0.1}, coord="uv")
+    G.append(underlayer(B, "petticoat", C["saree"], B.zw - 0.005 * Hs))
     G.append(lathe(B, "saree_skirt", sm, rings, segs=128, sim=SKIRT_SIM))
     hem = rings[-1][0]
     fm = fabric("saree_pleats", C["saree"], 0.8, 0.5, border={"c": C["border"], "mode": "u_gt", "w": (B.zw - hem) - 0.07 * (B.zw - hem), "zari": zari}, coord="uv")
@@ -1424,11 +1452,11 @@ def _dhoti(B, C, leg_t=0.9):
     Hs = B.Hs; s = Hs / 1.6; G = []
     hem = B.axis_point("leg", 1, leg_t).z
     dm = fabric("dhoti", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "z_lo", "w": hem + 0.03 * Hs})
-    G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.01, ease=0.016))
+    G.append(bottoms(B, "dhoti", dm, B.zw + 0.012 * Hs, leg_t=leg_t, style="dhoti", offset=0.008, ease=0.016))
     pm = fabric("dhoti_pleats", C["dhoti"], 0.85, 0.4, border={"c": C["border"], "mode": "v_edges", "w": 0.1}, coord="uv")
     G.append(pleat_fan(B, "dhoti_pleats", pm, B.zw, hem + 0.012 * Hs, 0.06 * s, 0.1 * s, n=6, depth=0.01 * s))
     G.append(pleat_fan(B, "dhoti_back_tuck", pm, B.zw, B.zx - 0.05 * Hs, 0.07 * s, 0.045 * s, n=4, depth=0.008 * s, side="back"))
-    G.append(waistband(B, B.zw + 0.01 * Hs, fabric("dhoti_roll", C["dhoti"], 0.85, 0.4), h=0.02 * Hs, ease=0.01, name="dhoti_roll"))
+    G.append(waistband(B, B.zw + 0.01 * Hs, fabric("dhoti_roll", C["dhoti"], 0.85, 0.4), h=0.02 * Hs, ease=0.007, name="dhoti_roll"))
     return G
 
 def _gender(B, o):
@@ -1454,6 +1482,7 @@ def _build(B, outfit, C, o):
     elif outfit == "langa_voni":
         G += _blouse(B, C, trim=C["zari"])
         rings = skirt_rings(B, B.zw + 0.008 * Hs, max(0.01, 0.4 * B.za), flare=1.5, ease=0.012)
+        G.append(underlayer(B, "langa_petticoat", C["langa"]))
         G.append(lathe(B, "langa", fabric("langa", C["langa"], 0.4, 0.8, border={"c": C["zari"], "mode": "v_hi", "w": 0.12, "zari": True, "stripe": True},
                                           pattern={"kind": "buti", "c2": C["zari"], "scale": 0.05, "r": 0.09}, coord="uv"), rings, segs=128, pleats=48, amp0=0.012, sim=SILK_SIM))
         G.append(waistband(B, B.zw + 0.008 * Hs, fabric("langa_band", C["zari"], 0.3, 0, metal=0.7), h=0.016 * Hs))
@@ -1462,6 +1491,7 @@ def _build(B, outfit, C, o):
     elif outfit == "pattu_pavadai":
         G += _blouse(B, C, sleeve=0.22, neck=0.03, trim=C["zari"])
         rings = skirt_rings(B, B.zw + 0.008 * Hs, max(0.01, 0.4 * B.za), flare=1.6, ease=0.012)
+        G.append(underlayer(B, "pavadai_petticoat", C["skirt"]))
         G.append(lathe(B, "pavadai", fabric("pavadai", C["skirt"], 0.35, 0.8, border={"c": C["zari"], "mode": "v_hi", "w": 0.2, "zari": True, "stripe": True},
                                             pattern={"kind": "buti", "c2": C["zari"], "scale": 0.045, "r": 0.1}, coord="uv"), rings, segs=128, pleats=48, amp0=0.012, sim=SILK_SIM))
         G.append(waistband(B, B.zw + 0.008 * Hs, fabric("pavadai_band", C["zari"], 0.3, 0, metal=0.75), h=0.022 * Hs))
@@ -1496,17 +1526,19 @@ def _build(B, outfit, C, o):
         lm = fabric("lungi", C["lungi"], 0.85, 0.4, pattern={"kind": "plaid", "c2": C["check"], "scale": 0.045 * s, "lw": 0.1, "c3": C["check2"]}, coord="uv")
         short = o.get("lungi_short", False)
         hem = (B.zk - 0.03 * Hs) if short else max(0.012, 0.6 * B.za)
-        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.01, top_ease=0.004)
+        rings = skirt_rings(B, B.zw + 0.005 * Hs, hem, flare=1.0, ease=0.008, top_ease=0.003, contain_to=B.zx)   # straight wrap: room for the legs only to the knee, then a straight fall (the A-pose feet apart no longer widen the hem; the inner layer covers any gap)
+        G.append(underlayer(B, "lungi_inner", C["lungi"], leg_t=0.55 if short else 0.95, mat=lm))   # same checked cloth: reads as the lungi wrapped close to the leg
         G.append(lathe(B, "lungi", lm, rings, segs=96, sim=SKIRT_SIM))
-        G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.024 * Hs, ease=0.012, name="lungi_roll"))
+        G.append(waistband(B, B.zw + 0.006 * Hs, lm, h=0.02 * Hs, name="lungi_roll", pad=0.002, thick=0.004))
         if short:   # folded up to the knee: a thick rolled hem
             G.append(waistband(B, hem + 0.006 * Hs, lm, h=0.02 * Hs, ease=0.02, name="lungi_fold_hem"))
         kp = B.surf(-0.3 * B.sw, B.zw + 0.006 * Hs, "front")
         if kp is not None:   # the knot / tuck at the waist with the loose end hanging from it
-            G.append(rigid(B, "lungi_knot", lm, lambda bm: [_ball(bm, kp + Vector((dx, -0.012 * s, dz)), 0.016 * s, (1.1, 0.6, 0.8)) for dx, dz in ((0, 0), (0.012 * s, -0.006 * s), (-0.01 * s, -0.004 * s))],
+            # small tucked knot at the waist + a short folded tuck under it (no long hanging strip)
+            G.append(rigid(B, "lungi_knot", lm, lambda bm: [_ball(bm, kp + Vector((dx, -0.006 * s, dz)), 0.0085 * s, (1.2, 0.55, 0.8)) for dx, dz in ((0, 0), (0.008 * s, -0.004 * s))],
                            wfun=lambda co: _skirt_weights(B, B.zw, B.zk, co.x, co.z, 0.2)))
-            fold = [kp + Vector((0, -0.02 * s, -0.015 * s)), B.surf(-0.27 * B.sw, B.zx, "front"), B.surf(-0.25 * B.sw, (B.zx + B.zk) / 2, "front")]
-            G.append(drape(B, "lungi_fold", lm, [p for p in fold if p is not None], [0.05 * Hs, 0.055 * Hs, 0.04 * Hs], clear=0.005, thick=0.003, m=7, pleats=0.004 * s))
+            G.append(patch(B, lm, -0.36 * B.sw, -0.24 * B.sw, B.zw - 0.05 * Hs, B.zw - 0.004 * Hs, name="lungi_tuck", nx=3, nz=4, clear=0.0012, thick=0.003,
+                           wparts=("torso", "leg")))
         G += _shirt(B, C, "shirt", pattern={"kind": "checks", "c2": _darker(C["shirt"], 0.9), "scale": 0.01 * s}, pocket=True, hem=B.zh - 0.03 * Hs)
     elif outfit == "banian_dhoti_farmer":
         G += _dhoti(B, C, leg_t=0.57)
@@ -1547,6 +1579,7 @@ def _build(B, outfit, C, o):
         G.append(top(B, "frock_bodice", fabric("frock", fc, rough, 0.6, pattern=pat), B.zw - 0.02 * Hs, sleeve_t=0.2, neck_depth=0.02 * Hs, offset=0.007,
                      puff=0.15 if wet else 0.55))
         rings = skirt_rings(B, B.zw + 0.005 * Hs, B.zk - 0.05 * Hs, flare=1.25 if wet else 1.75, ease=0.012)
+        G.append(underlayer(B, "frock_bloomers", fc, leg_t=0.4))   # short inner bloomers: no thigh shows in a stride
         G.append(lathe(B, "frock_skirt", fabric("frock_skirt", fc, rough, 0.6, pattern={**pat, "scale": 0.055}, border={"c": dc, "mode": "v_hi", "w": 0.05}, coord="uv"),
                        rings, segs=120, pleats=40, amp0=0.025, amp=0.01, sim={"frames": 40, "bend": 0.25 if not wet else 0.15, "mass": 0.2 if not wet else 0.35, "pin_rows": 2}))
         G.append(waistband(B, B.zw + 0.005 * Hs, fabric("sash", _darker(C["sash"], 0.7) if wet else C["sash"], 0.4, 0.6), h=0.02 * Hs, ease=0.012, name="sash"))
@@ -1605,9 +1638,16 @@ def _build(B, outfit, C, o):
             G.append(patch(B, km, min(x0, x1), max(x0, x1), B.zc - 0.04 * Hs, B.zc + 0.01 * Hs, name=f"police_pocket{'L' if sd > 0 else 'R'}"))
             G.append(patch(B, fabric(f"police_flap{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35), min(x0, x1) - 0.003, max(x0, x1) + 0.003, B.zc + 0.005 * Hs, B.zc + 0.02 * Hs,
                            name=f"police_flap{'L' if sd > 0 else 'R'}", nz=2, clear=0.0035))
-            p = B.surf(sd * 0.68 * B.sw, B.zn + 0.02 * Hs, "top", y=B.bh[f"clavicle.{'L' if sd > 0 else 'R'}"].y)
-            if p: G.append(rigid(B, f"epaulette{'L' if sd > 0 else 'R'}", fabric(f"epaulette{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35),
-                                 lambda bm, p=p: _ball(bm, p + Vector((0, 0, 0.0015)), 0.022 * s, (1.5, 0.85, 0.12)), wfun=lambda co: B.kd_weights(co, ("torso", "arm"))))
+            yc = B.bh[f"clavicle.{'L' if sd > 0 else 'R'}"].y
+            rows = []
+            for dy in (-0.013 * s, 0.0, 0.013 * s):   # strip from the collar to the shoulder point, following the slope
+                row = [B.surf(sd * (0.45 + 0.35 * k / 8) * B.sw, B.zn + 0.03 * Hs, "top", y=yc + dy, clear=0.0012) for k in range(9)]   # rays start below the jaw / ears
+                rows.append(row)
+            if all(p is not None for row in rows for p in row):
+                bm_, _G = _grid(rows, lambda r, c: (c / 8, r / 2))
+                orient_outward(bm_, B.bvh())
+                G.append(_finish(B, bm_, f"epaulette{'L' if sd > 0 else 'R'}", fabric(f"epaulette{sd}", _darker(C["khaki"], 0.9), 0.8, 0.35),
+                                 [B.kd_weights(v.co, ("torso", "arm")) for v in bm_.verts], 0.0018))
         bp2 = B.surf(-0.42 * B.sw, B.zc + 0.035 * Hs, "front")
         if bp2: G.append(rigid(B, "name_badge", solid("badge", (0.1, 0.1, 0.12), 0.4), lambda bm: _ball(bm, bp2 - Vector((0, 0.0015, 0)), 0.012 * s, (1.8, 0.2, 0.45)),
                                wfun=lambda co: B.kd_weights(co, ("torso",), drop=("arm",))))
@@ -1672,19 +1712,20 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
             foot = [B.co[i] for i in B.body_idx if B.side[i] == sd and B.part[i] == "leg" and any(b.startswith(("foot", "toe")) for b in B.w[i])]
             if not foot: continue
             if kind == "chappal":
-                low = [p for p in foot if p.z < 0.025 * B.Hs]
+                low = [p for p in foot if p.z < 0.045 * B.Hs]   # the widest low part of the foot, not just the contact patch
                 pts2 = sorted({(round(p.x, 3), round(p.y, 3)) for p in low})
                 hull = _hull(pts2); cx = sum(p[0] for p in hull) / len(hull); cy = sum(p[1] for p in hull) / len(hull)
                 hull = [(cx + (x - cx) * 1.08 + (0.004 if x > cx else -0.004), cy + (y - cy) * 1.06) for x, y in hull]
                 th = 0.012 * B.Hs / 1.6
+                top = -0.001   # the sole lies UNDER the foot (the body stands on it), never inside the foot
                 col = colour or (0.45, 0.28, 0.15)
                 ymin = min(p[1] for p in hull); ymax = max(p[1] for p in hull)
                 sc_ = B.Hs / 1.6
                 t1, t2 = B.bh.get(f"toe1-1.{s}"), B.bh.get(f"toe2-1.{s}")
-                post = Vector((((t1.x + t2.x) / 2) if t1 and t2 else cx, ((t1.y + t2.y) / 2 + 0.006 * sc_) if t1 and t2 else ymin + 0.16 * (ymax - ymin), th))
+                post = Vector((((t1.x + t2.x) / 2) if t1 and t2 else cx, ((t1.y + t2.y) / 2 + 0.006 * sc_) if t1 and t2 else ymin + 0.16 * (ymax - ymin), top))
                 ym = cy - 0.1 * (ymax - ymin)
                 xs_ = [p[0] for p in hull if abs(p[1] - ym) < 0.25 * (ymax - ymin)] or [p[0] for p in hull]
-                mid = [Vector((min(xs_) + 0.004 * sc_, ym, th)), Vector((max(xs_) - 0.004 * sc_, ym, th))]
+                mid = [Vector((min(xs_) + 0.004 * sc_, ym, top)), Vector((max(xs_) - 0.004 * sc_, ym, top))]
                 def over_foot(x, y, lo, foot=foot):   # top of the foot under (x, y): highest foot vertex nearby
                     rr = (0.009 * sc_) ** 2
                     zs_ = [p.z for p in foot if (p.x - x) ** 2 + (p.y - y) ** 2 < rr and p.z < B.za + 0.004 * sc_]
@@ -1693,17 +1734,17 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
                 for m_ in mid:   # thong straps from the toe post over the top of the foot to both edges of the sole
                     for k in range(14):
                         f = k / 13; x = post.x + (m_.x - post.x) * f; y = post.y + (m_.y - post.y) * f
-                        z = over_foot(x, y, th)
-                        if f > 0.8: z = z + (th + 0.002 - z) * _smoothstep(0.8, 1.0, f)
+                        z = over_foot(x, y, top)
+                        if f > 0.8: z = z + (top + 0.002 - z) * _smoothstep(0.8, 1.0, f)
                         strap.append(Vector((x, y, z)))
-                pz = over_foot(post.x, post.y + 0.004 * sc_, th)
-                def build(bm, hull=hull, th=th, strap=strap, post=post, pz=pz):
-                    vb = [bm.verts.new((x, y, -0.002)) for x, y in hull]; vt = [bm.verts.new((x, y, th)) for x, y in hull]
+                pz = over_foot(post.x, post.y + 0.004 * sc_, top)
+                def build(bm, hull=hull, th=th, top=top, strap=strap, post=post, pz=pz):
+                    vb = [bm.verts.new((x, y, top - th)) for x, y in hull]; vt = [bm.verts.new((x, y, top)) for x, y in hull]
                     bm.faces.new(vb[::-1]); bm.faces.new(vt)
                     for i in range(len(hull)):
                         j = (i + 1) % len(hull); bm.faces.new((vb[i], vb[j], vt[j], vt[i]))
                     for p in strap: _ball(bm, p, 0.0042 * sc_, (1.0, 1.0, 0.55))
-                    for k in range(4): _ball(bm, Vector((post.x, post.y, th + (pz - th) * k / 3)), 0.0028 * sc_)
+                    # no vertical toe post: MPFB toes are one fused mesh, so a post between the toes always sits inside the foot
                 o = rigid(B, f"chappal{s}", solid("chappal", col, 0.6), build, f"foot.{s}")
                 out.append(o)
             else:
@@ -1727,6 +1768,18 @@ def footwear(basemesh, rig, kind="chappal", colour=None, _body=None):
         return out
     finally:
         rig.data.pose_position = pp; bpy.context.view_layer.update()
+
+def lowest_z(h):
+    """world z of the lowest point of a dressed character: the skin or the footwear soles under it"""
+    co = posed_coords(h); B = _BODIES.get(h.name); M = h.matrix_world
+    z = min((M @ co[i]).z for i in (B.body_idx if B else range(len(co))))
+    dg = bpy.context.evaluated_depsgraph_get()
+    for o in bpy.data.objects:
+        if o.type == "MESH" and o.get("outfit_foot") and not o.hide_render:
+            ev = o.evaluated_get(dg); me = ev.to_mesh(); W = o.matrix_world
+            if len(me.vertices): z = min(z, min((W @ v.co).z for v in me.vertices))
+            ev.to_mesh_clear()
+    return z
 
 def _hull(pts):
     pts = sorted(set(pts))
@@ -1826,7 +1879,7 @@ def penetration(h, garments):
             if loc is not None and (p - loc).dot(nrm) < -0.002: inside += 1
             if src is not None and B is not None and k < len(g.data.vertices) and k % 3 == 0:
                 s_ = src.data[k].value
-                errs.append(((Mi @ p - g.data.vertices[k].co) - (Mi @ co[s_] - B.co[s_])).length)
+                errs.append(abs((Mi @ p - Mi @ co[s_]).length - (g.data.vertices[k].co - B.co[s_]).length))   # change of the skin->cloth gap
                 if errs[-1] >= max(errs):
                     gv = g.data.vertices[k]
                     worst = {"k": k, "src": s_, "err_mm": round(1000 * errs[-1], 1), "g_rest": [round(x, 3) for x in gv.co], "b_rest": [round(x, 3) for x in B.co[s_]],
@@ -1838,6 +1891,45 @@ def penetration(h, garments):
         if errs: res[g.name]["deform_err_mean_mm"] = round(1000 * sum(errs) / len(errs), 1); res[g.name]["deform_err_max_mm"] = round(1000 * max(errs), 1); res[g.name]["worst"] = worst
     bpy.context.view_layer.update()
     return res
+
+
+DETAIL_PARTS = ("collar", "lapel", "placket", "piping", "pocket", "flap", "epaulette", "badge", "waistband", "roll", "belt")
+
+def float_report(h, garments, parts=DETAIL_PARTS, float_mm=5.0):
+    """detail pieces (collars, lapels, plackets, pockets, piping ...): how far each one sits OFF the surface under it
+    (posed skin + every other garment). p90 / max gap in mm and the share of its vertices more than float_mm away.
+    A collar or pocket that 'floats' shows a high p90 here."""
+    co = posed_coords(h); B = _BODIES.get(h.name); Mi = h.matrix_world.inverted()
+    def mesh_of(g, thick=False):
+        sol = [] if thick else [(m, m.show_viewport) for m in g.modifiers if m.type == "SOLIDIFY"]
+        for m, _ in sol: m.show_viewport = False
+        bpy.context.view_layer.update(); dg = bpy.context.evaluated_depsgraph_get()
+        ev = g.evaluated_get(dg); me = ev.to_mesh(); M = g.matrix_world
+        V = [Mi @ (M @ v.co) for v in me.vertices]; P = [tuple(p.vertices) for p in me.polygons]
+        ev.to_mesh_clear()
+        for m, s_ in sol: m.show_viewport = s_
+        return V, P
+    gs = [g for g in garments if g is not None and g.name in bpy.data.objects and g.type == "MESH"]
+    meshes = {g.name: mesh_of(g) for g in gs}; solid_ = {g.name: mesh_of(g, True) for g in gs}
+    bpy.context.view_layer.update()
+    base_V = [co[i] for i in range(len(co))]; base_P = list(B.body_polys) if B else [tuple(p.vertices) for p in h.data.polygons]
+    out = {}
+    for g in gs:
+        if not any(w in g.name.lower() for w in parts): continue
+        V, P = list(base_V), list(base_P)
+        for n, (gv, gp) in solid_.items():   # the surfaces under the piece, including their cloth thickness
+            if n == g.name or not gp: continue
+            o_ = len(V); V += gv; P += [tuple(k + o_ for k in p) for p in gp]
+        bvh = BVHTree.FromPolygons(V, P)
+        ds = []
+        for v in meshes[g.name][0][::2]:
+            r = bvh.find_nearest(v, 0.1)
+            ds.append(1000 * (r[3] if r[0] is not None else 0.1))
+        if not ds: continue
+        ds.sort()
+        out[g.name] = {"p90": round(ds[int(0.9 * (len(ds) - 1))], 1), "max": round(ds[-1], 1),
+                       "float_frac": round(sum(1 for d in ds if d > float_mm) / len(ds), 3)}
+    return out
 
 
 # ----------------------------------------------------------------------------------------------- public accessory calls
@@ -1865,11 +1957,12 @@ anklets = payal
 
 
 # ----------------------------------------------------------------------------------------------- fit measurement
-FIT_LIMITS_MM = {"shoulder": 8, "upper_back": 8, "chest": 10, "waist": 8, "upper_arm": 12}
+FIT_LIMITS_MM = {"shoulder": 8, "upper_back": 8, "chest": 10, "waist": 8, "upper_arm": 12,
+                 "forearm": None, "thigh": None, "shin": None}   # None = reported only (loose styles such as salwar / dhoti / skirts are meant to hang free)
 
 def fit_report(h, rig, garments=None):
     """skin -> nearest garment (inner surface) distance per region, in mm (mean / p90 / max) over the body
-    vertices that are covered by something within 6 cm. Use in the A-pose."""
+    vertices that are covered by something within 6 cm. Works in any pose (A-pose and walk)."""
     B = body_of(h, rig); co = posed_coords(h); Mi = h.matrix_world.inverted()
     objs = [g for g in (garments or [o for o in bpy.data.objects if o.get("outfit_piece")]) if g is not None and g.name in bpy.data.objects
             and any(m.type == "SOLIDIFY" for m in g.modifiers)]
@@ -1885,6 +1978,7 @@ def fit_report(h, rig, garments=None):
     bpy.context.view_layer.update()
     if not P: return {}
     bvh = BVHTree.FromPolygons(V, P); ys = B.bh["spine01"].y; Hs = B.Hs
+    sk = BVHTree.FromPolygons(co, B.body_polys)   # posed skin, for its outward normals
     def wsum(i, pre): return sum(x for b, x in B.w[i].items() if b.startswith(pre))
     regions = {
         "shoulder": lambda i: B.part[i] in ("torso", "arm") and wsum(i, ("clavicle", "shoulder01")) > 0.3 and B.co[i].z > B.zc,
@@ -1892,6 +1986,9 @@ def fit_report(h, rig, garments=None):
         "chest": lambda i: B.part[i] == "torso" and B.co[i].y < ys - 0.02 * Hs and B.zub < B.co[i].z < B.zn - 0.06 * Hs,
         "waist": lambda i: B.part[i] == "torso" and abs(B.co[i].z - B.zw) < 0.015 * Hs,
         "upper_arm": lambda i: B.part[i] == "arm" and 0.1 < B.t[i] < 0.22,
+        "forearm": lambda i: B.part[i] == "arm" and 0.6 < B.t[i] < 0.8,
+        "thigh": lambda i: B.part[i] == "leg" and 0.15 < B.t[i] < 0.35,
+        "shin": lambda i: B.part[i] == "leg" and 0.6 < B.t[i] < 0.8,
     }
     out = {}
     for name, sel in regions.items():
@@ -1899,9 +1996,14 @@ def fit_report(h, rig, garments=None):
         for i in B.body_idx[::2]:
             if not sel(i): continue
             loc, nrm, _, d = bvh.find_nearest(co[i], 0.06)
-            if loc is not None: ds.append(d * 1000)
+            if loc is None: continue
+            sn = sk.find_nearest(co[i])[1]
+            # count only skin the cloth really lies OVER (nearest cloth roughly along the skin normal):
+            # bare skin next to a hem / armhole edge (sleeveless vest, short sleeve) is not a "gap"
+            if d > 0.002 and sn is not None and (loc - co[i]).normalized().dot(sn) < 0.6: continue
+            ds.append(d * 1000)
         if len(ds) < 5: continue
         ds.sort()
         out[name] = {"n": len(ds), "mean": round(sum(ds) / len(ds), 1), "p90": round(ds[int(0.9 * (len(ds) - 1))], 1), "max": round(ds[-1], 1),
-                     "limit": FIT_LIMITS_MM[name], "ok": sum(ds) / len(ds) <= FIT_LIMITS_MM[name]}
+                     "limit": FIT_LIMITS_MM[name], "ok": FIT_LIMITS_MM[name] is None or sum(ds) / len(ds) <= FIT_LIMITS_MM[name]}
     return out

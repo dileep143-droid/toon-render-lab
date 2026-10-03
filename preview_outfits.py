@@ -125,9 +125,8 @@ def look(cam, frm, to, lens=50):
     cam.location = frm; cam.rotation_euler = (to - frm).to_track_quat("-Z", "Y").to_euler(); cam.data.lens = lens
 
 def ground_feet(h, rig):
-    co = LO.posed_coords(h); B = LO.body_of(h, rig)
-    mz = min(co[i].z for i in B.body_idx)
-    rig.location.z -= mz; bpy.context.view_layer.update()
+    LO.body_of(h, rig)
+    rig.location.z -= LO.lowest_z(h); bpy.context.view_layer.update()   # stands on the soles when footwear is on
 
 def eval_verts(o):
     dg = bpy.context.evaluated_depsgraph_get(); ev = o.evaluated_get(dg); me = ev.to_mesh(); n = len(me.vertices); ev.to_mesh_clear(); return n
@@ -156,6 +155,21 @@ for who, outfit, opts in PLAN:
         rep["garments"] = {g.name: eval_verts(g) for g in G}
         LO_objs = [o.name for o in bpy.data.objects if o.get("outfit_piece") or o.get("outfit_foot")]
         rep["pieces_in_scene"] = len(LO_objs)
+        # shape check (rest pose, character's left = +x, back = +y, metres): where the drapes / tucks / tails really are
+        def bb(o):
+            vs = [o.matrix_world @ v.co for v in o.data.vertices]
+            return [round(f(v[i] for v in vs), 3) for i in range(3) for f in (min, max)]
+        shp = {}
+        for g in G:
+            n = g.name.lower()
+            if any(w in n for w in ("pallu", "pleat", "tuck", "_tail", "voni", "dupatta", "lungi", "knot")) and g.type == "MESH" and len(g.data.vertices):
+                b_ = bb(g); top_ = max(g.data.vertices, key=lambda v: v.co.z).co
+                shp[g.name] = {"x": b_[0:2], "y": b_[2:4], "z": b_[4:6], "top_x": round(top_.x, 3)}
+                if "_tail" in n or n == "lungi":   # straightness: hem width vs top width
+                    zs = sorted(v.co.z for v in g.data.vertices); zt, zh = zs[-1], zs[0]
+                    w_at = lambda z0: (lambda xs: round(max(xs) - min(xs), 3) if xs else None)([v.co.x for v in g.data.vertices if abs(v.co.z - z0) < 0.02])
+                    shp[g.name]["width_top_hem"] = [w_at(zt - 0.03), w_at(zh + 0.03)]
+        print("FITPIECES", key, json.dumps(shp)[:1400])
         for pose in (("apose",) if views == "base" else ("apose", "walk")):
             rig.location.z = 0; LO.set_pose(rig, pose); bpy.context.view_layer.update(); ground_feet(h, rig)
             cams = cams_for(h, rig, neck=(pose == "apose" and views != "base"))
@@ -166,9 +180,11 @@ for who, outfit, opts in PLAN:
             cov = LO.coverage(h, rig, {**{k: v[0] for k, v in cams.items()}, **extra}, level=LO.OUTFITS[outfit].get("cover", "knee"))
             rep[f"coverage_{pose}"] = cov
             rep[f"penetration_{pose}"] = LO.penetration(h, G)
+            rep["fit_mm" if pose == "apose" else f"fit_mm_{pose}"] = fr = LO.fit_report(h, rig, G)
+            print("FIT" if pose == "apose" else "FITWALK", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in fr.items()})
             if pose == "apose":
-                rep["fit_mm"] = LO.fit_report(h, rig, G)
-                print("FIT", key, {k: (v["mean"], v["p90"], "OK" if v["ok"] else "OVER") for k, v in rep["fit_mm"].items()})
+                rep["float_mm"] = fl = LO.float_report(h, G)
+                print("FITFLOAT", key, {k: (v["p90"], v["max"], v["float_frac"]) for k, v in fl.items()})
             print("COVER", key, pose, {k: (v["exposed"], v["required"], v["exposed_z"][:6], v["exposed_bones"]) for k, v in cov.items()})
             if pose == "walk":
                 print("DEFORM", key, {g: (v.get("deform_err_mean_mm"), v.get("deform_err_max_mm"), v["frac"], v.get("worst")) for g, v in rep[f"penetration_{pose}"].items() if "deform_err_mean_mm" in v})
