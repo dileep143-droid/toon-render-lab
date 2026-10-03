@@ -58,7 +58,8 @@ def quaternius(zdir, out):
         rest_rot = [np.array((mw @ b.matrix_local).to_3x3().normalized()) for b in arm.data.bones]
         if not seen: print("QUATERNIUS BONES", names[:80])
         for act in list(bpy.data.actions):
-            key = f"{lib}_{PK.slug(re.sub(r'[_ .]*(armature|rig)(\.\d+)?$', '', act.name, flags=re.I))}"
+            base = re.sub(r"[_ .]*(armature|rig)(\.\d+)?$", "", act.name, flags=re.I)
+            key = lib + "_" + PK.slug(base)
             if key in seen: continue
             seen.add(key)
             try:
