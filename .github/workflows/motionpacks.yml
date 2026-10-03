@@ -9,12 +9,14 @@ on:
       packs:   { description: "comma list or all: cmu,style100,bandai,lafan,zeggs,motorica,interact,quaternius", default: "all" }
       publish: { description: "create/version the Kaggle datasets (true/false)", default: "true" }
       sheets:  { description: "render the check sheet (true/false)", default: "true" }
+      from_run: { description: "reuse the md-* artifacts of an earlier run id (skips download + retarget)", default: "" }
 env:
   MP_KEY: ${{ secrets.KAGGLE_KEY1 }}
   PYTHONUNBUFFERED: "1"
 
 jobs:
   rigs:
+    if: inputs.from_run == ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -30,6 +32,7 @@ jobs:
 
   build:
     needs: rigs
+    if: inputs.from_run == ''
     runs-on: ubuntu-latest
     timeout-minutes: 340
     strategy:
@@ -80,7 +83,7 @@ jobs:
 
   quaternius:
     needs: rigs
-    if: inputs.packs == 'all' || contains(inputs.packs, 'quaternius')
+    if: inputs.from_run == '' && (inputs.packs == 'all' || contains(inputs.packs, 'quaternius'))
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -109,7 +112,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { pattern: "md-*", path: enc }
+        with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - name: Decrypt + merge catalogues
         run: |
           pip install -q numpy
@@ -129,7 +132,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { pattern: "md-*", path: enc }
+        with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: actions/download-artifact@v4
         with: { name: merged, path: merged }
       - name: Blender 4.2 + MPFB + MakeHuman CC0 packs
@@ -166,7 +169,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { pattern: "md-*", path: enc }
+        with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: actions/download-artifact@v4
         with: { name: merged, path: merged }
       - name: Blender 4.2 + MPFB
@@ -197,7 +200,7 @@ jobs:
       - name: Free disk
         run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL; df -h / | tail -1
       - uses: actions/download-artifact@v4
-        with: { pattern: "md-*", path: enc }
+        with: { pattern: "md-*", path: enc, run-id: "${{ inputs.from_run || github.run_id }}", github-token: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: actions/download-artifact@v4
         with: { name: merged, path: merged }
       - uses: actions/download-artifact@v4
