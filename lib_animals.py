@@ -71,7 +71,7 @@ SPECIES = {
                  "Hooves": (0.12, 0.10, 0.10), "Muzzle": (0.95, 0.80, 0.74), "Eye_Lighter": (0.70, 0.40, 0.20),
                  "Eye_Black": (0.70, 0.40, 0.20), "Eye_White": (0.70, 0.40, 0.20), "Patch": (0.98, 0.96, 0.92)},
         skin=(0.70, 0.40, 0.20), brow=(0.30, 0.17, 0.09), iris=(0.62, 0.36, 0.14),
-        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.16, eye_out=0.28, brow_len=1.2, head_scale=1.25, eye_shift=(0.92, -0.07, 0.02),
+        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.15, eye_out=0.28, brow_len=1.2, head_scale=1.25, eye_shift=(0.92, -0.07, -0.04), eye_sink=0.62,
         proportions=dict(leg_k=0.75, zc=0.55, neck_k=0.70),     # goat, not deer: shorter lower legs + shorter neck (rest re-map)
         horn_q=(0.10, -1.99, 4.15),
         acts=("idle", "idle_flick", "walk", "trot", "run", "hop", "chew", "eat_something", "eat_grass", "bleat", "creep",
@@ -330,7 +330,7 @@ def _add_face(spec, sp, name, arm, mesh, coll):
         c0 = Vector((c0.x * kx, c0.y + dy, c0.z + dz))
         p, n = _surface(mesh, c0)
         gaze = (n * spec["eye_out"] + Vector((0, -1, 0)) * (1 - spec["eye_out"]) + Vector((0, 0, 0.12))).normalized()
-        centre = p - n * (0.48 * r)                                  # sit deeper in the skull: less 'frog' bulge
+        centre = p - n * (spec.get("eye_sink", 0.48) * r)            # sit deeper in the skull: less 'frog' bulge
         bp, bn = _surface(mesh, centre + up * (1.45 * r) + gaze * (0.2 * r))
         eyes[side] = (centre, gaze, bp + bn * (spec.get("brow_off", 0.12) * r))
     sm = [Vector(x) for x in spec["smile"]]
@@ -856,9 +856,9 @@ def _build_actions(sp, arm):
         fl = arm.data.bones["FrontUpperLeg.L"].length + arm.data.bones["FrontLowerLeg.L"].length
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
-            if sp == "chamki":       # goat: front legs FOLDED under the chest, hooves tucked back toward the belly
-                ib = arm.data.bones[f"IKFrontLeg.{s}"]; S = arm.data.bones[f"FrontUpperLeg.{s}"].head_local
-                _foot_to(arm, P, f"IKFrontLeg.{s}", (ib.head_local.x * 0.85, S.y + 0.42 * fl, ib.head_local.z + 0.10 * fl))
+            if sp == "chamki":       # goat: forelegs laid forward along the ground (folding them under made the long
+                                     # deer forearm kneel on a spike and held the chest up; this reads as lying down)
+                _mov(arm, P, f"IKFrontLeg.{s}", (0.04 * sx, -0.30 * fl, 0.0))
             else:
                 _mov(arm, P, f"IKFrontLeg.{s}", (0.05 * sx, 0.30, 0.10))
             _mov(arm, P, f"IKBackLeg.{s}", (0.22 * sx, -0.85, 0.06) if sp == "sheru" else (0.14 * sx, -0.60, 0.10))
@@ -1184,7 +1184,7 @@ def _ease(t, a, b):
 EARS = {   # (pitch, outward roll) per ear
     "up":      dict(L=(-7, -6), R=(-7, -6)),       # alert / pricked (-20 folded Sheru's ear onto his forehead)
     "back":    dict(L=(38, 34), R=(38, 34)),       # 'airplane ears': swung back AND out to the sides
-    "flat":    dict(L=(104, 10, 56), R=(104, 10, 56)),  # pinned flat along the skull (scared, guilty): 3rd value bends Ear2/Ear3
+    "flat":    dict(L=(120, 14, 72), R=(120, 14, 72)),  # pinned flat along the skull (scared, guilty): 3rd value bends Ear2/Ear3
     "droop":   dict(L=(18, 58), R=(18, 58)),       # sad / bored: hanging sideways
     "relaxed": dict(L=(12, 14), R=(12, 14)),
     "one_up":  dict(L=(-12, 8), R=(28, 42)),       # confused (left ear stays clear of Chamki's horn)
