@@ -536,38 +536,58 @@ def _mouth_measure(F):
     low = [i for i in mid if dj[i].length > 0.5 * mx]
     if not low: return out
     # top of the moving lower lip, and the lowest still upper-lip vertex just above it
-    lo_top = max(co[i].z for i in low)
-    ups = [co[i].z for i in mid if dj[i].length < 0.25 * mx and lo_top - 0.002 * s < co[i].z < lo_top + 0.02 * s]
-    up_bot = min(ups) if ups else lo_top + 0.003 * s
+    lo_i = max(low, key=lambda i: co[i].z); lo_top = co[lo_i].z
+    ups = [i for i in mid if dj[i].length < 0.25 * mx and lo_top - 0.002 * s < co[i].z < lo_top + 0.02 * s]
+    up_i = min(ups, key=lambda i: co[i].z) if ups else None
+    up_bot = co[up_i].z if ups else lo_top + 0.003 * s
     mz = 0.5 * (lo_top + max(up_bot, lo_top))
     lip = [co[i].y for i in mid if abs(co[i].z - mz) < 0.008 * s]
     ly = min(lip) if lip else fc["lip_y"]
-    hw = []
+    hw = []; corners = []
     for nm in ("mouthSmileLeft", "mouthSmileRight"):
         d = _key_delta(h, nm)
         if d is None: continue
         near = [i for i in front if abs(co[i].z - mz) < 0.02 * s and abs(co[i].x) > 0.003 * s]
-        if near: hw.append(abs(co[max(near, key=lambda i: d[i].length)].x))
+        if near:
+            ci = max(near, key=lambda i: d[i].length); corners.append(ci); hw.append(abs(co[ci].x))
     w = sum(hw) / len(hw) if hw else 0.55 * fc["mouth_w"]
     w = max(0.35 * F.eye_x, min(w, 0.95 * F.eye_x, 0.3 * F.rx))
     out.update(mouth_z=mz, lip_y=ly, hw=w, ok=True, lo_top=lo_top, up_bot=up_bot)
+    if up_i is not None and len(corners) == 2:
+        out["idx"] = [up_i, lo_i] + corners
+        h["mouth_idx"] = out["idx"]                    # for render-time leak checks (face_check.py)
     print("FACE mouth measured", {k: round(v, 4) for k, v in out.items() if isinstance(v, float)},
           "| Fit.face mouth_z", round(fc["mouth_z"], 4), "lip_y", round(fc["lip_y"], 4), "chin_z", round(fc["chin_z"], 4))
     return out
 
 
-# rays INTO the head from the camera side (front, both 3/4s, a little from below) - in basemesh space (-y = front)
-_DIRS = [Vector(d).normalized() for d in ((0, 1, 0), (0.6, 1, 0), (-0.6, 1, 0), (0, 1, 0.5), (0, 1, -0.35))]
+# directions TOWARD the camera: front, both 3/4s, a little from above / below (basemesh space, -y = front)
+_CAMS = [Vector(d).normalized() for d in ((0, -1, 0), (0.6, -1, 0), (-0.6, -1, 0), (0, -1, 0.3), (0, -1, -0.35))]
 
 
-def _legal(p, bvh, m):
-    """p is hidden: no outward-facing skin BEHIND it along any view ray (it is not in front of the skin) and no skin
-    within m between it and the camera (it is not just under the skin). The open mouth (rays escape) is fine."""
-    for d in _DIRS:
-        loc, nrm, _, _ = bvh.ray_cast(p, d, 0.6)
-        if loc is not None and nrm.dot(d) < 0: return False
-        loc, nrm, _, _ = bvh.ray_cast(p, -d, m)
-        if loc is not None and nrm.dot(-d) > 0: return False
+def _opening(co, idx, s, delta=None, w=1.0):
+    """the lip opening as (front y, centre z, half height, half width) from the measured upper-lip / lower-lip /
+    corner vertices (optionally in a face key: co + delta * w)"""
+    P = [co[i] + (delta[i] * w if delta is not None else Vector()) for i in idx]
+    up, lo, cl, cr = P
+    hz = max(0.0, 0.5 * (up.z - lo.z)) + 0.0015 * s
+    hw = max(0.003 * s, 0.85 * 0.5 * (abs(cl.x - cr.x)))
+    return (min(up.y, lo.y), 0.5 * (up.z + lo.z), hz, hw)
+
+
+def _legal(p, bvh, m, op=None):
+    """p is hidden: every ray from p toward a camera is blocked by skin (from the mouth cavity the inner lips / cheeks
+    block it), and it is not within m under the skin. A ray that escapes is allowed only through the lip opening op
+    (open mouth); without op (or outside it) an escaping ray = p shows through / in front of the skin."""
+    for c in _CAMS:
+        loc, nrm, _, dist = bvh.ray_cast(p, c, 1.0)
+        if loc is None:
+            if op is None: return False
+            yl, zc, hz, hw = op
+            if p.y < yl: return False
+            q = p + c * ((yl - p.y) / c.y)
+            if (q.x / hw) ** 2 + ((q.z - zc) / hz) ** 2 >= 1: return False
+        elif nrm.dot(c) > 0 and dist < m: return False
     return True
 
 
@@ -579,15 +599,15 @@ def _skin_bvh(F, delta=None, w=1.0):
     return BVHTree.FromPolygons(co, B.body_polys)
 
 
-def _pull_in(pts, A, bvh, m):
+def _pull_in(pts, A, bvh, m, op=None):
     """move every illegal point toward the anchor A until it is hidden (bisection); returns how many moved"""
     n = 0
     for k, p in enumerate(pts):
-        if _legal(p, bvh, m): continue
+        if _legal(p, bvh, m, op): continue
         lo, hi = 0.0, 1.0
         for _ in range(9):
             t = 0.5 * (lo + hi)
-            if _legal(A + (p - A) * t, bvh, m): lo = t
+            if _legal(A + (p - A) * t, bvh, m, op): lo = t
             else: hi = t
         pts[k] = A + (p - A) * lo; n += 1
     return n
@@ -609,12 +629,12 @@ def _contain_mouth(F, rig, mm=None, gain=1.25):
         m = (0.0025 if o.get("mouth_inside") else 0.0015) * s
         if sk: base = [Mo @ Vector(d.co) for d in sk.key_blocks[0].data]
         else: base = [Mo @ v.co for v in o.data.vertices]
-        bvh0 = _skin_bvh(F)
+        bvh0 = _skin_bvh(F); idx = mm.get("idx"); op0 = _opening(F.B.co, idx, s) if idx else None
         A = A0
         for _ in range(4):
-            if _legal(A, bvh0, 0.002 * s): break
+            if _legal(A, bvh0, 0.002 * s, op0): break
             A = A + Vector((0, 0.006 * s, 0))
-        fixed = list(base); n0 = _pull_in(fixed, A, bvh0, m)
+        fixed = list(base); n0 = _pull_in(fixed, A, bvh0, m, op0)
         if n0:
             if sk:
                 # move the basis and every key by the same offset (keys keep their deltas)
@@ -632,14 +652,14 @@ def _contain_mouth(F, rig, mm=None, gain=1.25):
                 dh = deltas.get(nm)
                 if dh is None: dh = deltas[nm] = _key_delta(h, nm)
                 if max((x.length for x in dh), default=0) < 1e-6: continue
-                bvh = _skin_bvh(F, dh, gain)
+                bvh = _skin_bvh(F, dh, gain); opk = _opening(F.B.co, idx, s, dh, gain) if idx else None
                 AK = A
-                if not _legal(AK, bvh, 0.0):
+                if not _legal(AK, bvh, 0.0, opk):
                     for t in range(1, 5):
                         AK = A + Vector((0, 0.006 * s * t, 0))
-                        if _legal(AK, bvh, 0.0): break
+                        if _legal(AK, bvh, 0.0, opk): break
                 pts = [fixed[i] + kd[i] * gain for i in range(len(fixed))]
-                moved = _pull_in(pts, AK, bvh, m)
+                moved = _pull_in(pts, AK, bvh, m, opk)
                 if moved:
                     R3 = Mi.to_3x3(); rel = kb.relative_key.data
                     for i, d in enumerate(kb.data):
