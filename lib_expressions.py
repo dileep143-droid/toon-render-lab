@@ -391,12 +391,19 @@ def ensure_face(h, rig, mouth=True, teeth=True):
             except Exception as ex: print("FACE teeth/tongue fail", repr(ex)[:200])
         LH.sync_proxies(h, rig)
         F = LH.Fit(h, rig)
-        if mouth: _mouth_bag(F)
+        mm = _mouth_measure(F)
+        if mouth: _mouth_bag(F, mm)
         try: _fix_teeth(rig, F)
         except Exception as ex: print("FACE teeth fix fail", repr(ex)[:200])
         if mouth and TOON_TEETH:
             try: _toon_teeth(F, rig)
             except Exception as ex: print("FACE toon teeth fail", repr(ex)[:200])
+        # one teeth object only: hide any extra MPFB teeth proxies
+        tt = [o for o in rig.children_recursive if o.type == "MESH" and "teeth" in o.name.lower() and not o.hide_render]
+        for o in tt[1:]: o.hide_render = True; o.hide_viewport = True
+        try: _contain_mouth(F, rig, mm)
+        except Exception as ex:
+            import traceback; traceback.print_exc(); print("FACE contain fail", repr(ex)[:200])
         _blush_setup(F)
         for o in [h] + list(rig.children_recursive):
             sk = o.data.shape_keys if o.type == "MESH" else None
@@ -502,26 +509,159 @@ def _toon_teeth(F, rig):
     return o
 
 
-def _mouth_bag(F):
-    # width capped by the head width, not only the eye spacing (toonify puts bigger eyes wider apart -> the bag poked out)
+def _key_delta(h, name):
+    """per-vertex delta vectors of basemesh key `name` (mesh space), or None"""
+    sk = h.data.shape_keys; kb = sk.key_blocks.get(name) if sk else None
+    if kb is None: return None
+    n = len(h.data.vertices); a = [0.0] * (3 * n); r = [0.0] * (3 * n)
+    kb.data.foreach_get("co", a); kb.relative_key.data.foreach_get("co", r)
+    return [Vector((a[3 * i] - r[3 * i], a[3 * i + 1] - r[3 * i + 1], a[3 * i + 2] - r[3 * i + 2])) for i in range(n)]
+
+
+def _mouth_measure(F):
+    """the REAL mouth of the (toon-warped) basemesh, measured from the face units instead of LH.Fit.face():
+    Fit.face()'s chin scan finds no under-chin jump on the toon face and falls back to nose - 0.85 * HH, which put its
+    'mouth' on the chin (girl run 3 Oct: mouth_z 0.939 vs the real stomion ~0.985) -> the dark bag sat in the chin = the
+    black goatee. Slit z = boundary between the upper lip (still under jawOpen) and the lower lip (moves with jawOpen);
+    corners = the vertices mouthSmileLeft / Right move most; lip_y = front of the lips at the slit."""
+    B = F.B; co = B.co; s = F.s; h = F.h
+    fc = F.face()
+    out = dict(mouth_z=fc["mouth_z"], lip_y=fc["lip_y"], hw=0.55 * fc["mouth_w"], ok=False)
+    dj = _key_delta(h, "jawOpen")
+    if dj is None: print("FACE mouth measure: no jawOpen key, using Fit.face()"); return out
+    front = [i for i in F.head_ids if co[i].y < F.cy - 0.35 * F.ry and F.ze - 1.1 * F.HH < co[i].z < F.ze]
+    mid = [i for i in front if abs(co[i].x) < 0.006 * s]
+    if len(mid) < 6: print("FACE mouth measure: too few mid verts", len(mid)); return out
+    mx = max(dj[i].length for i in mid)
+    low = [i for i in mid if dj[i].length > 0.5 * mx]
+    if not low: return out
+    # top of the moving lower lip, and the lowest still upper-lip vertex just above it
+    lo_top = max(co[i].z for i in low)
+    ups = [co[i].z for i in mid if dj[i].length < 0.25 * mx and lo_top - 0.002 * s < co[i].z < lo_top + 0.02 * s]
+    up_bot = min(ups) if ups else lo_top + 0.003 * s
+    mz = 0.5 * (lo_top + max(up_bot, lo_top))
+    lip = [co[i].y for i in mid if abs(co[i].z - mz) < 0.008 * s]
+    ly = min(lip) if lip else fc["lip_y"]
+    hw = []
+    for nm in ("mouthSmileLeft", "mouthSmileRight"):
+        d = _key_delta(h, nm)
+        if d is None: continue
+        near = [i for i in front if abs(co[i].z - mz) < 0.02 * s and abs(co[i].x) > 0.003 * s]
+        if near: hw.append(abs(co[max(near, key=lambda i: d[i].length)].x))
+    w = sum(hw) / len(hw) if hw else 0.55 * fc["mouth_w"]
+    w = max(0.35 * F.eye_x, min(w, 0.95 * F.eye_x, 0.3 * F.rx))
+    out.update(mouth_z=mz, lip_y=ly, hw=w, ok=True, lo_top=lo_top, up_bot=up_bot)
+    print("FACE mouth measured", {k: round(v, 4) for k, v in out.items() if isinstance(v, float)},
+          "| Fit.face mouth_z", round(fc["mouth_z"], 4), "lip_y", round(fc["lip_y"], 4), "chin_z", round(fc["chin_z"], 4))
+    return out
+
+
+# rays INTO the head from the camera side (front, both 3/4s, a little from below) - in basemesh space (-y = front)
+_DIRS = [Vector(d).normalized() for d in ((0, 1, 0), (0.6, 1, 0), (-0.6, 1, 0), (0, 1, 0.5), (0, 1, -0.35))]
+
+
+def _legal(p, bvh, m):
+    """p is hidden: no outward-facing skin BEHIND it along any view ray (it is not in front of the skin) and no skin
+    within m between it and the camera (it is not just under the skin). The open mouth (rays escape) is fine."""
+    for d in _DIRS:
+        loc, nrm, _, _ = bvh.ray_cast(p, d, 0.6)
+        if loc is not None and nrm.dot(d) < 0: return False
+        loc, nrm, _, _ = bvh.ray_cast(p, -d, m)
+        if loc is not None and nrm.dot(-d) > 0: return False
+    return True
+
+
+def _skin_bvh(F, delta=None, w=1.0):
+    from mathutils.bvhtree import BVHTree
+    B = F.B
+    if delta is None: return B.body_bvh()
+    co = [c + delta[i] * w for i, c in enumerate(B.co)]
+    return BVHTree.FromPolygons(co, B.body_polys)
+
+
+def _pull_in(pts, A, bvh, m):
+    """move every illegal point toward the anchor A until it is hidden (bisection); returns how many moved"""
+    n = 0
+    for k, p in enumerate(pts):
+        if _legal(p, bvh, m): continue
+        lo, hi = 0.0, 1.0
+        for _ in range(9):
+            t = 0.5 * (lo + hi)
+            if _legal(A + (p - A) * t, bvh, m): lo = t
+            else: hi = t
+        pts[k] = A + (p - A) * lo; n += 1
+    return n
+
+
+def _contain_mouth(F, rig, mm=None, gain=1.25):
+    """keep the mouth bag, teeth and tongue hidden behind the skin in the basis AND in every face key (each key at
+    `gain`, the corrected delta written back): nothing dark or white may poke through the lips / chin in any expression."""
+    h = F.h; s = F.s; mm = mm or _mouth_measure(F)
+    A0 = Vector((0, mm["lip_y"] + 0.028 * s, mm["mouth_z"]))
+    objs = [o for o in rig.children_recursive if o.type == "MESH" and not o.hide_render
+            and (o.get("mouth_inside") or "teeth" in o.name.lower() or "tongue" in o.name.lower())]
+    hk = h.data.shape_keys
+    rep = {}
+    deltas = {}
+    for o in objs:
+        Mo = h.matrix_world.inverted() @ o.matrix_world; Mi = Mo.inverted()
+        sk = o.data.shape_keys
+        m = (0.0025 if o.get("mouth_inside") else 0.0015) * s
+        if sk: base = [Mo @ Vector(d.co) for d in sk.key_blocks[0].data]
+        else: base = [Mo @ v.co for v in o.data.vertices]
+        bvh0 = _skin_bvh(F)
+        A = A0
+        for _ in range(4):
+            if _legal(A, bvh0, 0.002 * s): break
+            A = A + Vector((0, 0.006 * s, 0))
+        fixed = list(base); n0 = _pull_in(fixed, A, bvh0, m)
+        if n0:
+            if sk:
+                # move the basis and every key by the same offset (keys keep their deltas)
+                for kb in sk.key_blocks:
+                    for i, d in enumerate(kb.data): d.co = Vector(d.co) + Mi.to_3x3() @ (fixed[i] - base[i])
+            else:
+                for i, v in enumerate(o.data.vertices): v.co = Mi @ fixed[i]
+        nk = 0; nv = 0
+        if sk and hk:
+            for kb in sk.key_blocks[1:]:
+                nm = kb.name
+                if nm.lower().startswith(("toon", "macro", "$", "basis")) or hk.key_blocks.get(nm) is None: continue
+                kd = [Mo.to_3x3() @ (Vector(a.co) - Vector(b.co)) for a, b in zip(kb.data, kb.relative_key.data)]
+                if max((x.length for x in kd), default=0) < 1e-6: continue
+                dh = deltas.get(nm)
+                if dh is None: dh = deltas[nm] = _key_delta(h, nm)
+                if max((x.length for x in dh), default=0) < 1e-6: continue
+                bvh = _skin_bvh(F, dh, gain)
+                AK = A
+                if not _legal(AK, bvh, 0.0):
+                    for t in range(1, 5):
+                        AK = A + Vector((0, 0.006 * s * t, 0))
+                        if _legal(AK, bvh, 0.0): break
+                pts = [fixed[i] + kd[i] * gain for i in range(len(fixed))]
+                moved = _pull_in(pts, AK, bvh, m)
+                if moved:
+                    R3 = Mi.to_3x3(); rel = kb.relative_key.data
+                    for i, d in enumerate(kb.data):
+                        d.co = Vector(rel[i].co) + R3 @ ((pts[i] - fixed[i]) / gain)
+                    nk += 1; nv += moved
+        rep[o.name] = dict(basis_moved=n0, keys_fixed=nk, key_verts=nv)
+    print("FACE contain", rep)
+    return rep
+
+
+def _mouth_bag(F, mm=None):
+    """dark mouth interior sized + placed from the MEASURED lips of the warped face (see _mouth_measure), then kept
+    hidden in every face key by _contain_mouth"""
     import lib_hair as LH, bmesh
-    fc = F.face(); s = F.s
-    c = Vector((0, fc["lip_y"] + 0.034 * s, fc["mouth_z"] - 0.002 * s))
+    s = F.s; mm = mm or _mouth_measure(F)
+    c = Vector((0, mm["lip_y"] + 0.024 * s, mm["mouth_z"] - 0.002 * s))
     bm = bmesh.new()
-    LH._ell(bm, c, Vector((min(0.55 * fc["mouth_w"], 0.24 * F.rx) + 0.003 * s, 0, 0)), Vector((0, 0.016 * s, 0)), Vector((0, 0, 0.011 * s)), sub=3)
-    for _ in range(3):   # keep it well inside the head
-        for v in bm.verts:
-            loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
-            if loc is None: continue
-            outer = nrm.y < -0.2 or (nrm.z < -0.35 and loc.z < fc["mouth_z"] - 0.012 * s)   # face front or under the chin; not the inner lips
-            if outer and (v.co - loc).dot(nrm) > -0.006 * s: v.co = loc - nrm * 0.006 * s
-    zlo = fc["chin_z"] + 0.45 * (fc["mouth_z"] - fc["chin_z"])   # never reach down into the (toon-shortened) chin
-    for v in bm.verts:
-        if v.co.z < zlo: v.co.z = zlo
+    LH._ell(bm, c, Vector((0.95 * mm["hw"], 0, 0)), Vector((0, 0.015 * s, 0)), Vector((0, 0, 0.010 * s)), sub=3)
     mat = LH.solid("mouth_inside_dark", (0.11, 0.015, 0.025), 0.8)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
-    LH.bind_face_keys(F, o, max_d=0.05 * s, k=6, use_all=True)
+    LH.bind_face_keys(F, o, max_d=0.03 * s, k=6, use_all=False)
     return o
 
 
