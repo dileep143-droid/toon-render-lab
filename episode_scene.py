@@ -93,7 +93,10 @@ def upgrade_scene(S):
     # talk -> talk_emotion with the emotion the speaker shows at that moment
     for i, a in enumerate(out):
         if a.get("t") != "talk": continue
-        emo = next((e["name"] for e in out if e.get("t") == "emotion" and e["who"] == a["who"] and e["frame"] <= a["frame"] <= e["end"]), None)
+        # the most specific emotion at that moment (shortest span covering the line start): a long "happy" behind the whole
+        # scene must not override the "determined" written for this very line
+        cand = [e for e in out if e.get("t") == "emotion" and e["who"] == a["who"] and e["frame"] - 6 <= a["frame"] <= e["end"]]
+        emo = min(cand, key=lambda e: e["end"] - e["frame"])["name"] if cand else None
         out[i] = {"t": "talk_emotion", "who": a["who"], "frame": a["frame"], "rhubarb": a.get("rhubarb"), "emotion": emo,
                   "strength": a.get("strength", 1.0), "head_bob": a.get("head_bob", True)}
         UPGRADE_LOG["talk_emotion"] += 1
