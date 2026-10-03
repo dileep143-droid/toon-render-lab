@@ -7,13 +7,15 @@ on:
       first:      { description: "first frame", default: "1" }
       last:       { description: "last frame", default: "360" }
       step:       { description: "render every Nth frame", default: "2" }
+      extra:      { description: "extra episode_scene flags (build pass)", default: "--upgrade" }
+      fps_out:    { description: "clip frame rate (24 / step keeps real time)", default: "12" }
 jobs:
   render:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      matrix: { part: [0, 1, 2] }
+      matrix: { part: [0, 1, 2, 3, 4, 5] }
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_KEY1 }}
     steps:
@@ -46,15 +48,43 @@ jobs:
           s["resolution"] = [640, 360]; s["samples"] = 8; s["eevee_samples"] = 8
           json.dump(s, open(p, "w", encoding="utf-8"), ensure_ascii=False)
           a, b, st, part = ${{ inputs.first }}, ${{ inputs.last }}, ${{ inputs.step }}, ${{ matrix.part }}
-          fr = list(range(a, b + 1, st)); fr = fr[part::3]
+          fr = list(range(a, b + 1, st)); fr = fr[part::6]
           open("frames.txt", "w").write(",".join(map(str, fr))); print(len(fr), "frames for this part")
           EOF
       - name: Build scene (coverage-checked) and render
         run: |
           BL="./blender/blender -b -noaudio"
-          $BL --python episode_scene.py -- ep/${{ inputs.scene_file }} --pack pack --functional functional --out out --save scene.blend --engine cycles 2>&1 | grep -E "EPISODE|Error|Traceback|line [0-9]|refusing|OUTFIT built" | tail -n 80
+          $BL --python episode_scene.py -- ep/${{ inputs.scene_file }} --pack pack --functional functional --out out --save scene.blend --engine cycles ${{ inputs.extra }} 2>&1 | grep -E "EPISODE|PHYSICS|Error|Traceback|line [0-9]|refusing|OUTFIT built" | cut -c1-600 | tail -n 400
           ALLOW=""; test -f out/allowed.json && ALLOW="--allowed out/allowed.json"
           $BL scene.blend --python episode_scene.py -- ep/${{ inputs.scene_file }} --render-only --out frames $ALLOW --engine cycles --samples 8 --frames $(cat frames.txt) 2>&1 | grep -E "RENDER|Error|Traceback" | tail -n 30
           ls frames | wc -l
       - uses: actions/upload-artifact@v4
         with: { name: "frames-${{ matrix.part }}", path: frames, retention-days: 3 }
+  clip:
+    needs: render
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_KEY1 }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { pattern: "frames-*", path: parts }
+      - name: Join the frames into a clip (+ the scene's voice track when the private data has one)
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg > /dev/null
+          mkdir -p all clip && find parts -name "*.jpg" -exec cp {} all/ \;
+          n=$(ls all | wc -l); echo "frames: $n"; test "$n" -gt 0
+          ls all | sort | head -n 3; ls all | sort | tail -n 3
+          i=0; for f in $(ls all | sort -V); do mv "all/$f" "all/s_$(printf %05d $i).jpg"; i=$((i+1)); done
+          pip install -q kaggle && kaggle datasets download mani7673/sonpur-episodes -p epdata --unzip > /dev/null 2>&1 || true
+          stem=$(basename "${{ inputs.scene_file }}" .json)
+          wav=$(find epdata -iname "*${stem}*.wav" 2>/dev/null | head -1); echo "voice track: ${wav:-none}"
+          if [ -n "$wav" ]; then
+            ss=$(python3 -c "print((${{ inputs.first }} - 1) / 24.0)")
+            ffmpeg -loglevel error -framerate ${{ inputs.fps_out }} -i all/s_%05d.jpg -ss $ss -i "$wav" -map 0:v -map 1:a -shortest -c:v libx264 -pix_fmt yuv420p -c:a aac clip/preview.mp4
+          else
+            ffmpeg -loglevel error -framerate ${{ inputs.fps_out }} -i all/s_%05d.jpg -c:v libx264 -pix_fmt yuv420p clip/preview.mp4
+          fi
+          ls -la clip; rm -rf epdata
+      - uses: actions/upload-artifact@v4
+        with: { name: "preview-clip", path: clip, retention-days: 7 }

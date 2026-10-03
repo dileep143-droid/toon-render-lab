@@ -12,10 +12,10 @@ Scene JSON (coordinates are SET-LOCAL: the set's own layout before lib_props cen
   set        {lib, name, ref_mark, ref_local}           e.g. lib_props3 / dadi_aangan / "charpai" / [-2.9, 0.2, 0.06]
   set_edits  [{find, loc?, rot_z?, hide?}]               move / turn / hide parts of the set (names end with ".<find>")
   props      [{id, kind: asset|shelf|room|ground|cloth_dome, ...}]
-  characters [{id, body, outfit, extras?, opts?, colours?, loc, rot_z, standin_height?}]   villager.make_villager
+  characters [{id, body, outfit, extras?, opts?, colours?, hair?, hair_colour?, hair_opts?, mark?|marks?, loc, rot_z, standin_height?}]
   attach     [{id, lib, name, on, where: head_top, tilt, fwd, dz, scale}]
   animals    [{id, kind: chamki|sheru, loc, rot_z, size?}]                                  lib_animals
-  actions    [{t: seat|pose|move|talk|expr|blinks|gesture|lie_down|hold|show|glint|fx_mark|fx_zzz|
+  actions    [{t: seat|pose|move|talk|expr|emotion|talk_emotion|eye_look|blush|blinks|gesture|lie_down|hold|show|glint|fx_mark|fx_zzz|
                   animal_play|animal_sleep|animal_walk|animal_turn|animal_expr|animal_blinks|animal_chew, ...}]
              hand-object (lib_handobj: arm IK + grip + Child Of + solved contact, logged as "EPISODE HANDOBJ"):
                count_objects {who, hand, container, objs[child names in pick order], ring{radius, z, start_deg}, line_frame,
@@ -46,6 +46,93 @@ def opt(name, default=None):
 SCENE_PATH = os.path.abspath(ARGV[0])
 SDIR = os.path.dirname(SCENE_PATH)
 S = json.load(open(SCENE_PATH, encoding="utf-8-sig"))
+
+# ---------------- upgrade pass (--upgrade or "upgrade": true in the scene): older scene JSONs get the new libraries without
+# touching the private builder: expr -> lib_expressions emotion, talk -> talk_emotion (keeps the face's emotion while talking),
+# animal_expr -> lib_animals emotion, a character moving a prop by hand -> lib_handobj hand_pick_place, cast hair + forehead marks.
+CAST_LOOK = {   # lib_hair style / colour + forehead mark per cast id (only when the scene gives none)
+    "dadi": {"hair": "elder_tied_small_bun"},
+    "maa": {"hair": "tied_low_bun_koppu", "mark": {"kind": "kumkum_bottu", "size": "medium"}},
+    "gudiya": {"hair": "tied_long_jada"}, "pinky": {"hair": "tied_long_jada"}, "meenakshi": {"hair": "tied_long_jada"},
+    "school_girl": {"hair": "tied_long_jada"}, "classmate_girl1": {"hair": "tied_long_jada"}, "classmate_girl2": {"hair": "tied_long_jada"},
+}
+ANIMAL_EMO = {"bliss": "satisfied", "sneaky": "cheeky", "growl": "angry", "asleep": None, "neutral": None}
+UPGRADE_LOG = {"emotion": 0, "talk_emotion": 0, "animal_emotion": 0, "hand_pick_place": 0, "obj_move_kept": 0, "look": 0, "unknown_emotion": []}
+
+
+def _cast_key(c):
+    k = str(c.get("cast", c["id"])).lower()
+    return next((x for x in CAST_LOOK if k == x or k.startswith(x + "_")), None)
+
+
+def upgrade_scene(S):
+    import lib_expressions as LE
+    for c in S.get("characters", []):
+        k = _cast_key(c)
+        if k is None: continue
+        look = CAST_LOOK[k]
+        if not c.get("hair") and look.get("hair"): c["hair"] = look["hair"]; UPGRADE_LOG["look"] += 1
+        if look.get("mark") and not c.get("mark") and not c.get("marks"): c["mark"] = look["mark"]
+    acts = S.get("actions", []); talks = [a for a in acts if a.get("t") == "talk"]
+    out = []
+    for a in acts:
+        t = a.get("t")
+        if t == "expr":
+            try: nm = LE.resolve(a["name"])
+            except KeyError: UPGRADE_LOG["unknown_emotion"].append(a["name"]); out.append(a); continue
+            f0 = a["frame"]; f1 = a.get("end") or f0 + 36
+            talking = any(tk.get("who") == a.get("who") and tk["frame"] <= f1 and tk["frame"] + 24 >= f0 for tk in talks)
+            out.append({"t": "emotion", "who": a["who"], "name": nm, "frame": f0, "end": f1, "strength": a.get("weight", 1.0),
+                        "talking": talking, "seed": f0}); UPGRADE_LOG["emotion"] += 1
+        elif t == "animal_expr":
+            nm = ANIMAL_EMO.get(a["name"], a["name"])
+            if nm is None: out.append(a); continue
+            out.append({"t": "animal_emotion", "who": a["who"], "name": nm, "frame": a["frame"], "hold": a.get("hold", 36)})
+            UPGRADE_LOG["animal_emotion"] += 1
+        else: out.append(a)
+    # talk -> talk_emotion with the emotion the speaker shows at that moment
+    for i, a in enumerate(out):
+        if a.get("t") != "talk": continue
+        emo = next((e["name"] for e in out if e.get("t") == "emotion" and e["who"] == a["who"] and e["frame"] <= a["frame"] <= e["end"]), None)
+        out[i] = {"t": "talk_emotion", "who": a["who"], "frame": a["frame"], "rhubarb": a.get("rhubarb"), "emotion": emo,
+                  "strength": a.get("strength", 1.0), "head_bob": a.get("head_bob", True)}
+        UPGRADE_LOG["talk_emotion"] += 1
+    S["actions"] = out
+    S["_upgraded"] = True
+
+
+def upgrade_obj_moves(S):
+    """after characters + props exist: an obj_move that starts within arm's reach of a character's hand (and is not a
+    set-to-set teleport) becomes lib_handobj hand_pick_place (the hand really reaches, grips, carries and places)"""
+    out = []
+    for a in S.get("actions", []):
+        if a.get("t") != "obj_move" or len(a.get("keys", [])) < 2 or a.get("interp") == "CONSTANT" or a["obj"] not in PROPS:
+            out.append(a); continue
+        k0, k1 = a["keys"][0], a["keys"][-1]
+        p0, p1 = P(k0[1]), P(k1[1])
+        if (p1 - p0).length < 0.05: out.append(a); continue
+        sc.frame_set(k0[0]); bpy.context.view_layer.update()
+        best = None
+        for cid, ch in CH.items():
+            r = ch["rig"]
+            for side in ("R", "L"):
+                try:
+                    bn = r.map["hand_" + side][0]; hp = r.arm.matrix_world @ r.arm.pose.bones[bn].head
+                except Exception: continue
+                d = (hp - p0).length
+                if d < 0.75 and (best is None or d < best[0]): best = (d, cid, side)
+        if best is None: out.append(a); UPGRADE_LOG["obj_move_kept"] += 1; continue
+        fg, fp = k0[0], k1[0]
+        fr = {"hover": max(F0, fg - 10), "grab": fg, "place": max(fg + 6, fp), "off": max(fg + 6, fp) + 8}
+        if len(a["keys"]) > 2: fr["mid"] = a["keys"][len(a["keys"]) // 2][0]
+        out.append({"t": "hand_pick_place", "who": best[1], "hand": best[2], "obj": a["obj"], "to": k1[1], "frames": fr})
+        log("UPGRADE obj_move", a["obj"], "->", best[1], best[2], "hand", round(best[0], 2), "m", fr); UPGRADE_LOG["hand_pick_place"] += 1
+    S["actions"] = out
+
+
+if opt("--upgrade") or S.get("upgrade"):
+    try: upgrade_scene(S)
+    except Exception as ex: print("EPISODE UPGRADE failed", repr(ex)[:300], flush=True)
 OUT = os.path.abspath(opt("--out", "episode_out")); os.makedirs(OUT, exist_ok=True)
 STANDIN = bool(opt("--standin", False))
 T0 = time.time()
@@ -332,6 +419,15 @@ for c in S.get("characters", []):
                     import lib_hair as LH
                     LH.add_hair(h, arm, c["hair"], colour=c.get("hair_colour"), **c.get("hair_opts", {}))
                 except Exception as ex: err(f"hair {cid}", ex)
+                try:                                # a head pallu / dupatta over the new hair is rebuilt to lie on it
+                    if hasattr(LO, "refit_head_cover"): LO.refit_head_cover(h, arm)
+                except Exception as ex: err(f"refit head cover {cid}", ex)
+            for mk in ([c["mark"]] if isinstance(c.get("mark"), (str, dict)) else c.get("marks", [])):   # kumkum_bottu, sindoor_line, vibhuti_namam ...
+                try:
+                    import lib_hair as LH
+                    mk = {"kind": mk} if isinstance(mk, str) else mk
+                    LH.add_forehead_mark(h, arm, mk["kind"], **{k: v for k, v in mk.items() if k != "kind"})
+                except Exception as ex: err(f"mark {cid}", ex)
             rig = A.Rig(arm)
         arm.location = P(c["loc"]); arm.rotation_euler = (0, 0, R(c.get("rot_z", 0)))
         bpy.context.view_layer.update()
@@ -441,9 +537,22 @@ def anim_target(a):
     return AN[a["who"]]["arm"]
 
 
+def look_target(spec):
+    """emotion / eye_look target: {who} (a character's head), {obj}, {animal}, [x, y, z] (set-local), "camera" or None"""
+    if spec is None: return None
+    if spec == "camera": return sc.camera
+    if isinstance(spec, dict):
+        if spec.get("who") in CH: return head_anchor(spec["who"])
+        if spec.get("obj") in PROPS: return PROPS[spec["obj"]]
+        if spec.get("animal") in AN: return LA.head_of(AN[spec["animal"]]["arm"])
+        return None
+    return tuple(P(spec))
+
+
 def do_action(a):
     t = a["t"]
-    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz", "anim"):
+    if t in ("seat", "pose", "move", "talk", "expr", "blinks", "gesture", "lie_down", "fx_mark", "fx_zzz", "anim",
+             "emotion", "talk_emotion", "eye_look", "blush"):
         ch = CH[a["who"]]; rig = ch["rig"]; arm = ch["arm"]
     if t == "seat":
         A._seq(rig, a["frame"], [(0, seated(rig, seat_rel(ch, a["seat"])))])
@@ -477,6 +586,27 @@ def do_action(a):
         A.expression(rig, a["name"], a["frame"], a.get("end"), weight=a.get("weight", 1.0))
     elif t == "blinks":
         A.blink_loop(rig, a["f0"], a["f1"], seed=a.get("seed", 0))
+    # ---- lib_expressions: whole-body emotions, lip-sync on top of an emotion, eye direction, cheek blush
+    elif t == "emotion":             # {who, name (LE.SHEET / LE.ALIASES), frame, end, strength?, target?, talking?, release?}
+        import lib_expressions as LE
+        info = LE.animate_expression(ch["h"], arm, a["name"], a["frame"], a.get("end", a["frame"] + 48), strength=a.get("strength", 1.0),
+                                     target=look_target(a.get("target")), talking=a.get("talking", False), release=a.get("release", True),
+                                     seed=a.get("seed", 0))
+        log("EMOTION", a["who"], LE.resolve(a["name"]), a["frame"], a.get("end"), "peak", (info or {}).get("peak"))
+    elif t == "talk_emotion":        # {who, frame, rhubarb? | text?, emotion?, strength?, head_bob?}
+        import lib_expressions as LE
+        last = LE.talk_emotion(ch["h"], arm, a["frame"], text=a.get("text"),
+                               rhubarb_json=os.path.join(SDIR, a["rhubarb"]) if a.get("rhubarb") else None,
+                               emotion=a.get("emotion"), strength=a.get("strength", 1.0), head_bob=a.get("head_bob", True))
+        log("TALK_EMOTION", a["who"], a["frame"], "->", last, a.get("emotion"))
+    elif t == "eye_look":            # {who, frame, target: {who}|{obj}|{animal}|[x,y,z]|"camera" | direction: "left"/"up_right"/...}
+        import lib_expressions as LE
+        tg = look_target(a.get("target"))
+        LE.eye_look(ch["h"], arm, target=tg, direction=a.get("direction") or ("camera" if a.get("target") == "camera" else None),
+                    frame=a["frame"], blend=a.get("blend", 3))
+    elif t == "blush":               # {who, frame, amount 0..1, blend?}
+        import lib_expressions as LE
+        LE.set_blush(ch["h"], a.get("amount", 0.8), frame=a["frame"], blend=a.get("blend", 4))
     elif t == "gesture":
         A.gesture(rig, a["name"], a["frame"], hold=a.get("hold", 24))
     elif t == "lie_down":
@@ -542,6 +672,8 @@ def do_action(a):
         root.rotation_euler.z = z1; root.keyframe_insert("rotation_euler", index=2, frame=f + a.get("dur", 10))
     elif t == "animal_expr":
         LA.expression(anim_target(a), a["name"], a["frame"], hold=a.get("hold", 24))
+    elif t == "animal_emotion":      # lib_animals full emotion: face + ears / tail / head posture + lib_fx hook (sweat, hearts, ?, !)
+        LA.emotion(anim_target(a), a["name"], a["frame"], hold=a.get("hold", 48), fx=a.get("fx", True))
     elif t == "animal_blinks":
         LA.blink_loop(anim_target(a), a["f0"], a["f1"], seed=a.get("seed", 0))
     elif t == "animal_chew":
@@ -656,10 +788,20 @@ def do_hand(a):
 
 
 ACTS = S.get("actions", [])
+UPG = bool(S.get("_upgraded"))
 for a in ACTS:
-    if a["t"] == "hold" or a["t"] in HAND_ACTS: continue
+    if a["t"] == "hold" or a["t"] in HAND_ACTS or (UPG and a["t"] == "obj_move"): continue
     try: do_action(a)
     except Exception as ex: err(f"action {a.get('t')} {a.get('who', a.get('obj', ''))} @{a.get('frame', a.get('f0', ''))}", ex)
+if UPG:     # poses / moves are keyed now, so the hand positions at each obj_move's first frame are real
+    try: upgrade_obj_moves(S)
+    except Exception as ex: err("upgrade obj_move", ex)
+    ACTS = S["actions"]
+    for a in ACTS:
+        if a["t"] != "obj_move": continue
+        try: do_action(a)
+        except Exception as ex: err(f"action obj_move {a.get('obj')}", ex)
+    log("UPGRADE", UPGRADE_LOG)
 rest_on_props()
 for a in ACTS:
     if a["t"] != "hold": continue
@@ -713,6 +855,33 @@ for idb in (CAMO, CAMO.data):
     for fc in FX.fcurves(idb):
         for kp in fc.keyframe_points: kp.interpolation = "BEZIER"; kp.handle_left_type = kp.handle_right_type = "AUTO_CLAMPED"
 log("SHOTS keyed", len(SHOTS))
+
+
+# ---------------- who is talking must be on screen: every talk line is checked at 3 frames against the camera
+def speakers_on_screen():
+    from bpy_extras.object_utils import world_to_camera_view
+    rep = []
+    for a in ACTS:
+        if a["t"] not in ("talk", "talk_emotion"): continue
+        who = a.get("who"); f0 = a["frame"]; f1 = f0 + 24
+        try:
+            if a.get("rhubarb"):
+                cues = A.rhubarb_cues(os.path.join(SDIR, a["rhubarb"])); f1 = f0 + int(max(c[1] for c in cues) * S.get("fps", 24)) if cues else f1
+        except Exception: pass
+        if who not in CH: rep.append((who, f0, f1, "NOT IN SCENE")); log("SPEAKER", who, f0, f1, "NOT IN SCENE"); continue
+        seen = []
+        for f in sorted({f0, (f0 + f1) // 2, f1}):
+            sc.frame_set(f); bpy.context.view_layer.update()
+            hp = head_anchor(who).matrix_world.translation
+            v = world_to_camera_view(sc, CAMO, hp)
+            seen.append(0.02 < v.x < 0.98 and 0.02 < v.y < 0.98 and v.z > 0)
+        st = "ON" if all(seen) else ("PARTLY" if any(seen) else "OFF SCREEN")
+        rep.append((who, f0, f1, st)); log("SPEAKER", who, f0, f1, st)
+    return rep
+
+
+try: SPEAKERS = speakers_on_screen()
+except Exception as ex: SPEAKERS = []; err("speakers_on_screen", ex)
 
 # ---------------- coverage check (never render a frame where a body shows): per shot, first / middle / last frame
 TOL = 0.002
