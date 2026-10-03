@@ -1244,6 +1244,14 @@ def _grounded(arm, P, clear=0.0, with_feet=False, feet_only=False):
     """ground clamp for one pose: if any part of the deformed body is below the ground, lift the Body (with_feet: lift
     the IK feet by the same amount too, e.g. rolling on the back).  Never lowers.  Used on every keyed frame of the
     lying / rolling / sitting actions."""
+    keep = arm.animation_data.action if arm.animation_data else None     # we may be inside a _bake: give its action back
+    try:
+        return _grounded_(arm, P, clear, with_feet, feet_only)
+    finally:
+        if keep is not None: _assign(arm, keep)
+
+
+def _grounded_(arm, P, clear, with_feet, feet_only):
     for _ in range(3):
         _pose_apply(arm, P); z = _lowest(arm)
         if z >= clear - 0.005: break
