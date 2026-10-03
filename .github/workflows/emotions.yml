@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       jobs: { description: "comma list of char_part jobs (girl_a ... dadi_c, girl_probe) or all", required: false, default: "girl_probe" }
-      only: { description: "comma list of emotions or all", required: false, default: "happy,sad,giggle,thinking,furious,teacher_stern,terrified,crying,grateful,head_wobble_acha" }
+      only: { description: "comma list of emotions or all", required: false, default: "happy,sad,thinking,grateful,scheming,shushing,love,pleading,comforting,disgusted,shrug,terrified" }
 jobs:
   emotions:
     runs-on: ubuntu-latest
@@ -46,6 +46,7 @@ jobs:
           for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
       - name: Emotions (${{ matrix.job }})
         if: steps.skip.outputs.run == '1'
+        env: { LE_DEBUG: "1" }
         run: |
           M="${{ matrix.job }}"
           ./blender/blender -b -noaudio --python preview_emotions.py -- pack functional out ${M%_*} ${M##*_} ${{ github.event.inputs.only || 'all' }} 2>&1 | grep -vE "^Fra:|Sample [0-9]" | grep -E "FACE|HAIR face|SHOT|SKIP|REPORT|DONE|RIG|Error|Traceback|line [0-9]|refusing|Exception|WARN" | cut -c1-2500 | tail -n 500
