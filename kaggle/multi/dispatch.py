@@ -6,10 +6,11 @@ Each slice = a private kernel on that account; the scene data travels INSIDE the
 Tokens are read from C:\\1st\\.env (KAGGLE_KEYn) and never printed."""
 import base64, io, json, os, re, subprocess, sys, zipfile, glob, shutil
 HERE = os.path.dirname(os.path.abspath(__file__)); JOBS = os.path.join(HERE, "jobs")
-E = {}
-for l in open(r"C:\1st\.env", encoding="utf-8-sig"):
-    m = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)", l)
-    if m: E[m.group(1)] = m.group(2).strip().strip("\"'")
+E = {k: v for k, v in os.environ.items() if k.startswith("KAGGLE_KEY")}   # GitHub Actions secrets
+if os.path.exists(r"C:\1st\.env"):
+    for l in open(r"C:\1st\.env", encoding="utf-8-sig"):
+        m = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)", l)
+        if m: E[m.group(1)] = m.group(2).strip().strip("\"'")
 def kaggle(key, *args):
     env = dict(os.environ, KAGGLE_API_TOKEN=E[f"KAGGLE_KEY{key}"], PYTHONUTF8="1")
     r = subprocess.run(["kaggle", *args], env=env, capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -41,16 +42,25 @@ sh("mkdir -p pack functional && curl -fsSL -A 'Mozilla/5.0' -o pack.zip https://
 for p in ("faceunits01", "visemes01"): sh(f"curl -fsSL -A 'Mozilla/5.0' -o functional/{p}.zip https://files2.makehumancommunity.org/functional/{p}.zip")
 BL = "./blender/blender -b -noaudio"; GREP = "grep -E 'EPISODE|RENDER|Error|Traceback|line [0-9]|refusing' | tail -n 200"
 os.makedirs("out", exist_ok=True)
-sh(f"{BL} --python repo/episode_scene.py -- ep/{SCENE_FILE} --pack pack --functional functional --out out --save scene.blend --engine {ENGINE} 2>&1 | {GREP}", 7200)
+BENG = "cycles" if ENGINE == "bench" else ENGINE
+sh(f"{BL} --python repo/episode_scene.py -- ep/{SCENE_FILE} --pack pack --functional functional --out out --save scene.blend --engine {BENG} 2>&1 | grep -E 'EPISODE|RENDER|Error|Traceback|line [0-9]|refusing' > out/build.log; tail -n 120 out/build.log", 7200)
 allow = "--allowed out/allowed.json" if os.path.exists("out/allowed.json") else ""
+T_BUILD = time.time() - T0
+smi = subprocess.Popen("nvidia-smi --query-gpu=index,utilization.gpu,memory.used --format=csv,noheader -l 20 > out/smi.log", shell=True)
 fr = FRAMES.split(","); half = len(fr) // 2; procs = []
-for gpu, part in ((0, fr[:half]), (1, fr[half:])):
+# bench: the SAME frames on both GPUs, Cycles on GPU0 (c_*.jpg) and EEVEE on GPU1 (e_*.jpg); else the frames are split over the 2 GPUs
+plan = [(0, fr, "cycles", "c_"), (1, fr, "eevee", "e_")] if ENGINE == "bench" else [(0, fr[:half], ENGINE, "f_"), (1, fr[half:], ENGINE, "f_")]
+for gpu, part, eng, pre in plan:
     if not part: continue
     env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu))
-    cmd = f"{BL} scene.blend --python repo/episode_scene.py -- ep/{SCENE_FILE} --render-only --out frames {allow} --engine {ENGINE} --samples {SAMPLES} --frames {','.join(part)} > out/render_gpu{gpu}.log 2>&1"
+    cmd = f"{BL} scene.blend --python repo/episode_scene.py -- ep/{SCENE_FILE} --render-only --out frames {allow} --engine {eng} --samples {SAMPLES} --prefix {pre} --frames {','.join(part)} > out/render_gpu{gpu}.log 2>&1"
     procs.append(subprocess.Popen(cmd, shell=True, env=env))
+    if ENGINE == "bench": procs[-1].wait()        # one engine at a time: clean timings (EGL may ignore CUDA_VISIBLE_DEVICES)
 for p in procs: p.wait()
-sh("grep -E 'RENDER|Error|Traceback' out/render_gpu*.log | tail -n 30")
+smi.terminate()
+sh("grep -E 'RENDER|GPU|CYCLES|ENGINE|COLOR|Error|Traceback|setting skipped' out/render_gpu*.log | tail -n 60")
+sh("sort -u out/smi.log | tail -n 40")
+json.dump({"build_secs": round(T_BUILD)}, open("out/build.json", "w"))
 n = len(glob.glob("frames/*.jpg")); print("FRAMES", n, flush=True)
 sh("cd frames && zip -q -0 ../frames.zip *.jpg; cd ..; rm -rf frames")
 json.dump({"frames": n, "secs": round(time.time() - T0)}, open("out/job.json", "w"))
