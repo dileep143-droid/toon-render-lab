@@ -139,7 +139,7 @@ def soft_circle(r, rgb=(255, 255, 255), hardness=0.0, alpha=1.0):
     """cached RGBA disc with a soft edge (hardness 0 = gaussian-ish glow, 1 = crisp disc)"""
     n = int(math.ceil(r)) * 2 + 2; yy, xx = np.mgrid[0:n, 0:n].astype(np.float32); c = (n - 1) / 2
     d = np.hypot(xx - c, yy - c) / max(r, 1e-3)
-    a = np.where(d <= 1, (1 - d ** 2) ** (1 + 2 * (1 - hardness)), 0) if hardness < 1 else (d <= 1).astype(np.float32)
+    a = np.clip(1 - d ** 2, 0, 1) ** (1 + 2 * (1 - hardness)) if hardness < 1 else (d <= 1).astype(np.float32)
     if 0 < hardness < 1: a = np.maximum(a, smooth((1 - d) / max(1e-3, (1 - hardness) * 0.5)) * hardness)
     out = np.empty((n, n, 4), np.uint8); out[..., :3] = rgb; out[..., 3] = (np.clip(a, 0, 1) * 255 * alpha).astype(np.uint8)
     out.flags.writeable = False; return out
@@ -164,10 +164,13 @@ def box_blur_dir(frame, length, angle=0.0, taps=7):
 
 
 def tint(frame, rgb, amount, mode="multiply"):
-    """colour-grade a frame: multiply by rgb (0..255 -> 0..1) blended by `amount`, or 'screen' for a light wash"""
-    c = np.asarray(rgb, np.float32) / 255.0; f = frame.astype(np.float32)
-    out = f * c if mode == "multiply" else 255 - (255 - f) * (1 - c)
-    return np.clip(f + (out - f) * amount, 0, 255).astype(np.uint8)
+    """colour-grade a frame (in place, also returned): multiply by rgb (0..255 -> 0..1) blended by `amount`, or 'screen' for a light wash.
+    Uses a per-channel lookup table (Pillow), a few ms at 720p."""
+    x = np.arange(256, dtype=np.float32); lut = []
+    for ch in range(3):
+        cc = float(rgb[ch]) / 255.0; out = x * cc if mode == "multiply" else 255 - (255 - x) * (1 - cc)
+        lut += list(np.clip(x + (out - x) * amount, 0, 255).astype(np.uint8))
+    frame[:] = np.asarray(Image.fromarray(np.ascontiguousarray(frame)).point(lut)); return frame
 
 
 def lum(frame): return (frame[..., 0] * 0.299 + frame[..., 1] * 0.587 + frame[..., 2] * 0.114).astype(np.float32)
