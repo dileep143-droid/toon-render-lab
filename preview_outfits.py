@@ -38,6 +38,7 @@ PLAN = [
     ("man", "dhoti_kurta", {}), ("man", "lungi_shirt", {}), ("man", "banian_dhoti_farmer", {}), ("man", "shopkeeper", {}), ("man", "kurta_pyjama", {"topi": True, "_sweater_after": "pullover", "_tag": "kurta_pyjama_topi_sweater"}),
     ("teen", "langa_voni", {}), ("teen", "saree_village", {}), ("heavy", "kurta_pyjama", {}), ("heavy", "lungi_shirt", {}), ("heavy", "dhoti_kurta", {}),
     ("man", "nightwear", {"nightcap": True}), ("man", "vet_coat", {}),
+    ("elder", "saree_elder", {"_hair": "elder_tied_small_bun", "_tag": "saree_elder_bun"}),
     ("elder", "saree_elder", {}),
 ]
 # body library check: every body from bodies.json aged 6+ wears the neutral base_layer and one typical outfit
@@ -138,6 +139,7 @@ for who, outfit, opts in PLAN:
     if ONLY and outfit not in ONLY: continue
     if WHO and CAST[who].get("group") in WHO: pass
     opts = dict(opts); tag = opts.pop("_tag", outfit); key = f"{who}_{tag}"; sweater_after = opts.pop("_sweater_after", None); views = opts.pop("_views", "all")
+    hair_after = opts.pop("_hair", None)
     rep = REPORT[key] = {"who": who, "outfit": outfit, "opts": opts}
     t0 = time.time()
     try:
@@ -147,6 +149,12 @@ for who, outfit, opts in PLAN:
         h.name = f"{who}_body"
         sc, cam = scene_setup()
         G = LO.dress(h, rig, outfit, char=who, **opts)
+        if hair_after:   # lib_hair style added AFTER dressing (as the episode does), then the head cover refitted over it
+            import lib_hair as LH
+            hp_ = LH.add_hair(h, rig, hair_after)
+            G = [g for g in G if not g.name.startswith("head_pallu")]   # filter BEFORE the refit deletes the old head cover
+            G += LO.refit_head_cover(h, rig)
+            print("OUTFIT hair_after", key, hair_after, len(hp_ or []), "head cover pieces", [g.name for g in G if g.name.startswith("head_pallu")])
         if sweater_after:   # standalone layer call with a cold cache (as in a later story scene)
             LO._BODIES.clear(); G += LO.sweater(h, rig, sweater_after)
         am = next((m for m in h.modifiers if m.type == "ARMATURE"), None)

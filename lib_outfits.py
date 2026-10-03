@@ -108,15 +108,17 @@ class Body:
         self.col = [([self.co[i] for i in range(n)], self.body_polys)]
         self._bvh = None
         self.kd = {}
-        self.hair_pts, self.eye_objs = [], []
+        self.hair_pts, self.eye_objs, self.hair_mesh = [], [], ([], [])
         dg = bpy.context.evaluated_depsgraph_get()
         M = h.matrix_world.inverted()
         for o in set(rig.children_recursive) | set(h.children_recursive):
             if o.type != "MESH" or o == h or o.get("outfit_piece"): continue
             ot, nm = (_otype(o) or ""), o.name.lower()
-            if ot == "Hair" or "hair" in nm or any(w in nm for w in ("long01", "short0", "bob0", "braid0", "ponytail")):
+            if ot == "Hair" or o.get("hair_piece") or "hair" in nm or any(w in nm for w in ("long01", "short0", "bob0", "braid0", "ponytail", "bun", "jada")):
                 ev = o.evaluated_get(dg); mw = M @ o.matrix_world
-                self.hair_pts += [mw @ v.co for v in ev.data.vertices]
+                vs = [mw @ v.co for v in ev.data.vertices]; o_ = len(self.hair_mesh[0])
+                self.hair_pts += vs
+                self.hair_mesh[0].extend(vs); self.hair_mesh[1].extend(tuple(k + o_ for k in p_.vertices) for p_ in ev.data.polygons)
             elif (ot == "Eyes" or "eye" in nm) and "brow" not in nm and "lash" not in nm:
                 self.eye_objs.append(o)
         # limb cross-sections every 5 % along the axis: centroid + 90th-percentile radius about it
@@ -1184,12 +1186,8 @@ def head_pallu(B, mat, border=None):
     Hs = B.Hs; s = Hs / 1.6
     hb = B.bh["head"]; c = Vector((0.0, hb.y + 0.004 * s, B.ze + 0.02 * Hs))   # head centre (about ear height)
     bv = B.bvh()
-    hp = B.hair_pts[::3] if B.hair_pts else []
-    kd = None
-    if hp:
-        kd = KDTree(len(hp))
-        for k, p in enumerate(hp): kd.insert(p, k)
-        kd.balance()
+    hv, hpoly = B.hair_mesh
+    hbv = BVHTree.FromPolygons(hv, hpoly) if hpoly else None   # real hair surfaces (MPFB hair + lib_hair buns / plaits)
     NA, NE = 25, 14
     A0, A1 = R(-118), R(118)            # round the back of the head, face left open (0 = straight back, +y)
     E0, E1 = R(84), R(-58)              # from near the crown down to the shoulders / upper back
@@ -1203,8 +1201,9 @@ def head_pallu(B, mat, border=None):
             loc, nrm, _, _ = bv.ray_cast(c + d * 0.6, -d, 0.6)
             p = loc if loc is not None else c + d * 0.1 * s
             ext = 0.0
-            if kd is not None:   # lie ON the hair: how far the hair stands out along this direction near the hit
-                for q, _, _ in kd.find_range(p, 0.03 * s): ext = max(ext, (q - c).dot(d) - (p - c).dot(d))
+            if hbv is not None:   # lie ON the hair / bun: the outermost hair hit along this ray
+                hl = hbv.ray_cast(c + d * 0.6, -d, 0.6)[0]
+                if hl is not None: ext = max(0.0, (hl - c).dot(d) - (p - c).dot(d))
             sag = 0.022 * s * max(0.0, fe - 0.55) / 0.45                                 # lower part hangs a little away (soft fall)
             fold = 0.004 * s * math.sin(9 * a) * max(0.0, fe - 0.4)                       # soft folds in the lower part
             row.append(p + d * (max(0.0, ext) + 0.004 + sag + fold))
@@ -1219,6 +1218,24 @@ def head_pallu(B, mat, border=None):
     out = [o]
     if border: out.append(piping(B, o, solid("head_pallu_border", border, 0.6), r=0.0022 * s))
     return out
+
+def refit_head_cover(basemesh, rig):
+    """rebuild a saree head pallu over the hair that is on the head NOW (e.g. after lib_hair.add_hair added Dadi's bun).
+    Keeps its material and border colour. Returns the new pieces ([] when the character has no head pallu)."""
+    old = [o for o in list(set(rig.children_recursive) | set(basemesh.children_recursive))
+           if o.type == "MESH" and o.get("outfit_piece") and o.name.split(".")[0] in ("head_pallu", "head_pallu_border", "head_pallu_veil")]
+    if not old: return []
+    mat = next((o.data.materials[0] for o in old if o.name.startswith("head_pallu") and "border" not in o.name and o.data.materials), None)
+    bmat = next((o.data.materials[0] for o in old if "border" in o.name and o.data.materials), None)
+    border = tuple(bmat.diffuse_color[:3]) if bmat is not None else None
+    if border: border = tuple(max(0.0, x) ** (1 / 2.2) for x in border)
+    for o in old: bpy.data.objects.remove(o, do_unlink=True)
+    pp = rig.data.pose_position; rig.data.pose_position = "REST"; bpy.context.view_layer.update()
+    try:
+        B = body_of(basemesh, rig, refresh=True); _register_existing(B)   # the saree, blouse, pallu already on: lie over them too
+        return head_pallu(B, mat or fabric("head_pallu", (0.96, 0.95, 0.9), 0.8, 0.5), border=border)
+    finally:
+        rig.data.pose_position = pp; bpy.context.view_layer.update()
 
 # ----------------------------------------------------------------------------------------------- outfits
 OUTFITS = {
