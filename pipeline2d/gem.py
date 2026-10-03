@@ -4,10 +4,11 @@ import base64, io, json, os, re, time, urllib.request, urllib.error
 from PIL import Image
 
 ENV = r"C:\Users\goddu\.gemini\antigravity\scratch\eduorbex\.env"
-E = {}
-for l in open(ENV, encoding="utf-8-sig"):
-    m = re.match(r"\s*([A-Z0-9_]+)\s*=\s*(.+)", l)
-    if m: E[m.group(1)] = m.group(2).strip().strip("\"'")
+E = {k: v for k, v in os.environ.items() if k in ("GEMINI_API_KEY", "GEMINI_API_KEYS")}   # GitHub Actions: secret in the environment
+if os.path.exists(ENV):
+    for l in open(ENV, encoding="utf-8-sig"):
+        m = re.match(r"\s*([A-Z0-9_]+)\s*=\s*(.+)", l)
+        if m: E[m.group(1)] = m.group(2).strip().strip("\"'")
 KEYS = list(dict.fromkeys(k.strip() for k in (E.get("GEMINI_API_KEYS", "") + "," + E.get("GEMINI_API_KEY", "")).split(",") if k.strip()))
 IMG_MODELS = [os.environ.get("P2D_IMG_MODEL", "gemini-3.1-flash-image"), "gemini-3-pro-image", "gemini-2.5-flash-image"]
 TXT_MODELS = [os.environ.get("P2D_TXT_MODEL", "gemini-3.8-flash"), "gemini-3.5-flash", "gemini-3-flash-preview", "gemini-2.5-flash"]
