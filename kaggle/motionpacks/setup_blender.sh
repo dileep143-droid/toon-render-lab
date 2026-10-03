@@ -12,7 +12,11 @@ print("MPFB", e.get("version"))
 open("mpfb.zip", "wb").write(urllib.request.urlopen(urllib.request.Request(e["archive_url"], headers=H), timeout=120).read())
 EOF
 ./blender/blender -b --command extension install-file -r user_default -e mpfb.zip > /dev/null
-curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
-mkdir -p pack functional && unzip -q pack.zip -d pack && rm pack.zip
-for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+if [ -d pack ] && [ -n "$(ls -A pack 2>/dev/null)" ] && [ -f functional/visemes01.zip ]; then
+  echo "MakeHuman packs restored from cache"
+else
+  curl -fsSL -A "Mozilla/5.0" -o pack.zip https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip
+  mkdir -p pack functional && unzip -q pack.zip -d pack && rm pack.zip
+  for p in faceunits01 visemes01; do curl -fsSL -A "Mozilla/5.0" -o functional/$p.zip https://files2.makehumancommunity.org/functional/$p.zip; done
+fi
 echo "BLENDER+MPFB READY"
