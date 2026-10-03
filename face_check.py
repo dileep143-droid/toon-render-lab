@@ -96,7 +96,7 @@ def talk_strip():
     sc.render.resolution_x, sc.render.resolution_y = 640, 360
     for j, ff in enumerate(pick):
         sc.frame_set(ff); bpy.context.view_layer.update()
-        shoot(os.path.join(OUT, f"{CHAR}_talk_{j}_f{ff:03d}.png"), -12, field=2.4, up=-0.4)
+        shoot(os.path.join(OUT, f"{CHAR}_talk_{j}_f{ff:03d}.png"), -12, field=2.4, up=-0.22)
     sc.render.resolution_x = sc.render.resolution_y = 512
 
 
