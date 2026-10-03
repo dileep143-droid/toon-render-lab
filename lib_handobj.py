@@ -386,10 +386,10 @@ def reach_grab_move_place(rig, hand_side, obj, to_world, fr, show_at=None, look_
     hd.key_grip(fr["grab"], P0, Yd)
     if "lift" in fr: hd.key_grip(fr["lift"], P0 + UP * (0.05 if show_at is not None else 0.03), Yl, (12, -4))   # wrist turns as it lifts
     if show_at is not None and "show" in fr:
-        Ys = _cs_world(rig, (0.7, -0.35, -0.35), hand_side)
-        hd.key_grip(fr["show"], show_at, Ys, (32, 0))               # palm turned toward her face
-        if "over" in fr: hd.key_grip(fr["over"], show_at + UP * 0.012, Ys, (36, 0))
-        if "settle" in fr: hd.key_grip(fr["settle"], show_at - UP * 0.003, Ys, (30, 0))
+        Ys = _cs_world(rig, (0.9, 0.05, -0.3), hand_side)            # fingers forward, laddoo visible under the fingertips
+        hd.key_grip(fr["show"], show_at, Ys, (28, 0))               # palm turned slightly toward her face
+        if "over" in fr: hd.key_grip(fr["over"], show_at + UP * 0.01, Ys, (32, 0))
+        if "settle" in fr: hd.key_grip(fr["settle"], show_at - UP * 0.003, Ys, (26, 0))
     if "pre" in fr: hd.key_grip(fr["pre"], to_world + UP * 0.03, Yd, (6, 0))
     hd.key_grip(fr["place"], to_world, Yd)
     hd.key_grip(fr["off"], to_world + UP * lift * 0.7 + body * 0.015, Yd, (0, 6))
@@ -421,7 +421,7 @@ def reach_grab_move_place(rig, hand_side, obj, to_world, fr, show_at=None, look_
 # =====================================================================================================================
 # count objects one by one (explicit counts on words, then a comic fast-forward), free hand steadies the container
 # =====================================================================================================================
-def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), blend=None, container=None, show_up=0.15,
+def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), blend=None, container=None, show_up=0.12,
                   radius=0.021, look_off=None, lean=True):
     """objs: objects in pick order; dests: world origins they end at; beats: per object {"word": frame} (explicit: lifted
     ~15 cm above the container in front of her and shown on the word) or {"fast": frame} (quick pick, small arcs).
@@ -453,9 +453,8 @@ def count_objects(rig, objs, dests, beats, hand_side="R", steady=None, pats=(), 
             w = bt["word"]
             fr = {"hover": w - 15, "near": w - 11, "grab": w - 8, "lift": w - 4, "show": w + 1, "over": w + 3, "settle": w + 5,
                   "pre": w + 9, "place": w + 12, "off": w + 15}
-            _at(fr["hover"]); P0 = o.matrix_world.translation
-            show = P0 + UP * show_up + (c0 - P0) * 0.5 + body * 0.05       # just above the thali, in front of her, mid-chest
-            show.z = max(show.z, c0.z + show_up)
+            # shown just above the thali (~12 cm), on the hand's own side and a little forward: no arm across the chest
+            show = c0 + UP * show_up + _cs_world(rig, (0, 1, 0), hand_side) * 0.05 - body * 0.03
             reps.append(reach_grab_move_place(rig, hand_side, o, dst, fr, show_at=show, look_rig=rig, radius=radius, tag="count"))
         else:
             s = bt["fast"]
