@@ -66,11 +66,15 @@ def E(face, body=None, L="idle", R="idle", eyes=None, blush=0.0, anim=None, curl
 EXPR = {
     "neutral": E({}, {}, desc="rest face, relaxed arms"),
     # ---------------- joy ----------------
-    "happy": E({**_b("mouthSmile", 1.0), **_b("cheekSquint", 0.7), **_b("eyeSquint", 0.35), "browInnerUp": 0.2, **_b("browOuterUp", 0.3),
-                "jawOpen": 0.14, **_b("mouthUpperUp", 0.12), **_b("mouthDimple", 0.35)},
+    # soft ROUNDED cartoon smile (3 Oct, owner: the 1.0 smile x kid gain 1.65 was a wide rubbery mouth): small width, cheeks
+    # up, eyes a little squinted, lips barely parted, a touch of pucker keeps the corners in
+    "happy": E({**_b("mouthSmile", 0.42), **_b("cheekSquint", 0.6), **_b("eyeSquint", 0.4), "browInnerUp": 0.25, **_b("browOuterUp", 0.2),
+                "jawOpen": 0.05, "mouthPucker": 0.1},
                {"spine": {"fwd": -3}, "head": {"fwd": -4, "out": 7}, "clav_L": {"lift": 5}, "clav_R": {"lift": 5}}, "out_low", "out_low", eyes=(0, 2),
                curl="open", desc="open smile, chin up, arms open"),
-    "big_laugh": E({"jawOpen": 0.8, **_b("mouthSmile", 1.0), **_b("cheekSquint", 1.0), **_b("eyeBlink", 0.8), **_b("eyeSquint", 0.8), **_b("mouthUpperUp", 0.4),
+    # open "D" mouth: top teeth row under a lifted upper lip, lower lip dropped, dark inside + tongue (not a wide grin)
+    "big_laugh": E({"jawOpen": 0.75, **_b("mouthSmile", 0.5), **_b("cheekSquint", 1.0), **_b("eyeBlink", 0.8), **_b("eyeSquint", 0.8), **_b("mouthUpperUp", 0.3),
+                    **_b("mouthLowerDown", 0.35),
                     "browInnerUp": 0.45, **_b("browOuterUp", 0.3)},
                    {"spine": {"fwd": -10}, "head": {"fwd": -18}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
                    H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="relaxed", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
@@ -105,7 +109,7 @@ EXPR = {
                   H("chest", off=(0.55, 0.05, 0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
                   eyes=(0, 6), desc="namaste: palms together, small bow"),
     # ---------------- surprise / fear ----------------
-    "surprised": E({**_b("eyeWide", 1.0), "browInnerUp": 0.9, **_b("browOuterUp", 1.0), "jawOpen": 0.4, "mouthFunnel": 0.35},
+    "surprised": E({**_b("eyeWide", 1.0), "browInnerUp": 0.9, **_b("browOuterUp", 1.0), "jawOpen": 0.42, "mouthFunnel": 0.6},
                    {"head": {"fwd": -8}, "spine": {"fwd": -5}, "clav_L": {"lift": 9}, "clav_R": {"lift": 9}}, "out_low", "out_low", curl="spread",
                    desc="eyebrows up, round mouth, hands open"),
     "shocked": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 1.0), "jawOpen": 0.5, "mouthFunnel": 0.55, **_b("mouthStretch", 0.2)},
@@ -401,6 +405,11 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         # one teeth object only: hide any extra MPFB teeth proxies
         tt = [o for o in rig.children_recursive if o.type == "MESH" and "teeth" in o.name.lower() and not o.hide_render]
         for o in tt[1:]: o.hide_render = True; o.hide_viewport = True
+        # elders: toothless-but-cute (MPFB's teeth showed as a gap-tooth grin on Dadi)
+        try: elder = age_of(rig) >= 60
+        except Exception: elder = False
+        if elder:
+            for o in tt[:1]: o.hide_render = True; o.hide_viewport = True
         try: _contain_mouth(F, rig, mm)
         except Exception as ex:
             import traceback; traceback.print_exc(); print("FACE contain fail", repr(ex)[:200])
@@ -408,8 +417,8 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         for o in [h] + list(rig.children_recursive):
             sk = o.data.shape_keys if o.type == "MESH" else None
             if not sk: continue
-            for kb in sk.key_blocks:
-                if kb.name in ARKIT: kb.slider_max = 2.0
+            for kb in sk.key_blocks:   # face units AND visemes (visemes get the kid gain in talk_emotion)
+                if kb.name in ARKIT or not kb.name.lower().startswith(("toon", "macro", "$", "basis")): kb.slider_max = 2.0
         h["face_ready"] = 1
     finally:
         rig.data.pose_position = pp; bpy.context.view_layer.update()
@@ -444,8 +453,15 @@ def _fix_teeth(rig, F=None):
             elif kind == "teeth":
                 for i, d in enumerate(kb.data):
                     if bco[i].z > zmid: d.co = bco[i]          # upper teeth never move
-        if F is not None and kind == "teeth":   # upper row a little smaller + back; lower row smaller, further back and lower (smiles pull the lower lip back)
-            moved = _tuck(F, o, [(lambda c, z=zmid: c.z > z, 0.9, 0.0025, 0.0), (lambda c: True, 0.8, 0.0055, 0.0015)])
+        if F is not None and kind == "teeth":   # upper row a little smaller, back and UP (shows under a lifted upper lip in a laugh, hides in an "O")
+            moved = _tuck(F, o, [(lambda c, z=zmid: c.z > z, 0.9, 0.003, -0.0012), (lambda c: True, 0.8, 0.0055, 0.0015)])
+            # cartoon mouth = ONE top teeth row: the lower row filled every open mouth with a white blob (face run 4)
+            import bmesh
+            bm = bmesh.new(); bm.from_mesh(o.data)
+            bk = bm.verts.layers.shape.get(sk.key_blocks[0].name)
+            low = [v for v in bm.verts if (v[bk] if bk is not None else v.co).z <= zmid]
+            bmesh.ops.delete(bm, geom=low, context="VERTS"); bm.to_mesh(o.data); bm.free(); o.data.update()
+            print("FACE teeth lower row removed", len(low))
         elif F is not None:
             moved = _tuck(F, o, [(lambda c: True, 0.92, 0.003, 0.001)])
         else: moved = 0
@@ -1371,17 +1387,30 @@ def talk_emotion(basemesh, rig, frame, text=None, cues=None, rhubarb_json=None, 
     every = vis_keys | set(mouth_base) | ({"jawOpen"} if not ms else set())
     smile = (mouth_base.get("mouthSmileLeft", 0) + mouth_base.get("mouthSmileRight", 0)) / 2
     vstr = strength * (0.75 if smile > 0.6 else 1.0)          # a big grin shrinks the visemes a little
-    rnd = random.Random(len(cues)); last = frame
+    vstr *= 1 + 0.5 * (gain_for(rig) - 1)                     # small toon kid mouths: shapes must read at 640x360
+    # no jitter: one mouth key every >= 2 frames (a shorter cue merges into the next); M/B/P (A) always wins its slot
+    # and is HELD 2 frames with the jaw shut, so the lips visibly close
+    keyed = []
     for t0, t1, s in cues:
-        f = frame + int(round(t0 * fps))
+        f = frame + int(round(t0 * fps)); e = frame + int(round(t1 * fps))
+        if keyed and f - keyed[-1][0] < 2:
+            if s == "A" or keyed[-1][2] == "X": keyed[-1] = (keyed[-1][0], max(e, keyed[-1][1]), s)
+            else: keyed[-1] = (keyed[-1][0], max(e, keyed[-1][1]), keyed[-1][2])
+            continue
+        keyed.append((f, e, s))
+    rnd = random.Random(len(cues)); last = frame
+    for f, e, s in keyed:
         w = {n: 0.0 for n in every}; w.update(mouth_base)
         for k, v in table.get(s, {}).items():
             w[k] = max(w.get(k, 0.0), v * vstr) if k in BIAS_KEYS else (w.get(k, 0.0) + v * vstr if k == "jawOpen" else v * vstr)
         if ms: w["jawOpen"] = mouth_base.get("jawOpen", 0.0) + 0.35 * A._JAW.get(s, 0) * vstr
+        if s == "A":
+            w["jawOpen"] = 0.0
+            for k in list(w):
+                if k.startswith(("mouthSmile", "mouthUpperUp", "mouthLowerDown", "mouthFunnel")): w[k] = min(w[k], 0.25)
         _keys_face(rig, w, f)
-        if head_bob and s == "D" and rnd.random() < 0.35 and rig.get("expr_segs"):
-            pass   # head bob is part of the emotion's micro-motion
-        last = frame + int(round(t1 * fps))
+        if s == "A" and e - f >= 2: _keys_face(rig, w, f + 1)
+        last = e
     w = {n: 0.0 for n in every}; w.update(mouth_base); _keys_face(rig, w, last + 1)
     return last
 
