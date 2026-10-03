@@ -634,7 +634,7 @@ def do_hand(a):
             steady = (sd, c + lat * a.get("steady_r", 0.12) + up * 0.012)
         bl = a["blend"]
         HO.count_objects(rig, objs, dests, beats, hand_side=a.get("hand", "R"), steady=steady, pats=pats,
-                         blend=(bl[0], bl[1], bl[2], bl[3]), container=cont, radius=a.get("obj_radius", 0.021))
+                         blend=(bl[0], bl[1], bl[2], bl[3]), container=cont, radius=a.get("obj_radius", 0.021), look_off=a.get("look_off"))
     elif t == "hand_pick_place":
         cont = PROPS.get(a.get("container")); o = _child(cont, a["obj"]) if cont else PROPS[a["obj"]]
         to = P(a["to"]) if "to" in a else cont.matrix_world @ Vector(a["to_local"])
