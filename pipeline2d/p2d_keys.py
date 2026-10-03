@@ -93,6 +93,65 @@ def items_extra():
     return out
 
 
+CAST = {  # characters of the full episode that have no LoRA yet: fixed seed + a precise colour description keeps them consistent
+    "gudiya": ("child", "9 year old indian village girl, long black braid with white jasmine flowers, red bindi, green and pink langa voni long skirt with half saree, glass bangles"),
+    "pinky": ("child", "8 year old indian village girl, two short ponytails, big round black glasses, pink frock with white collar"),
+    "bablu": ("child", "chubby 10 year old indian village boy, round face, short black hair, sky blue kurta, white pyjama"),
+    "raju": ("adult", "13 year old tall slim indian village boy, short black hair, saffron kurta, white pyjama, red checked gamcha scarf on one shoulder"),
+    "lallan": ("adult", "plump 40 year old indian sweet shop owner, big curly black moustache, bald head with black hair on the sides, white vest, white dhoti, red gamcha on the shoulder")}
+BODY_ACTS = ["stand", "wave", "wag", "salute", "reach", "hand_cheek", "hold_plate", "sit", "sit_hold", "walk"]
+TALK_ON = ["stand_0", "sit_2", "sit_hold_0", "hand_cheek_0", "hold_plate_0", "wag_1", "salute_0", "reach_2", "wave_1"]
+
+
+def head_edits(cid, src, kp, desc, group, shard, exprs=True):
+    """mouth states (+ expressions) on a FULL-BODY drawing: inpaint an upscaled crop around the head (skeleton nose/neck)"""
+    nx, ny = kp[0]; hs = abs(kp[1][1] - ny) or 100; out = []
+    crop = [nx - 1.4 * hs, ny - 1.5 * hs, nx + 1.4 * hs, ny + 1.2 * hs]
+    for m, mw in MOUTH.items():
+        it = dict(kind="edit", char=cid, src=src, crop=crop, ellipses=[[nx, ny + .40 * hs, .30 * hs, .22 * hs]], strength=0.95, cfg=4.0, seed=3, feather=3,
+                  group=group, shard=shard, prompt=f"{desc}, close-up face, {mw}")
+        it["id"] = f"{src}~mouth_{m}_{h(it)}"; out.append(it)
+    if exprs:
+        for e, ew in EXPR.items():
+            it = dict(kind="edit", char=cid, src=src, crop=crop, ellipses=[[nx, ny - .05 * hs, .62 * hs, .78 * hs]], strength=0.9, cfg=4.0, seed=5, feather=4,
+                      group=group, shard=shard, prompt=f"{desc}, {ew}, exaggerated cartoon expression, close-up face")
+            it["id"] = f"{src}~expr_{e}_{h(it)}"; out.append(it)
+    return out
+
+
+def items_cast(chars=None, seed=11, ip=0.0, skip=()):
+    """ip > 0: IP-Adapter on masters/<cid>.png (made from the first round's stand drawing) -> same costume in every action"""
+    out = []
+    for cid, (body, desc) in CAST.items():
+        if chars and cid not in chars: continue
+        acts = dict(ACT, **EXTRA_ACT)
+        for act in BODY_ACTS:
+            if act in skip: continue
+            T = PS.load(body, act)
+            for i, f in enumerate(T["frames"]):
+                pr = f"{acts[act].format(note=f['note'])}, full body, {BG}, {desc}, {STYLE_T}"
+                it = dict(kind="pose", char=cid, canvas=T["canvas"], kp=f["kp"], prompt=pr, seed=seed, ip_scale=ip, cn_scale=0.85 if act == "walk" else 0.75,
+                          group=f"{cid}/{act}", shard=cid)
+                if act == "walk": it["neg"] = "front view, facing the viewer, text, watermark, photo, 3d render, blurry, deformed, extra limbs, extra legs, scenery, two people"
+                it["id"] = f"{cid}/s{seed}/{act}_{i}_{h(it)}"; out.append(it)
+                if f"{act}_{i}" in TALK_ON:
+                    out += head_edits(cid, it["id"], f["kp"], desc, it["group"], cid, exprs=(act == "stand"))
+    return out
+
+
+def items_body_edits(sel):
+    """mouth / expression edits on the chosen Dadi + Chhotu drawings (sources come from earlier rounds via the dataset src/ folder)"""
+    S = SERIES()["characters"]; out = []
+    for cid, body in HUMANS.items():
+        if cid not in sel: continue
+        for name in TALK_ON:
+            act, i = name.rsplit("_", 1); ids = sel[cid]["actions"].get(act)
+            if not ids or int(i) >= len(ids): continue
+            kp = PS.load(body, act)["frames"][int(i)]["kp"]
+            out += head_edits(cid, ids[int(i)], kp, f"{S[cid]['trigger']}, {S[cid]['short']}", f"{cid}/edits", f"{cid}_edits", exprs=(act == "stand"))
+    return out
+
+
 def done(it): return os.path.exists(os.path.join(KEYS, it["id"], "rgba.png"))
 
 
@@ -180,11 +239,16 @@ def status(rnd):
 
 
 def collect(rnd):
-    job = load(rnd); n = 0
-    for s, sh in job["shards"].items():
-        if "kernel" not in sh: continue
+    """download every shard in parallel (one thread per account)"""
+    from concurrent.futures import ThreadPoolExecutor
+    job = load(rnd)
+
+    def one(item):
+        s, sh = item; n = 0
         tmp = os.path.join(OUT, "keys_dl", rnd, s); os.makedirs(tmp, exist_ok=True)
-        rc, out = kaggle(sh["key"], "kernels", "output", f"{user_of(sh['key'])}/{sh['kernel']}", "-p", tmp)
+        for _ in range(3):
+            rc, out = kaggle(sh["key"], "kernels", "output", f"{user_of(sh['key'])}/{sh['kernel']}", "-p", tmp, "--file-pattern", r"(rgba|raw|mask)\.png$|ERROR_|item\.json$")
+            if rc == 0: break
         for f in glob.glob(os.path.join(tmp, "**", "keys", "**", "rgba.png"), recursive=True):
             src = os.path.dirname(f); rel = os.path.relpath(src, f[:f.rfind(os.sep + "keys" + os.sep) + 6])
             dst = os.path.join(KEYS, rel); os.makedirs(dst, exist_ok=True)
@@ -192,6 +256,9 @@ def collect(rnd):
             n += 1
         errs = glob.glob(os.path.join(tmp, "**", "ERROR_*.txt"), recursive=True)
         if errs: print(s, "ERRORS:", open(errs[0]).read()[-800:])
+        return n
+    with ThreadPoolExecutor(8) as ex:
+        n = sum(ex.map(one, [(s, sh) for s, sh in job["shards"].items() if "kernel" in sh]))
     print("collected", n)
 
 
