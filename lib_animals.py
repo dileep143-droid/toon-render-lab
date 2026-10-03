@@ -53,7 +53,8 @@ SPECIES = {
         colours={"Main": (0.86, 0.60, 0.34), "Main_Light": (0.98, 0.91, 0.78), "Black": (0.10, 0.08, 0.08),
                  "Eyes_White": (0.86, 0.60, 0.34), "Eyes_Pupil": (0.86, 0.60, 0.34), "Eyes_Black": (0.86, 0.60, 0.34)},
         skin=(0.86, 0.60, 0.34), brow=(0.42, 0.25, 0.13), iris=(0.45, 0.26, 0.12),
-        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.145, eye_out=0.32, brow_len=1.25, head_scale=1.2, eye_shift=(0.92, -0.05, 0.03),
+        eye_src=("Eyes_White", "Eyes_Pupil"), eye_r=0.145, eye_out=0.32, brow_len=1.25, head_scale=1.2, eye_shift=(0.92, -0.05, 0.01),
+        tail_override={"tucked": (100, 62, 48)},                 # the curl must come all the way down between the hind legs
         acts=("idle", "idle_flick", "sleep", "lie_down", "wake_sniff", "lazy_walk", "walk", "trot", "run_to_food", "bark", "growl",
               "scratch_ear", "roll_over", "sit", "beg", "stretch_yawn", "lick", "cower", "sniff_ground", "eat", "look_around", "hop",
               "startled_jump", "hit_left"),
@@ -70,7 +71,9 @@ SPECIES = {
                  "Hooves": (0.12, 0.10, 0.10), "Muzzle": (0.95, 0.80, 0.74), "Eye_Lighter": (0.70, 0.40, 0.20),
                  "Eye_Black": (0.70, 0.40, 0.20), "Eye_White": (0.70, 0.40, 0.20), "Patch": (0.98, 0.96, 0.92)},
         skin=(0.70, 0.40, 0.20), brow=(0.30, 0.17, 0.09), iris=(0.62, 0.36, 0.14),
-        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.16, eye_out=0.28, brow_len=1.2, head_scale=1.25, eye_shift=(0.92, -0.07, 0.05),
+        eye_src=("Eye_Black", "Eye_Lighter"), eye_r=0.16, eye_out=0.28, brow_len=1.2, head_scale=1.25, eye_shift=(0.92, -0.07, 0.02),
+        proportions=dict(leg_k=0.75, zc=0.55, neck_k=0.70),     # goat, not deer: shorter lower legs + shorter neck (rest re-map)
+        horn_q=(0.10, -1.99, 4.15),
         acts=("idle", "idle_flick", "walk", "trot", "run", "hop", "chew", "eat_something", "eat_grass", "bleat", "creep",
               "startled_jump", "butt", "push", "lie_down", "sleep", "look_around", "steal_run", "tug_of_war", "hit_left"),
         jaw=dict(hinge=(0, -2.18, 3.61), cut_z=3.61, cut_y=-2.24, tip=(0, -2.62, 3.52)),
@@ -327,7 +330,7 @@ def _add_face(spec, sp, name, arm, mesh, coll):
         c0 = Vector((c0.x * kx, c0.y + dy, c0.z + dz))
         p, n = _surface(mesh, c0)
         gaze = (n * spec["eye_out"] + Vector((0, -1, 0)) * (1 - spec["eye_out"]) + Vector((0, 0, 0.12))).normalized()
-        centre = p - n * (0.35 * r)
+        centre = p - n * (0.48 * r)                                  # sit deeper in the skull: less 'frog' bulge
         bp, bn = _surface(mesh, centre + up * (1.45 * r) + gaze * (0.2 * r))
         eyes[side] = (centre, gaze, bp + bn * (spec.get("brow_off", 0.12) * r))
     sm = [Vector(x) for x in spec["smile"]]
@@ -372,7 +375,7 @@ def _add_face(spec, sp, name, arm, mesh, coll):
         q = _new_obj(f"{name}_shine_{side}", _sphere_mesh("toon_shine", 1.0, 10, 6), coll, shine)
         _parent_bone(q, arm, f"Eye.{side}", M @ Matrix.Translation((r * 0.20, r * 1.0, r * 0.22)) @ Matrix.Diagonal((r * 0.15, r * 0.06, r * 0.15, 1)))
         M = bone_frame(f"Lid.{side}")
-        o = _new_obj(f"{name}_lid_{side}", _sphere_mesh("toon_lid", r * 1.13, 24, 14, half="back"), coll, skin); _parent_bone(o, arm, f"Lid.{side}", M)
+        o = _new_obj(f"{name}_lid_{side}", _sphere_mesh("toon_lid", r * 1.075, 24, 14, half="back"), coll, skin); _parent_bone(o, arm, f"Lid.{side}", M)
         M = bone_frame(f"Brow.{side}")
         L = r * spec["brow_len"]
         o = _new_obj(f"{name}_brow_{side}", _tube_mesh("toon_brow", [(-L / 2, 0, -0.1 * r), (0, 0, 0.08 * r), (L / 2, 0, -0.1 * r)], [0.10 * r, 0.16 * r, 0.10 * r], 8), coll, brow)
@@ -393,7 +396,8 @@ def _add_face(spec, sp, name, arm, mesh, coll):
     if sp == "chamki":
         horn = _mat("Chamki_Horn", (0.93, 0.85, 0.66), 0.45); beard = _mat("Chamki_Beard", (0.20, 0.13, 0.10), 0.8)
         for s in (1, -1):
-            p, n = _surface(mesh, (0.10 * s, -1.99, 4.15))
+            hq = spec.get("horn_q", (0.10, -1.99, 4.15))
+            p, n = _surface(mesh, (hq[0] * s, hq[1], hq[2]))
             base = p - n * 0.03
             pts = [base + Vector((0.0 * s, 0.0, 0.0)), base + Vector((0.015 * s, 0.05, 0.11)), base + Vector((0.035 * s, 0.15, 0.19)),
                    base + Vector((0.05 * s, 0.27, 0.21)), base + Vector((0.06 * s, 0.35, 0.16))]
@@ -410,6 +414,59 @@ def _add_face(spec, sp, name, arm, mesh, coll):
     arm.data.pose_position = "POSE"
 
 
+def _reproportion(spec, arm, mesh):
+    """cartoon proportions by re-mapping the REST pose (mesh verts AND bones with the same map, so skinning and every
+    pack action stay valid): the neck is shortened along its own axis (head slides toward the shoulders) and the lower
+    legs are squashed in Z (body sits lower).  Returns a copy of spec with the hard-coded head points moved too."""
+    pr = spec["proportions"]; bones = arm.data.bones
+    A = bones["Neck1"].head_local.copy(); B = bones["Head"].head_local.copy(); N = B - A
+    zc = pr["zc"] * bones["Torso2"].head_local.z; k = pr["leg_k"]; kn = pr["neck_k"]
+    shift_n = -N * (1 - kn)
+
+    def neck(p, wh, wn):        # wh: belongs to the head (moves fully), wn: belongs to the neck (moves by its position along it)
+        s = max(0.0, min(1.0, (p - A).dot(N) / N.length_squared))
+        return p + shift_n * min(1.0, wh + wn * s)
+
+    def legs(p):
+        return Vector((p.x, p.y, p.z * k if p.z < zc else p.z - zc * (1 - k)))
+
+    def F(p, wh=0.0, wn=1.0):
+        return legs(neck(Vector(p), wh, wn))
+    # mesh: weighted by how much a vertex belongs to the head / neck (the chest must not slide, the skull must not squash)
+    me = mesh.data
+    gh = {g.index for g in mesh.vertex_groups if g.name.startswith(("Head", "Ear", "Jaw"))}
+    gn = {g.index for g in mesh.vertex_groups if g.name.startswith("Neck")}
+    for v in me.vertices:
+        wh = sum(g.weight for g in v.groups if g.group in gh); wn = sum(g.weight for g in v.groups if g.group in gn)
+        v.co = F(v.co, wh, wn)
+    me.update()
+    in_head = set()
+    for b in bones:
+        q = b
+        while q is not None:
+            if q.name == "Head": in_head.add(b.name); break
+            q = q.parent
+
+    def ed(eb):
+        heads = {b.name: F(b.head, 1.0 if b.name in in_head else 0.0, 0.0 if b.name in in_head else 1.0) for b in eb}
+        tails = {b.name: F(b.tail, 1.0 if b.name in in_head else 0.0, 0.0 if b.name in in_head else 1.0) for b in eb}
+        for b in eb:
+            b.head = heads[b.name]; b.tail = tails[b.name]
+    _edit(arm, ed)
+    d = F(B, 1.0, 0.0) - B                                           # the whole head moved rigidly by d
+    sp2 = dict(spec)
+    j = dict(spec["jaw"])
+    j["hinge"] = tuple(Vector(j["hinge"]) + d); j["tip"] = tuple(Vector(j["tip"]) + d)
+    j["cut_z"] = j["cut_z"] + d.z; j["cut_y"] = j["cut_y"] + d.y
+    sp2["jaw"] = j
+    sp2["smile"] = [tuple(Vector(q) + d) for q in spec["smile"]]
+    if "horn_q" in spec:
+        sp2["horn_q"] = tuple(Vector(spec["horn_q"]) + d)
+    _BVH.pop(mesh.data.name, None)
+    print("REPROPORTION", arm.name, "neck shift", tuple(round(x, 3) for x in shift_n), "head moved", tuple(round(x, 3) for x in d))
+    return sp2
+
+
 def _species(rig):
     return rig.get("species") or ("chamki" if "chamki" in rig.name.lower() else "sheru")
 
@@ -424,6 +481,8 @@ def _make(sp, name, loc=(0, 0, 0), rot_z=0.0, size=1.0):
         def rep(eb):
             for s in ("L", "R"): eb[f"Ear1.{s}"].use_connect = False; eb[f"Ear1.{s}"].parent = eb["Head"]
         _edit(arm, rep)
+    if spec.get("proportions"):
+        spec = _reproportion(spec, arm, mesh)
     _add_jaw(spec, arm, mesh)
     _add_face(spec, sp, name, arm, mesh, coll)
     hs = spec.get("head_scale", 1.0)                        # cartoon proportions: a bigger head (eyes, horns, ears grow with it)
@@ -605,6 +664,7 @@ def _face(arm, P, state=None, **over):
         yaw, pitch = st.get("look", (0, 0))
         P[f"Eye.{side}"][1] = Quaternion((0, 0, 1), R(yaw)) @ Quaternion((1, 0, 0), R(pitch))
         e = st.get("eye", 1.0); P[f"Eye.{side}"][2] = Vector((e, e, e))
+        P[f"Lid.{side}"][2] = Vector((e, e, e))          # the lid hugs the eyeball at every eye size (no gap, no bulge)
     s = st["smile"]
     P["Smile"][1] = Quaternion((0, 1, 0), R(180)) if s < 0 else Quaternion()
     a = max(0.05, abs(s)); P["Smile"][2] = Vector((1, 1, a))
@@ -707,7 +767,7 @@ def _build_actions(sp, arm):
     if A and all(v in bpy.data.actions for v in A.values()) and arm.get("_built"):
         return
     pack = {k: bpy.data.actions[pre + v] for k, v in spec["actions"].items()}
-    marker = pre + "_lib_animals_v1"
+    marker = pre + "_lib_animals_v2"
     already = bpy.data.actions.get(pre + "sleep") is not None and bpy.data.texts.get(marker) is not None
     for k, a in pack.items():
         A[k] = a.name
@@ -723,7 +783,8 @@ def _build_actions(sp, arm):
         A["tail_" + e] = pre + "tail_" + e
     for e in EARS:
         A["ears_" + e] = pre + "ears_" + e
-    if sp == "sheru": A["jump"] = pre + "hop"; A["run_to_food"] = pack["run"].name; A["startled"] = pre + "startled_jump"
+    A["gallop_pack"] = pack["run"].name; A["run"] = pre + "run_g"
+    if sp == "sheru": A["jump"] = pre + "hop"; A["run_to_food"] = pre + "run_g"; A["startled"] = pre + "startled_jump"
     else: A["jump"] = pre + "hop"; A["butt"] = pack["headbutt"].name; A["startled"] = pre + "startled_jump"; A["sleep"] = pre + "sleep"
     if already:
         return
@@ -740,21 +801,27 @@ def _build_actions(sp, arm):
         # goat: 0.62 sank the belly ~5 cm; dog: 0.62 left him hunched on bent hind legs -> lower, hind feet tucked forward
         drop = (0.70 if sp == "sheru" else 0.53) * arm.data.bones["Torso2"].head_local.z
         _mov(arm, P, "Body", (0, 0, -drop))
+        fl = arm.data.bones["FrontUpperLeg.L"].length + arm.data.bones["FrontLowerLeg.L"].length
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
-            _mov(arm, P, f"IKFrontLeg.{s}", (0.05 * sx, 0.30, 0.10))
-            _mov(arm, P, f"IKBackLeg.{s}", (0.22 * sx, -0.85, 0.06) if sp == "sheru" else (0.10 * sx, -0.55, 0.10))
+            if sp == "chamki":       # goat: front legs FOLDED under the chest, hooves tucked back toward the belly
+                ib = arm.data.bones[f"IKFrontLeg.{s}"]; S = arm.data.bones[f"FrontUpperLeg.{s}"].head_local
+                _foot_to(arm, P, f"IKFrontLeg.{s}", (ib.head_local.x * 0.85, S.y + 0.42 * fl, ib.head_local.z + 0.10 * fl))
+            else:
+                _mov(arm, P, f"IKFrontLeg.{s}", (0.05 * sx, 0.30, 0.10))
+            _mov(arm, P, f"IKBackLeg.{s}", (0.22 * sx, -0.85, 0.06) if sp == "sheru" else (0.14 * sx, -0.60, 0.10))
         _rot(arm, P, "Neck1", pitch=-8)
         return P
     loaf = lying_tucked()
     bones = arm.data.bones
     T2z = bones["Torso2"].head_local.z
     front_leg = bones["FrontUpperLeg.L"].length + bones["FrontLowerLeg.L"].length
-    if sp == "sheru":       # dog sleeping 'loaf': front paws stretched forward, chin resting on them
+    if sp == "sheru":       # dog sleeping 'loaf': front paws stretched forward (a little apart), chin resting on them
         for s in ("L", "R"):
             sx = 1 if s == "L" else -1
-            _mov(arm, loaf, f"IKFrontLeg.{s}", (-0.03 * sx, -0.30 - 0.45 * front_leg, -0.10))
-    loaf = _chin_to(arm, loaf, 0.17 * T2z if sp == "sheru" else 0.30 * T2z, yaw=0 if sp == "sheru" else 14)
+            _mov(arm, loaf, f"IKFrontLeg.{s}", (0.05 * sx, -0.30 - 0.45 * front_leg, -0.10))
+    loaf = _chin_to(arm, loaf, 0.27 * T2z if sp == "sheru" else 0.30 * T2z, yaw=0 if sp == "sheru" else 14)
+    loaf = _grounded(arm, loaf)
     sleep_base = loaf
 
     def sleep_pose(t, base=None):
@@ -764,10 +831,11 @@ def _build_actions(sp, arm):
         _rot(arm, P, "Head", pitch=1.2 * _osc(t, 48))
         if 28 <= t <= 36:                                   # ear twitch
             _rot(arm, P, "Ear1.L", roll=25 * math.sin(math.pi * (t - 28) / 4))
+        P = _grounded(arm, P)
         return _face(arm, P, "asleep", jaw=0.10 * max(0.0, _osc(t, 48, 0.1)) if sp == "sheru" else 0.0)   # snore: the mouth puffs open
     _bake(arm, pre + "sleep", 48, sleep_pose, 2)
     _bake(arm, pre + "sleep_side", 48, lambda t: sleep_pose(t, lying_side), 2)
-    _bake(arm, pre + "lie_down", 30, lambda t: _face(arm, _mix(stand, sleep_base, t / 26), "sleepy" if t > 12 else None), 2, loop=False)
+    _bake(arm, pre + "lie_down", 30, lambda t: _face(arm, _grounded(arm, _mix(stand, sleep_base, t / 26)), "sleepy" if t > 12 else None), 2, loop=False)
 
     def wake(t):
         if t < 34:
@@ -775,8 +843,9 @@ def _build_actions(sp, arm):
             lift = min(1.0, max(0.0, (t - 6) / 8))
             _rot(arm, P, "Neck1", pitch=22 * lift); _rot(arm, P, "Head", pitch=14 * lift + 6 * lift * max(0, _osc(t, 5)))
             face = "asleep" if t < 6 else ("sleepy" if t < 12 else "excited")
+            P = _grounded(arm, P)
             return _face(arm, P, face, jaw=0.12 * max(0, _osc(t, 5)) if t >= 14 else None) if t >= 14 else _face(arm, P, face)
-        P = _mix(sleep_base, stand, (t - 34) / 18)
+        P = _grounded(arm, _mix(sleep_base, stand, (t - 34) / 18))
         return _face(arm, P, "excited")
     _bake(arm, pre + "wake_sniff", 60, wake, 2, loop=False)
 
@@ -806,7 +875,7 @@ def _build_actions(sp, arm):
                 _foot_to(arm, P, f"IKBackLeg.{s}", (bb.head_local.x * 1.25, hp.y - 0.35 * front_leg, bb.head_local.z))
             if ok: break
         _rot(arm, P, "Neck1", pitch=-pitch * 0.5); _rot(arm, P, "Head", pitch=-pitch * 0.3)
-        return P, T
+        return _grounded(arm, P), T
     sit, sitT = sit_pose()
     _bake(arm, pre + "sit", 24, lambda t: _face(arm, _copy(sit)), 12)
 
@@ -832,6 +901,7 @@ def _build_actions(sp, arm):
         for n in iks:                      # the feet roll with the body, then tuck up toward the belly
             p = T @ old[n]; p = p.lerp(T @ _body_point(arm, lying_side, Vector((bones[n].head_local.x, bones[n].head_local.y, hip.z * 0.55))), 0.45 * k)
             _foot_to(arm, P, n, p + Vector((0, 0, 0.06 * k * _osc(t, 6, 0.25 * (n[-1] == "L")))))
+        P = _grounded(arm, P, with_feet=True)          # per-frame ground clamp: nothing of him goes below the ground
         return _face(arm, P, "happy" if 8 < t < 40 else None)
     _bake(arm, pre + "roll_over", 48, roll, 2, loop=False)
 
@@ -899,7 +969,7 @@ def _build_actions(sp, arm):
             lift = max(0.0, k) * 0.85
             _mov(arm, P, f"IKFrontLeg.{s}", (0.15 * sx * tuck, -0.1 * tuck, lift)); _mov(arm, P, f"IKBackLeg.{s}", (0.15 * sx * tuck, 0.15 * tuck, lift))
         for s in ("L", "R"): _rot(arm, P, f"Ear1.{s}", pitch=35 * tuck)
-        _rot(arm, P, "Tail1", pitch=40 * tuck)
+        _rot(arm, P, "Tail1", pitch=(-12 if sp == "chamki" else 40) * tuck)     # goat tuft would bury itself in her rump
         return _face(arm, P, "startled" if t < 22 else None)
     _bake(arm, pre + "startled_jump", 30, startled, 1, loop=False)
 
@@ -956,9 +1026,13 @@ def _build_actions(sp, arm):
         P = _sample(arm, run, t % run.frame_range[1])
         _rot(arm, P, "Neck1", pitch=8); _rot(arm, P, "Head", pitch=6)
         _posture(arm, P, t, dict(ears="back"))
+        P = _grounded(arm, _feet_floor(arm, P), feet_only=True)
         return _face(arm, P, "cheeky", jaw=0.0)
     if run is not None:
         _bake(arm, pre + "steal_run", int(run.frame_range[1]), steal_run, 1)
+        # the pack gallop dips a hoof ~2 cm into the ground on some frames: our grounded copy replaces it
+        _bake(arm, pre + "run_g", int(run.frame_range[1]),
+              lambda t: _face(arm, _grounded(arm, _feet_floor(arm, _sample(arm, run, t % run.frame_range[1])), feet_only=True)), 1)
 
     def braced(P, back, down, front_fwd, rear_back):
         _mov(arm, P, "Body", (0, back, -down))
@@ -1050,11 +1124,11 @@ def _ease(t, a, b):
 # ---------------------------------------------------------------------------------------------------------------------
 EARS = {   # (pitch, outward roll) per ear
     "up":      dict(L=(-20, -4), R=(-20, -4)),     # alert / pricked forward
-    "back":    dict(L=(42, 10), R=(42, 10)),
-    "flat":    dict(L=(72, 22), R=(72, 22)),       # pinned flat (scared, guilty)
+    "back":    dict(L=(38, 34), R=(38, 34)),       # 'airplane ears': swung back AND out to the sides
+    "flat":    dict(L=(88, 6, 34), R=(88, 6, 34)), # pinned flat along the skull (scared, guilty): 3rd value bends Ear2/Ear3
     "droop":   dict(L=(18, 58), R=(18, 58)),       # sad / bored: hanging sideways
     "relaxed": dict(L=(12, 14), R=(12, 14)),
-    "one_up":  dict(L=(-8, -12), R=(28, 42)),      # confused
+    "one_up":  dict(L=(-12, 8), R=(28, 42)),       # confused (left ear stays clear of Chamki's horn)
 }
 TAIL = {   # pitch per tail bone (+ optional wag (deg, period))
     "up":        dict(pitch=(-28, -10, 0)),
@@ -1091,7 +1165,8 @@ EMO = {    # face (EXPR key) + posture; fx = lib_fx hook fired by emotion()
     "offended":  dict(face="offended", ears="back", head=(18, -26, 0)),
     "bored":     dict(face="bored", ears="droop", head=(-4, 0, 14), neck=-6),
 }
-POSTURE_BONES = ("Body", "Neck1", "Head", "Ear1.L", "Ear1.R", "Tail1", "Tail2", "Tail3")
+EAR_BONES = ("Ear1.L", "Ear1.R", "Ear2.L", "Ear2.R", "Ear3.L", "Ear3.R")
+POSTURE_BONES = ("Body", "Neck1", "Head") + EAR_BONES + ("Tail1", "Tail2", "Tail3")
 
 
 def _posture(arm, P, t, c):
@@ -1101,10 +1176,15 @@ def _posture(arm, P, t, c):
     em = c.get("ears")
     if em and "Ear1.L" in bones:
         for s, sg in (("L", 1), ("R", -1)):
-            p, o = EARS[em][s]; _rot(arm, P, f"Ear1.{s}", pitch=p, roll=sg * o)
+            e_ = EARS[em][s]; p, o = e_[0], e_[1]; _rot(arm, P, f"Ear1.{s}", pitch=p, roll=sg * o)
+            if len(e_) > 2:
+                for k_ in ("2", "3"):
+                    if f"Ear{k_}.{s}" in bones: _rot(arm, P, f"Ear{k_}.{s}", pitch=e_[2] * 0.5)
     tm = c.get("tail")
     if tm:
-        tt = TAIL[tm]
+        tt = dict(TAIL[tm])
+        ov = SPECIES.get(arm.get("species", ""), {}).get("tail_override", {}).get(tm)
+        if ov: tt["pitch"] = ov
         kup = 0.3 if arm.get("species") == "chamki" else 1.0          # the goat's short tuft hits her back when raised far
         for i, a in enumerate(tt.get("pitch", ())):
             if f"Tail{i + 1}" in bones: _rot(arm, P, f"Tail{i + 1}", pitch=a * (kup if a < 0 else 1.0))
@@ -1131,6 +1211,47 @@ def _pose_apply(arm, P):
     for bn, (l, q, s) in P.items():
         b = arm.pose.bones[bn]; b.rotation_mode = "QUATERNION"; b.location = l; b.rotation_quaternion = q; b.scale = s
     bpy.context.view_layer.update()
+
+
+def _body_mesh(arm):
+    return bpy.data.objects.get(arm.name[:-4] + "_body") if arm.name.endswith("_rig") else None
+
+
+def _lowest(arm):
+    """lowest point of the deformed body (subsurf included) in rig units, armature space"""
+    mo = _body_mesh(arm)
+    if mo is None: return 0.0
+    ev = mo.evaluated_get(bpy.context.evaluated_depsgraph_get()); me = ev.to_mesh()
+    M = arm.matrix_world.inverted() @ ev.matrix_world
+    z = min((M @ v.co).z for v in me.vertices); ev.to_mesh_clear()
+    return z
+
+
+IK_FEET = ("IKFrontLeg.L", "IKFrontLeg.R", "IKBackLeg.L", "IKBackLeg.R")
+
+
+def _feet_floor(arm, P):
+    """no IK foot below its standing (rest) height: stops hooves dipping into the ground in the pack gallop"""
+    for bn in IK_FEET:
+        b = arm.data.bones[bn]; m3 = b.matrix_local.to_3x3()
+        p = b.head_local + m3 @ P[bn][0]
+        if p.z < b.head_local.z:
+            p.z = b.head_local.z; P[bn][0] = m3.inverted() @ (p - b.head_local)
+    return P
+
+
+def _grounded(arm, P, clear=0.0, with_feet=False, feet_only=False):
+    """ground clamp for one pose: if any part of the deformed body is below the ground, lift the Body (with_feet: lift
+    the IK feet by the same amount too, e.g. rolling on the back).  Never lowers.  Used on every keyed frame of the
+    lying / rolling / sitting actions."""
+    for _ in range(3):
+        _pose_apply(arm, P); z = _lowest(arm)
+        if z >= clear - 0.005: break
+        dz = clear - z + 0.003
+        if not feet_only: _mov(arm, P, "Body", (0, 0, dz))
+        if with_feet or feet_only:
+            for bn in IK_FEET: _mov(arm, P, bn, (0, 0, dz))
+    return P
 
 
 def _chin_to(arm, P, target_z, yaw=0.0):
@@ -1160,7 +1281,7 @@ def _build_posture_actions(arm, pre):
         comp = {k: v for k, v in c.items() if k not in ("face", "fx")}
         _key_only(arm, pre + "emo_" + e, 24, lambda t, comp=comp: _posture(arm, _rest(arm), t, comp), POSTURE_BONES, 2)
     for m in EARS:
-        _key_only(arm, pre + "ears_" + m, 24, lambda t, m=m: _posture(arm, _rest(arm), t, dict(ears=m)), ("Ear1.L", "Ear1.R"), 12)
+        _key_only(arm, pre + "ears_" + m, 24, lambda t, m=m: _posture(arm, _rest(arm), t, dict(ears=m)), EAR_BONES, 12)
     for m in TAIL:
         _key_only(arm, pre + "tail_" + m, 24, lambda t, m=m: _posture(arm, _rest(arm), t, dict(tail=m)), ("Tail1", "Tail2", "Tail3"),
                   1 if "wag" in TAIL[m] else 12)
@@ -1410,6 +1531,46 @@ def _along(vs, L, d):
     return vs[-1], (vs[-1] - vs[-2]).normalized()
 
 
+def _plant_solve(rig, act, vs, L, rate, sc, step):
+    """FOOT PLANTING: per frame, find how far along the path the root must be so the foot that is on the ground stays
+    exactly where it was on the previous frame (curves included: the root's turn is part of the solve).
+    Returns the cumulative distance per frame."""
+    B = rig.data.bones; f0, f1 = act.frame_range; Lc = f1 - f0
+    A_ = rig.matrix_parent_inverse @ rig.matrix_basis
+    cache = {}
+
+    def feet(k):
+        ph = round(f0 + (k * rate) % Lc, 4)
+        if ph not in cache:
+            P = _sample(rig, act, ph)
+            cache[ph] = {bn: B[bn].head_local + B[bn].matrix_local.to_3x3() @ P[bn][0] for bn in IK_FEET}
+        return cache[ph]
+    zfloor = {bn: min(feet(i * Lc / 48.0 / max(rate, 1e-6))[bn].z for i in range(48)) for bn in IK_FEET}
+    legl = B["FrontUpperLeg.L"].length + B["FrontLowerLeg.L"].length
+    thr = 0.04 * legl
+
+    def world(d, p_loc):
+        p, tan = _along(vs, L, d); yaw = math.atan2(tan.y, tan.x) + math.pi / 2
+        M = Matrix.Translation(p) @ Matrix.Rotation(yaw, 4, "Z") @ Matrix.Diagonal((sc, sc, sc, 1))
+        return M @ A_ @ p_loc
+
+    dist = [0.0]; Fp = feet(0)
+    while dist[-1] < L[-1] and len(dist) < 5000:
+        k = len(dist); Fk = feet(k); d0 = dist[-1]
+        b = min(IK_FEET, key=lambda n: (Fp[n].z - zfloor[n]) + (Fk[n].z - zfloor[n]))
+        if Fp[b].z - zfloor[b] > thr or Fk[b].z - zfloor[b] > thr:
+            d = d0 + step                                     # all four feet in the air (gallop flight): keep momentum
+        else:
+            tgt = world(d0, Fp[b]).xy
+            lo_, hi_ = d0, d0 + 3.0 * step + 1e-4
+            for _ in range(3):                                # coarse-to-fine 1-D search
+                ds = [lo_ + (hi_ - lo_) * i / 12.0 for i in range(13)]
+                d = min(ds, key=lambda x: (world(x, Fk[b]).xy - tgt).length)
+                w_ = (hi_ - lo_) / 12.0; lo_, hi_ = max(d0, d - w_), d + w_
+        dist.append(max(d, d0)); Fp = Fk
+    return dist
+
+
 def walk_along(rig, curve, speed=None, start_frame=1, action="walk", ground_z=None, settle="idle"):
     """move the animal's root along a curve object (or a list of points) at `speed` m/s while the locomotion action
     plays at the matching rate (feet don't slide). speed=None -> the action's natural speed. Returns the end frame."""
@@ -1422,15 +1583,10 @@ def walk_along(rig, curve, speed=None, start_frame=1, action="walk", ground_z=No
         vs = [Vector(p) for p in curve]; L = [0.0]
         for i in range(1, len(vs)): L.append(L[-1] + (vs[i] - vs[i - 1]).length)
     act, _ = _resolve(rig, action)
-    prof = _profile(rig, act)                      # per-frame advance that keeps the planted feet still
-    nat = max(nat, 0.05); Lc = len(prof); rate = v / nat
+    nat = max(nat, 0.05); rate = v / nat
     sc = root.matrix_world.to_scale().z
-    dist = [0.0]
-    if max(prof) <= 1e-6:                          # a cycle whose feet never plant (bad profile): advance uniformly
-        prof = [nat / (sc * bpy.context.scene.render.fps)] * Lc
-    while dist[-1] < L[-1] and len(dist) < 5000:
-        ph = ((len(dist) - 1) * rate) % Lc; i = int(ph); fr = ph - i
-        dist.append(dist[-1] + (prof[i] * (1 - fr) + prof[(i + 1) % Lc] * fr) * rate * sc)
+    fps = bpy.context.scene.render.fps
+    dist = _plant_solve(rig, act, vs, L, rate, sc, v / fps)
     n = len(dist) - 1
     prev_yaw = None
     for k in range(n + 1):
