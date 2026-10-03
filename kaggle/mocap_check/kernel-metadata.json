@@ -1,0 +1,15 @@
+{
+ "id": "mani7673/sonpur-mocap-check",
+ "title": "sonpur-mocap-check",
+ "code_file": "run_check.py",
+ "language": "python",
+ "kernel_type": "script",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "dataset_sources": [
+  "mani7673/sonpur-mocap"
+ ],
+ "competition_sources": [],
+ "kernel_sources": []
+}
