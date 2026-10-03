@@ -265,7 +265,7 @@ class Puppet:
 
     def feet_pivot(self):
         j = self.spec.joints
-        if "ground" in j: return (self.w / 2.0, float(j["ground"][1]))
+        if "feet" in j: return (float(j["feet"][0]), float(j["feet"][1]))
         ys = [v[1] for k, v in j.items() if "toe" in k or "ankle" in k]
         return (self.w / 2.0, max(ys) if ys else float(self.h))
 
@@ -332,7 +332,8 @@ class Puppet:
             ui = ti["R"] @ self.rest[names[i]]["dir"]; up = tp["R"] @ self.rest[names[i - 1]]["dir"]
             bis = ui + up; nb = np.hypot(*bis)
             bis = bis / nb if nb > 1e-3 else ui
-            a = (pts - ti["P"]) @ bis; r = max(1.0, L["spec"].blend.get(names[i], 12.0))
+            rad = min(self.spec.bone[names[i - 1]].radius, self.spec.bone[names[i]].radius)
+            a = (pts - ti["P"]) @ bis; r = max(1.0, L["spec"].blend.get(names[i], 12.0), 0.9 * rad)          # blend zone >= the limb's half width: no cracks
             S.append(smooth((a + r) / (2 * r)))
         S.append(np.zeros(len(pts)))
         res = np.zeros_like(pts)
@@ -385,16 +386,16 @@ def human_spec(rig):
 _PUP = {}
 
 
-def get_puppet(char_img, rig, spec_fn=None, mesh=True):
+def get_puppet(char_img, rig, spec_fn=None, mesh=True, cls=None):
     """cached Puppet for (image, rig). char_img may be an array / PIL image / file path / Puppet."""
     if isinstance(char_img, Puppet): return char_img
     if isinstance(char_img, str): char_img = np.asarray(Image.open(char_img).convert("RGBA"))
-    arr = as_rgba(char_img); key = (id(char_img), arr.shape, json.dumps(rig, sort_keys=True, default=str), mesh)
+    arr = as_rgba(char_img); key = (id(char_img), arr.shape, json.dumps(rig, sort_keys=True, default=str), mesh, getattr(cls, '__name__', ''))
     if key not in _PUP:
         if len(_PUP) > 24: _PUP.pop(next(iter(_PUP)))
         fn = spec_fn or (human_spec if rig.get("kind", "human") in ("human", "monkey") else None)
         if fn is None: raise ValueError("no spec builder for rig kind %r (animals.py registers its own)" % rig.get("kind"))
-        _PUP[key] = (Puppet(arr, fn(rig), masks=rig.get("masks"), mesh=mesh), char_img)         # keep a ref so id() stays valid
+        _PUP[key] = ((cls or Puppet)(arr, fn(rig), masks=rig.get("masks"), mesh=mesh), char_img)         # keep a ref so id() stays valid
     return _PUP[key][0]
 
 
@@ -750,6 +751,7 @@ class Performer:
 # ============================================================================================================ drawing helper
 def feet_xy(rig, pad):
     """feet centre inside an animate() sprite (sprite px)"""
+    if "feet" in rig: return pad + rig["feet"][0], pad + rig["feet"][1]
     j = rig["joints"]; ys = [v[1] for k, v in j.items() if "toe" in k or "ankle" in k] or [rig["size"][1]]
     return pad + rig["size"][0] / 2.0, pad + max(ys)
 

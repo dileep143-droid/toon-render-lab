@@ -188,11 +188,14 @@ def make_quadruped(kind="goat"):
     if P.get("beard"): _poly(d, [(snout[0] - hr * 0.2, snout[1] + hr * 0.1), (snout[0] - hr * 0.1, snout[1] + hr * 0.65), (snout[0] - hr * 0.5, snout[1] + hr * 0.15)], col, LINE, S, 2)
     for nm in ("fn", "hn"): draw_leg(nm)       # near legs on top
     mouth = (snout[0] - hr * 0.05, snout[1] + hr * 0.22)
+    J.update({"spine_a": (body_c[0] - rx * 0.62, body_c[1]), "spine_b": (body_c[0] + rx * 0.62, body_c[1])})      # body axis through the middle of the torso
     J.update({"neck_base": nb, "head": hj, "snout": snout, "ear_base": ear_b, "ear_tip": ear_t, "withers": nb, "pelvis": rump, "chest": chest,
               "mouth": mouth, "head_center": hc})
     arr = _finish(im, S)
     rig = {"kind": "quadruped", "view": "side", "size": [Wc, Hc], "joints": {n: [float(a), float(b)] for n, (a, b) in J.items()}, "name": kind,
-           "ground": ground, "leg_len": leg, "has_legs": True, "head_r": hr}
+           "ground": ground, "leg_len": leg, "has_legs": True, "head_r": hr,
+           "feet": [float((rump[0] + chest[0]) / 2), float(ground)],
+           "radii": {"body": ry * 1.02, "neck": ry * 0.5, "head": hr * 1.05, "ear": hr * 0.22, "tail": 12, "uleg": lw * 1.05, "lleg": lw * 0.82, "foot": lw * 0.72}}
     return arr, rig
 
 
@@ -220,7 +223,8 @@ def make_bird(kind="hen"):
     _poly(d, [(sh[0] + 22, sh[1] - 18), (wt[0], wt[1] - 25), (wt[0] - 15, wt[1] + 18), (sh[0] + 20, sh[1] + 38)], dark, LINE, S)
     J.update({"body": bc, "neck_base": nb, "head": hc, "beak": (hc[0] + hr * 1.75, hc[1] + 8), "wing_base": sh, "wing_tip": wt, "foot_l": (foot[0] - 12, ground), "foot_r": (foot[0] + 8, ground),
               "leg_top_l": (leg_top[0] - 12, leg_top[1]), "leg_top_r": (leg_top[0] + 8, leg_top[1]), "mouth": (hc[0] + hr * 1.0, hc[1] + 8), "head_center": hc})
-    return _finish(im, S), {"kind": "bird", "view": "side", "size": [Wc, Hc], "joints": {n: [float(a), float(b)] for n, (a, b) in J.items()}, "name": kind, "ground": ground, "has_legs": True}
+    return _finish(im, S), {"kind": "bird", "view": "side", "size": [Wc, Hc], "joints": {n: [float(a), float(b)] for n, (a, b) in J.items()}, "name": kind, "ground": ground, "has_legs": True,
+                                  "feet": [float(bc[0]), float(ground)], "radii": {"body": 100, "neck": 30, "head": 40, "beak": 12, "wing": 34, "tail": 34, "leg": 10}}
 
 
 def make_monkey():

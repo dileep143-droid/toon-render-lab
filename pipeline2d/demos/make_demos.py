@@ -30,7 +30,33 @@ def demo_puppet():
     return C.write_video(frames, os.path.join(OUT, "puppet.mp4"), fps, crf=28)
 
 
-DEMOS = {"puppet": demo_puppet}
+def demo_animals():
+    import puppet as PU, animals as AN
+    bg = T.make_background("village_day"); fps = C.FPS; dur = 10.0
+    goat, rg = T.make_quadruped("goat"); dog, rd = T.make_quadruped("dog"); cow, rc = T.make_quadruped("cow"); hen, rh = T.make_bird("hen"); par, rp = T.make_bird("parrot"); mon, rm = T.make_monkey()
+    sc = lambda rig, hpx: hpx / rig["size"][1]
+    G, Dg, Cw, Hn, Pr = 300, 250, 330, 150, 110
+    P = [(AN.AnimalPerformer(goat, rg, [dict(motion="walk", start=0, dur=3.0, distance=520 / sc(rg, G)), dict(motion="bleat", start=3.2, dur=1.1), dict(motion="eat", start=4.6, dur=3.0), dict(motion="butt", start=8.0, dur=1.4)]), rg, 90, 590, G, False),
+         (AN.AnimalPerformer(dog, rd, [dict(motion="run", start=0.3, dur=2.6, distance=760 / sc(rd, Dg)), dict(motion="sit", start=3.1, dur=1.0), dict(motion="bark", start=4.3, dur=1.0), dict(motion="wag_tail", start=5.5, dur=2.0), dict(motion="beg", start=7.6, dur=2.0)]), rd, -160, 700, Dg, False),
+         (AN.AnimalPerformer(cow, rc, [dict(motion="moo", start=1.0, dur=1.4), dict(motion="eat", start=3.0, dur=3.5), dict(motion="walk", start=7.0, dur=2.5, distance=150 / sc(rc, Cw))]), rc, 1130, 520, Cw, True),
+         (AN.AnimalPerformer(hen, rh, [dict(motion="peck", start=0.5, dur=1.8), dict(motion="walk", start=2.6, dur=2.0, speed=140), dict(motion="squawk", start=5.2, dur=1.0), dict(motion="hop", start=6.6, dur=0.8)]), rh, 700, 610, Hn, False),
+         (AN.AnimalPerformer(par, rp, [dict(motion="fly", start=0.5, dur=8.5, distance=1500 / sc(rp, Pr))], idle=None), rp, -120, 170, Pr, False)]
+    mk = AN.AnimalPerformer(mon, rm, [dict(motion="swing", start=1.0, dur=8.0)], idle=None)
+    frames = []
+    for i in range(int(dur * fps)):
+        t = i / fps; f = bg.copy()
+        from PIL import ImageDraw, Image
+        for perf, rig, x0, y, hpx, flip in P:
+            sp, info = perf.frame(t, flip=flip); k = hpx / rig["size"][1]; x = x0 + (-1 if flip else 1) * info["travel"] * k
+            fy = y if rig["kind"] != "bird" or rig["name"] == "hen" else y + 0
+            PU.draw_character(f, sp, info, rig, x, fy, hpx, flip=flip)
+        sp, info = mk.frame(t) if t >= 1.0 else mk.frame(1.0)
+        a = PU.draw_character(f, sp, info, rm, 1190, 330, 260)
+        frames.append(f)
+    return C.write_video(frames, os.path.join(OUT, "animals.mp4"), fps, crf=28)
+
+
+DEMOS = {"puppet": demo_puppet, "animals": demo_animals}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
