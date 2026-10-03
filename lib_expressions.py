@@ -1,20 +1,22 @@
-"""lib_expressions.py - cartoon EXPRESSION library for MPFB characters (ARKit face units + head / neck / eye bones + arms + blush).
-Extends lib_anim (its EXPRESSIONS, _face_keys, blink, GESTURES are reused, not duplicated).
+"""lib_expressions.py - EMOTION + ACTING library for MPFB villagers: an emotion is a WHOLE-BODY attitude
+(ARKit face units + eye bones + head / neck / spine / shoulders / arms / hands / fingers + cheek blush), with
+2-bone arm IK so hands really land on the face / chest / belly / back, and an age gain so small MPFB kid faces read.
 
     import lib_expressions as LE
-    LE.ensure_face(h, rig)                                    # once: proxies follow face units, mouth interior, blush overlay
-    LE.apply_expression(h, rig, "shy_smile")                  # static (no keys)
-    LE.apply_expression(h, rig, "head_wobble", frame=40, hold=36)   # keyed; animated ones animate over the hold
-    LE.blend(h, rig, {"happy": 0.6, "surprised": 0.5}, frame=80)
-    LE.transition(h, rig, "happy", "scared_bhoot", 100, 108)
-    LE.look_at(h, rig, target_obj_or_point, frame=120)
-    LE.acting_layer(h, rig, 1, 240, seed=3)                   # blinks, brow lifts, eye darts on top
+    LE.ensure_face(h, rig)                                        # once (auto-called): teeth/tongue/mouth fix, blush overlay
+    LE.apply_expression(h, rig, "happy")                          # static pose (no keys)
+    LE.apply_expression(h, rig, "angry", frame=40, blend_frames=6)   # keyed, blends from whatever was there
+    info = LE.animate_expression(h, rig, "giggle", 40, 100)       # onset -> hold (acting + micro-motion) -> settle
+    LE.talk_emotion(h, rig, 52, text="मुझे भूख लगी है!", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
+    LE.eye_look(h, rig, target=other_rig_head_point, frame=60)  # or direction="left" / "up_right" / "camera"
+    LE.set_blush(h, 0.8, frame=70)                                # animatable cheek tint
+    LE.animate_expression(h, rig, "comforting", 10, 80, target=friend_shoulder_world_point)
 
-Spec of an entry in EXPR: face={ARKit: w}, pose={segment: lib_anim spec} (head / neck / spine / clav / arm ...),
-eyes=(yaw_deg, pitch_deg) (yaw + = toward the character's LEFT, pitch + = up), blush=0..1, anim=name of an animator.
+Names: LE.SHEET (canonical list) + LE.ALIASES (old names / synonyms). Scene JSON: see report / episode_scene hook:
+    {"do": "emotion", "who": "gudiya", "name": "giggle", "frame": 40, "end": 100, "strength": 1.0}
 """
-import bpy, math, random
-from mathutils import Vector, Quaternion, Matrix, Euler
+import bpy, math, random, re
+from mathutils import Vector, Quaternion, Matrix
 import lib_anim as A
 
 R = math.radians
@@ -25,99 +27,287 @@ def _b(name, v):
 
 
 ARKIT = set(A.ARKIT)
-_HANDS_BELLY = {"arm_L": {"aim": (0.45, 0.35, -0.8)}, "arm_R": {"aim": (0.45, 0.35, -0.8)}, "forearm_L": {"fwd": 70, "out": -40}, "forearm_R": {"fwd": 70, "out": -40}}
-_HANDS_HIPS = {"arm_L": {"aim": (-0.25, 0.85, -0.55)}, "arm_R": {"aim": (-0.25, 0.85, -0.55)}, "forearm_L": {"aim": (0.35, -0.75, -0.55)}, "forearm_R": {"aim": (0.35, -0.75, -0.55)}}
-_HANDS_UP_SCARED = {"arm_L": {"aim": (0.7, 0.25, 0.6)}, "arm_R": {"aim": (0.7, 0.25, 0.6)}, "forearm_L": {"fwd": 110, "out": -25}, "forearm_R": {"fwd": 110, "out": -25},
-                    "hand_L": {"fwd": -40}, "hand_R": {"fwd": -40}}
-_HANDS_BEHIND = {"arm_L": {"aim": (-0.45, 0.22, -0.85)}, "arm_R": {"aim": (-0.45, 0.22, -0.85)}, "forearm_L": {"aim": (-0.35, -0.85, -0.25)}, "forearm_R": {"aim": (-0.35, -0.85, -0.25)}}
-_STEEPLE = {"arm_L": {"aim": (0.55, 0.42, -0.72)}, "arm_R": {"aim": (0.55, 0.42, -0.72)}, "forearm_L": {"fwd": 112, "out": -52}, "forearm_R": {"fwd": 112, "out": -52},
-            "hand_L": {"fwd": -35}, "hand_R": {"fwd": -35}}
-_WHISPER = {"arm_R": {"aim": (0.55, 0.4, -0.55)}, "forearm_R": {"fwd": 145, "out": -75}, "hand_R": {"fwd": -20, "twist": 40}}
-_PINCHED = {}
+MOUTH_KEYS = {k for k in A.ARKIT if k.startswith(("mouth", "jaw")) or k in ("tongueOut", "cheekPuff")}
+BIAS_KEYS = {"mouthSmileLeft", "mouthSmileRight", "mouthFrownLeft", "mouthFrownRight", "mouthDimpleLeft", "mouthDimpleRight"}   # kept while talking
+HALF_KEYS = {"mouthLeft", "mouthRight", "mouthShrugLower", "mouthShrugUpper", "mouthPressLeft", "mouthPressRight", "cheekPuff"}
+
+# ----------------------------------------------------------------------------------------------- hand / arm presets (one side, side-relative)
+PRESET = {
+    "idle":      {"arm": {"aim": (0.04, 0.16, -1)}, "forearm": {"fwd": 14}, "hand": {}},
+    "limp":      {"arm": {"aim": (0.06, 0.07, -1)}, "forearm": {"fwd": 3}, "hand": {}},
+    "hip":       {"arm": {"aim": (-0.25, 0.85, -0.55)}, "forearm": {"aim": (0.35, -0.75, -0.55)}, "hand": {}},
+    "behind":    {"arm": {"aim": (-0.45, 0.22, -0.85)}, "forearm": {"aim": (-0.35, -0.85, -0.25)}, "hand": {}},
+    "scared_up": {"arm": {"aim": (0.7, 0.25, 0.6)}, "forearm": {"fwd": 110, "out": -25}, "hand": {"fwd": -40}},
+    "shrug":     {"arm": {"aim": (0.25, 0.45, -0.85)}, "forearm": {"fwd": 70, "out": 35, "twist": 60}, "hand": {}},
+    "out_low":   {"arm": {"aim": (0.3, 0.6, -0.7)}, "forearm": {"fwd": 40}, "hand": {"fwd": -20}},
+    "balance":   {"arm": {"aim": (0.1, 0.75, -0.6)}, "forearm": {"fwd": 15}, "hand": {}},
+    "fist_side": {"arm": {"aim": (0.08, 0.2, -1)}, "forearm": {"fwd": 35}, "hand": {}},
+    "wide_down": {"arm": {"aim": (0.05, 0.42, -0.9)}, "forearm": {"fwd": 8}, "hand": {}},
+    "palm_up":   {"arm": {"aim": (0.35, 0.4, -0.85)}, "forearm": {"fwd": 75, "twist": 70}, "hand": {}},
+}
+CROSS = A.GESTURES["cross_arms"]
+
+# IK hand spec: at=landmark (mouth chin nose eye cheek forehead top head_side head_back chest heart belly back_low thigh shoulder world),
+# off=(fwd, out, up) in HEAD units (out = toward that hand's side), tip=where the landmark sits along the hand (0 wrist .. 1 fingertip),
+# pole=elbow hint (fwd, out, up), curl=finger shape, twist=forearm roll (palm), wrist=hand bone spec
+def H(at, off=(0, 0, 0), tip=0.45, pole=(0.1, 0.8, -0.6), curl="relaxed", twist=0, wrist=None, clear=0.06):
+    return dict(at=at, off=off, tip=tip, pole=pole, curl=curl, twist=twist, wrist=wrist or {}, clear=clear)
 
 
-def G(name):
-    return dict(A.GESTURES[name])
+def E(face, body=None, L="idle", R="idle", eyes=None, blush=0.0, anim=None, curl=None, cross=False, desc=""):
+    return dict(face=face, body=body or {}, L=L, R=R, eyes=eyes, blush=blush, anim=anim, curl=curl, cross=cross, desc=desc)
 
 
 EXPR = {
-    # ---- basics (faces from lib_anim, plus head acting) ----
-    "neutral":   dict(face={}, pose={"head": {}, "neck": {}}),
-    "happy":     dict(face=A.EXPRESSIONS["happy"], pose={"head": {"out": 5, "fwd": -3}}),
-    "sad":       dict(face={**A.EXPRESSIONS["sad"], **_b("mouthFrown", 0.9), "browInnerUp": 1.0}, pose={"head": {"fwd": 16}, "neck": {"fwd": 4}}, eyes=(0, -14)),
-    "angry":     dict(face={**A.EXPRESSIONS["angry"], **_b("browDown", 1.0)}, pose={"head": {"fwd": 8}}),
-    "surprised": dict(face={**A.EXPRESSIONS["surprised"], **_b("eyeWide", 1.0)}, pose={"head": {"fwd": -8}}),
-    "scared":    dict(face=A.EXPRESSIONS["scared"], pose={"head": {"fwd": -6, "turn": 8}, "neck": {"fwd": -4}}),
-    "disgusted": dict(face=A.EXPRESSIONS["disgust"], pose={"head": {"turn": -10, "fwd": -6}}),
-    "sleepy":    dict(face=A.EXPRESSIONS["sleepy"], pose={"head": {"fwd": 12, "out": 10}}),
-    # ---- Indian cartoon set ----
-    "head_wobble": dict(face={**_b("mouthSmile", 0.6), **_b("cheekSquint", 0.3), "browInnerUp": 0.25}, pose={"head": {"out": 13}}, anim="wobble"),
-    "shy_smile": dict(face={**_b("mouthSmile", 0.5), **_b("mouthPress", 0.3), "browInnerUp": 0.45, **_b("cheekSquint", 0.3)},
-                      pose={"head": {"fwd": 20, "out": 9}}, eyes=(-6, 16), blush=0.55),
-    "mischievous_grin": dict(face={"mouthSmileLeft": 1.0, "mouthSmileRight": 0.55, "mouthDimpleLeft": 0.5, **_b("eyeSquint", 0.55), "browDownRight": 0.5,
-                                   "browOuterUpLeft": 0.6, "cheekSquintLeft": 0.6}, pose={"head": {"out": -8, "fwd": 7}}, eyes=(-12, 6)),
-    "proud_chest_out": dict(face={**_b("mouthSmile", 0.55), **_b("eyeSquint", 0.3), **_b("browOuterUp", 0.35)},
-                            pose={"head": {"fwd": -14}, "spine": {"fwd": -9}, **_HANDS_HIPS}),
-    "sulking_pout": dict(face={"mouthPucker": 0.55, "mouthShrugLower": 0.9, **_b("mouthFrown", 0.6), **_b("browDown", 0.5), "browInnerUp": 0.35, "cheekPuff": 0.25},
-                         pose={"head": {"fwd": 10, "turn": 20}}, eyes=(-16, 0), arms="cross_arms"),
-    "crying_wail": dict(face={"jawOpen": 0.85, **_b("mouthStretch", 0.85), **_b("mouthFrown", 0.9), **_b("eyeSquint", 1.0), **_b("eyeBlink", 0.65), "browInnerUp": 1.0,
-                              **_b("cheekSquint", 0.6), **_b("mouthUpperUp", 0.4), **_b("mouthLowerDown", 0.5)}, pose={"head": {"fwd": -14}}, anim="sob"),
-    "giggle_hand_on_mouth": dict(face={**_b("mouthSmile", 0.9), **_b("eyeSquint", 0.7), **_b("cheekSquint", 0.7), **_b("eyeBlink", 0.35), "browInnerUp": 0.3},
-                                 pose={"head": {"fwd": 9, "out": 9}}, arms="shh", anim="giggle"),
-    "scared_bhoot": dict(face={**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 0.9), "jawOpen": 0.75, **_b("mouthStretch", 0.85), "mouthFunnel": 0.3,
-                               **_b("mouthLowerDown", 0.4)}, pose={"head": {"fwd": -10}, "neck": {"fwd": -6}, "spine": {"fwd": -4}, **_HANDS_UP_SCARED}, anim="tremble"),
-    "thinking_finger_on_chin": dict(face=A.EXPRESSIONS["thinking"], pose={"head": {"out": 9, "fwd": -6}}, eyes=(14, 18), arms="think_chin"),
-    "sleepy_yawn": dict(face={**A.EXPRESSIONS["yawn"], **_b("eyeBlink", 1.0)}, pose={"head": {"fwd": -12, "out": 6}}, anim="yawn"),
-    "surprised_gasp": dict(face={**_b("eyeWide", 1.0), "browInnerUp": 0.9, **_b("browOuterUp", 0.9), "jawOpen": 0.55, "mouthFunnel": 0.6, "mouthPucker": 0.2},
-                           pose={"head": {"fwd": -10}, "spine": {"fwd": -4}}),
-    "angry_huff": dict(face={"cheekPuff": 1.0, **_b("browDown", 1.0), **_b("noseSneer", 0.6), **_b("eyeSquint", 0.4), "mouthClose": 0.4, **_b("mouthPress", 0.3)},
-                       pose={"head": {"fwd": 9}}, arms="cross_arms", blush=0.45),
-    "disgusted_karela": dict(face={**_b("noseSneer", 1.0), **_b("mouthUpperUp", 0.7), "tongueOut": 0.9, "jawOpen": 0.35, **_b("eyeSquint", 0.8), **_b("browDown", 0.6),
-                                   **_b("mouthFrown", 0.45), "mouthLeft": 0.25}, pose={"head": {"turn": -16, "fwd": -8, "out": 8}}, eyes=(-10, 0)),
-    "dreamy_hungry": dict(face={**_b("mouthSmile", 0.55), "jawOpen": 0.25, "tongueOut": 0.4, **_b("eyeBlink", 0.35), "browInnerUp": 0.6, **_b("eyeLookUp", 0.5)},
-                          pose={"head": {"out": 14, "fwd": -10}, **_HANDS_BELLY}, eyes=(10, 22)),
-    "embarrassed_blush": dict(face={**A.EXPRESSIONS["embarrassed"], **_b("mouthSmile", 0.55)}, pose={"head": {"fwd": 12, "out": -10}}, eyes=(-14, -8), blush=1.0,
-                              arms="scratch_head"),
-    "sneaky_side_eye": dict(face={**_b("eyeSquint", 0.5), **_b("browDown", 0.35), **_b("mouthPress", 0.5), "mouthLeft": 0.4, "mouthSmileLeft": 0.35},
-                            pose={"head": {"turn": -10, "fwd": 4}}, eyes=(30, -2)),
-    "determined_plan": dict(face={**A.EXPRESSIONS["determined"], **_b("mouthSmile", 0.4), **_b("browDown", 0.75)}, pose={"head": {"fwd": -6}}, eyes=(0, 6), arms="plan_fist"),
-    "laughing_rolling": dict(face={"jawOpen": 0.8, **_b("mouthSmile", 1.0), **_b("eyeBlink", 0.85), **_b("cheekSquint", 1.0), **_b("mouthUpperUp", 0.4), "browInnerUp": 0.5},
-                             pose={"head": {"fwd": -18}, "spine": {"fwd": -10}, **_HANDS_BELLY}, anim="laugh"),
-    "kissing_cheeks_aunty": dict(face={**_b("mouthStretch", 0.8), **_b("mouthSmile", 0.55), **_b("eyeSquint", 0.85), **_b("eyeBlink", 0.4), "browInnerUp": 0.6,
-                                       **_b("cheekSquint", 0.8), "cheekPuff": 0.3}, pose={"head": {"out": 12, "fwd": 4}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}}, blush=1.0),
-    "confused_head_tilt": dict(face={"browInnerUp": 0.3, "browDownRight": 0.7, "browOuterUpLeft": 0.8, "mouthLeft": 0.5, **_b("mouthPress", 0.3), "mouthFrownRight": 0.35,
-                                     "eyeSquintRight": 0.3}, pose={"head": {"out": 18}}, eyes=(0, 5)),
-    # ---- cunning / sly ----
-    "sly_smirk": dict(face={"mouthSmileLeft": 0.95, "mouthDimpleLeft": 0.5, **_b("eyeSquint", 0.6), **_b("eyeBlink", 0.25), "browDownRight": 0.35, "cheekSquintLeft": 0.5},
-                      pose={"head": {"fwd": 6, "turn": 8}}, eyes=(-10, 4)),
-    "scheming_eyebrow": dict(face={"browOuterUpLeft": 1.0, "browDownRight": 0.95, "mouthSmileLeft": 0.55, "eyeSquintRight": 0.65, "eyeWideLeft": 0.3},
-                             pose={"head": {"out": -6, "fwd": 4}}),
-    "evil_plan_finger_steeple": dict(face={**_b("eyeSquint", 0.7), **_b("eyeBlink", 0.3), **_b("browDown", 0.65), **_b("mouthSmile", 0.75), **_b("mouthStretch", 0.3),
-                                           **_b("cheekSquint", 0.5)}, pose={"head": {"fwd": 13}, **_STEEPLE}, eyes=(0, 14), anim="slow_grin"),
-    "side_glance_suspicious": dict(face={**_b("eyeSquint", 0.5), "browDownLeft": 0.65, "browDownRight": 0.3, **_b("mouthPress", 0.7), "mouthRollLower": 0.3},
-                                   pose={"head": {}}, eyes=(32, 0)),
-    "villain_chuckle": dict(face={**_b("eyeBlink", 0.95), **_b("mouthSmile", 0.9), "jawOpen": 0.25, **_b("cheekSquint", 0.7), **_b("browDown", 0.3)},
-                            pose={"head": {"fwd": 8}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}}, anim="chuckle"),
-    "fake_innocent": dict(face={**_b("eyeWide", 0.7), "browInnerUp": 0.85, **_b("mouthSmile", 0.2), "mouthPucker": 0.3, **_b("eyeLookUp", 0.4)},
-                          pose={"head": {"out": 11, "fwd": -4}, **_HANDS_BEHIND}, eyes=(0, 18)),
-    "sneaky_tiptoe_face": dict(face={"tongueOut": 0.45, "mouthLeft": 0.45, **_b("eyeSquint", 0.3), "browInnerUp": 0.35, **_b("mouthPress", 0.2)},
-                               pose={"head": {"fwd": 6}, "spine": {"fwd": 10}}, eyes=(24, 0), anim="dart"),
-    "smug_proud": dict(face={**_b("eyeBlink", 0.45), **_b("eyeSquint", 0.3), "mouthSmileLeft": 0.75, "mouthSmileRight": 0.4, **_b("browOuterUp", 0.45)},
-                       pose={"head": {"fwd": -16, "out": 5}}, eyes=(0, -10), arms="cross_arms"),
-    "whispering_secret": dict(face={"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.45, **_b("eyeWide", 0.25)},
-                              pose={"head": {"turn": 14, "out": -8}, **_WHISPER}, eyes=(-22, 0), anim="dart"),
+    "neutral": E({}, {}, desc="rest face, relaxed arms"),
+    # ---------------- joy ----------------
+    "happy": E({**_b("mouthSmile", 1.0), **_b("cheekSquint", 0.7), **_b("eyeSquint", 0.35), "browInnerUp": 0.2, **_b("browOuterUp", 0.3),
+                "jawOpen": 0.14, **_b("mouthUpperUp", 0.12), **_b("mouthDimple", 0.35)},
+               {"spine": {"fwd": -3}, "head": {"fwd": -4, "out": 7}, "clav_L": {"lift": 5}, "clav_R": {"lift": 5}}, "out_low", "out_low", eyes=(0, 2),
+               curl="open", desc="open smile, chin up, arms open"),
+    "big_laugh": E({"jawOpen": 0.8, **_b("mouthSmile", 1.0), **_b("cheekSquint", 1.0), **_b("eyeBlink", 0.8), **_b("eyeSquint", 0.8), **_b("mouthUpperUp", 0.4),
+                    "browInnerUp": 0.45, **_b("browOuterUp", 0.3)},
+                   {"spine": {"fwd": -10}, "head": {"fwd": -18}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
+                   H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="relaxed"), H("belly", off=(0.05, 0.25, 0), tip=0.5, pole=(-0.2, 0.9, -0.4)),
+                   anim="laugh", desc="head back, eyes shut, hands on belly, shoulders bounce"),
+    "giggle": E({**_b("mouthSmile", 0.95), **_b("eyeSquint", 0.75), **_b("cheekSquint", 0.85), **_b("eyeBlink", 0.45), "browInnerUp": 0.4},
+                {"head": {"fwd": 8, "out": 12}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}, "spine": {"fwd": 4}},
+                "idle", H("mouth", off=(0.0, 0.0, -0.02), tip=0.42, pole=(0.2, 0.7, -0.7), curl="relaxed", twist=-40, clear=0.07),
+                blush=0.35, anim="giggle", desc="hand over mouth, shoulders shake"),
+    "smile_soft": E({**_b("mouthSmile", 0.6), **_b("cheekSquint", 0.35), **_b("eyeSquint", 0.3), "browInnerUp": 0.3, **_b("mouthPress", 0.15)},
+                    {"head": {"out": 9, "fwd": 2}}, "idle", "idle", eyes=(0, 0), desc="gentle closed smile, head tilt"),
+    "proud": E({"mouthSmileLeft": 0.8, "mouthSmileRight": 0.55, **_b("eyeSquint", 0.35), **_b("eyeBlink", 0.25), **_b("browOuterUp", 0.55), **_b("cheekSquint", 0.3)},
+               {"spine": {"fwd": -11}, "head": {"fwd": -15}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}, "neck": {"fwd": -3}}, "hip", "hip", eyes=(0, -8),
+               desc="chest out, chin up, hands on hips"),
+    "excited": E({**_b("eyeWide", 0.7), **_b("mouthSmile", 1.0), "jawOpen": 0.5, "browInnerUp": 0.6, **_b("browOuterUp", 0.9), **_b("cheekSquint", 0.5), **_b("mouthUpperUp", 0.3)},
+                 {"spine": {"fwd": -4}, "head": {"fwd": -6}, "clav_L": {"lift": 12}, "clav_R": {"lift": 12}},
+                 H("shoulder", off=(0.55, -0.15, -0.35), tip=0.3, pole=(0, 0.6, -0.8), curl="fist"), H("shoulder", off=(0.55, -0.15, -0.35), tip=0.3, pole=(0, 0.6, -0.8), curl="fist"),
+                 anim="bounce", desc="fists pumping, bouncing on the toes"),
+    "love": E({**_b("mouthSmile", 0.75), **_b("eyeBlink", 0.45), **_b("eyeSquint", 0.3), "browInnerUp": 0.7, **_b("cheekSquint", 0.5)},
+              {"head": {"out": 15, "fwd": 2}, "spine": {"fwd": -2}},
+              H("heart", off=(0.0, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08), H("heart", off=(0.05, 0.0, -0.08), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.1),
+              blush=0.75, anim="sway", desc="hands on heart, head tilt, soft eyes, blush"),
+    "relieved": E({"browInnerUp": 0.8, **_b("eyeBlink", 0.55), **_b("mouthSmile", 0.45), "mouthFunnel": 0.3, "jawOpen": 0.12, "cheekPuff": 0.2},
+                  {"head": {"fwd": -10, "out": 6}, "spine": {"fwd": -4}},
+                  "idle", H("forehead", off=(0.05, 0.1, 0.02), tip=0.5, pole=(0.1, 0.9, -0.3), curl="flat", twist=60),
+                  anim="exhale", desc="phew: wipes the brow, shoulders drop"),
+    "grateful": E({**_b("mouthSmile", 0.65), **_b("eyeBlink", 0.4), "browInnerUp": 0.55, **_b("cheekSquint", 0.4)},
+                  {"head": {"fwd": 14}, "spine": {"fwd": 10}},
+                  H("chest", off=(0.6, -0.08, 0.25), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  H("chest", off=(0.6, -0.08, 0.25), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  eyes=(0, 6), desc="namaste: palms together, small bow"),
+    # ---------------- surprise / fear ----------------
+    "surprised": E({**_b("eyeWide", 1.0), "browInnerUp": 0.9, **_b("browOuterUp", 1.0), "jawOpen": 0.4, "mouthFunnel": 0.35},
+                   {"head": {"fwd": -8}, "spine": {"fwd": -5}, "clav_L": {"lift": 9}, "clav_R": {"lift": 9}}, "out_low", "out_low", curl="spread",
+                   desc="eyebrows up, round mouth, hands open"),
+    "shocked": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 1.0), "jawOpen": 0.5, "mouthFunnel": 0.55, **_b("mouthStretch", 0.2)},
+                 {"head": {"fwd": -9}, "neck": {"fwd": -5}, "spine": {"fwd": -8}, "clav_L": {"lift": 12}, "clav_R": {"lift": 12}},
+                 H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="spread", clear=0.08),
+                 H("mouth", off=(0.02, 0.0, -0.05), tip=0.4, pole=(0.2, 0.7, -0.7), curl="spread", twist=-40, clear=0.1),
+                 desc="gasp: hand to the open mouth, other to the chest, leaning back"),
+    "scared": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 0.5), **_b("mouthStretch", 0.85), "jawOpen": 0.18, **_b("mouthFrown", 0.35)},
+                {"head": {"fwd": 4, "turn": 10}, "neck": {"fwd": -3}, "spine": {"fwd": 8}, "clav_L": {"lift": 15}, "clav_R": {"lift": 15}},
+                H("chin", off=(0.35, 0.18, -0.35), tip=0.3, pole=(0, 0.6, -0.8), curl="fist"), H("chin", off=(0.35, 0.18, -0.35), tip=0.3, pole=(0, 0.6, -0.8), curl="fist"),
+                eyes=(-10, 0), anim="tremble", desc="cowering, fists under the chin, trembling"),
+    "terrified": E({**_b("eyeWide", 1.0), "browInnerUp": 1.0, **_b("browOuterUp", 1.0), "jawOpen": 0.9, **_b("mouthStretch", 0.9), **_b("mouthLowerDown", 0.6),
+                    **_b("mouthUpperUp", 0.35)},
+                   {"head": {"fwd": -10}, "neck": {"fwd": -4}, "spine": {"fwd": -10}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}},
+                   H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
+                   H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
+                   anim="tremble", desc="'भूत!' scream: hands on the cheeks, jaw dropped"),
+    "nervous": E({**_b("mouthStretch", 0.6), **_b("mouthPress", 0.3), "browInnerUp": 0.85, **_b("eyeWide", 0.35), **_b("mouthFrown", 0.2)},
+                 {"head": {"fwd": 6, "turn": -6}, "clav_L": {"lift": 11}, "clav_R": {"lift": 11}, "spine": {"fwd": 4}},
+                 H("belly", off=(0.5, -0.25, -0.05), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
+                 H("belly", off=(0.5, -0.25, 0.0), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
+                 eyes=(-10, -4), anim="fidget", desc="grimace, shoulders up, fiddling fingers, darting eyes"),
+    # ---------------- guilt / shame / shy ----------------
+    "guilty": E({"browInnerUp": 0.8, **_b("mouthPress", 0.4), **_b("mouthFrown", 0.35), "mouthRollLower": 0.3, **_b("mouthStretch", 0.25)},
+                {"head": {"fwd": 12, "turn": 12}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
+                H("belly", off=(0.35, -0.3, -0.45), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.35, -0.3, -0.4), tip=0.6, pole=(0, 0.6, -0.8)),
+                eyes=(-14, -10), desc="avoids your eyes, head turned down, hands clasped low"),
+    "ashamed": E({"browInnerUp": 0.95, **_b("mouthFrown", 0.6), **_b("eyeBlink", 0.3), **_b("mouthPress", 0.3)},
+                 {"head": {"fwd": 28}, "neck": {"fwd": 10}, "spine": {"fwd": 10}, "clav_L": {"lift": -6}, "clav_R": {"lift": -6}}, "limp", "limp",
+                 eyes=(0, -14), desc="head hung low, shoulders dropped, arms limp"),
+    "embarrassed": E({**_b("mouthSmile", 0.55), **_b("mouthStretch", 0.4), "browInnerUp": 0.65, **_b("cheekSquint", 0.45), **_b("eyeSquint", 0.3)},
+                     {"head": {"fwd": 10, "out": -10}, "clav_R": {"lift": 8}},
+                     "idle", H("head_side", off=(-0.12, 0.0, 0.18), tip=0.5, pole=(0.3, 1.0, -0.2), curl="relaxed", twist=40),
+                     eyes=(-14, -6), blush=1.0, anim="scratch", desc="blushing, sheepish grin, scratching the back of the head"),
+    "shy": E({**_b("mouthSmile", 0.5), **_b("mouthPress", 0.3), "browInnerUp": 0.55, **_b("cheekSquint", 0.3)},
+             {"head": {"fwd": 20, "out": 10}, "spine": {"turn": 8}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
+             H("belly", off=(0.3, -0.28, -0.4), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.3, -0.28, -0.35), tip=0.6, pole=(0, 0.6, -0.8)),
+             eyes=(-4, 22), blush=0.65, anim="sway", desc="head down, eyes up, hands together, twisting"),
+    # ---------------- sadness ----------------
+    "sad": E({"browInnerUp": 1.0, **_b("mouthFrown", 1.0), "mouthShrugLower": 0.45, **_b("mouthPress", 0.2), **_b("browDown", 0.05), **_b("eyeSquint", 0.1)},
+             {"head": {"fwd": 8}, "neck": {"fwd": 3}, "spine": {"fwd": 9}, "clav_L": {"lift": -8}, "clav_R": {"lift": -8}}, "limp", "limp",
+             eyes=(0, 2), desc="worried brows, deep frown, shoulders dropped (eyes still up)"),
+    "crying": E({"browInnerUp": 1.0, **_b("mouthFrown", 0.9), **_b("mouthStretch", 0.5), "jawOpen": 0.25, **_b("eyeSquint", 0.9), **_b("eyeBlink", 0.55),
+                 **_b("cheekSquint", 0.6), "mouthShrugLower": 0.4},
+                {"head": {"fwd": 10}, "spine": {"fwd": 10}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
+                H("eye", off=(0.06, -0.02, -0.04), tip=0.75, pole=(0.1, 0.7, -0.7), curl="fist", clear=0.04),
+                H("eye", off=(0.06, -0.02, -0.04), tip=0.75, pole=(0.1, 0.7, -0.7), curl="fist", clear=0.04),
+                anim="sob", desc="rubbing the eyes with fists, sobbing shoulders"),
+    "wailing": E({"jawOpen": 0.85, **_b("mouthStretch", 0.85), **_b("mouthFrown", 1.0), **_b("eyeSquint", 1.0), **_b("eyeBlink", 0.9), "browInnerUp": 1.0,
+                  **_b("cheekSquint", 0.6), **_b("mouthUpperUp", 0.45), **_b("mouthLowerDown", 0.55)},
+                 {"head": {"fwd": -20}, "spine": {"fwd": -6}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}}, "wide_down", "wide_down", curl="fist",
+                 anim="wail", desc="head thrown back, mouth wide, fists down: 'उँऊँऊँ!'"),
+    "sulking": E({"mouthPucker": 0.6, "mouthShrugLower": 1.0, **_b("mouthFrown", 0.7), **_b("browDown", 0.6), "browInnerUp": 0.4, "cheekPuff": 0.35},
+                 {"head": {"fwd": 10, "turn": 22}, "spine": {"turn": 6}}, None, None, cross=True, eyes=(-18, -2),
+                 desc="pout, arms crossed, turned away, side glance"),
+    # ---------------- anger ----------------
+    "angry": E({**_b("browDown", 1.0), **_b("noseSneer", 0.65), **_b("eyeSquint", 0.45), **_b("mouthPress", 0.5), **_b("mouthFrown", 0.6), "jawForward": 0.2,
+                "mouthRollLower": 0.15},
+               {"head": {"fwd": 9}, "spine": {"fwd": 6}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}}, "fist_side", "fist_side", curl="fist", eyes=(0, 6),
+               desc="brows down, glare from under them, fists clenched"),
+    "furious": E({"cheekPuff": 1.0, **_b("browDown", 1.0), **_b("noseSneer", 0.8), **_b("eyeSquint", 0.4), **_b("eyeWide", 0.35), "mouthClose": 0.4, **_b("mouthPress", 0.4)},
+                 {"head": {"fwd": 12}, "spine": {"fwd": 8}, "clav_L": {"lift": 15}, "clav_R": {"lift": 15}},
+                 H("belly", off=(0.45, 0.55, 0.0), tip=0.3, pole=(-0.2, 1.0, -0.4), curl="fist"), H("belly", off=(0.45, 0.55, 0.0), tip=0.3, pole=(-0.2, 1.0, -0.4), curl="fist"),
+                 eyes=(0, 8), blush=0.7, anim="tremble", desc="cheeks puffed, red face, shaking fists"),
+    "annoyed": E({**_b("eyeBlink", 0.35), "browDownRight": 0.45, "browOuterUpLeft": 0.35, **_b("mouthPress", 0.45), "mouthLeft": 0.4, **_b("mouthFrown", 0.35)},
+                 {"head": {"fwd": -6, "out": -8, "turn": 8}}, "hip", "idle", eyes=(12, 26), anim="roll",
+                 desc="eye roll, mouth to one side, hand on hip"),
+    "disgusted": E({**_b("noseSneer", 1.0), **_b("mouthUpperUp", 0.7), "tongueOut": 0.9, "jawOpen": 0.35, **_b("eyeSquint", 0.85), **_b("browDown", 0.7), **_b("mouthFrown", 0.5)},
+                   {"head": {"turn": -18, "fwd": -10, "out": 8}, "spine": {"fwd": -6}},
+                   "idle", H("chest", off=(0.75, 0.3, 0.1), tip=0.4, pole=(0, 0.8, -0.6), curl="flat", twist=-80, wrist={"fwd": -50}),
+                   eyes=(-10, 0), desc="karela eww: nose wrinkled, tongue out, hand pushing it away"),
+    # ---------------- thinking / scheming ----------------
+    "confused": E({"browInnerUp": 0.35, "browDownRight": 0.85, "browOuterUpLeft": 0.95, "mouthLeft": 0.5, **_b("mouthPress", 0.3), "mouthFrownRight": 0.45, "eyeSquintRight": 0.35},
+                  {"head": {"out": 18}}, "idle", H("head_side", off=(0.0, 0.0, 0.3), tip=0.6, pole=(0.3, 1.0, 0.1), curl="relaxed", twist=40),
+                  eyes=(0, 6), anim="scratch", desc="head tilt, one brow up, scratching the head"),
+    "thinking": E({"browDownRight": 0.45, "browInnerUp": 0.35, "browOuterUpLeft": 0.3, "mouthPucker": 0.35, "mouthLeft": 0.35, **_b("mouthPress", 0.2)},
+                  {"head": {"out": 8, "fwd": -6}},
+                  H("belly", off=(0.3, -0.45, 0.1), tip=0.5, pole=(0, 0.8, -0.6), curl="relaxed", twist=-40),
+                  H("chin", off=(0.0, 0.0, -0.02), tip=0.88, pole=(0.3, 0.6, -0.75), curl="point", twist=-60, clear=0.03),
+                  eyes=(14, 20), anim="tap", desc="finger on the chin, eyes up and away"),
+    "curious": E({"browInnerUp": 0.65, **_b("browOuterUp", 0.65), **_b("eyeWide", 0.5), "mouthPucker": 0.2, **_b("mouthSmile", 0.2), "jawOpen": 0.08},
+                 {"spine": {"fwd": 14}, "neck": {"fwd": 4}, "head": {"out": 12, "fwd": -8}}, "behind", "behind", eyes=(0, -2),
+                 desc="leans in, head tilt, brows up, hands behind back"),
+    "suspicious": E({**_b("eyeSquint", 0.65), "browDownLeft": 0.8, "browDownRight": 0.35, **_b("mouthPress", 0.6), "mouthRollLower": 0.3, "mouthLeft": 0.2},
+                    {"head": {"turn": -12, "fwd": 5}}, None, None, cross=True, eyes=(32, -2), anim="dart",
+                    desc="side-eye, narrowed eyes, arms crossed"),
+    "sly_smirk": E({"mouthSmileLeft": 1.0, "mouthDimpleLeft": 0.6, "cheekSquintLeft": 0.65, **_b("eyeSquint", 0.55), **_b("eyeBlink", 0.25), "browDownRight": 0.45,
+                    "browOuterUpLeft": 0.55},
+                   {"head": {"fwd": 8, "turn": 8, "out": -6}}, "idle", "hip", eyes=(-10, 3), desc="one-sided smirk, half-lidded, hand on hip"),
+    "scheming": E({"browOuterUpLeft": 1.0, "browDownRight": 1.0, "mouthSmileLeft": 0.75, "mouthSmileRight": 0.45, "eyeSquintRight": 0.7, **_b("eyeSquint", 0.2)},
+                  {"head": {"fwd": 13}, "spine": {"fwd": 4}},
+                  H("chest", off=(0.55, -0.02, -0.15), tip=0.92, pole=(-0.1, 1.0, -0.6), curl="steeple", twist=-75),
+                  H("chest", off=(0.55, -0.02, -0.15), tip=0.92, pole=(-0.1, 1.0, -0.6), curl="steeple", twist=-75),
+                  eyes=(0, 14), anim="slow_grin", desc="one brow up, chin down, steepled fingers"),
+    "fake_innocent": E({**_b("eyeWide", 0.8), "browInnerUp": 0.9, **_b("mouthSmile", 0.25), "mouthPucker": 0.4},
+                       {"head": {"out": 14, "fwd": -6}, "spine": {"fwd": -3}}, "behind", "behind", eyes=(0, 20), anim="sway",
+                       desc="big eyes to the sky, whistle mouth, hands behind back"),
+    "mischievous_grin": E({"mouthSmileLeft": 1.0, "mouthSmileRight": 0.75, **_b("mouthDimple", 0.5), **_b("eyeSquint", 0.6), **_b("cheekSquint", 0.6), "browDownRight": 0.5,
+                           "browOuterUpLeft": 0.65, **_b("mouthUpperUp", 0.2)},
+                          {"head": {"out": -8, "fwd": 8}, "spine": {"fwd": 5}, "clav_L": {"lift": 8}, "clav_R": {"lift": 8}},
+                          H("chest", off=(0.5, -0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", twist=-60),
+                          H("chest", off=(0.5, -0.05, -0.25), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="relaxed", twist=-60),
+                          eyes=(-12, 6), anim="rubhands", desc="wide grin, rubbing hands together"),
+    "determined": E({**_b("browDown", 0.75), **_b("mouthPress", 0.6), **_b("mouthSmile", 0.35), **_b("eyeSquint", 0.35), "jawForward": 0.2, **_b("noseSneer", 0.2)},
+                    {"head": {"fwd": -4}, "spine": {"fwd": -6}},
+                    "fist_side", H("shoulder", off=(0.35, 0.15, 0.55), tip=0.3, pole=(0, 0.9, -0.5), curl="fist", twist=-30),
+                    curl="fist", desc="'चलो, प्लान बनाते हैं!' raised fist, set jaw"),
+    # ---------------- low energy ----------------
+    "bored": E({**_b("eyeBlink", 0.55), "mouthLeft": 0.35, **_b("mouthPress", 0.3), **_b("mouthFrown", 0.25), "cheekPuff": 0.15},
+               {"head": {"out": 16, "fwd": 4}, "spine": {"fwd": 10}, "clav_L": {"lift": -6}, "clav_R": {"lift": -6}}, "limp", "limp", eyes=(14, 12),
+               anim="sigh", desc="droopy lids, slouch, head lolls, sigh"),
+    "sleepy": E({"jawOpen": 0.95, **_b("eyeBlink", 1.0), "browInnerUp": 0.55, "mouthFunnel": 0.3, **_b("mouthStretch", 0.3)},
+                {"head": {"fwd": -14, "out": 6}, "spine": {"fwd": -4}},
+                "idle", H("mouth", off=(0.03, 0, -0.02), tip=0.45, pole=(0.2, 0.7, -0.7), curl="relaxed", twist=-40, clear=0.12),
+                anim="yawn", desc="yawn, eyes shut, hand to the mouth"),
+    "tired": E({**_b("eyeBlink", 0.62), "browInnerUp": 0.55, **_b("mouthFrown", 0.35), "jawOpen": 0.1, "mouthShrugLower": 0.2},
+               {"head": {"fwd": 12, "out": 8}, "spine": {"fwd": 16}, "clav_L": {"lift": -8}, "clav_R": {"lift": -8}},
+               {"arm": {"aim": (0.25, 0.1, -1)}, "forearm": {"fwd": 5}, "hand": {}}, {"arm": {"aim": (0.25, 0.1, -1)}, "forearm": {"fwd": 5}, "hand": {}},
+               anim="breathe", desc="heavy lids, hunched, arms hanging forward"),
+    "hungry": E({**_b("mouthSmile", 0.6), "jawOpen": 0.25, "tongueOut": 0.5, **_b("eyeBlink", 0.35), "browInnerUp": 0.75},
+                {"head": {"out": 14, "fwd": -12}},
+                H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"),
+                eyes=(10, 24), anim="rub", desc="Chhotu 'मुझे भूख लगी है!': dreamy eyes up, licking lips, hands on tummy"),
+    "satisfied": E({**_b("mouthSmile", 0.85), **_b("eyeBlink", 0.85), **_b("cheekSquint", 0.6), "browInnerUp": 0.25, **_b("mouthPress", 0.2), "cheekPuff": 0.15},
+                   {"spine": {"fwd": -8}, "head": {"fwd": -8}},
+                   H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat"),
+                   anim="pat", desc="eyes closed content, leaning back, patting the tummy"),
+    "in_pain": E({**_b("eyeSquint", 1.0), **_b("eyeBlink", 0.6), "browInnerUp": 0.85, **_b("browDown", 0.55), **_b("mouthStretch", 0.8), **_b("mouthFrown", 0.4), "jawOpen": 0.2,
+                  **_b("noseSneer", 0.45), **_b("mouthUpperUp", 0.3)},
+                 {"spine": {"fwd": 16, "out": -6}, "head": {"fwd": -6, "out": -6}},
+                 H("thigh", off=(0.1, 0.0, 0.0), tip=0.5, pole=(0, 0.9, -0.4), curl="relaxed"),
+                 H("back_low", off=(0.0, 0.25, 0.0), tip=0.5, pole=(-0.4, 0.9, -0.2), curl="flat", twist=60),
+                 anim="rub", desc="ouch! (Raju after falling): wince, hunched, rubbing the lower back"),
+    "dizzy": E({"jawOpen": 0.2, "mouthLeft": 0.4, **_b("mouthSmile", 0.2), "browInnerUp": 0.55, **_b("browOuterUp", 0.45), **_b("eyeBlink", 0.2)},
+               {"head": {"out": 10, "fwd": 4}, "spine": {"out": 4}}, "balance", "balance", eyes=(0, 0), anim="dizzy",
+               desc="after a fall: eyes circling, head swaying, arms out for balance"),
+    "shocked_jaw_drop": E({"jawOpen": 1.0, **_b("eyeWide", 1.0), **_b("browOuterUp", 1.0), "browInnerUp": 0.9, **_b("mouthLowerDown", 0.5)},
+                          {"head": {"fwd": 4}, "neck": {"fwd": -10}, "spine": {"fwd": 6}}, "limp", "limp", curl="open",
+                          desc="jaw on the floor, arms dropped straight"),
+    # ---------------- Indian gestures + social ----------------
+    "head_wobble_acha": E({**_b("mouthSmile", 0.65), **_b("cheekSquint", 0.4), "browInnerUp": 0.35, **_b("eyeSquint", 0.2)},
+                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'अच्छा' wobble, palm up"),
+    "nod_yes": E({**_b("mouthSmile", 0.55), "browInnerUp": 0.3, **_b("eyeSquint", 0.2)}, {"head": {"fwd": 10}}, "idle", "idle", anim="nod", desc="nodding yes"),
+    "shake_no": E({**_b("mouthFrown", 0.45), **_b("mouthPress", 0.45), **_b("browDown", 0.35), "browInnerUp": 0.3},
+                  {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.15), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", twist=-80, wrist={"fwd": -40}),
+                  anim="shake", desc="shaking the head no, hand waving 'nahi'"),
+    "shrug": E({"browInnerUp": 0.55, **_b("browOuterUp", 0.85), "mouthShrugUpper": 0.4, "mouthShrugLower": 0.65, **_b("mouthFrown", 0.35), **_b("mouthPress", 0.3)},
+               {"head": {"out": 14}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}, "neck": {"fwd": -4}}, "shrug", "shrug", curl="open",
+               desc="'पता नहीं' shrug: shoulders up, palms up, brows up"),
+    "whisper_secret": E({"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.55, **_b("eyeWide", 0.3), **_b("mouthSmile", 0.2)},
+                        {"head": {"turn": 14, "out": -8}, "spine": {"fwd": 10, "out": -6}},
+                        "idle", H("mouth", off=(0.05, 0.42, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", twist=-90),
+                        eyes=(-22, 0), anim="dart", desc="leaning in, hand beside the mouth, eyes checking"),
+    "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
+                  {"head": {"fwd": 4}, "spine": {"fwd": 6}},
+                  "idle", H("mouth", off=(0.0, 0.0, 0.0), tip=0.86, pole=(0.3, 0.6, -0.75), curl="point", twist=-90, clear=0.03),
+                  desc="'श्श्श!' finger on the lips"),
+    "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
+                  {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
+                  H("chin", off=(0.5, -0.08, -0.3), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  H("chin", off=(0.5, -0.08, -0.3), tip=0.55, pole=(-0.1, 1.0, -0.6), curl="flat", twist=-70, wrist={"fwd": -15}),
+                  eyes=(0, 10), anim="bob", desc="puppy eyes, folded hands under the chin"),
+    "comforting": E({**_b("mouthSmile", 0.5), "browInnerUp": 0.75, **_b("eyeSquint", 0.2)},
+                    {"head": {"out": 14, "fwd": 6}, "spine": {"fwd": 6, "turn": 8}},
+                    H("heart", off=(0.02, 0, 0), tip=0.5, pole=(0, 0.9, -0.5), curl="flat", clear=0.08),
+                    H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.7, -0.8), curl="flat", twist=-30, wrist={"fwd": -20}),
+                    eyes=(-8, -4), anim="pat", desc="hand on a friend's shoulder (target=...), kind eyes"),
+    "elder_blessing": E({**_b("mouthSmile", 0.65), **_b("eyeBlink", 0.4), "browInnerUp": 0.55, **_b("cheekSquint", 0.4)},
+                        {"head": {"fwd": 14}, "spine": {"fwd": 8}},
+                        "idle", H("world", off=(0, 0, 0), tip=0.5, pole=(0, 0.6, -0.8), curl="flat", twist=-10, wrist={"fwd": -35}),
+                        eyes=(0, -10), anim="pat", desc="Dadi's hand on the child's head (target=...), warm smile"),
+    "teacher_stern": E({**_b("browDown", 0.95), **_b("mouthPress", 0.6), **_b("eyeSquint", 0.3), **_b("eyeWide", 0.3), **_b("mouthFrown", 0.55), **_b("noseSneer", 0.3)},
+                       {"head": {"fwd": 6}, "spine": {"fwd": -4}},
+                       "hip", H("shoulder", off=(0.45, 0.1, 0.55), tip=0.9, pole=(0, 0.9, -0.5), curl="point", twist=-60),
+                       anim="wag", desc="Masterji 'शांति!': stern brows, finger up, hand on hip"),
 }
-for _k in ("laugh", "cry", "scream", "shock", "shy", "proud", "smug", "yawn", "disgust", "suspicious", "dizzy", "wink", "puffed", "determined", "thinking",
-           "dreamy", "innocent", "guilty", "embarrassed", "shout", "drool"):
-    EXPR.setdefault(_k, dict(face=A.EXPRESSIONS[_k], pose={}))
 
+SHEET = list(EXPR.keys())
+ALIASES = {
+    "big_laugh": "big_laugh", "laugh": "big_laugh", "laughing_rolling": "big_laugh", "affection": "love", "kissing_cheeks_aunty": "love",
+    "gasp": "shocked", "surprised_gasp": "shocked", "shock": "shocked", "scream": "terrified", "scared_bhoot": "terrified", "bhoot": "terrified",
+    "shy_smile": "shy", "embarrassed_blush": "embarrassed", "cry": "crying", "crying_wail": "wailing", "wail": "wailing",
+    "pout": "sulking", "sulk": "sulking", "sulking_pout": "sulking", "angry_huff": "furious", "puffed": "furious", "disgust": "disgusted",
+    "disgusted_karela": "disgusted", "eye_roll": "annoyed", "confused_head_tilt": "confused", "thinking_finger_on_chin": "thinking",
+    "side_glance_suspicious": "suspicious", "sneaky_side_eye": "suspicious", "scheming_eyebrow": "scheming", "evil_plan_finger_steeple": "scheming",
+    "villain_chuckle": "scheming", "smug": "sly_smirk", "smug_proud": "proud", "proud_chest_out": "proud", "innocent": "fake_innocent",
+    "determined_plan": "determined", "yawn": "sleepy", "sleepy_yawn": "sleepy", "dreamy": "hungry", "dreamy_hungry": "hungry", "drool": "hungry",
+    "ouch": "in_pain", "pain": "in_pain", "jaw_drop": "shocked_jaw_drop", "head_wobble": "head_wobble_acha", "acha": "head_wobble_acha",
+    "nod": "nod_yes", "yes": "nod_yes", "no": "shake_no", "shake": "shake_no", "whispering_secret": "whisper_secret", "whisper": "whisper_secret",
+    "shh": "shushing", "please": "pleading", "comfort": "comforting", "blessing": "elder_blessing", "bless": "elder_blessing", "shanti": "teacher_stern",
+    "stern": "teacher_stern", "namaste": "grateful", "sneaky_tiptoe_face": "mischievous_grin", "shout": "furious", "wink": "sly_smirk",
+}
 BASIC = ["neutral", "happy", "sad", "angry", "surprised", "scared", "disgusted", "sleepy"]
-INDIAN = ["head_wobble", "shy_smile", "mischievous_grin", "proud_chest_out", "sulking_pout", "crying_wail", "giggle_hand_on_mouth", "scared_bhoot",
-          "thinking_finger_on_chin", "sleepy_yawn", "surprised_gasp", "angry_huff", "disgusted_karela", "dreamy_hungry", "embarrassed_blush", "sneaky_side_eye",
-          "determined_plan", "laughing_rolling", "kissing_cheeks_aunty", "confused_head_tilt"]
-SLY = ["sly_smirk", "scheming_eyebrow", "evil_plan_finger_steeple", "side_glance_suspicious", "villain_chuckle", "fake_innocent", "sneaky_tiptoe_face",
-       "smug_proud", "whispering_secret"]
-SHEET = BASIC + INDIAN + SLY
+INDIAN = ["head_wobble_acha", "grateful", "elder_blessing", "teacher_stern", "hungry", "terrified", "determined"]
+SLY = ["sly_smirk", "scheming", "fake_innocent", "mischievous_grin", "suspicious", "whisper_secret"]
+HEAD_ANIMS = {"laugh", "wail", "tremble", "wobble", "nod", "shake", "dizzy", "giggle"}
+EYE_ANIMS = {"fidget", "dizzy", "dart", "roll"}
+ANIMATED = {k for k, v in EXPR.items() if v["anim"] in ("wobble", "nod", "shake", "bounce", "dizzy", "fidget", "wail", "laugh", "roll", "tremble", "sob")}
+
+
+def resolve(name):
+    n = name.strip().lower().replace(" ", "_").replace("-", "_")
+    if n in EXPR: return n
+    if n in ALIASES: return ALIASES[n]
+    if "/" in n:
+        for p in n.split("/"):
+            try: return resolve(p)
+            except KeyError: pass
+    raise KeyError(f"unknown emotion {name!r}; known: {', '.join(SHEET)}")
+
 
 _RIGS = {}
 
@@ -126,15 +316,52 @@ def rig_of(rig):
     """lib_anim.Rig wrapper (cached; mesh list refreshed so new hair / marks / proxies with face keys are driven too)"""
     r = _RIGS.get(rig.name)
     if r is None or r.arm != rig:
-        r = A.Rig(rig); _RIGS[rig.name] = r
+        r = A.Rig(rig); _RIGS[rig.name] = r; _MARKS.pop(rig.name, None)
     r.meshes = r._find_meshes()
     return r
 
 
+# ----------------------------------------------------------------------------------------------- age gain (small MPFB kid faces need bigger values)
+def age_of(rig):
+    if rig.get("age") is not None: return float(rig["age"])
+    bid = rig.get("body_id")
+    if bid:
+        try:
+            import villager as VL
+            return float(VL.bodies()[bid]["age"])
+        except Exception: pass
+    try: return 9.0 if rig_of(rig).head_top * rig.matrix_world.to_scale().z < 1.45 else 30.0
+    except Exception: return 30.0
+
+
+def gain_for(rig):
+    if rig.get("expr_gain") is not None: return float(rig["expr_gain"])
+    a = age_of(rig)
+    return 1.65 if a <= 12 else 1.35 if a <= 17 else 1.2 if a >= 60 else 1.0
+
+
+CAPS = {"eyeBlinkLeft": 1.0, "eyeBlinkRight": 1.0, "jawOpen": 0.95, "tongueOut": 1.0, "mouthFunnel": 1.2, "mouthPucker": 1.3, "cheekPuff": 1.3, "mouthClose": 0.6,
+        "jawForward": 0.5, "eyeWideLeft": 1.6, "eyeWideRight": 1.6}
+FULL_GAIN = ("mouthSmile", "mouthFrown", "brow", "cheekSquint", "eyeSquint", "eyeWide", "noseSneer", "mouthDimple", "mouthStretch")
+
+
+def final_face(rig, face, strength=1.0):
+    """emotion face weights -> the values actually written (age gain, per-key caps; eyeLook* go to the eye bones instead)"""
+    g = gain_for(rig); out = {}
+    for k, v in face.items():
+        if k.startswith("eyeLook") or k not in ARKIT: continue
+        if k.startswith(FULL_GAIN): gk = g
+        elif k.startswith("eyeBlink"): gk = 1 + (g - 1) * 0.35
+        elif k == "jawOpen": gk = 1 + (g - 1) * 0.3
+        else: gk = 1 + (g - 1) * 0.7
+        out[k] = max(0.0, min(CAPS.get(k, 1.8), v * strength * gk))
+    return out
+
+
 # ----------------------------------------------------------------------------------------------- setup
 def ensure_face(h, rig, mouth=True, teeth=True):
-    """brows / lashes follow the face units; teeth + tongue + a dark mouth interior; blush overlay; sliders to 2.
-    Safe to call more than once."""
+    """brows / lashes follow the face units; rigid toon teeth (lower ones follow the jaw) + tongue + a dark mouth interior;
+    blush overlay; sliders to 2. Safe to call more than once."""
     import lib_hair as LH
     if h.get("face_ready"): return
     pp = rig.data.pose_position; rig.data.pose_position = "REST"; bpy.context.view_layer.update()
@@ -152,6 +379,8 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         LH.sync_proxies(h, rig)
         F = LH.Fit(h, rig)
         if mouth: _mouth_bag(F)
+        try: _fix_teeth(rig)
+        except Exception as ex: print("FACE teeth fix fail", repr(ex)[:200])
         _blush_setup(F)
         for o in [h] + list(rig.children_recursive):
             sk = o.data.shape_keys if o.type == "MESH" else None
@@ -164,16 +393,46 @@ def ensure_face(h, rig, mouth=True, teeth=True):
     rig_of(rig)
 
 
+JAW_KEYS = {"jawOpen", "jawLeft", "jawRight", "jawForward", "mouthClose"}
+
+
+def _fix_teeth(rig):
+    """MPFB teeth bound to every face unit get dragged by the lips (fangs / braces). Upper teeth: rigid with the head.
+    Lower teeth: jaw keys only. Tongue: jaw + tongueOut. Flat toon materials."""
+    import lib_hair as LH
+    for o in rig.children_recursive:
+        if o.type != "MESH": continue
+        nm = o.name.lower()
+        kind = "teeth" if "teeth" in nm else "tongue" if "tongue" in nm else None
+        if not kind: continue
+        mat = LH.solid("teeth_toon", (0.97, 0.96, 0.92), 0.35) if kind == "teeth" else LH.solid("tongue_toon", (0.86, 0.36, 0.40), 0.45)
+        o.data.materials.clear(); o.data.materials.append(mat)
+        sk = o.data.shape_keys
+        if not sk: continue
+        basis = sk.key_blocks[0]; bco = [Vector(d.co) for d in basis.data]
+        zs = sorted(c.z for c in bco); zmid = zs[len(zs) // 2] if zs else 0.0
+        keep = JAW_KEYS | ({"tongueOut"} if kind == "tongue" else set())
+        nz = 0
+        for kb in sk.key_blocks[1:]:
+            if kb.name not in keep:
+                for i, d in enumerate(kb.data): d.co = bco[i]
+                nz += 1
+            elif kind == "teeth":
+                for i, d in enumerate(kb.data):
+                    if bco[i].z > zmid: d.co = bco[i]          # upper teeth never move
+        print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}))
+
+
 def _mouth_bag(F):
     import lib_hair as LH, bmesh
     fc = F.face(); s = F.s
-    c = Vector((0, fc["lip_y"] + 0.026 * s, fc["mouth_z"] - 0.003 * s))
+    c = Vector((0, fc["lip_y"] + 0.034 * s, fc["mouth_z"] - 0.002 * s))
     bm = bmesh.new()
-    LH._ell(bm, c, Vector((0.6 * fc["mouth_w"] + 0.006 * s, 0, 0)) * 1.0, Vector((0, 0.02 * s, 0)), Vector((0, 0, 0.017 * s)), sub=3)
-    for _ in range(3):   # keep it inside the head
+    LH._ell(bm, c, Vector((0.55 * fc["mouth_w"] + 0.004 * s, 0, 0)), Vector((0, 0.017 * s, 0)), Vector((0, 0, 0.012 * s)), sub=3)
+    for _ in range(3):   # keep it well inside the head
         for v in bm.verts:
             loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
-            if loc is not None and (v.co - loc).dot(nrm) > -0.0025 * s: v.co = loc - nrm * 0.0025 * s
+            if loc is not None and (v.co - loc).dot(nrm) > -0.006 * s: v.co = loc - nrm * 0.006 * s
     mat = LH.solid("mouth_inside", (0.22, 0.03, 0.04), 0.7)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
@@ -191,10 +450,23 @@ def _blush_setup(F):
     rr = 0.6 * ex
     def w(p):
         return max([math.exp(-((p - c).length / rr) ** 2) for c in cs] or [0.0]) if p.y < F.cy else 0.0
-    LH.skin_overlay(F.h, "blush", w, rgb=(0.98, 0.35, 0.38), amount=0.0)
+    LH.skin_overlay(F.h, "blush", w, rgb=(0.98, 0.33, 0.36), amount=0.0)
 
 
-# ----------------------------------------------------------------------------------------------- core
+def set_blush(basemesh, amount, frame=None, blend=4):
+    """cheek tint 0..1 (animatable: keyed at frame, blending from the value at frame-blend)"""
+    if "blush" not in basemesh.keys(): return
+    if frame is not None:
+        ad = basemesh.animation_data; cur = basemesh["blush"]
+        if ad and ad.action:
+            for fc in A.fcurves(basemesh):
+                if fc.data_path == '["blush"]': cur = fc.evaluate(frame - blend)
+        basemesh["blush"] = cur; basemesh.keyframe_insert('["blush"]', frame=frame - blend)
+    basemesh["blush"] = float(amount)
+    if frame is not None: basemesh.keyframe_insert('["blush"]', frame=frame)
+
+
+# ----------------------------------------------------------------------------------------------- face keys
 def _eval_value(kb, frame):
     ad = kb.id_data.animation_data
     if frame is not None and ad and ad.action:
@@ -203,34 +475,46 @@ def _eval_value(kb, frame):
     return kb.value
 
 
-def _set_face(rig, weights, frame=None, blend=4):
+def _set_face(rig, weights, frame=None, blend=4, only=None):
+    """write ARKit weights (missing ones -> 0) on every mesh with face units; only = restrict to these key names"""
     R_ = rig_of(rig); ks = R_.face_keys()
-    names = {A._norm(n): n for n in ARKIT}
     target = {A._norm(k): v for k, v in weights.items()}
+    names = {A._norm(n): n for n in ARKIT if (only is None or n in only)}
+    hit = 0
     for nm, lst in ks.items():
         if nm not in names: continue
         v = target.get(nm, 0.0)
         for kb in lst:
-            if frame is not None:
+            if frame is not None and blend:
                 kb.value = _eval_value(kb, frame - blend); kb.keyframe_insert("value", frame=frame - blend)
             kb.value = max(kb.slider_min, min(kb.slider_max, v))
             if frame is not None: kb.keyframe_insert("value", frame=frame)
-    return sum(len(ks.get(A._norm(k), [])) for k in weights)
+            if nm in target: hit += 1
+    return hit
 
 
+def _keys_face(rig, weights, frame):
+    R_ = rig_of(rig); ks = R_.face_keys()
+    for k, v in weights.items():
+        for kb in ks.get(A._norm(k), []):
+            kb.value = max(kb.slider_min, min(kb.slider_max, v)); kb.keyframe_insert("value", frame=frame)
+
+
+# ----------------------------------------------------------------------------------------------- eyes
 def _eye_bones(rig):
     pb = rig.pose.bones
     return [b for b in (pb.get("eye.L"), pb.get("eye.R")) if b is not None]
 
 
-def set_eyes(rig, yaw=0.0, pitch=0.0, frame=None, blend=3):
-    """rotate the eye bones: yaw + = toward the character's left, pitch + = up (degrees, head space)"""
+def set_eyes(rig, yaw=0.0, pitch=0.0, frame=None, blend=3, side=None):
+    """rotate the eye bones: yaw + = toward the character's left, pitch + = up (degrees, head space); side='L'/'R' = one eye"""
     yaw = max(-38, min(38, yaw)); pitch = max(-28, min(28, pitch))
     q = Quaternion((0, 0, 1), R(yaw)) @ Quaternion((1, 0, 0), R(pitch))
     for pb in _eye_bones(rig):
+        if side and not pb.name.endswith("." + side): continue
         rq = pb.bone.matrix_local.to_quaternion()
         pb.rotation_mode = "QUATERNION"
-        if frame is not None: pb.keyframe_insert("rotation_quaternion", frame=frame - blend)
+        if frame is not None and blend: pb.keyframe_insert("rotation_quaternion", frame=frame - blend)
         pb.rotation_quaternion = rq.inverted() @ q @ rq
         if frame is not None: pb.keyframe_insert("rotation_quaternion", frame=frame)
 
@@ -242,80 +526,14 @@ def _eyes_from_face(face):
     return yaw, pitch
 
 
-def _pose(rig, pose, frame=None, blend=4):
-    R_ = rig_of(rig)
-    prev = list(rig.get("expr_segs", []))
-    p = {k: dict(v) for k, v in pose.items()}
-    for sgm in prev:
-        if sgm not in p: p[sgm] = (A.idle_arms().get(sgm, {}) if sgm.startswith(("arm", "forearm")) else {})
-    if frame is not None:
-        bones = [b for sgm in p for b in R_.map.get(sgm, [])]
-        sc = bpy.context.scene; cur = sc.frame_current; sc.frame_set(frame - blend)
-        for bn in bones:
-            pb = rig.pose.bones[bn]; pb.rotation_mode = "QUATERNION"; pb.keyframe_insert("rotation_quaternion", frame=frame - blend)
-        sc.frame_set(cur)
-    R_.apply(p, frame, layer=True)
-    rig["expr_segs"] = [k for k in pose.keys()]
-
-
-def _merge(name, strength):
-    e = EXPR[name]; face = {k: v * strength for k, v in e.get("face", {}).items()}
-    pose = {k: dict(v) for k, v in e.get("pose", {}).items()}
-    if e.get("arms"): pose.update({k: dict(v) for k, v in A.GESTURES[e["arms"]].items() if k != "head"})
-    for sgm, spec in pose.items():
-        for kk in ("fwd", "out", "turn", "lift", "twist"):
-            if kk in spec and sgm in ("head", "neck", "spine"): spec[kk] = spec[kk] * min(1.0, strength)
-    return face, pose
-
-
-def apply_expression(basemesh, rig, name, strength=1.0, frame=None, hold=None, blend=4, pose=True, eyes=True):
-    """set expression `name` (EXPR) at `strength`; frame=None: static, else keyed (blend from the current state),
-    held for `hold` frames (animated entries animate across the hold). Returns the number of shape keys driven."""
-    if name not in EXPR: raise KeyError(f"unknown expression {name}; known {sorted(EXPR)}")
-    if not basemesh.get("face_ready"): ensure_face(basemesh, rig)
-    e = EXPR[name]; face, ps = _merge(name, strength)
-    n = _set_face(rig, face, frame, blend)
-    if pose: _pose(rig, ps, frame, blend)
-    if eyes:
-        y, p = e.get("eyes") or _eyes_from_face(face)
-        set_eyes(rig, y, p, frame, blend)
-    b = e.get("blush", 0.0) * min(1.0, strength)
-    if "blush" in basemesh.keys():
-        if frame is not None: basemesh.keyframe_insert('["blush"]', frame=frame - blend)
-        basemesh["blush"] = b
-        if frame is not None: basemesh.keyframe_insert('["blush"]', frame=frame)
-    if frame is not None and hold:
-        for kb_list in rig_of(rig).face_keys().values():
-            for kb in kb_list:
-                if kb.name in ARKIT: kb.keyframe_insert("value", frame=frame + hold)
-        if e.get("anim"): ANIMATORS[e["anim"]](basemesh, rig, frame, frame + hold, face, ps)
-    if n == 0: print("FACE WARN no face keys hit for", name)
-    return n
-
-
-def blend(basemesh, rig, weights, frame=None, blend=4):
-    """mix several expressions: {'happy': 0.6, 'surprised': 0.5} (face keys add, clamped; poses of the strongest)"""
-    tot = {}; best = max(weights, key=weights.get)
-    for nm, w in weights.items():
-        for k, v in EXPR[nm].get("face", {}).items(): tot[k] = min(2.0, tot.get(k, 0.0) + v * w)
-    _set_face(rig, tot, frame, blend)
-    _, ps = _merge(best, weights[best]); _pose(rig, ps, frame, blend)
-    y, p = EXPR[best].get("eyes") or _eyes_from_face(tot); set_eyes(rig, y * weights[best], p * weights[best], frame, blend)
-
-
-def transition(basemesh, rig, a, b, f0, f1, hold_b=None):
-    apply_expression(basemesh, rig, a, frame=f0, blend=1)
-    apply_expression(basemesh, rig, b, frame=f1, blend=f1 - f0, hold=hold_b)
-
-
 def look_at(basemesh, rig, target, frame=None, blend=3):
     """turn the eyes (bones) toward a world point / object, measured in the head's current posed frame"""
     T = target.matrix_world.translation if hasattr(target, "matrix_world") else Vector(target)
     bpy.context.view_layer.update()
     eb = _eye_bones(rig)
     if not eb: return None
-    E = sum(((rig.matrix_world @ b.head) for b in eb), Vector()) / len(eb)
-    d = rig.matrix_world.to_3x3().inverted() @ (T - E)
+    Ew = sum(((rig.matrix_world @ b.head) for b in eb), Vector()) / len(eb)
+    d = rig.matrix_world.to_3x3().inverted() @ (T - Ew)
     hb = rig.pose.bones.get("head")
     if hb is not None:
         Hq = hb.matrix.to_quaternion() @ hb.bone.matrix_local.to_quaternion().inverted(); d = Hq.inverted() @ d
@@ -324,79 +542,578 @@ def look_at(basemesh, rig, target, frame=None, blend=3):
     return yaw, pitch
 
 
-# ----------------------------------------------------------------------------------------------- animators (frame ranges)
-def _keys_face(rig, weights, frame):
-    R_ = rig_of(rig); ks = R_.face_keys()
-    for k, v in weights.items():
-        for kb in ks.get(A._norm(k), []):
-            kb.value = max(kb.slider_min, min(kb.slider_max, v)); kb.keyframe_insert("value", frame=frame)
+DIRS = {"left": (28, 0), "right": (-28, 0), "up": (0, 22), "down": (0, -20), "up_left": (22, 18), "up_right": (-22, 18),
+        "down_left": (22, -16), "down_right": (-22, -16), "centre": (0, 0), "center": (0, 0), "front": (0, 0)}
 
 
-def _anim_wobble(h, rig, f0, f1, face, pose, period=10, amount=13):
-    """Indian 'acha' head wobble: side-to-side tilt (roll) with a little counter-turn"""
-    R_ = rig_of(rig); f = f0; i = 0
+def eye_look(basemesh, rig, target=None, direction=None, frame=None, blend=3):
+    """eyes toward a world point / object (target=), the scene camera (direction='camera'), or a named direction
+    ('left' = the character's left, 'right', 'up', 'down', 'up_left' ...) or a (yaw, pitch) tuple in degrees"""
+    if target is None and direction == "camera" and bpy.context.scene.camera: target = bpy.context.scene.camera
+    if target is not None: return look_at(basemesh, rig, target, frame, blend)
+    y, p = DIRS[direction] if isinstance(direction, str) else (direction or (0, 0))
+    set_eyes(rig, y, p, frame, blend); return y, p
+
+
+# ----------------------------------------------------------------------------------------------- landmarks + arm IK
+_MARKS = {}
+
+
+def _marks(h, rig):
+    """rest-pose landmarks in ARMATURE space: name -> (owner bone, point, normal); plus head unit 'HU' (chin to crown) and arm lengths"""
+    m = _MARKS.get(rig.name)
+    if m: return m
+    import lib_hair as LH
+    pp = rig.data.pose_position; rig.data.pose_position = "REST"; bpy.context.view_layer.update()
+    try:
+        F = LH.Fit(h, rig); fc = F.face(); B = F.B; R_ = rig_of(rig)
+        Mh = rig.matrix_world.inverted() @ h.matrix_world; M3 = Mh.to_3x3()
+        HU = (F.zt - fc["chin_z"]); ze, zt = F.ze, F.zt
+        pts = {}
+        def put(name, bone, p, n):
+            pts[name] = (bone, Mh @ Vector(p), (M3 @ Vector(n)).normalized())
+        def front(x, z, bvh):
+            loc, nrm = F.surf_from(Vector((x, -3, z)), Vector((0, 1, 0)), bvh)
+            return loc
+        def back(x, z, bvh):
+            loc, nrm = F.surf_from(Vector((x, 3, z)), Vector((0, -1, 0)), bvh)
+            return loc
+        put("mouth", "head", (0, fc["lip_y"], fc["mouth_z"]), (0, -1, 0))
+        ch = front(0, fc["chin_z"] + 0.06 * HU, F.hbvh) or Vector((0, fc["lip_y"] + 0.08 * HU, fc["chin_z"]))
+        put("chin", "head", (0, ch.y, fc["chin_z"] + 0.02 * HU), (0, -0.6, -0.8))
+        put("nose", "head", (0, fc["nose_y"], fc["nose_z"]), (0, -1, 0))
+        fh = front(0, ze + 0.32 * F.HH, F.hbvh) or Vector((0, F.cy - F.ry, ze + 0.32 * F.HH))
+        put("forehead", "head", fh, (0, -1, 0.2))
+        put("top", "head", (0, F.cy, zt), (0, 0, 1))
+        put("head_back", "head", (0, F.cy + F.ry, ze + 0.1 * F.HH), (0, 1, 0))
+        for sd, sx in (("L", 1), ("R", -1)):
+            e = front(sx * F.eye_x, ze, F.hbvh) or Vector((sx * F.eye_x, F.eye_y, ze))
+            put("eye_" + sd, "head", e, (0, -1, 0))
+            c = front(sx * 1.15 * F.eye_x, fc["nose_z"], F.hbvh) or Vector((sx * 1.15 * F.eye_x, fc["lip_y"] + 0.05 * HU, fc["nose_z"]))
+            put("cheek_" + sd, "head", c, (sx * 0.5, -0.85, 0))
+            put("head_side_" + sd, "head", (sx * F.rx * 0.95, F.cy + 0.25 * F.ry, ze + 0.35 * F.HH), (sx, 0.3, 0.3))
+        bb = B.bvh() if callable(getattr(B, "bvh", None)) else None
+        sp = R_.map.get("spine", [])
+        z_chest = B.zn - 0.32 * (B.zn - B.zw)
+        z_belly = B.zw + 0.12 * (B.zn - B.zw)
+        z_back = B.zw + 0.05 * (B.zn - B.zw)
+        def fb(x, z, f=True):
+            p = (front if f else back)(x, z, bb) if bb else None
+            return p if p is not None else Vector((x, F.cy + (-1 if f else 1) * 0.6 * HU, z))
+        top_sp = sp[-1] if sp else "head"; mid_sp = sp[len(sp) // 2] if sp else "head"; low_sp = sp[0] if sp else "head"
+        put("chest", top_sp, fb(0, z_chest), (0, -1, 0))
+        put("heart", top_sp, fb(0.22 * HU, z_chest), (0, -1, 0))
+        put("belly", mid_sp, fb(0, z_belly), (0, -1, 0))
+        for sd, sx in (("L", 1), ("R", -1)):
+            put("back_low_" + sd, low_sp, fb(sx * 0.18 * HU, z_back, False), (sx * 0.3, 1, 0))
+            th = R_.map.get("thigh_" + sd, [None])[0]
+            zt_ = B.zw - 0.55 * (B.zn - B.zw)
+            put("thigh_" + sd, th or low_sp, fb(sx * 0.3 * HU, zt_), (0, -1, 0))
+        b = rig.data.bones
+        def chain_len(seg):
+            ch_ = R_.map.get(seg)
+            return (b[ch_[-1]].tail_local - b[ch_[0]].head_local).length if ch_ else 0.25 * HU * 4
+        a_len = chain_len("arm_L"); f_len = chain_len("forearm_L")
+        fing = [x for x in b if re.match(r"^finger3-\d\.L$", x.name)]
+        hand_len = max(((x.tail_local - b[R_.map["forearm_L"][-1]].tail_local).length for x in fing), default=0.35 * f_len) if "forearm_L" in R_.map else 0.35 * f_len
+        m = dict(pts=pts, HU=(M3 @ Vector((0, 0, HU))).length, a=a_len, b=f_len, hand=hand_len)
+        print("FACE marks", rig.name, "HU", round(m["HU"], 3), "arm", round(a_len, 3), round(f_len, 3), "hand", round(hand_len, 3), sorted(pts))
+    finally:
+        rig.data.pose_position = pp; bpy.context.view_layer.update()
+    _MARKS[rig.name] = m
+    return m
+
+
+def _ik(S, T, a, b, pole):
+    d = T - S; dist = d.length
+    if dist < 1e-6: d = Vector((0, 0, -1)); dist = 1e-3
+    u = d.normalized()
+    dist = min(max(dist, abs(a - b) + 1e-4), (a + b) * 0.995)
+    ca = max(-1.0, min(1.0, (a * a + dist * dist - b * b) / (2 * a * dist))); sa = math.sqrt(max(0.0, 1 - ca * ca))
+    v = pole - u * pole.dot(u)
+    if v.length < 1e-6: v = u.orthogonal()
+    v.normalize()
+    E_ = S + a * (u * ca + v * sa)
+    return E_, S + u * dist
+
+
+def _cs_inv(R_, d, side):
+    Sv = R_.Lv if side != "R" else -R_.Lv
+    return (d.dot(R_.F), d.dot(Sv), d.dot(R_.U))
+
+
+def _hand_point(h, rig, R_, M, side, spec, target=None):
+    Sv = R_.Lv if side != "R" else -R_.Lv
+    at = spec["at"]; HU = M["HU"]
+    off = Vector(spec.get("off", (0, 0, 0)))
+    if at == "world":
+        if target is None:   # default partner: in front, a bit to that side, at about own shoulder height
+            sh = rig.pose.bones[R_.map[f"arm_{side}"][0]].head
+            p = sh + R_.F * 0.8 * (M["a"] + M["b"]) + Sv * 0.25 * HU - R_.U * 0.15 * HU
+        else:
+            T = target.matrix_world.translation if hasattr(target, "matrix_world") else Vector(target)
+            p = rig.matrix_world.inverted() @ T + R_.U * 0.04 * HU
+        n = R_.U
+    elif at == "shoulder":
+        p = rig.pose.bones[R_.map[f"arm_{side}"][0]].head.copy(); n = R_.F
+    else:
+        key = at + "_" + side if (at + "_" + side) in M["pts"] else at
+        bone, p0, n0 = M["pts"][key]
+        pb = rig.pose.bones[bone]; X = pb.matrix @ pb.bone.matrix_local.inverted()
+        p = X @ p0; n = (X.to_3x3() @ n0).normalized()
+    p = p + (R_.F * off.x + Sv * off.y + R_.U * off.z) * HU + n * spec.get("clear", 0.06) * HU
+    return p
+
+
+def _arm_ik(h, rig, R_, M, side, spec, target=None):
+    """-> {'arm_S': {'aim'}, 'forearm_S': {'aim', 'twist'}, 'hand_S': {...}} so the hand point `tip` lands on the landmark"""
+    Sv = R_.Lv if side != "R" else -R_.Lv
+    S = rig.pose.bones[R_.map[f"arm_{side}"][0]].head.copy()
+    P = _hand_point(h, rig, R_, M, side, spec, target)
+    po = spec.get("pole", (0.1, 0.8, -0.6)); pole = R_.F * po[0] + Sv * po[1] + R_.U * po[2]
+    a, b, hl = M["a"], M["b"], M["hand"]; tip = spec.get("tip", 0.45)
+    W = P - (P - S).normalized() * tip * hl
+    for _ in range(3):
+        E_, Wc = _ik(S, W, a, b, pole)
+        hd = (P - E_).normalized()
+        W = P - hd * tip * hl
+    E_, Wc = _ik(S, W, a, b, pole)
+    out = {f"arm_{side}": {"aim": _cs_inv(R_, E_ - S, side)}, f"forearm_{side}": {"aim": _cs_inv(R_, Wc - E_, side)}, f"hand_{side}": dict(spec.get("wrist") or {})}
+    if spec.get("twist"): out[f"forearm_{side}"]["twist"] = spec["twist"]
+    return out
+
+
+# ----------------------------------------------------------------------------------------------- fingers
+CURLS = {"relaxed": (12, 8), "open": (2, 0), "flat": (0, 0), "spread": (0, 0), "fist": (85, 45), "point": (85, 45), "steeple": (8, 4)}
+FINGER_SIGN = 1.0          # +1: positive local-X rotation curls toward the palm (MPFB default rig); verified on the probe render
+FINGER_AXIS = (1, 0, 0)
+_FRE = re.compile(r"^finger(\d)-(\d)\.(L|R)$")
+
+
+def set_fingers(rig, side, curl="relaxed", frame=None):
+    """finger shapes: relaxed open flat spread fist point steeple (MPFB default rig finger<d>-<j>.L/R bones)"""
+    deg, thumb = CURLS.get(curl, CURLS["relaxed"])
+    for pb in rig.pose.bones:
+        m = _FRE.match(pb.name)
+        if not m or m.group(3) != side: continue
+        d, j = int(m.group(1)), int(m.group(2))
+        a = thumb * (0.6 if j == 1 else 1.0) if d == 1 else deg * (0.8 if j == 1 else 1.0)
+        if curl == "point" and d == 2: a = 0
+        if curl == "spread" and d != 1 and j == 1:
+            q = Quaternion((0, 0, 1), R((d - 3) * 6))
+        else: q = Quaternion()
+        pb.rotation_mode = "QUATERNION"
+        pb.rotation_quaternion = Quaternion(FINGER_AXIS, R(a * FINGER_SIGN)) @ q
+        if frame is not None: pb.keyframe_insert("rotation_quaternion", frame=frame, group=pb.name)
+
+
+# ----------------------------------------------------------------------------------------------- whole-body pose
+UPPER = ["spine", "neck", "head", "clav_L", "clav_R", "arm_L", "arm_R", "forearm_L", "forearm_R", "hand_L", "hand_R"]
+
+
+def _side_preset(name_or_dict, side):
+    p = PRESET[name_or_dict] if isinstance(name_or_dict, str) else name_or_dict
+    return {f"{k}_{side}": dict(v) for k, v in p.items()}
+
+
+def build_pose(h, rig, e, strength=1.0, body_delta=None, hand_off=None, target=None):
+    """full upper-body pose dict for entry e (IK solved against the emotion's own spine / head pose).
+    body_delta = {seg: {fwd: +x ...}} (animation offsets); hand_off = {side: (f, o, u) HU} offsets of the IK hand targets."""
+    R_ = rig_of(rig); s = min(1.0, strength)
+    body = {sg: {} for sg in ("spine", "neck", "head", "clav_L", "clav_R")}
+    for sg, spec in e["body"].items():
+        body[sg] = {k: (v * s if k in ("fwd", "out", "turn", "lift", "twist") else v) for k, v in spec.items()}
+    for sg, dd in (body_delta or {}).items():
+        sp = dict(body.get(sg, {}))
+        for k, v in dd.items():
+            if k == "loc": sp["loc"] = tuple(a + b for a, b in zip(sp.get("loc", (0, 0, 0)), v))
+            else: sp[k] = sp.get(k, 0.0) + v
+        body[sg] = sp
+    body = {k: v for k, v in body.items() if R_.has(k)}
+    R_.apply(body, None, layer=True); bpy.context.view_layer.update()
+    pose = dict(body)
+    if e.get("cross"):
+        pose.update({k: dict(v) for k, v in CROSS.items() if k.startswith(("arm", "forearm", "hand"))})
+    else:
+        M = None
+        for side in ("L", "R"):
+            spec = e[side] if e[side] is not None else "idle"
+            if isinstance(spec, dict) and "at" in spec:
+                M = M or _marks(h, rig)
+                sp = dict(spec)
+                if hand_off and side in hand_off:
+                    o = hand_off[side]; sp["off"] = tuple(a + b for a, b in zip(sp.get("off", (0, 0, 0)), o))
+                pose.update(_arm_ik(h, rig, R_, M, side, sp, target))
+            else:
+                pose.update(_side_preset(spec, side))
+    return {k: v for k, v in pose.items() if R_.has(k)}
+
+
+def _curl_of(e, side):
+    spec = e[side]
+    if isinstance(spec, dict) and "curl" in spec: return spec["curl"]
+    return e.get("curl") or "relaxed"
+
+
+def _apply_pose(h, rig, pose, frame=None, blend=6):
+    R_ = rig_of(rig)
+    if frame is not None and blend:
+        bones = [b for sgm in pose for b in R_.map.get(sgm, [])] + [b.name for b in rig.pose.bones if _FRE.match(b.name)]
+        sc = bpy.context.scene; cur = sc.frame_current
+        snap = {bn: rig.pose.bones[bn].rotation_quaternion.copy() for bn in bones}
+        sc.frame_set(frame - blend)
+        for bn in bones:
+            pb = rig.pose.bones[bn]; pb.rotation_mode = "QUATERNION"; pb.keyframe_insert("rotation_quaternion", frame=frame - blend, group=bn)
+        sc.frame_set(cur)
+        for bn, q in snap.items(): rig.pose.bones[bn].rotation_quaternion = q
+    R_.apply(pose, frame, layer=True)
+
+
+# ----------------------------------------------------------------------------------------------- the main calls
+def apply_expression(basemesh, rig, name, strength=1.0, frame=None, blend_frames=6, hold=None, blend=None, pose=True, eyes=True, target=None, talking=False):
+    """set emotion `name` (face + head / neck / spine / shoulders / arms / fingers + eyes + blush) at `strength`.
+    frame=None: static (no keys). Else keyed at `frame`, blending from the state at frame-blend_frames.
+    target: world point / object for comforting / elder_blessing (the partner's shoulder / head).
+    talking=True: mouth-shape keys damped (visemes go on top; smile / frown bias kept). Returns the number of face keys hit."""
+    if blend is not None: blend_frames = blend
+    name = resolve(name); e = EXPR[name]
+    if not basemesh.get("face_ready"): ensure_face(basemesh, rig)
+    face = final_face(rig, e["face"], strength)
+    if talking: face = _talk_damp(face)
+    n = _set_face(rig, face, frame, blend_frames)
+    if pose:
+        p = build_pose(basemesh, rig, e, strength, target=target)
+        if frame is not None and blend_frames: _apply_pose(basemesh, rig, p, frame, blend_frames)
+        else: rig_of(rig).apply(p, frame, layer=True)
+        for side in ("L", "R"): set_fingers(rig, side, _curl_of(e, side), frame)
+        rig["expr_segs"] = list(p.keys())
+    if eyes:
+        y, pch = e.get("eyes") or _eyes_from_face(e["face"])
+        set_eyes(rig, y * min(1.0, strength), pch * min(1.0, strength), frame, blend_frames if frame is not None else 0)
+    set_blush(basemesh, e.get("blush", 0.0) * min(1.0, strength), frame, blend_frames if frame is not None else 0)
+    rig["expr_name"] = name; rig["expr_strength"] = float(strength)
+    if n == 0 and e["face"]: print("FACE WARN no face keys hit for", name)
+    if frame is not None and hold:    # old API: hold + animate
+        animate_expression(basemesh, rig, name, frame, frame + hold, strength=strength, onset=0, release=False, target=target)
+    return n
+
+
+class _Ctx:
+    def __init__(self, h, rig, name, strength, target, seed):
+        self.h, self.rig, self.name, self.e, self.s, self.target = h, rig, name, EXPR[name], strength, target
+        self.R = rig_of(rig); self.rnd = random.Random(seed); self.face = final_face(rig, self.e["face"], strength)
+        self.eyes = self.e.get("eyes") or _eyes_from_face(self.e["face"])
+
+    def pose(self, frame, body_delta=None, hand_off=None):
+        p = build_pose(self.h, self.rig, self.e, self.s, body_delta, hand_off, self.target)
+        self.R.apply(p, frame, layer=True)
+
+    def facek(self, frame, **over):
+        _keys_face(self.rig, {**self.face, **{k: v for k, v in over.items()}}, frame)
+
+    def scaled(self, k, f):
+        return self.face.get(k, 0.0) * f
+
+
+def animate_expression(basemesh, rig, name, f_start, f_end, strength=1.0, onset=6, settle=8, release=True, micro=True, seed=0,
+                       target=None, talking=False, overshoot=0.12):
+    """emotion over [f_start, f_end]: onset (anticipation + overshoot), hold with the emotion's own acting (laugh bounce,
+    sob, wobble, tremble ...) and micro-motion (blinks, small head drift, breathing, eye saccades) so it never freezes,
+    then settles back to neutral (release=True) by f_end. Returns {'blinks': [...], 'peak': frame, 'hold': (a, b)}."""
+    name = resolve(name); e = EXPR[name]
+    if not basemesh.get("face_ready"): ensure_face(basemesh, rig)
+    f_on = f_start + max(0, onset); f_off = f_end - (settle if release else 0)
+    if onset:
+        apply_expression(basemesh, rig, name, strength * (1 + overshoot), frame=f_on - 2, blend_frames=max(1, onset - 2), target=target, talking=talking)
+    apply_expression(basemesh, rig, name, strength, frame=f_on, blend_frames=(2 if onset else 0) if onset else 0, target=target, talking=talking)
+    ctx = _Ctx(basemesh, rig, name, strength, target, seed)
+    info = {"blinks": [], "peak": f_on + 2, "hold": (f_on, f_off)}
+    anim = e.get("anim")
+    if anim and f_off - f_on > 6:
+        r = ANIMATORS[anim](ctx, f_on, f_off)
+        if isinstance(r, int): info["peak"] = r
+    if micro and f_off - f_on > 10:
+        info["blinks"] = _micro(ctx, f_on, f_off, anim, seed)
+    if release:
+        apply_expression(basemesh, rig, name, strength, frame=f_off, blend_frames=0, target=target, talking=talking)
+        apply_expression(basemesh, rig, "neutral", 1.0, frame=f_end, blend_frames=0)
+    return info
+
+
+def _micro(ctx, f0, f1, anim, seed):
+    rnd = random.Random(seed * 7 + 3); rig = ctx.rig; blinks = []
+    base_b = ctx.face.get("eyeBlinkLeft", 0.0)
+    if anim not in ("yawn", "dizzy") and base_b < 0.75:   # blinks keep the emotion's own lid level
+        f = f0 + rnd.randint(8, 30)
+        while f < f1 - 6:
+            for k in ("eyeBlinkLeft", "eyeBlinkRight"):
+                b0 = ctx.face.get(k, 0.0)
+                for ff, v in ((f, b0), (f + 2, 1.0), (f + 4, b0)): _keys_face(rig, {k: v}, ff)
+            blinks.append(f)
+            f += rnd.randint(36, 90)
+    if anim not in HEAD_ANIMS:   # head drift + breathing (keyed on the whole pose so hands stay put)
+        f = f0 + rnd.randint(10, 18)
+        while f < f1 - 8:
+            d = {"head": {"fwd": rnd.uniform(-2.5, 2.5), "out": rnd.uniform(-2.5, 2.5), "turn": rnd.uniform(-3, 3)},
+                 "spine": {"fwd": rnd.uniform(-1.0, 1.0)}}
+            ctx.pose(f, body_delta=d); f += rnd.randint(16, 28)
+    if anim not in EYE_ANIMS:
+        y0, p0 = ctx.eyes
+        f = f0 + rnd.randint(14, 30)
+        while f < f1 - 6:
+            set_eyes(rig, y0 + rnd.uniform(-5, 5), p0 + rnd.uniform(-3, 3), f, blend=1)
+            set_eyes(rig, y0, p0, f + rnd.randint(8, 14), blend=0); f += rnd.randint(24, 50)
+    return blinks
+
+
+# ----------------------------------------------------------------------------------------------- animators (ctx, f0, f1) -> peak frame
+def _steps(f0, f1, step):
+    f = f0; i = 0
     while f <= f1:
+        yield i, f; f += step; i += 1
+
+
+def _an_laugh(c, f0, f1, period=6):
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2
+        c.pose(f, {"clav_L": {"lift": 8 * b}, "clav_R": {"lift": 8 * b}, "spine": {"fwd": -4 * b}, "head": {"fwd": -5 * b}})
+        c.facek(f, jawOpen=c.scaled("jawOpen", 1.0 if b else 0.7))
+    return f0 + period // 2
+
+
+def _an_giggle(c, f0, f1, period=6):
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2
+        c.pose(f, {"clav_L": {"lift": 7 * b}, "clav_R": {"lift": 7 * b}, "head": {"fwd": 3 * b, "out": 2 * b}})
+    return f0
+
+
+def _an_sob(c, f0, f1, period=8):
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2
+        c.pose(f, {"clav_L": {"lift": 8 * b}, "clav_R": {"lift": 8 * b}, "spine": {"fwd": 3 * b}},
+               hand_off={"L": (0, 0.03 * b, 0.04 * (1 - b)), "R": (0, 0.03 * (1 - b), 0.04 * b)})
+        c.facek(f, jawOpen=c.scaled("jawOpen", 1.0 if b else 0.5))
+    return f0
+
+
+def _an_wail(c, f0, f1, period=12):
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2
+        c.pose(f, {"head": {"fwd": 6 * b, "turn": 6 * (1 if i % 4 == 1 else -1) * b}, "clav_L": {"lift": 6 * b}, "clav_R": {"lift": 6 * b}})
+        c.facek(f, jawOpen=c.scaled("jawOpen", 0.75 if b else 1.0))
+    return f0
+
+
+def _an_tremble(c, f0, f1):
+    for i, f in _steps(f0, f1, 2):
+        r = c.rnd
+        c.pose(f, {"head": {"turn": r.uniform(-3, 3), "fwd": r.uniform(-1.5, 1.5)}, "clav_L": {"lift": r.uniform(-2, 2)}, "clav_R": {"lift": r.uniform(-2, 2)},
+                   "spine": {"out": r.uniform(-1, 1)}})
+    return f0
+
+
+def _an_fidget(c, f0, f1, period=6):
+    y0, p0 = c.eyes
+    for i, f in _steps(f0, f1, period):
+        b = 1 if i % 2 else -1
+        c.pose(f, {"spine": {"out": 1.5 * b}}, hand_off={"L": (0, 0.04 * b, 0.03 * b), "R": (0, -0.04 * b, -0.03 * b)})
+        if i % 2 == 0: set_eyes(c.rig, y0 + 14 * (1 if i % 4 == 0 else -1), p0, f, blend=1)
+    return f0
+
+
+def _an_wobble(c, f0, f1, period=10, amount=13):
+    for i, f in _steps(f0, f1, period // 2):
         sg = 1 if i % 2 == 0 else -1
-        R_.apply({"head": {"out": amount * sg, "turn": -3 * sg}, "neck": {"out": 3 * sg}}, f, layer=True); f += period // 2; i += 1
-    R_.apply({"head": {}, "neck": {}}, f1 + 4, layer=True)
+        c.pose(f, {"head": {"out": amount * sg - c.e["body"].get("head", {}).get("out", 0) * min(1.0, c.s), "turn": -3 * sg}, "neck": {"out": 3 * sg}})
+    return f0
 
 
-def _anim_sob(h, rig, f0, f1, face, pose, period=8):
-    for k, f in enumerate(range(f0, f1, period // 2)):
-        w = dict(face); j = 0.15 if k % 2 else 0.0; w["jawOpen"] = face.get("jawOpen", 0.8) - j; _keys_face(rig, w, f)
-        rig_of(rig).apply({"clav_L": {"lift": 6 * (k % 2)}, "clav_R": {"lift": 6 * (k % 2)}}, f, layer=True)
+def _an_nod(c, f0, f1, period=10):
+    for i, f in _steps(f0, f1, period // 2):
+        c.pose(f, {"head": {"fwd": 10 if i % 2 == 0 else -12}})
+    return f0
 
 
-def _anim_giggle(h, rig, f0, f1, face, pose, period=6):
-    for k, f in enumerate(range(f0, f1, period // 2)):
-        rig_of(rig).apply({"clav_L": {"lift": 8 * (k % 2)}, "clav_R": {"lift": 8 * (k % 2)}, "head": {"fwd": 9 + 3 * (k % 2), "out": 9}}, f, layer=True)
+def _an_shake(c, f0, f1, period=10):
+    for i, f in _steps(f0, f1, period // 2):
+        sg = 1 if i % 2 == 0 else -1
+        c.pose(f, {"head": {"turn": -18 + 36 * (i % 2) - 18}}, hand_off={"R": (0, 0.15 * sg, 0)})
+    return f0
 
 
-def _anim_tremble(h, rig, f0, f1, face, pose):
-    rnd = random.Random(f0)
-    for f in range(f0, f1, 2):
-        rig_of(rig).apply({"head": {"fwd": -10 + rnd.uniform(-1.5, 1.5), "turn": rnd.uniform(-3, 3)}}, f, layer=True)
+def _an_bounce(c, f0, f1, period=10):
+    leg = c.R.leg_len
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2
+        c.pose(f, {"hips": {"loc": (0, 0, 0.05 * leg * b)}, "clav_L": {"lift": 6 * b}, "clav_R": {"lift": 6 * b}},
+               hand_off={"L": (0, 0, 0.25 * b), "R": (0, 0, 0.25 * b)})
+    c.pose(f1, {"hips": {"loc": (0, 0, 0)}})
+    return f0 + period // 2
 
 
-def _anim_yawn(h, rig, f0, f1, face, pose):
+def _an_dizzy(c, f0, f1, period=16):
+    for i, f in _steps(f0, f1, 2):
+        t = 2 * math.pi * (f - f0) / period
+        set_eyes(c.rig, 20 * math.cos(t), 14 * math.sin(t), f, blend=0, side="L")
+        set_eyes(c.rig, 20 * math.cos(t + math.pi), 14 * math.sin(t + math.pi), f, blend=0, side="R")
+        if i % 2 == 0:
+            c.pose(f, {"head": {"out": 8 * math.cos(t / 2), "fwd": 5 * math.sin(t / 2)}, "spine": {"out": 4 * math.cos(t / 2 + 0.6)}})
+    return f0 + period // 4
+
+
+def _an_yawn(c, f0, f1):
     mid = (f0 + f1) // 2
-    _keys_face(rig, {**face, "jawOpen": 0.2}, f0); _keys_face(rig, face, mid); _keys_face(rig, {**face, "jawOpen": 0.1, "eyeBlinkLeft": 0.6, "eyeBlinkRight": 0.6}, f1)
+    c.facek(f0, jawOpen=c.scaled("jawOpen", 0.3)); c.facek(mid, jawOpen=c.scaled("jawOpen", 1.0))
+    c.facek(f1, jawOpen=c.scaled("jawOpen", 0.15), eyeBlinkLeft=0.6, eyeBlinkRight=0.6)
+    c.pose(f0, {"head": {"fwd": 8}}); c.pose(mid, {"head": {"fwd": -4}}); c.pose(f1, {"head": {"fwd": 10}})
+    return mid
 
 
-def _anim_laugh(h, rig, f0, f1, face, pose, period=6):
-    A.laugh(rig_of(rig), f0, f1, period=period, belly=True)
-    for k, f in enumerate(range(f0, f1, period // 2)):
-        _keys_face(rig, {**face, "jawOpen": face.get("jawOpen", 0.8) * (0.75 if k % 2 else 1.0)}, f)
+def _an_sigh(c, f0, f1):
+    mid = (f0 + f1) // 2
+    c.facek(f0); c.facek(mid - 4, cheekPuff=0.6); c.facek(mid + 6, cheekPuff=0.0)
+    c.pose(mid - 4, {"clav_L": {"lift": 6}, "clav_R": {"lift": 6}}); c.pose(mid + 6, {"clav_L": {"lift": -2}, "clav_R": {"lift": -2}})
+    return f0
 
 
-def _anim_chuckle(h, rig, f0, f1, face, pose, period=6):
-    for k, f in enumerate(range(f0, f1, period // 2)):
-        rig_of(rig).apply({"clav_L": {"lift": 9 * (k % 2)}, "clav_R": {"lift": 9 * (k % 2)}, "head": {"fwd": 8 + 2 * (k % 2)}}, f, layer=True)
-        _keys_face(rig, {**face, "jawOpen": 0.25 if k % 2 else 0.1}, f)
+def _an_exhale(c, f0, f1):
+    c.pose(f0, {"clav_L": {"lift": 8}, "clav_R": {"lift": 8}}); c.pose(min(f1, f0 + 14), {"clav_L": {"lift": -4}, "clav_R": {"lift": -4}})
+    c.facek(f0, cheekPuff=c.scaled("cheekPuff", 2.0)); c.facek(min(f1, f0 + 14), cheekPuff=0.0)
+    return f0
 
 
-def _anim_slow_grin(h, rig, f0, f1, face, pose):
-    _keys_face(rig, {**face, **_b("mouthSmile", 0.15)}, f0); _keys_face(rig, face, f1)
+def _an_hand(c, f0, f1, side, offs, step):
+    for i, f in _steps(f0, f1, step):
+        c.pose(f, hand_off={side: offs[i % len(offs)]})
+    return f0
 
 
-def _anim_dart(h, rig, f0, f1, face, pose, step=9):
-    y0, p0 = EXPR.get("sneaky_tiptoe_face", {}).get("eyes", (24, 0))
-    for k, f in enumerate(range(f0, f1, step)):
-        set_eyes(rig, (y0 if k % 2 == 0 else -y0), p0, f, blend=2)
+def _an_pat(c, f0, f1): return _an_hand(c, f0, f1, "R", [(0, 0, 0.0), (0.04, 0, 0.06)], 4)
+def _an_rub(c, f0, f1): return _an_hand(c, f0, f1, "R", [(0, 0.05, 0), (0, 0, 0.05), (0, -0.05, 0), (0, 0, -0.05)], 3)
+def _an_scratch(c, f0, f1): return _an_hand(c, f0, f1, "R", [(0, 0, 0), (0.05, 0, 0.03)], 3)
+def _an_tap(c, f0, f1): return _an_hand(c, f0, f1, "R", [(0, 0, 0), (0.0, 0, -0.04)], 8)
+def _an_wag(c, f0, f1): return _an_hand(c, f0, f1, "R", [(0, 0.08, 0), (0, -0.08, 0)], 4)
+def _an_bob(c, f0, f1):
+    for i, f in _steps(f0, f1, 5):
+        b = i % 2; c.pose(f, {"head": {"fwd": 3 * b}}, hand_off={"L": (0, 0, 0.05 * b), "R": (0, 0, 0.05 * b)})
+    return f0
+def _an_rubhands(c, f0, f1):
+    for i, f in _steps(f0, f1, 3):
+        b = 1 if i % 2 else -1; c.pose(f, hand_off={"L": (0, 0, 0.03 * b), "R": (0, 0, -0.03 * b)})
+    return f0
 
 
-ANIMATORS = {"wobble": _anim_wobble, "sob": _anim_sob, "giggle": _anim_giggle, "tremble": _anim_tremble, "yawn": _anim_yawn, "laugh": _anim_laugh,
-             "chuckle": _anim_chuckle, "slow_grin": _anim_slow_grin, "dart": _anim_dart}
+def _an_dart(c, f0, f1, step=10):
+    y0, p0 = c.eyes
+    for i, f in _steps(f0, f1, step):
+        set_eyes(c.rig, y0 if i % 2 == 0 else -y0 * 0.6, p0, f, blend=2)
+    return f0
+
+
+def _an_roll(c, f0, f1):
+    y0, p0 = c.eyes; n = min(f1, f0 + 12)
+    for k, (yy, pp) in enumerate(((-20, -8), (-14, 18), (0, 28), (y0, p0))):
+        set_eyes(c.rig, yy, pp, f0 + k * (n - f0) // 3, blend=0)
+    return n
+
+
+def _an_slow_grin(c, f0, f1):
+    c.facek(f0, mouthSmileLeft=c.scaled("mouthSmileLeft", 0.3), mouthSmileRight=c.scaled("mouthSmileRight", 0.2)); c.facek(min(f1, f0 + 20))
+    return _an_hand(c, f0, f1, "L", [(0, 0, 0), (0, 0.015, 0.0)], 4)
+
+
+def _an_sway(c, f0, f1, period=30):
+    for i, f in _steps(f0, f1, period // 2):
+        sg = 1 if i % 2 else -1
+        c.pose(f, {"spine": {"out": 4 * sg}, "head": {"out": 3 * sg}})
+    return f0
+
+
+def _an_breathe(c, f0, f1, period=30):
+    for i, f in _steps(f0, f1, period // 2):
+        b = i % 2; c.pose(f, {"spine": {"fwd": -3 * b}, "clav_L": {"lift": 3 * b}, "clav_R": {"lift": 3 * b}})
+    return f0
+
+
+ANIMATORS = {"laugh": _an_laugh, "giggle": _an_giggle, "sob": _an_sob, "wail": _an_wail, "tremble": _an_tremble, "fidget": _an_fidget, "wobble": _an_wobble,
+             "nod": _an_nod, "shake": _an_shake, "bounce": _an_bounce, "dizzy": _an_dizzy, "yawn": _an_yawn, "sigh": _an_sigh, "exhale": _an_exhale,
+             "pat": _an_pat, "rub": _an_rub, "scratch": _an_scratch, "tap": _an_tap, "wag": _an_wag, "bob": _an_bob, "rubhands": _an_rubhands,
+             "dart": _an_dart, "roll": _an_roll, "slow_grin": _an_slow_grin, "sway": _an_sway, "breathe": _an_breathe}
+
+
+# ----------------------------------------------------------------------------------------------- talking with an emotion
+def _talk_damp(face):
+    out = {}
+    for k, v in face.items():
+        if k in MOUTH_KEYS and k not in BIAS_KEYS: v = v * (0.5 if k in HALF_KEYS else 0.2)
+        out[k] = v
+    return out
+
+
+def talk_emotion(basemesh, rig, frame, text=None, cues=None, rhubarb_json=None, emotion=None, strength=1.0, rate=13.0, head_bob=True):
+    """lip-sync ON TOP of an emotion: brows / eyes / cheeks keep the emotion, the mouth gets the visemes plus the emotion's
+    smile / frown bias (open-mouth emotions are damped while talking). Call animate_expression(..., talking=True) for the
+    same span first (or pass emotion= and it is applied here). Returns the last frame."""
+    R_ = rig_of(rig)
+    if not basemesh.get("face_ready"): ensure_face(basemesh, rig)
+    sc = bpy.context.scene; fps = sc.render.fps / sc.render.fps_base
+    if rhubarb_json: cues = A.rhubarb_cues(rhubarb_json)
+    if cues is None: cues = A.text_to_cues(text or "", fps, rate)
+    emo = resolve(emotion or rig.get("expr_name", "neutral"))
+    if emotion and rig.get("expr_name") != emo: apply_expression(basemesh, rig, emo, strength, frame=frame, blend_frames=4, talking=True)
+    base = _talk_damp(final_face(rig, EXPR[emo]["face"], strength))
+    mouth_base = {k: v for k, v in base.items() if k in MOUTH_KEYS}
+    fk = R_.face_keys(); ms = A._norm("aa_02") in fk and A._norm("p_b_m_21") in fk
+    table = A.VISEMES_MS if ms else A.VISEMES
+    vis_keys = set(n for v in table.values() for n in v)
+    every = vis_keys | set(mouth_base) | ({"jawOpen"} if not ms else set())
+    smile = (mouth_base.get("mouthSmileLeft", 0) + mouth_base.get("mouthSmileRight", 0)) / 2
+    vstr = strength * (0.75 if smile > 0.6 else 1.0)          # a big grin shrinks the visemes a little
+    rnd = random.Random(len(cues)); last = frame
+    for t0, t1, s in cues:
+        f = frame + int(round(t0 * fps))
+        w = {n: 0.0 for n in every}; w.update(mouth_base)
+        for k, v in table.get(s, {}).items():
+            w[k] = max(w.get(k, 0.0), v * vstr) if k in BIAS_KEYS else (w.get(k, 0.0) + v * vstr if k == "jawOpen" else v * vstr)
+        if ms: w["jawOpen"] = mouth_base.get("jawOpen", 0.0) + 0.35 * A._JAW.get(s, 0) * vstr
+        _keys_face(rig, w, f)
+        if head_bob and s == "D" and rnd.random() < 0.35 and rig.get("expr_segs"):
+            pass   # head bob is part of the emotion's micro-motion
+        last = frame + int(round(t1 * fps))
+    w = {n: 0.0 for n in every}; w.update(mouth_base); _keys_face(rig, w, last + 1)
+    return last
+
+
+# ----------------------------------------------------------------------------------------------- old API (kept)
+def blend(basemesh, rig, weights, frame=None, blend=4):
+    """mix several emotions: {'happy': 0.6, 'surprised': 0.5} (face keys add, clamped; body pose of the strongest)"""
+    tot = {}; best = max(weights, key=weights.get)
+    for nm, w in weights.items():
+        for k, v in final_face(rig, EXPR[resolve(nm)]["face"], w).items(): tot[k] = min(CAPS.get(k, 1.8), tot.get(k, 0.0) + v)
+    _set_face(rig, tot, frame, blend)
+    e = EXPR[resolve(best)]
+    p = build_pose(basemesh, rig, e, weights[best]); _apply_pose(basemesh, rig, p, frame, blend if frame is not None else 0)
+    y, pch = e.get("eyes") or _eyes_from_face(e["face"]); set_eyes(rig, y * weights[best], pch * weights[best], frame, blend if frame is not None else 0)
+
+
+def transition(basemesh, rig, a, b, f0, f1, hold_b=None):
+    apply_expression(basemesh, rig, a, frame=f0, blend_frames=1)
+    apply_expression(basemesh, rig, b, frame=f1, blend_frames=f1 - f0)
+    if hold_b: animate_expression(basemesh, rig, b, f1, f1 + hold_b, onset=0, release=False)
 
 
 def head_wobble(basemesh, rig, f0, f1, period=10, amount=13):
     """standalone Indian 'acha' wobble on top of any expression"""
-    _anim_wobble(basemesh, rig, f0, f1, {}, {}, period, amount)
+    R_ = rig_of(rig)
+    for i, f in _steps(f0, f1, period // 2):
+        sg = 1 if i % 2 == 0 else -1
+        R_.apply({"head": {"out": amount * sg, "turn": -3 * sg}, "neck": {"out": 3 * sg}}, f, layer=True)
+    R_.apply({"head": {}, "neck": {}}, f1 + 4, layer=True)
 
 
-# ----------------------------------------------------------------------------------------------- acting layer
 def acting_layer(basemesh, rig, f0, f1, seed=0, blinks=True, brows=True, eyes=True, energy=1.0):
-    """natural life on top of the expressions: seeded blinks, small brow lifts on beats, eye darts (saccades)."""
+    """life on top of whatever is keyed: seeded blinks, small brow lifts on beats, eye darts (saccades)."""
     if not basemesh.get("face_ready"): ensure_face(basemesh, rig)
     R_ = rig_of(rig); rnd = random.Random(seed); out = {"blinks": [], "brows": [], "darts": []}
     if blinks: out["blinks"] = A.blink_loop(R_, f0, f1, seed=seed)
@@ -414,3 +1131,17 @@ def acting_layer(basemesh, rig, f0, f1, seed=0, blinks=True, brows=True, eyes=Tr
         while f < f1 - 6:
             set_eyes(rig, rnd.uniform(-7, 7) * energy, rnd.uniform(-4, 4) * energy, f, blend=1); out["darts"].append(f); f += rnd.randint(18, 55)
     return out
+
+
+def clear_animation(basemesh, rig):
+    """drop every key the emotion system wrote (pose, face keys, blush) and reset to rest"""
+    rig.animation_data_clear(); basemesh.animation_data_clear()
+    for o in rig_of(rig).meshes:
+        sk = o.data.shape_keys if o.type == "MESH" else None
+        if sk:
+            sk.animation_data_clear()
+            for kb in sk.key_blocks:
+                if kb.name in ARKIT: kb.value = 0.0
+    for pb in rig.pose.bones: pb.matrix_basis = Matrix.Identity(4)
+    if "blush" in basemesh.keys(): basemesh["blush"] = 0.0
+    rig_of(rig)._last_q.clear(); bpy.context.view_layer.update()
