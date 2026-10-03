@@ -297,11 +297,12 @@ class Fit:
                 if sd < clear and clear - sd <= mp: v.co = v.co + nrm * (clear - sd)
 
     def hray(self, th, z, bvh=None):
-        """skull point at height z in direction th: ray from the vertical head axis OUTWARD (first hit = the skull side,
-        never the outer ear); falls back to the whole body (nape / neck below the head polygons)"""
-        dH = Vector((math.sin(th), -math.cos(th), 0.0)); a = Vector((0.0, self.cy, z))
+        """outer head point at height z in direction th: ray from OUTSIDE toward the vertical head axis (a ray from the axis
+        outward hits the mouth / throat interior first at these heights and buried the buns); falls back to the whole
+        body (nape / neck below the head polygons)"""
+        dH = Vector((math.sin(th), -math.cos(th), 0.0)); a = Vector((0.0, self.cy, z)); L = 4.0 * max(self.rx, self.ry)
         for bv in ((bvh or self.hbvh), self.B.body_bvh()):
-            loc, nrm, _, _ = bv.ray_cast(a, dH, 0.4)
+            loc, nrm, _, _ = bv.ray_cast(a + dH * L, -dH, L)
             if loc is not None: return loc, dH
         return a + dH * self.ry, dH
 
@@ -370,8 +371,8 @@ HAIRLINES = {
     "short":    [(0, 0.66), (30, 0.6), (55, 0.45), (68, 0.1), (78, -0.15), (86, 0.18), (104, 0.18), (122, -0.4), (150, -0.62), (180, -0.7)],
     "receding": [(0, 0.86), (20, 0.84), (38, 0.68), (52, 0.62), (68, 0.1), (78, -0.25), (86, 0.12), (104, 0.12), (122, -0.55), (150, -0.8), (180, -0.88)],
     # sleek / open: temple -> over the top of the ear -> behind the ear -> nape (ends at the nape, never down the neck)
-    "sleek":    [(0, 0.6), (35, 0.52), (58, 0.32), (72, 0.16), (90, 0.1), (104, 0.04), (118, -0.3), (135, -0.52), (155, -0.6), (180, -0.62)],
-    "open":     [(0, 0.6), (35, 0.52), (58, 0.32), (72, 0.16), (90, 0.1), (104, 0.04), (118, -0.3), (135, -0.55), (180, -0.66)],
+    "sleek":    [(0, 0.55), (30, 0.5), (52, 0.36), (66, 0.14), (80, 0.0), (96, -0.04), (110, -0.14), (124, -0.42), (142, -0.58), (165, -0.63), (180, -0.63)],
+    "open":     [(0, 0.55), (30, 0.5), (52, 0.36), (66, 0.14), (80, 0.0), (96, -0.04), (110, -0.14), (124, -0.45), (180, -0.68)],
     "bob":      [(0, 0.3), (40, 0.28), (56, 0.1), (70, -0.85), (180, -1.1)],
     "toddler":  [(0, 0.7), (40, 0.62), (60, 0.42), (75, 0.1), (88, 0.22), (104, 0.22), (125, -0.35), (180, -0.55)],
     "band_bot": [(0, 0.0), (60, 0.0), (75, -0.3), (86, 0.1), (104, 0.1), (122, -0.55), (150, -0.8), (180, -0.88)],
@@ -550,6 +551,7 @@ def _curtain(F, name, mat, z_top_f, z_end, th0=R(118), th1=R(242), n_th=34, n_z=
             loc, nrm = F.surf_from(ax + d * r_out, -d, bvh, dist=r_out)
             rs = (loc - ax).length if loc is not None else (prev[i] or F.ry)
             if rs > 1.6 * max(F.rx, F.ry): rs = prev[i] or F.ry
+            if prev[i] is not None and j: rs = min(rs, prev[i] + 0.3 * (rows[j - 1] - z))   # hangs: only a gentle flare over the shoulders
             u = j / n_z
             tk = _sm(F.f2z(-0.3), F.f2z(-0.95), z)      # tucked under the cap at the top
             r = rs + 0.003 * s + tk * (0.002 * s + thick * s * (0.6 + 0.4 * u) + wave * s * math.sin(9 * th + 2 * u))
@@ -562,6 +564,7 @@ def _curtain(F, name, mat, z_top_f, z_end, th0=R(118), th1=R(242), n_th=34, n_z=
     for j in range(n_z):
         for i in range(n_th):
             bm.faces.new((V[j][i], V[j][i + 1], V[j + 1][i + 1], V[j + 1][i]))
+    F.push_out([v for v in bm.verts if v.co.z < F.zn + 0.3 * (F.ze - F.zn)], 0.004 * s, bvh=bvh, max_push=0.035 * s)   # rest ON the shoulders / blouse
     bm.normal_update()
     bad = sum(1 for f in bm.faces if f.normal.dot(f.calc_center_median() - Vector((0, F.cy, f.calc_center_median().z))) < 0)
     if bad > len(bm.faces) / 2:
@@ -686,8 +689,8 @@ def _style_volumes(F, style, mat, opts):
         fc = F.face()
         for sd in (1, -1):
             th = sd * R(125); root, d = _back_point(F, -0.45, theta=th, out=0.006 * s)
-            r0 = 0.0115 * s; outd = Vector((sd, 0.25, 0)).normalized()
-            zb = B.zn - 0.01 * B.Hs
+            r0 = 0.0115 * s; outd = Vector((sd, 0.55, 0)).normalized()     # loops hang behind the ears, folded up to the ribbon
+            zb = B.zn - 0.03 * B.Hs
             down = [root, root + Vector((0, 0, (zb - root.z) * 0.5)) + outd * 0.004 * s, Vector((root.x, root.y + 0.004 * s, zb)) + outd * 0.012 * s]
             loop_bot = Vector((root.x, root.y + 0.006 * s, zb - 0.012 * s)) + outd * 0.028 * s
             up = [Vector((root.x, root.y + 0.006 * s, zb)) + outd * 0.044 * s, root + outd * 0.036 * s + Vector((0, 0, -0.01 * s))]
@@ -1218,6 +1221,31 @@ def _decal_front(F, name, mat, outline_fn, cx, cz, rx, rz, n=10, lift=0.0005):
     return o
 
 
+def _decal_disc(F, name, mat, cx, cz, r, lift=0.0005, rings=5, seg=28):
+    """round mark (bottu / bindi / kaajal): polar grid projected onto the skin from the front, so the edge is a true circle"""
+    s = F.s; bm = bmesh.new(); V = []
+    def proj(x, z):
+        loc, nrm = F.surf_from(Vector((x, -3, z)), Vector((0, 1, 0)), F.hbvh)
+        return None if loc is None else bm.verts.new(loc + nrm * lift * s)
+    c = proj(cx, cz)
+    if c is None: bm.free(); return None
+    for k in range(1, rings + 1):
+        rr = r * k / rings; V.append([proj(cx + rr * math.cos(2 * math.pi * j / seg), cz + rr * math.sin(2 * math.pi * j / seg)) for j in range(seg)])
+    for j in range(seg):
+        a, b = V[0][j], V[0][(j + 1) % seg]
+        if a and b: bm.faces.new((c, a, b))
+    for k in range(rings - 1):
+        for j in range(seg):
+            q = [V[k][j], V[k + 1][j], V[k + 1][(j + 1) % seg], V[k][(j + 1) % seg]]
+            if all(q): bm.faces.new(q)
+    bm.normal_update()
+    for f in bm.faces:
+        if f.normal.y > 0: f.normal_flip()
+    o = _obj(F, bm, name, mat, [{"head": 1.0}] * len(bm.verts), tag="forehead_mark", subsurf=0, role="mark", solid_t=0.0004 * s)
+    bind_face_keys(F, o, max_d=0.015 * s)
+    return o
+
+
 def add_forehead_mark(basemesh, rig, kind, size="medium", colour=None, stone=False, side=1):
     """kumkum_bottu (round red dot between the brows; size small/medium/large), bindi_sticker (smaller, maroon/black, optional
     stone), sindoor_line (red line in the parting), vibhuti_namam (three white lines + optional red dot), tilak_red_vertical,
@@ -1234,11 +1262,11 @@ def add_forehead_mark(basemesh, rig, kind, size="medium", colour=None, stone=Fal
         circ = lambda u, v: u * u + v * v <= 1.0001
         if kind == "kumkum_bottu":
             r = {"small": 0.0042, "medium": 0.006, "large": 0.0085}.get(size, 0.006) * s
-            out.append(_decal_front(F, "mark_kumkum", solid("kumkum", colour or (0.82, 0.02, 0.06), 0.85, emit=0.05), circ, 0, zb, r, r))
+            out.append(_decal_disc(F, "mark_kumkum", solid("kumkum", colour or (0.82, 0.02, 0.06), 0.85, emit=0.05), 0, zb, r))
         elif kind == "bindi_sticker":
             r = {"small": 0.003, "medium": 0.0038, "large": 0.005}.get(size, 0.0038) * s
             col = colour or (0.42, 0.02, 0.1)
-            o = _decal_front(F, "mark_bindi", solid("bindi_sticker_%02x" % int(col[0] * 255), col, 0.35), circ, 0, zb, r, r, lift=0.0007); out.append(o)
+            o = _decal_disc(F, "mark_bindi", solid("bindi_sticker_%02x" % int(col[0] * 255), col, 0.35), 0, zb, r, lift=0.0007); out.append(o)
             if stone:
                 loc, nrm = F.surf_from(Vector((0, -3, zb)), Vector((0, 1, 0)), F.hbvh)
                 if loc is not None:
@@ -1256,10 +1284,10 @@ def add_forehead_mark(basemesh, rig, kind, size="medium", colour=None, stone=Fal
                 z = F.ze + f * HH
                 out.append(_decal_front(F, f"mark_vibhuti{k}", mat, lambda u, v: abs(v) <= 1 - 0.6 * max(0.0, abs(u) - 0.85) / 0.15, 0, z, w, 0.0018 * s, n=14))
             if size != "none":
-                out.append(_decal_front(F, "mark_kumkum", solid("kumkum", (0.82, 0.02, 0.06), 0.85, emit=0.05), circ, 0, F.ze + 0.4 * HH, 0.0035 * s, 0.0035 * s, lift=0.0009))
+                out.append(_decal_disc(F, "mark_kumkum", solid("kumkum", (0.82, 0.02, 0.06), 0.85, emit=0.05), 0, F.ze + 0.4 * HH, 0.0035 * s, lift=0.0009))
         elif kind == "kaajal_dot":
             r = 0.0038 * s
-            out.append(_decal_front(F, "mark_kaajal", solid("kaajal", (0.03, 0.03, 0.03), 0.6), circ, side * 0.42 * F.rx, F.ze + 0.48 * HH, r, r))
+            out.append(_decal_disc(F, "mark_kaajal", solid("kaajal", (0.03, 0.03, 0.03), 0.6), side * 0.42 * F.rx, F.ze + 0.48 * HH, r))
         elif kind == "sindoor_line":
             caps = [o for o in rig.children_recursive if o.type == "MESH" and o.get("hair_role") == "cap"]
             bv = None
