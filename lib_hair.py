@@ -657,7 +657,8 @@ def _style_volumes(F, style, mat, opts):
     if style in ("long_single_braid", "tied_long_jada"):
         root, d = _back_point(F, -0.56, out=0.006 * s)
         _ = out.append(_rigid(F, "hair_gather", mat, lambda bm: _ell(bm, root - d * 0.004 * s, Vector((0.03, 0, 0)) * s, Vector((0, 0.016, 0)) * s, Vector((0, 0, 0.032)) * s, sub=2)))
-        z_end = B.zw if style == "tied_long_jada" else B.zc - 0.35 * (B.zc - B.zw)
+        # jada ends just above the waist so the kuchulu tassel hangs over the waistband (not hidden in the skirt top)
+        z_end = B.zw + 0.3 * (B.zc - B.zw) if style == "tied_long_jada" else B.zc - 0.35 * (B.zc - B.zw)
         r0 = 0.0145 * s
         path = _back_path(F, root + Vector((0, 0.006 * s, 0)), z_end, lambda u: r0 * (1 - 0.35 * u))
         o, P = _braid(F, "hair_braid", mat, path, r0, r0 * 0.6); out.append(o)
@@ -738,10 +739,20 @@ def _style_volumes(F, style, mat, opts):
     elif style == "centre_parting_long_open":
         out.append(_curtain(F, "hair_curtain", mat, -0.35, F.B.zc - 0.25 * (F.B.zc - F.B.zw)))
     elif style == "tied_half_back":
+        # half-back: top section gathered at the back of the crown with a small gold clip; the rest hangs as ONE wide flat
+        # lock down the back to the shoulder blades (a ray-cast curtain flared into shards over the A-pose shoulders)
         root, d = _back_point(F, 0.1, out=0.004 * s)
-        out.append(_rigid(F, "hair_clip", solid("hairclip", rib, 0.35), lambda bm: _ell(bm, root + d * 0.008 * s, Vector((0.02, 0, 0)) * s, Vector((0, 0.006, 0)) * s, Vector((0, 0, 0.008)) * s, sub=2), role="clip"))
-        out.append(_rigid(F, "hair_gather", mat, lambda bm: _ell(bm, root, Vector((0.024, 0, 0)) * s, Vector((0, 0.01, 0)) * s, Vector((0, 0, 0.022)) * s, sub=2)))
-        out.append(_curtain(F, "hair_curtain", mat, -0.35, F.B.zn - 0.6 * (F.B.zn - F.B.zc), th0=R(125), th1=R(235), thick=0.006))
+        out.append(_rigid(F, "hair_clip", solid("hairpin_gold", (1.0, 0.76, 0.28), 0.3, 0.85),
+                          lambda bm: _ell(bm, root + d * 0.009 * s, Vector((0.016, 0, 0)) * s, Vector((0, 0.004, 0)) * s, Vector((0, 0, 0.005)) * s, sub=2), role="clip"))
+        out.append(_rigid(F, "hair_gather", mat, lambda bm: _ell(bm, root, Vector((0.022, 0, 0)) * s, Vector((0, 0.009, 0)) * s, Vector((0, 0, 0.018)) * s, sub=2)))
+        top, _d2 = _back_point(F, -0.45, out=0.004 * s)
+        z_end = B.zn - 0.7 * (B.zn - B.zc)
+        path = [root + Vector((0, 0.004 * s, 0))] + _back_path(F, top, z_end, lambda u: 0.009 * s, n=24)[1:]
+        P = _resample(_catmull(path, 3), 0.006 * s)
+        bm = bmesh.new()
+        _tube(bm, P, lambda u: s * (0.036 - 0.012 * u) * (0.75 + 0.25 * _sm(0.0, 0.25, u)), nseg=22, flat=0.28, ref=Vector((0, 1, 0)), ridge=0.05, nridge=9)
+        F.push_out(bm.verts, 0.003 * s, bvh=B.bvh(), max_push=0.03 * s)
+        out.append(_obj(F, bm, "hair_lock", mat, [F.w_hang(v.co) for v in bm.verts], role="curtain"))
     elif style == "spiky_kid":
         rnd = random.Random(opts.get("seed", 0))
         def build(bm):
