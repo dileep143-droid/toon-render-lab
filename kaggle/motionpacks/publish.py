@@ -37,7 +37,8 @@ for pk in PACKS:
     src = os.path.join(MDROOT, "md", pk)
     if not os.path.isdir(src): print("no md for", pk); continue
     os.makedirs(os.path.join(STAGE, "md", pk), exist_ok=True)
-    for f in glob.glob(os.path.join(src, "*.npz")): shutil.copy2(f, os.path.join(STAGE, "md", pk))
+    for f in glob.glob(os.path.join(src, "*.npz")):
+        if os.path.basename(f)[:-4] in names: shutil.copy2(f, os.path.join(STAGE, "md", pk))
 json.dump({"dataset": DS, "commercial_ok": WHICH == "packs", "motions": sorted(rows, key=lambda r: r["name"]),
            "needs": needs, "how_to_use": "import lib_motionlib as ML; ML.load_motion('<name or tag query>', rig, start=1, final=True)"},
           open(os.path.join(STAGE, "motion_catalogue.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
