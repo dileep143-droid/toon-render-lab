@@ -5,7 +5,7 @@ name: physics
 on:
   workflow_dispatch:
     inputs:
-      modes: { description: "comma list: world,cloth,demo", required: false, default: "world,cloth,demo" }
+      modes: { description: "comma list: world,cloth,demo,heal", required: false, default: "world,cloth,demo" }
 jobs:
   physics:
     runs-on: ubuntu-latest
@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [world, cloth, demo]
+        mode: [world, cloth, demo, heal]
     steps:
       - uses: actions/checkout@v4
         if: contains(github.event.inputs.modes || 'world,cloth,demo', matrix.mode)

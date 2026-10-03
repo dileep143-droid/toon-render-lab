@@ -208,6 +208,72 @@ def skin_guard(o, body, gap=0.003):
     _move_before(o, m)
 
 
+def lining(h, rig, level="knee", gap=0.001, min_verts=200):
+    """inner lining: a copy of the body's must-cover skin (lib_outfits.required_vertices), 1 mm outside the skin, skinned by the
+    same armature (so it follows every pose exactly) and coloured face by face like the nearest garment piece. Wherever the
+    clothes leave a gap, the camera sees cloth of the right colour instead of skin. Built once per character, only when needed."""
+    import bmesh, lib_outfits as LO
+    from mathutils.kdtree import KDTree
+    nm = "lining_" + "".join(c for c in rig.name if c.isalnum()).lower().replace("human", "h")
+    if nm in bpy.data.objects: return bpy.data.objects[nm]
+    B = LO.body_of(h, rig)
+    keep = set(LO.required_vertices(B, level))
+    gar = [o for o in _char_parts(h, rig) if o.get("outfit_piece") and not o.get("outfit_lining") and o.type == "MESH"
+           and not o.hide_render and len(o.data.vertices) >= min_verts and o.active_material is not None]
+    kd = KDTree(sum(len(g.data.vertices) for g in gar)); owner = []
+    for gi, g in enumerate(gar):
+        for v in g.data.vertices: kd.insert(g.matrix_world @ v.co, len(owner)); owner.append(gi)
+    kd.balance()
+    me = h.data.copy(); me.name = nm
+    o = bpy.data.objects.new(nm, me)
+    for c in h.users_collection: c.objects.link(o)
+    o.parent = h.parent; o.matrix_world = h.matrix_world.copy()
+    for vg in h.vertex_groups: o.vertex_groups.new(name=vg.name)
+    if me.shape_keys is not None: o.shape_key_clear()
+    bm = bmesh.new(); bm.from_mesh(me)
+    bm.faces.ensure_lookup_table()
+    dead = [f for f in bm.faces if not all(v.index in keep for v in f.verts)]
+    mats = [g.active_material for g in gar]
+    me.materials.clear()
+    for m in mats: me.materials.append(m)
+    mw = h.matrix_world
+    for f in bm.faces:
+        if f in dead or not gar: continue
+        _, j, _ = kd.find(mw @ f.calc_center_median())
+        f.material_index = owner[j]
+    bmesh.ops.delete(bm, geom=dead, context="FACES")
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context="VERTS")
+    bm.to_mesh(me); bm.free()
+    arm = next((m for m in h.modifiers if m.type == "ARMATURE"), None)
+    if arm is not None:
+        a = o.modifiers.new("Armature", "ARMATURE"); a.object = arm.object; a.use_deform_preserve_volume = arm.use_deform_preserve_volume
+    d = o.modifiers.new("PH_lining_out", "DISPLACE"); d.strength = gap; d.mid_level = 0.0; d.direction = "NORMAL"
+    o["outfit_piece"] = True; o["outfit_lining"] = True
+    log("LINING", rig.name, "faces", len(me.polygons), "colours", [m.name for m in mats][:6])
+    return o
+
+
+def heal_coverage(h, rig, cam_loc, level="knee", tol=0.002, step=2):
+    """never skip a shot because skin shows: try the fixes in order and re-check after each one.
+       1) skin_guard on every skinned garment piece (skin that a bend pushed through the cloth goes back under it)
+       2) lining (cloth-coloured inner layer on the must-cover skin)
+    Returns {"ok", "before", "after", "fixes"}; the caller renders the shot when ok."""
+    import lib_outfits as LO
+    def frac():
+        bpy.context.view_layer.update()
+        return LO.coverage(h, rig, {"cam": cam_loc}, level=level, step=step)["cam"]["frac"]
+    f0 = frac(); fixes = []; f = f0
+    if f > tol:
+        for o in _char_parts(h, rig):
+            if o.get("outfit_piece") and not any(m.type == "CLOTH" for m in o.modifiers): skin_guard(o, h)
+        fixes.append("skin_guard"); f = frac()
+    if f > tol:
+        lining(h, rig, level); fixes.append("lining"); f = frac()
+    rep = {"ok": f <= tol, "before": round(f0, 4), "after": round(f, 4), "fixes": fixes}
+    if fixes: log("HEAL", rig.name, rep)
+    return rep
+
+
 def dress_physics(body, rig, f0=None, f1=None, sway=True, presets=None):
     """cloth + sway on everything this character wears that should move. Returns {object name: preset}"""
     body_collision(body)

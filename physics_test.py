@@ -158,8 +158,31 @@ def mode_demo():
     look(cam, (-0.45 + 0.9, -1.84 + 1.9, 1.15), (-0.45, -1.84, 0.75), 40); still(cam, "demo_dadi", 36, chars)
 
 
+def mode_heal():
+    """self-fix instead of skip: the boy's pyjama is taken away on purpose (a big hole in his clothes), the coverage check
+    must FAIL, heal_coverage must fix it (skin_guard, then the cloth-coloured lining) and the still must then render"""
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    V = villagers(); sc, cam = setup_render((720, 960))
+    bpy.ops.mesh.primitive_plane_add(size=30); fl = bpy.context.active_object; fl.name = "ground_floor"
+    body, rig = V.make_villager("boy_10y", "kurta_pyjama", name="boy")
+    gone = [o for o in rig.children_recursive if o.type == "MESH" and "pyjama" in o.name.lower()]
+    for o in gone: o.hide_render = True; o.hide_viewport = True
+    REPORT["removed"] = [o.name for o in gone]
+    import lib_anim as A
+    rw = A.Rig(rig); A.walk(rw, 1, cycles=1, move=False)
+    c = rig.matrix_world.translation.copy()
+    for f, az in ((1, 0), (12, 35), (24, 180)):
+        sc.frame_set(f)
+        frm = c + Vector((3.0 * math.sin(R(az)), -3.0 * math.cos(R(az)), 0.8))
+        look(cam, frm, c + Vector((0, 0, 0.7)), 40)
+        rep = PH.heal_coverage(body, rig, cam.location.copy(), level="knee")
+        REPORT.setdefault("heal", []).append(dict(rep, frame=f, az=az))
+        still(cam, f"heal_az{az}", f, [(body, rig)])
+    REPORT["after"] = {"ok": all(r["ok"] for r in REPORT["heal"])}
+
+
 try:
-    {"world": mode_world, "cloth": mode_cloth, "demo": mode_demo}[MODE]()
+    {"world": mode_world, "cloth": mode_cloth, "demo": mode_demo, "heal": mode_heal}[MODE]()
     REPORT["error"] = None
 except Exception as ex:
     REPORT["error"] = repr(ex)[:500]; PH.log("ERROR", repr(ex)[:300]); traceback.print_exc()
