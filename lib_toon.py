@@ -23,7 +23,7 @@ Shading: flat wheatish skin (a little of the original albedo kept for lips), low
 rim, a touch of self-emission to lift the shadows (flatter, cartoon-like); glossy enlarged-iris eyes; darker, slightly
 bigger eyebrows; flat dark-brown hair with a soft specular band (hair alpha is kept). Optional inverted-hull outline.
 """
-import bpy, math, sys
+import bpy, math, sys, os
 from mathutils import Vector
 
 STYLES = {
@@ -32,10 +32,10 @@ STYLES = {
     "infobells": dict(head=0.17, eyes=0.30, jaw=0.06, legs=0.07, adult=0.6,
                       # mouth / chin warps OFF: lib_expressions sizes its mouth bag from the eye spacing, so a narrower
                       # mouth or a lifted chin let the dark bag poke through the skin (run 1, 3 Oct)
-                      nose=0.30, mouth=0.0, cheek=0.05, chin=0.0, neck=0.12, lash=0.35,
+                      nose=0.38, mouth=0.0, cheek=0.05, chin=0.0, neck=0.12, lash=0.35, eye_tall=1.35, brow_lift=0.07,
                       tex_mix=0.0, rim=0.12, emit=0.07, skin_gain=0.92, rough=0.72, spec=0.12, sss=0.10,
-                      blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.5, lip_rgb=(0.80, 0.40, 0.38),
-                      iris_r=0.60, pupil_r=0.27, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
+                      blush=0.32, blush_rgb=(0.96, 0.50, 0.46), lip=0.8, lip_rgb=(0.84, 0.40, 0.42),
+                      iris_r=0.80, pupil_r=0.36, iris_dark=(0.10, 0.05, 0.022), iris_light=(0.36, 0.19, 0.07),
                       brow_x=1.10, brow_z=1.55,
                       hair_rgb=(0.09, 0.06, 0.045), hair_fac=0.92, brow_rgb=(0.035, 0.025, 0.02),
                       outline_rgb=(0.16, 0.09, 0.05), outline_body=0.0022, outline_cloth=0.003),
@@ -234,7 +234,16 @@ class _Warp:
             for c in self.eyes:
                 r = (p - c).length
                 w = 1 - _smooth(0.24 * self.d, 0.46 * self.d, r)
-                if w > 0: p = c + (p - c) * (1 + (self.se - 1) * w)
+                if w > 0:      # a little taller than wide: the lids open rounder (cartoon eyes)
+                    q = p - c; s = (self.se - 1) * w
+                    p = c + Vector((q.x * (1 + s), q.y * (1 + s), q.z * (1 + s * self.st.get("eye_tall", 1.0))))
+            # softer, slightly raised brows (the toon face read as frowning): the brow band above each eye moves up
+            lift = self.st.get("brow_lift", 0.0) * self.d * (0.5 + 0.5 * self.k)
+            if lift:
+                for c in self.eyes:
+                    dx = abs(p.x - c.x); dz = p.z - c.z
+                    w = (1 - _smooth(0.35 * self.d, 0.6 * self.d, dx)) * _smooth(0.22 * self.d, 0.4 * self.d, dz) * (1 - _smooth(0.75 * self.d, 1.0 * self.d, dz))
+                    if w > 0 and p.y < c.y + 0.3 * self.d: p = Vector((p.x, p.y, p.z + lift * w))
         if self.lm and p.z > self.z0: p = self._features(p, self.st)
         if self.jaw:
             z = p.z; e = self.eye_z; d = self.d
@@ -266,7 +275,7 @@ class _Warp:
         if o.data.shape_keys:
             kb = o.data.shape_keys.key_blocks
             basis = o.data.shape_keys.reference_key
-            if kind == "body": self.rescale_keys(o, q, new, R, Ri)
+            if kind == "body" and os.environ.get("TOON_RESCALE_KEYS", "1") == "1": self.rescale_keys(o, q, new, R, Ri)
             k = kb.get("toon_proportions") or o.shape_key_add(name="toon_proportions", from_mix=False)
             k.relative_key = basis
             for i, (a, b) in enumerate(zip(q, new)): k.data[i].co = basis.data[i].co + (b - a)
@@ -504,7 +513,7 @@ def toon_eye_material(st, name="toon_eye"):
         du = math_("SUBTRACT", u, cx); dv = math_("SUBTRACT", v, cz)
         dd = math_("SQRT", math_("ADD", math_("MULTIPLY", du, du), math_("MULTIPLY", dv, dv)))
         return math_("MULTIPLY", ramp(dd, r + 0.012, r - 0.012), front)
-    catch = math_("MAXIMUM", spot(0.20, 0.22, 0.11), spot(-0.15, -0.17, 0.05), clamp=True)
+    catch = math_("MAXIMUM", spot(0.30, 0.33, 0.15), spot(-0.22, -0.25, 0.07), clamp=True)
     col = mix(catch, col, (1.0, 1.0, 1.0))
     L.new(col, b.inputs["Base Color"])
     em = mix(catch, (0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
@@ -561,7 +570,7 @@ def _skin_attrs(h, W, k):
         g = max(math.exp(-((p - c).length / (0.42 * d)) ** 2) for c in cs) if p.y < W.pivot.y else 0.0
         bl.append(g * k)
         q = p - m
-        lw = math.exp(-((q.x / (0.36 * d)) ** 2 + (q.z / (0.13 * d)) ** 2)) * (1 - _smooth(m.y + 0.12 * d, m.y + 0.3 * d, p.y))
+        lw = math.exp(-((q.x / (0.42 * d)) ** 2 + (q.z / (0.16 * d)) ** 2)) * (1 - _smooth(m.y + 0.12 * d, m.y + 0.3 * d, p.y))
         lp.append(lw)
     me = h.data
     for nm, vals in (("toon_blush", bl), ("toon_lip", lp)):
@@ -641,7 +650,7 @@ def toonify(basemesh, rig, strength=1.0, style="infobells", skin_rgb=(0.86, 0.64
         if kid is None:
             z = [c.z for c in _rest_coords(h)]; kid = (max(z) - min(z)) * rig.matrix_world.to_scale().z < 1.5
         if proportions and strength > 0 and not h.get("toon_proportions"):
-            info["mouth_proxies_added"] = _ensure_mouth_proxies(h)
+            if os.environ.get("TOON_PREADD_MOUTH", "1") == "1": info["mouth_proxies_added"] = _ensure_mouth_proxies(h)
             bpy.context.view_layer.update()
             W = _Warp(h, rig, st, strength, kid, k=kf); info.update(W.info)
             before = h.dimensions.z
