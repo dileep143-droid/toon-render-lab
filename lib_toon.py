@@ -285,8 +285,11 @@ class _Warp:
             if lift:
                 for c in self.eyes:
                     dx = abs(p.x - c.x); dz = p.z - c.z
-                    w = (1 - _smooth(0.35 * self.d, 0.6 * self.d, dx)) * _smooth(0.22 * self.d, 0.4 * self.d, dz) * (1 - _smooth(0.75 * self.d, 1.0 * self.d, dz))
-                    if w > 0 and p.y < c.y + 0.3 * self.d: p = Vector((p.x, p.y, p.z + lift * w))
+                    w = (1 - _smooth(0.45 * self.d, 0.7 * self.d, dx)) * _smooth(0.22 * self.d, 0.4 * self.d, dz) * (1 - _smooth(0.75 * self.d, 1.0 * self.d, dz))
+                    # inner brow ends rise most: soft arched brows instead of the angled-down "frown" (run 5)
+                    mx = (self.eyes[0].x + self.eyes[1].x) / 2
+                    inner = 1 - _smooth(0.15 * self.d, 0.55 * self.d, abs(p.x - mx))
+                    if w > 0 and p.y < c.y + 0.3 * self.d: p = Vector((p.x, p.y, p.z + lift * w * (1 + 1.2 * inner)))
         if self.lm and p.z > self.z0: p = self._features(p, self.st)
         if self.jaw:
             z = p.z; e = self.eye_z; d = self.d
