@@ -7,7 +7,7 @@
     LE.apply_expression(h, rig, "happy")                          # static pose (no keys)
     LE.apply_expression(h, rig, "angry", frame=40, blend_frames=6)   # keyed, blends from whatever was there
     info = LE.animate_expression(h, rig, "giggle", 40, 100)       # onset -> hold (acting + micro-motion) -> settle
-    LE.talk_emotion(h, rig, 52, text="Ã Â¤Â®Ã Â¥ÂÃ Â¤ÂÃ Â¥â€¡ Ã Â¤Â­Ã Â¥â€šÃ Â¤â€“ Ã Â¤Â²Ã Â¤â€”Ã Â¥â‚¬ Ã Â¤Â¹Ã Â¥Ë†!", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
+    LE.talk_emotion(h, rig, 52, text="ÃƒÂ Ã‚Â¤Ã‚Â®ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã¢â‚¬â€œ ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã¢â‚¬â€ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ !", emotion="hungry")   # visemes on the mouth, emotion on brows/eyes/cheeks
     LE.eye_look(h, rig, target=other_rig_head_point, frame=60)  # or direction="left" / "up_right" / "camera"
     LE.set_blush(h, 0.8, frame=70)                                # animatable cheek tint
     LE.animate_expression(h, rig, "comforting", 10, 80, target=friend_shoulder_world_point)
@@ -23,7 +23,7 @@ import lib_anim as A
 R = math.radians
 DEBUG = bool(os.environ.get("LE_DEBUG"))
 TOON_TEETH = False        # cartoon upper-teeth band: off (poked through the lower lip of the boy / Dadi at rest)
-SHOW_MPFB_TEETH = False   # MPFB teeth proxy: hidden (fangs / braces when bound to the lips); mouth = dark interior + tongue
+SHOW_MPFB_TEETH = True    # MPFB teeth: upper rigid, lower on the jaw only, shrunk + tucked behind the lips (no fangs / no poking through)
 
 
 def _b(name, v):
@@ -79,8 +79,11 @@ EXPR = {
                 {"head": {"fwd": 8, "out": 12}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}, "spine": {"fwd": 4}},
                 "idle", H("mouth", off=(0.0, 0.0, -0.02), tip=0.42, pole=(0.2, 0.7, -0.7), curl="relaxed", twist=-40, clear=0.07),
                 blush=0.35, anim="giggle", desc="hand over mouth, shoulders shake"),
-    "smile_soft": E({**_b("mouthSmile", 0.6), **_b("cheekSquint", 0.35), **_b("eyeSquint", 0.3), "browInnerUp": 0.3, **_b("mouthPress", 0.15)},
-                    {"head": {"out": 9, "fwd": 2}}, "idle", "idle", eyes=(0, 0), desc="gentle closed smile, head tilt"),
+    "smile_soft": E({**_b("mouthSmile", 0.85), **_b("cheekSquint", 0.6), **_b("eyeSquint", 0.45), **_b("eyeBlink", 0.2), "browInnerUp": 0.45, **_b("mouthPress", 0.2),
+                     **_b("mouthDimple", 0.3)},
+                    {"head": {"out": 13, "fwd": 3}, "spine": {"out": -3}},
+                    H("belly", off=(0.3, -0.3, -0.35), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.3, -0.3, -0.3), tip=0.6, pole=(0, 0.6, -0.8)),
+                    blush=0.25, eyes=(0, 0), desc="warm closed-mouth smile, soft eyes, head tilt, hands folded in front"),
     "proud": E({"mouthSmileLeft": 0.8, "mouthSmileRight": 0.55, **_b("eyeSquint", 0.35), **_b("eyeBlink", 0.25), **_b("browOuterUp", 0.55), **_b("cheekSquint", 0.3)},
                {"spine": {"fwd": -11}, "head": {"fwd": -15}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}, "neck": {"fwd": -3}}, "hip", "hip", eyes=(0, -8),
                desc="chest out, chin up, hands on hips"),
@@ -119,20 +122,22 @@ EXPR = {
                    {"head": {"fwd": -10}, "neck": {"fwd": -4}, "spine": {"fwd": -10}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}},
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
                    H("cheek", off=(0.0, 0.05, 0), tip=0.55, pole=(0.2, 0.9, -0.4), curl="spread", twist=-30, clear=0.05),
-                   anim="tremble", desc="'Ã Â¤Â­Ã Â¥â€šÃ Â¤Â¤!' scream: hands on the cheeks, jaw dropped"),
+                   anim="tremble", desc="'ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã‚Â¤!' scream: hands on the cheeks, jaw dropped"),
     "nervous": E({**_b("mouthStretch", 1.0), **_b("mouthUpperUp", 0.3), **_b("mouthLowerDown", 0.3), "browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.3), "jawOpen": 0.05},
                  {"head": {"fwd": 6, "turn": -6}, "clav_L": {"lift": 11}, "clav_R": {"lift": 11}, "spine": {"fwd": 4}},
                  H("belly", off=(0.5, -0.25, -0.05), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
                  H("belly", off=(0.5, -0.25, 0.0), tip=0.6, pole=(-0.2, 0.9, -0.5), curl="relaxed"),
                  eyes=(-10, -4), anim="fidget", desc="grimace, shoulders up, fiddling fingers, darting eyes"),
     # ---------------- guilt / shame / shy ----------------
-    "guilty": E({"browInnerUp": 0.8, **_b("mouthPress", 0.4), **_b("mouthFrown", 0.35), "mouthRollLower": 0.3, **_b("mouthStretch", 0.25)},
-                {"head": {"fwd": 12, "turn": 12}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
-                H("belly", off=(0.35, -0.3, -0.45), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.35, -0.3, -0.4), tip=0.6, pole=(0, 0.6, -0.8)),
-                eyes=(-14, -10), desc="avoids your eyes, head turned down, hands clasped low"),
-    "ashamed": E({"browInnerUp": 0.95, **_b("mouthFrown", 0.6), **_b("eyeBlink", 0.3), **_b("mouthPress", 0.3)},
-                 {"head": {"fwd": 28}, "neck": {"fwd": 10}, "spine": {"fwd": 10}, "clav_L": {"lift": -6}, "clav_R": {"lift": -6}}, "limp", "limp",
-                 eyes=(0, -14), desc="head hung low, shoulders dropped, arms limp"),
+    "guilty": E({"browInnerUp": 0.9, **_b("mouthStretch", 0.7), **_b("mouthSmile", 0.2), **_b("mouthPress", 0.35), "mouthRollLower": 0.2, **_b("eyeWide", 0.2)},
+                {"head": {"fwd": 6, "turn": 22, "out": -6}, "clav_L": {"lift": 4}, "clav_R": {"lift": 12}},
+                "idle", H("head_back", off=(0.0, 0.25, -0.5), tip=0.4, pole=(0.2, 1.0, -0.2), curl="relaxed", clear=0.03, haim=(0.0, -0.7, 0.6), palm=(1, 0, 0)),
+                eyes=(-26, -4), desc="caught! awkward grimace, eyes slide away, rubbing the back of the neck"),
+    "ashamed": E({"browInnerUp": 0.95, **_b("mouthFrown", 0.6), **_b("eyeBlink", 0.6), **_b("mouthPress", 0.3)},
+                 {"head": {"fwd": 20}, "neck": {"fwd": 8}, "spine": {"fwd": 12}, "clav_L": {"lift": 4}, "clav_R": {"lift": 4}},
+                 H("eye", off=(0.04, 0.05, 0.0), tip=0.55, pole=(0.1, 0.6, -0.8), curl="flat", clear=0.05, haim=(0.1, -0.35, 0.95), palm=(-1, 0, 0)),
+                 H("eye", off=(0.04, 0.05, 0.0), tip=0.55, pole=(0.1, 0.6, -0.8), curl="flat", clear=0.05, haim=(0.1, -0.35, 0.95), palm=(-1, 0, 0)),
+                 blush=0.5, desc="head down, hiding the face in both hands"),
     "embarrassed": E({**_b("mouthSmile", 0.55), **_b("mouthStretch", 0.4), "browInnerUp": 0.65, **_b("cheekSquint", 0.45), **_b("eyeSquint", 0.3)},
                      {"head": {"fwd": 10, "out": -10}, "clav_R": {"lift": 8}},
                      "idle", H("head_side", off=(-0.1, -0.05, -0.08), tip=0.3, pole=(0.3, 1.0, -0.3), curl="relaxed", clear=0.02, haim=(-0.1, -0.5, 0.85), palm=(0, -1, 0)),
@@ -142,9 +147,11 @@ EXPR = {
              H("belly", off=(0.3, -0.28, -0.4), tip=0.6, pole=(0, 0.6, -0.8)), H("belly", off=(0.3, -0.28, -0.35), tip=0.6, pole=(0, 0.6, -0.8)),
              eyes=(-4, 22), blush=0.65, anim="sway", desc="head down, eyes up, hands together, twisting"),
     # ---------------- sadness ----------------
-    "sad": E({"browInnerUp": 0.9, **_b("mouthFrown", 1.0), "mouthShrugLower": 0.6, **_b("mouthPress", 0.15), **_b("browDown", 0.3), **_b("eyeBlink", 0.12)},
-             {"head": {"fwd": 4, "out": 5}, "spine": {"fwd": 5}, "clav_L": {"lift": -9}, "clav_R": {"lift": -9}}, "limp", "limp",
-             eyes=(0, 7), desc="worried brows, deep frown, shoulders dropped (eyes still up)"),
+    "sad": E({"browInnerUp": 1.0, **_b("mouthFrown", 1.0), "mouthShrugLower": 0.9, "mouthRollLower": 0.15, **_b("mouthPress", 0.1), **_b("browDown", 0.3),
+              **_b("eyeSquint", 0.2), **_b("cheekSquint", 0.15)},
+             {"head": {"fwd": 6, "out": 9}, "spine": {"fwd": 6}, "clav_L": {"lift": -10}, "clav_R": {"lift": -10}},
+             H("belly", off=(0.25, -0.2, -0.5), tip=0.6, pole=(0, 0.5, -0.9)), H("belly", off=(0.25, -0.2, -0.45), tip=0.6, pole=(0, 0.5, -0.9)),
+             eyes=(0, 7), desc="tilted worried brows, quivering pout, shoulders dropped, hands clasped low"),
     "crying": E({"browInnerUp": 1.0, **_b("mouthFrown", 0.9), **_b("mouthStretch", 0.5), "jawOpen": 0.25, **_b("eyeSquint", 0.9), **_b("eyeBlink", 0.55),
                  **_b("cheekSquint", 0.6), "mouthShrugLower": 0.4},
                 {"head": {"fwd": 10}, "spine": {"fwd": 10}, "clav_L": {"lift": 6}, "clav_R": {"lift": 6}},
@@ -154,7 +161,7 @@ EXPR = {
     "wailing": E({"jawOpen": 0.85, **_b("mouthStretch", 0.85), **_b("mouthFrown", 1.0), **_b("eyeSquint", 1.0), **_b("eyeBlink", 0.9), "browInnerUp": 1.0,
                   **_b("cheekSquint", 0.6), **_b("mouthUpperUp", 0.45), **_b("mouthLowerDown", 0.55)},
                  {"head": {"fwd": -20}, "spine": {"fwd": -6}, "clav_L": {"lift": 10}, "clav_R": {"lift": 10}}, "wide_down", "wide_down", curl="fist",
-                 anim="wail", desc="head thrown back, mouth wide, fists down: 'Ã Â¤â€°Ã Â¤ÂÃ Â¤Å Ã Â¤ÂÃ Â¤Å Ã Â¤Â!'"),
+                 anim="wail", desc="head thrown back, mouth wide, fists down: 'ÃƒÂ Ã‚Â¤Ã¢â‚¬Â°ÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¤Ã…Â ÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¤Ã…Â ÃƒÂ Ã‚Â¤Ã‚Â!'"),
     "sulking": E({"mouthPucker": 0.6, "mouthShrugLower": 1.0, **_b("mouthFrown", 0.7), **_b("browDown", 0.6), "browInnerUp": 0.4, "cheekPuff": 0.35},
                  {"head": {"fwd": 10, "turn": 22}, "spine": {"turn": 6}}, None, None, cross=True, eyes=(-18, -2),
                  desc="pout, arms crossed, turned away, side glance"),
@@ -209,10 +216,10 @@ EXPR = {
     "determined": E({**_b("browDown", 0.75), **_b("mouthPress", 0.6), **_b("mouthSmile", 0.35), **_b("eyeSquint", 0.35), "jawForward": 0.2, **_b("noseSneer", 0.2)},
                     {"head": {"fwd": -4}, "spine": {"fwd": -6}},
                     "fist_side", H("shoulder", off=(0.35, 0.15, 0.55), tip=0.3, pole=(0, 0.9, -0.5), curl="fist", twist=-30),
-                    curl="fist", desc="'Ã Â¤Å¡Ã Â¤Â²Ã Â¥â€¹, Ã Â¤ÂªÃ Â¥ÂÃ Â¤Â²Ã Â¤Â¾Ã Â¤Â¨ Ã Â¤Â¬Ã Â¤Â¨Ã Â¤Â¾Ã Â¤Â¤Ã Â¥â€¡ Ã Â¤Â¹Ã Â¥Ë†Ã Â¤â€š!' raised fist, set jaw"),
+                    curl="fist", desc="'ÃƒÂ Ã‚Â¤Ã…Â¡ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¥Ã¢â‚¬Â¹, ÃƒÂ Ã‚Â¤Ã‚ÂªÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã‚Â¨ ÃƒÂ Ã‚Â¤Ã‚Â¬ÃƒÂ Ã‚Â¤Ã‚Â¨ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡!' raised fist, set jaw"),
     # ---------------- low energy ----------------
-    "bored": E({**_b("eyeBlink", 0.55), "mouthLeft": 0.35, **_b("mouthPress", 0.3), **_b("mouthFrown", 0.25), "cheekPuff": 0.15},
-               {"head": {"out": 16, "fwd": 4}, "spine": {"fwd": 10}, "clav_L": {"lift": -6}, "clav_R": {"lift": -6}}, "limp", "limp", eyes=(14, 12),
+    "bored": E({**_b("eyeBlink", 0.6), "mouthLeft": 0.6, "cheekPuff": 0.45, **_b("mouthPress", 0.3), "browDownRight": 0.3, "browOuterUpLeft": 0.2},
+               {"head": {"out": 18, "fwd": -2, "turn": -8}, "spine": {"fwd": 8, "out": 4}}, None, None, cross=True, eyes=(20, 16),
                anim="sigh", desc="droopy lids, slouch, head lolls, sigh"),
     "sleepy": E({"jawOpen": 0.95, **_b("eyeBlink", 1.0), "browInnerUp": 0.55, "mouthFunnel": 0.3, **_b("mouthStretch", 0.3)},
                 {"head": {"fwd": -14, "out": 6}, "spine": {"fwd": -4}},
@@ -225,7 +232,7 @@ EXPR = {
     "hungry": E({**_b("mouthSmile", 0.6), "jawOpen": 0.25, "tongueOut": 0.5, **_b("eyeBlink", 0.35), "browInnerUp": 0.75},
                 {"head": {"out": 14, "fwd": -12}},
                 H("belly", off=(0.0, 0.12, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.12, 0.08), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
-                eyes=(10, 24), anim="rub", desc="Chhotu 'Ã Â¤Â®Ã Â¥ÂÃ Â¤ÂÃ Â¥â€¡ Ã Â¤Â­Ã Â¥â€šÃ Â¤â€“ Ã Â¤Â²Ã Â¤â€”Ã Â¥â‚¬ Ã Â¤Â¹Ã Â¥Ë†!': dreamy eyes up, licking lips, hands on tummy"),
+                eyes=(10, 24), anim="rub", desc="Chhotu 'ÃƒÂ Ã‚Â¤Ã‚Â®ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚ÂÃƒÂ Ã‚Â¥Ã¢â‚¬Â¡ ÃƒÂ Ã‚Â¤Ã‚Â­ÃƒÂ Ã‚Â¥Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã¢â‚¬â€œ ÃƒÂ Ã‚Â¤Ã‚Â²ÃƒÂ Ã‚Â¤Ã¢â‚¬â€ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã‹â€ !': dreamy eyes up, licking lips, hands on tummy"),
     "satisfied": E({**_b("mouthSmile", 0.85), **_b("eyeBlink", 0.85), **_b("cheekSquint", 0.6), "browInnerUp": 0.25, **_b("mouthPress", 0.2), "cheekPuff": 0.15},
                    {"spine": {"fwd": -8}, "head": {"fwd": -8}},
                    H("belly", off=(0.0, 0.2, -0.05), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)), H("belly", off=(0.0, 0.1, 0.06), tip=0.5, pole=(-0.2, 0.9, -0.4), curl="flat", haim=(0.1, -0.8, -0.2), palm=(-1, 0, 0)),
@@ -244,14 +251,14 @@ EXPR = {
                           desc="jaw on the floor, arms dropped straight"),
     # ---------------- Indian gestures + social ----------------
     "head_wobble_acha": E({**_b("mouthSmile", 0.65), **_b("cheekSquint", 0.4), "browInnerUp": 0.35, **_b("eyeSquint", 0.2)},
-                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'Ã Â¤â€¦Ã Â¤Å¡Ã Â¥ÂÃ Â¤â€ºÃ Â¤Â¾' wobble, palm up"),
+                          {"head": {"out": 12}}, "idle", "palm_up", curl="open", anim="wobble", desc="Indian side-to-side 'ÃƒÂ Ã‚Â¤Ã¢â‚¬Â¦ÃƒÂ Ã‚Â¤Ã…Â¡ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã¢â‚¬ÂºÃƒÂ Ã‚Â¤Ã‚Â¾' wobble, palm up"),
     "nod_yes": E({**_b("mouthSmile", 0.55), "browInnerUp": 0.3, **_b("eyeSquint", 0.2)}, {"head": {"fwd": 10}}, "idle", "idle", anim="nod", desc="nodding yes"),
     "shake_no": E({**_b("mouthFrown", 0.45), **_b("mouthPress", 0.45), **_b("browDown", 0.35), "browInnerUp": 0.3},
                   {"head": {"turn": 18}}, "idle", H("chest", off=(0.6, 0.35, 0.2), tip=0.5, pole=(0, 0.8, -0.6), curl="flat", haim=(0.2, 0.0, 1), palm=(1, 0, 0)),
                   anim="shake", desc="shaking the head no, hand waving 'nahi'"),
     "shrug": E({"browInnerUp": 0.55, **_b("browOuterUp", 0.85), "mouthShrugUpper": 0.4, "mouthShrugLower": 0.65, **_b("mouthFrown", 0.35), **_b("mouthPress", 0.3)},
                {"head": {"out": 14}, "clav_L": {"lift": 18}, "clav_R": {"lift": 18}, "neck": {"fwd": -4}}, "shrug", "shrug", curl="open",
-               desc="'Ã Â¤ÂªÃ Â¤Â¤Ã Â¤Â¾ Ã Â¤Â¨Ã Â¤Â¹Ã Â¥â‚¬Ã Â¤â€š' shrug: shoulders up, palms up, brows up"),
+               desc="'ÃƒÂ Ã‚Â¤Ã‚ÂªÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¤Ã‚Â¾ ÃƒÂ Ã‚Â¤Ã‚Â¨ÃƒÂ Ã‚Â¤Ã‚Â¹ÃƒÂ Ã‚Â¥Ã¢â€šÂ¬ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡' shrug: shoulders up, palms up, brows up"),
     "whisper_secret": E({"mouthPucker": 0.4, "mouthRight": 0.35, "browInnerUp": 0.55, **_b("eyeWide", 0.3), **_b("mouthSmile", 0.2)},
                         {"head": {"turn": 14, "out": -8}, "spine": {"fwd": 10, "out": -6}},
                         "idle", H("mouth", off=(0.05, 0.4, 0.0), tip=0.5, pole=(0.2, 0.8, -0.6), curl="flat", haim=(0.1, 0.0, 1), palm=(0, -1, 0)),
@@ -259,7 +266,7 @@ EXPR = {
     "shushing": E({"mouthPucker": 0.85, "mouthFunnel": 0.2, **_b("browDown", 0.3), "browInnerUp": 0.45, **_b("eyeWide", 0.35)},
                   {"head": {"fwd": 4}, "spine": {"fwd": 6}},
                   "idle", H("mouth", off=(0.0, 0.0, 0.1), tip=0.95, pole=(0.3, 0.6, -0.75), curl="point", clear=0.05, haim=(0.05, -0.1, 1), palm=(0, -1, 0)),
-                  desc="'Ã Â¤Â¶Ã Â¥ÂÃ Â¤Â¶Ã Â¥ÂÃ Â¤Â¶!' finger on the lips"),
+                  desc="'ÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¥Ã‚ÂÃƒÂ Ã‚Â¤Ã‚Â¶!' finger on the lips"),
     "pleading": E({"browInnerUp": 1.0, **_b("eyeWide", 0.55), **_b("mouthFrown", 0.45), "mouthPucker": 0.3, "mouthShrugLower": 0.45},
                   {"head": {"out": 12, "fwd": -6}, "spine": {"fwd": 8}},
                   H("chin", off=(0.5, 0.05, -0.3), tip=0.5, pole=(-0.1, 1.0, -0.6), curl="flat", haim=(0.15, -0.1, 1), palm=(0, -1, 0)),
@@ -277,7 +284,7 @@ EXPR = {
     "teacher_stern": E({**_b("browDown", 0.95), **_b("mouthPress", 0.6), **_b("eyeSquint", 0.3), **_b("eyeWide", 0.3), **_b("mouthFrown", 0.55), **_b("noseSneer", 0.3)},
                        {"head": {"fwd": 6}, "spine": {"fwd": -4}},
                        "hip", H("shoulder", off=(0.5, 0.1, 0.6), tip=0.5, pole=(0, 0.9, -0.5), curl="point", haim=(0.15, 0.0, 1), palm=(1, -0.5, 0)),
-                       anim="wag", desc="Masterji 'Ã Â¤Â¶Ã Â¤Â¾Ã Â¤â€šÃ Â¤Â¤Ã Â¤Â¿!': stern brows, finger up, hand on hip"),
+                       anim="wag", desc="Masterji 'ÃƒÂ Ã‚Â¤Ã‚Â¶ÃƒÂ Ã‚Â¤Ã‚Â¾ÃƒÂ Ã‚Â¤Ã¢â‚¬Å¡ÃƒÂ Ã‚Â¤Ã‚Â¤ÃƒÂ Ã‚Â¤Ã‚Â¿!': stern brows, finger up, hand on hip"),
 }
 
 SHEET = list(EXPR.keys())
@@ -385,7 +392,7 @@ def ensure_face(h, rig, mouth=True, teeth=True):
         LH.sync_proxies(h, rig)
         F = LH.Fit(h, rig)
         if mouth: _mouth_bag(F)
-        try: _fix_teeth(rig)
+        try: _fix_teeth(rig, F)
         except Exception as ex: print("FACE teeth fix fail", repr(ex)[:200])
         if mouth and TOON_TEETH:
             try: _toon_teeth(F, rig)
@@ -405,7 +412,7 @@ def ensure_face(h, rig, mouth=True, teeth=True):
 JAW_KEYS = {"jawOpen", "jawLeft", "jawRight", "jawForward", "mouthClose"}
 
 
-def _fix_teeth(rig):
+def _fix_teeth(rig, F=None):
     """MPFB teeth bound to every face unit get dragged by the lips (fangs / braces). Upper teeth: rigid with the head.
     Lower teeth: jaw keys only. Tongue: jaw + tongueOut. Flat toon materials."""
     import lib_hair as LH
@@ -430,7 +437,38 @@ def _fix_teeth(rig):
             elif kind == "teeth":
                 for i, d in enumerate(kb.data):
                     if bco[i].z > zmid: d.co = bco[i]          # upper teeth never move
-        print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}))
+        moved = _tuck(F, o, scale=0.9 if kind == "teeth" else 0.95) if F is not None else 0
+        print("FACE teeth fix", o.name, "zeroed", nz, "kept", sorted(keep & {kb.name for kb in sk.key_blocks}), "tucked", moved)
+
+
+def _tuck(F, o, scale=0.9, back=0.0025, margin=0.002):
+    """shrink a mouth proxy a little about its centre, move it back, and push every vertex at least `margin` behind the
+    lip / face skin (same offset on every shape key) so smiles / frowns never show teeth through the lips"""
+    s = F.s; sk = o.data.shape_keys
+    blocks = list(sk.key_blocks) if sk else []
+    Mo = F.h.matrix_world.inverted() @ o.matrix_world; Mi3 = Mo.inverted().to_3x3()
+    base = [Vector(v.co) for v in (blocks[0].data if blocks else o.data.vertices)]
+    if not base: return 0
+    cen = sum(base, Vector()) / len(base)
+    bk = Mi3 @ Vector((0, back * s, 0))
+    def xf(c): return cen + (Vector(c) - cen) * scale + bk
+    for kb in blocks:
+        for d in kb.data: d.co = xf(d.co)
+    if not blocks:
+        for v in o.data.vertices: v.co = xf(v.co)
+    cur = [Vector(d.co) for d in (blocks[0].data if blocks else o.data.vertices)]
+    moved = 0
+    for _ in range(2):
+        for i, c in enumerate(cur):
+            p = Mo @ c
+            loc, nrm, _, _ = F.hbvh.find_nearest(p, 0.05 * s)
+            if loc is None: continue
+            sd = (p - loc).dot(nrm)
+            if sd > -margin * s:
+                dl = Mi3 @ (-nrm * (sd + margin * s)); cur[i] = c + dl; moved += 1
+                for kb in blocks: kb.data[i].co = Vector(kb.data[i].co) + dl
+                if not blocks: o.data.vertices[i].co = cur[i]
+    return moved
 
 
 def _toon_teeth(F, rig):
@@ -475,7 +513,7 @@ def _mouth_bag(F):
         for v in bm.verts:
             loc, nrm, _, d = F.hbvh.find_nearest(v.co, 0.1)
             if loc is not None and (v.co - loc).dot(nrm) > -0.009 * s: v.co = loc - nrm * 0.009 * s
-    mat = LH.solid("mouth_inside", (0.22, 0.03, 0.04), 0.7)
+    mat = LH.solid("mouth_inside_dark", (0.11, 0.015, 0.025), 0.8)
     o = LH._obj(F, bm, "mouth_inside", mat, [{"head": 1.0}] * len(bm.verts), tag="facial_hair", subsurf=0, role="mouth")
     o["facial_hair"] = 0; o["mouth_inside"] = 1
     LH.bind_face_keys(F, o, max_d=0.05 * s, k=6, use_all=True)
