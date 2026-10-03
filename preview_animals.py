@@ -252,17 +252,29 @@ if WHO in ("chamki", "sheru"):
             print("ROW", WHO, an, "frames", frames, "lowest z cm", gz)
             wipe(new_objs_since(before) if an != "hop" else new_objs_since(before))
         ALL_IMAGES += save_rows(rows, f"{WHO}_actions")
-        # walk_along foot-slide check
-        reset(rig, root)
-        end = LA.walk_along(rig, [(-2, 0, 0), (0, -1.2, 0), (2, 0, 0)], start_frame=1, action="walk", settle=None)
-        pts = []
-        for f in range(1, int(end)):
-            sc.frame_set(f); pts.append((rig.matrix_world @ rig.pose.bones["IKFrontLeg.L"].matrix).translation.copy())
-        zmin = min(p.z for p in pts)
-        planted = [i for i in range(1, len(pts)) if pts[i].z < zmin + 0.01 and pts[i - 1].z < zmin + 0.01]
-        slide = sum((pts[i] - pts[i - 1]).xy.length for i in planted) / max(1, len(planted))
-        print("WALKALONG", WHO, f"planted-foot slide {slide * 1000:.1f} mm/frame over {len(planted)} frames")
-        if slide > 0.006: check(f"SLIDE {WHO}: walk_along planted foot slides {slide * 1000:.1f} mm/frame")
+    # walk_along foot-slide check: all four feet, straight path and a curve
+    if "actions" in PARTS or "slide" in PARTS:
+        cu = bpy.data.curves.new("slide_path", "CURVE"); cu.dimensions = "3D"; spl = cu.splines.new("BEZIER"); spl.bezier_points.add(2)
+        for i, p in enumerate(((-2, 0, 0), (0, -1.2, 0), (2, 0, 0))):
+            bp_ = spl.bezier_points[i]; bp_.co = p; bp_.handle_left_type = bp_.handle_right_type = "AUTO"
+        curve_obj = bpy.data.objects.new("slide_path", cu); sc.collection.objects.link(curve_obj)
+        for pname, path in (("straight", [(0, 2, 0), (0, -2, 0)]), ("curve", curve_obj)):
+            for act_ in (["walk", "lazy_walk"] if WHO == "sheru" else ["walk", "creep"]):
+                reset(rig, root)
+                end = LA.walk_along(rig, path, start_frame=1, action=act_, settle=None)
+                tracks = {bn: [] for bn in ("IKFrontLeg.L", "IKFrontLeg.R", "IKBackLeg.L", "IKBackLeg.R")}
+                for f in range(6, int(end)):                     # skip the 4-frame blend-in from idle
+                    sc.frame_set(f)
+                    for bn in tracks: tracks[bn].append((rig.matrix_world @ rig.pose.bones[bn].matrix).translation.copy())
+                sl = []
+                for bn, pts in tracks.items():
+                    zmin = min(p.z for p in pts)
+                    for i in range(1, len(pts)):
+                        if pts[i].z < zmin + 0.006 and pts[i - 1].z < zmin + 0.006:
+                            sl.append((pts[i] - pts[i - 1]).xy.length)
+                slide = sum(sl) / max(1, len(sl)); worst = max(sl) if sl else 0
+                print("WALKALONG", WHO, act_, pname, f"mean planted-foot slide {slide * 1000:.2f} mm/frame (worst {worst * 1000:.1f}) over {len(sl)} foot-frames, end frame {end}")
+                if slide > 0.002: check(f"SLIDE {WHO}:{act_} {pname}: planted feet slide {slide * 1000:.2f} mm/frame (target < 2)")
 
     # ---------------- emotions: front close-up + 3/4 full body, one frame each ----------------
     def head_pos():
@@ -286,7 +298,16 @@ if WHO in ("chamki", "sheru"):
             ov = overlaps(body, accs); bad = {k: v for k, v in ov.items() if v > base_ov.get(k, 0) * 1.5 + 12}
             if bad: check(f"CLIP {WHO}:emotion {e}: {bad}")
             hp = head_pos()
-            aim(hp - Vector((0, 0, H * 0.06)), Vector((0.30, -1.0, 0.12)), H * 0.85); label(f"{e}", 1.25)
+            lo = hp - Vector((0.20 * H, 0.20 * H, 0.30 * H)); hi = hp + Vector((0.20 * H, 0.20 * H, 0.06 * H))
+            dg_ = bpy.context.evaluated_depsgraph_get()
+            for o in new_objs_since(before):          # keep every FX (marks, hearts, sweat) inside the close-up
+                if o.type in ("MESH", "FONT", "CURVE") and not o.hide_render:
+                    ev = o.evaluated_get(dg_)
+                    for c in ev.bound_box:
+                        p = ev.matrix_world @ Vector(c)
+                        if (p - hp).length < 1.5: lo = Vector(map(min, lo, p)); hi = Vector(map(max, hi, p))
+            hi.z += 0.05 * H                           # room for the label strip
+            frame_box(lo, hi, view=(0.30, -1.0, 0.12), fill=0.90); label(f"{e}", 1.25)
             cells.append(render(os.path.join(OUT, "stills", f"{WHO}_emo_{e}_front.png")))
             lo, hi = bbox_world([body]); hi.z = max(hi.z, hp.z + 0.25)
             frame_box(lo, hi, view=(0.85, -0.75, 0.30), fill=0.85); label(f"{e}", 1.25)
@@ -298,13 +319,29 @@ if WHO in ("chamki", "sheru"):
     # ---------------- ear + tail language ----------------
     if "language" in PARTS:
         engine("eevee", 300, 240); cells = []
+        ear_tip = next((b for b in ("Ear4.L", "Ear3.L", "Ear2.L") if b in rig.pose.bones), None)
+
+        def tip_in_head(bn):
+            hm = rig.pose.bones["Head"].matrix
+            return hm.inverted() @ rig.pose.bones[bn].tail
+
+        reset(rig, root); LA.play(rig, "idle", 1, loops=3); sc.frame_set(14)
+        ear0 = tip_in_head(ear_tip); earlen = sum(rig.data.bones[b].length for b in ("Ear1.L", "Ear2.L", "Ear3.L", "Ear4.L") if b in rig.data.bones)
         for kind, modes in (("ears", LA.EARS), ("tail", LA.TAIL)):
             for m in modes:
                 reset(rig, root); LA.play(rig, "idle", 1, loops=3); getattr(LA, kind)(rig, m, 1, 40); sc.frame_set(14)
                 if kind == "ears":
-                    hp = head_pos(); aim(hp - Vector((0, 0, H * 0.08)), Vector((0.25, -1.0, 0.25)), H * 1.2)
-                else:
-                    lo, hi = bbox_world([body]); frame_box(lo, hi, view=(0.9, 0.75, 0.35), fill=0.9)
+                    d = (tip_in_head(ear_tip) - ear0)
+                    print("EARS", WHO, m, "tip moved", round(d.length / max(earlen, 1e-6), 2), "x ear length; dir (head space)", tuple(round(x, 2) for x in d))
+                    if m != "relaxed" and d.length < 0.3 * earlen: check(f"EARS {WHO}:{m} tip moves only {d.length / earlen:.2f} ear lengths")
+                    hp = head_pos(); aim(hp - Vector((0, 0, H * 0.06)), Vector((0.85, -0.55, 0.30)), H * 0.9)
+                elif m == "tucked":
+                    tt = rig.pose.bones["Tail3"].tail; hb = [rig.pose.bones[f"IKBackLeg.{s}"].head for s in "LR"]
+                    hy = sum(p.y for p in hb) / 2; hz = rig.pose.bones["BackUpperLeg.L"].head.z
+                    print("TAIL tucked", WHO, "tip y", round(tt.y, 2), "hind feet y", round(hy, 2), "tip z", round(tt.z, 2), "hip z", round(hz, 2), "tip x", round(tt.x, 2))
+                    if not (tt.z < 0.75 * hz and tt.y < hy + 0.6 * abs(hb[0].x - hb[1].x) + 0.3): check(f"TAIL {WHO}: tucked tail tip not between the hind legs ({tuple(round(x, 2) for x in tt)})")
+                if kind == "tail":       # from behind and low, so a tuck between the hind legs is visible
+                    lo, hi = bbox_world([body]); frame_box(lo, hi, view=(0.75, 0.95, 0.18), fill=0.9)
                 label(f"{kind}: {m}", 1.25); cells.append(render(os.path.join(OUT, "stills", f"{WHO}_{kind}_{m}.png")))
         ALL_IMAGES += save_rows(grid(cells, 7), f"{WHO}_language")
 
