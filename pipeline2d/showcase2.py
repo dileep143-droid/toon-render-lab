@@ -17,7 +17,8 @@ _cache = {}
 
 def rgba(path):
     if path not in _cache:
-        a = np.asarray(Image.open(path).convert("RGBA")).copy(); a[:, :, 3] = np.where(a[:, :, 3] > 24, a[:, :, 3], 0); _cache[path] = a
+        a = np.asarray(Image.open(path).convert("RGBA")).copy(); a[:, :, 3] = np.where(a[:, :, 3] > 24, a[:, :, 3], 0)
+        import keyactor; _cache[path] = keyactor.clean(a)
     return _cache[path]
 
 
