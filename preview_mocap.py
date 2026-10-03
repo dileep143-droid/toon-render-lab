@@ -108,6 +108,39 @@ def run():
             for f in range(f0, f1 + 1, 3):
                 sc.frame_set(f); zs.append((bone_world(rig, hl).z, bone_world(rig, hr).z))
             rep["hand_z_max"] = {"L": round(max(z[0] for z in zs), 3), "R": round(max(z[1] for z in zs), 3)}
+            if T.get("cot"):
+                # a charpai-sized seat whose top is under the pelvis at the deepest sitting frame (bottom ~ hip joint - 8 % of height)
+                th = rig.map["thigh_L"][0]; best = None
+                for f in range(f0, f1 + 1, 2):
+                    sc.frame_set(f); hz = (bone_world(rig, th).z + bone_world(rig, rig.map["thigh_R"][0]).z) / 2
+                    if best is None or hz < best[0]: best = (hz, f, rig.arm.matrix_world @ rig.arm.pose.bones[rig.map["hips"][0]].head)
+                hz, fseat, hp = best; top = hz - 0.055 * H
+                bpy.ops.mesh.primitive_cube_add(size=1); cot = bpy.context.active_object; cot.name = "charpai"
+                cot.scale = (1.8, 0.9, top); cot.location = (hp.x, hp.y + 0.45 - 0.12, top / 2)
+                m = bpy.data.materials.new("cot"); m.use_nodes = True; m.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.5, 0.33, 0.18, 1)
+                cot.data.materials.append(m); rep["cot_top"] = round(top, 3); rep["cot_frame"] = fseat
+            if T.get("video"):
+                # fixed camera, every 2nd frame, low samples -> mp4 (foot sliding is only visible in motion, against the 50 cm grid)
+                sc.frame_set(f0); c0 = rig.arm.matrix_world @ rig.arm.pose.bones[rig.map["hips"][0]].head
+                sc.frame_set(f1); c1 = rig.arm.matrix_world @ rig.arm.pose.bones[rig.map["hips"][0]].head
+                mid = (c0 + c1) / 2; span = max(1.5, (c1 - c0).length + 1.2)
+                look(cam, (mid.x + 2.2 * span * 0.5, mid.y - 2.2 * span, 0.9), (mid.x, mid.y, 0.12), 35)
+                bad = []
+                for f in range(f0, f1 + 1, max(1, (f1 - f0) // 6)):
+                    sc.frame_set(f); cv = LO.coverage(h, arm, {"vid": cam.location.copy()}, level=T.get("level", "knee"))
+                    if cv["vid"]["frac"] > TOL: bad.append(f)
+                if bad:
+                    rep["video_skipped_coverage"] = bad; raise_video = True
+                else: raise_video = False
+                vd = os.path.join(OUT, f"_{key}_vid"); os.makedirs(vd, exist_ok=True)
+            if T.get("video") and not raise_video:
+                sc.cycles.samples = 6; rx, ry = sc.render.resolution_x, sc.render.resolution_y
+                sc.render.resolution_x, sc.render.resolution_y = 480, 360
+                for n, f in enumerate(range(f0, f1 + 1, 2)):
+                    sc.frame_set(f); sc.render.filepath = os.path.join(vd, f"{n:04d}.png"); bpy.ops.render.render(write_still=True)
+                sc.cycles.samples = 16; sc.render.resolution_x, sc.render.resolution_y = rx, ry
+                os.system(f"ffmpeg -y -loglevel error -framerate 12 -i {vd}/%04d.png -pix_fmt yuv420p -vf scale=480:360 {os.path.join(OUT, key + '.mp4')}")
+                rep["video"] = key + ".mp4"
             # foot slide (world) over the whole clip, from lib_anim's own checker
             if info["drove"].get("legs"):
                 try: rep["foot_slide"] = {s: A.foot_slide_report(rig, f0, f1, side=s) for s in ("L", "R")}
