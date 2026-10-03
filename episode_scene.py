@@ -327,6 +327,11 @@ for c in S.get("characters", []):
             except Exception as ex:
                 err(f"make_villager {cid} (toon)", ex)
                 h, arm = VL.make_villager(c["body"], c["outfit"], colours=c.get("colours"), extras=c.get("extras", []), name=cid, toon=False, seed=c.get("seed", 0), **c.get("opts", {}))
+            if c.get("hair"):                       # lib_hair style replaces the MPFB hair (e.g. elder_tied_small_bun, white)
+                try:
+                    import lib_hair as LH
+                    LH.add_hair(h, arm, c["hair"], colour=c.get("hair_colour"), **c.get("hair_opts", {}))
+                except Exception as ex: err(f"hair {cid}", ex)
             rig = A.Rig(arm)
         arm.location = P(c["loc"]); arm.rotation_euler = (0, 0, R(c.get("rot_z", 0)))
         bpy.context.view_layer.update()
@@ -359,12 +364,14 @@ for a in S.get("attach", []):
         hc = (hb.head_local + hb.tail_local) / 2
         top = -1e9
         meshes = [ch["h"]] if ch["h"] else []
-        meshes += [m for m in arm.children_recursive if m.type == "MESH" and "hair" in m.name.lower()]
-        for m in meshes:
+        kids = set(arm.children_recursive) | (set(ch["h"].children_recursive) if ch["h"] else set())
+        meshes += [m for m in kids if m.type == "MESH" and ("hair" in m.name.lower() or m.get("hair_piece"))]
+        py = hc.y - a.get("fwd", 0.03)
+        for m in meshes:                                   # top of hair/head right where the prop will sit (not the crown max)
             dg = bpy.context.evaluated_depsgraph_get(); ev = m.evaluated_get(dg); me = ev.to_mesh()
             for v in me.vertices:
                 q = Mi @ (m.matrix_world @ v.co)
-                if abs(q.x - hc.x) < 0.06 and abs(q.y - hc.y) < 0.08: top = max(top, q.z)
+                if abs(q.x - hc.x) < 0.035 and abs(q.y - py) < 0.025: top = max(top, q.z)
             ev.to_mesh_clear()
         if top < -1e8: top = rig.head_top
         local = Vector((hc.x, hc.y - a.get("fwd", 0.03), top + a.get("dz", -0.01)))
