@@ -228,7 +228,24 @@ def demo_audio():
     vid = tmp + "/v.mp4"; C.write_video(frames, vid, fps, crf=26); out = os.path.join(OUT, "audio_mix.mp4"); AM.mix_from_plan(plan, out, video=vid); return out
 
 
-DEMOS = {"audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
+def demo_titles():
+    import puppet as PU, titles as TI
+    fps = C.FPS; F = "NotoSansDevanagari-Bold.ttf"; bg = T.make_background("village_day"); man, rm = T.make_human("man"); dadi, rd = T.make_human("dadi"); kid, rk = T.make_human("kid")
+    pm = PU.Performer(man, rm, [dict(motion="wave", start=0.4, dur=1.4)]); pd_ = PU.Performer(dadi, rd, [dict(motion="namaste", start=1.2, dur=1.8)]); pk = PU.Performer(kid, rk, [dict(motion="nod", start=2.4, dur=1.2)])
+    lines = [dict(start=0.3, end=2.6, text="आज हम एक नई कहानी सुनेंगे", text2="Today we will hear a new story", speaker="dadi"), dict(start=3.0, end=5.4, text="छोटू को बहुत भूख लगी थी, और लड्डू सामने रखे थे!", text2="Chhotu was very hungry, and the laddoos were right there!", speaker="narr")]
+    frames = []
+    for i in range(int(4 * fps)): frames.append(TI.title_card(i / fps, "सोनपुर की टोली", "जादुई लड्डू", font=F, subtitle="एपिसोड 1", dur=4.0))
+    for i in range(int(6 * fps)):
+        t = i / fps; f = bg.copy()
+        for perf, rig, x, hp, fl in ((pd_, rd, 380, 390, False), (pm, rm, 820, 430, True), (pk, rk, 600, 300, False)):
+            sp, info = perf.frame(t, flip=fl); PU.draw_character(f, sp, info, rig, x, 640, hp, flip=fl)
+        TI.lower_third(f, t, "दादी", "सबकी प्यारी", start=0.3, dur=2.4, font=F); TI.lower_third(f, t, "छोटू", "हमेशा भूखा", start=3.0, dur=2.4, font=F, side="right", color=(60, 140, 230)); TI.burn_subtitles(f, lines, t, font=F); frames.append(f)
+    for i in range(int(4 * fps)): frames.append(TI.end_card(i / fps, "मिल-जुलकर बाँटने में ही खुशी है", font=F, dur=4.0))
+    TI.thumbnail([man, kid], "जादुई लड्डू का राज़!", bg=bg, font=F, out_path=os.path.join(OUT, "thumbnail.jpg")); TI.write_srt(lines, os.path.join(OUT, "titles_demo.srt"))
+    return C.write_video(frames, os.path.join(OUT, "titles.mp4"), fps, crf=26)
+
+
+DEMOS = {"titles": demo_titles, "audio": demo_audio, "scene_life": demo_scene_life, "puppet": demo_puppet, "animals": demo_animals, "effects": demo_effects, "camera": demo_camera, "transitions": demo_transitions, "props": demo_props}
 if __name__ == "__main__":
     want = sys.argv[1:] or ["all"]
     for n, fn in DEMOS.items():
