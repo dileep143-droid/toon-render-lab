@@ -1,0 +1,47 @@
+name: vertex_assets
+# Generate 2D episode art with Gemini image models on Vertex AI, billed to the Google trial project.
+# Keyless: GitHub OIDC -> Workload Identity Federation -> service account toon-render (roles/aiplatform.user).
+on:
+  workflow_dispatch:
+    inputs:
+      ep:    { description: "episode folder under pipeline2d/out (needs plan.json)", default: "ep01" }
+      only:  { description: "stages: masters,poses,plates,props", default: "masters,plates,props" }
+      chars: { description: "comma list of characters, empty = all", default: "" }
+      model: { description: "Vertex image model", default: "gemini-3.1-flash-image" }
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -q pillow google-auth requests
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: project-5ab72bd2-b72e-41ff-a08
+          workload_identity_provider: projects/830634294242/locations/global/workloadIdentityPools/github/providers/github
+          service_account: toon-render@project-5ab72bd2-b72e-41ff-a08.iam.gserviceaccount.com
+          token_format: access_token
+      - name: Generate
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          VERTEX_IMAGE_MODEL: ${{ inputs.model }}
+        run: |
+          set -e
+          cd pipeline2d
+          test -f out/${{ inputs.ep }}/plan.json || { echo "missing out/${{ inputs.ep }}/plan.json in the repo"; exit 1; }
+          args="--only ${{ inputs.only }}"
+          [ -n "${{ inputs.chars }}" ] && args="$args --chars ${{ inputs.chars }}"
+          python vertex_gen.py out/${{ inputs.ep }}/plan.json out/series.json out/${{ inputs.ep }}/vertex $args
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vertex-${{ inputs.ep }}-${{ github.run_id }}
+          path: pipeline2d/out/${{ inputs.ep }}/vertex
+          retention-days: 14
