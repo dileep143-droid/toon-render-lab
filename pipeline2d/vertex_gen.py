@@ -130,6 +130,19 @@ def main():
                 jobs.append((f"Edit this drawing: keep EVERYTHING exactly identical (same pose, size, position, clothes, colours, line style, white background) "
                          f"and change ONLY the mouth: {d}. Output the full image at the same size.", f, "3:4", ref, f"mouth {c} {st}"))
         done += run_jobs(jobs); jobs = []
+    if "posemouths" in only:
+        os.makedirs(os.path.join(out, "mouths"), exist_ok=True)
+        MOUTH = {"half": "mouth slightly open, lips parted a little, no teeth, no text anywhere",
+                 "open": "mouth wide open as if singing, dark mouth interior and a small tongue drawn in the same flat cartoon style, no text anywhere"}
+        import glob as _g
+        for f_ in sorted(_g.glob(os.path.join(out, "poses", "*.png"))):
+            pid = os.path.splitext(os.path.basename(f_))[0]; c = pid.split("__")[0] if "__" in pid else pid.split("_")[0]
+            if chars and c not in chars: continue
+            for st, d in MOUTH.items():
+                f = os.path.join(out, "mouths", f"{pid}_{st}.png")
+                jobs.append((f"Edit this drawing: keep EVERYTHING exactly identical (same pose, size, position, clothes, colours, line style, white background) "
+                             f"and change ONLY the mouth: {d}. Output the full image at the same size.", f, "3:4", f_, f"posemouth {pid} {st}"))
+        done += run_jobs(jobs); jobs = []
     if "plates" in only:
         for pl in plan.get("plates", []):
             f = os.path.join(out, "plates", f"{pl['id']}_0.png")
