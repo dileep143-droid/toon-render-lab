@@ -58,8 +58,11 @@ def main():
         if not edits: print("no mouth edits for", char); continue
         if not mp and "open" in edits: mp = mouth_from_diff(master_rgba[:, :, :3], edits["open"]); mp and print("mouth from diff", char, [round(x) for x in mp])
         if not mp: print("no mouth found on master", char); continue
-        cx, cy, mw = mp; rw, rh = mw * 0.9, mw * 0.6
         mys, mxs = np.nonzero(master_rgba[:, :, 3] > 64); mbox = (mxs.min(), mys.min(), mxs.max(), mys.max())
+        fw = max(1, mbox[2] - mbox[0]); cx, cy, mw = mp
+        mw = float(min(max(mw, 0.07 * fw), 0.16 * fw))          # a cartoon mouth is 7-16% of the figure width; never paste more
+        rw, rh = mw * 0.9, mw * 0.6
+        print("mouth", char, "at", round(cx), round(cy), "width", round(mw), "of figure", fw)
         bm = e.setdefault("body_mouth", {})
         for act, ids in e["actions"].items():
             for i, rel in enumerate(ids):
@@ -76,7 +79,8 @@ def main():
                         sc = (bx1 - bx0) / max(mbox[2] - mbox[0], 1)
                         q = [bx0 + fx * (bx1 - bx0), by0 + fy * (by1 - by0), mw * sc]
                     pcx, pcy, pmw = q
-                s = pmw / mw
+                pys, pxs = np.nonzero(rgba[:, :, 3] > 64); pfw = max(1, pxs.max() - pxs.min()) if len(pxs) else fw
+                pmw = float(min(max(pmw, 0.07 * pfw), 0.16 * pfw)); s = pmw / mw
                 for st, ed in edits.items():
                     raw = rgba[:, :, :3].copy()
                     if rel == stand: raw = ed.copy() if ed.shape[:2] == raw.shape[:2] else raw
