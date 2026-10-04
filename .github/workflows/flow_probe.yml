@@ -1,0 +1,9 @@
+name: flow_probe
+on: { workflow_dispatch: {} }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env: { FLOW_COOKIES_B64: ${{ secrets.FLOW_COOKIES_B64 }} }
+        run: test -n "$FLOW_COOKIES_B64" || { echo "secret FLOW_COOKIES_B64 not set"; exit 1; }; python3 tools/flow_probe.py
