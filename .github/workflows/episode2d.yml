@@ -1,0 +1,87 @@
+name: episode2d
+# Render a 2D episode on GitHub (no laptop needed).
+# Private inputs come from the PRIVATE Kaggle dataset <user>/sonpur-2d-<ep> (bundle.tar from pipeline2d/make_bundle.py).
+# The finished mp4 goes ONLY to the PRIVATE Kaggle dataset <user>/sonpur-renders. Nothing private is uploaded as a
+# GitHub artifact (this repo is public, and artifacts of public repos are downloadable).
+on:
+  workflow_dispatch:
+    inputs:
+      ep:     { description: "episode id", default: "ep01" }
+      units:  { description: "unit range a:b for a test (empty = whole episode)", default: "" }
+      slices: { description: "parallel compose processes (empty = one per CPU)", default: "" }
+      name:   { description: "output file name (no extension)", default: "ep01_draft" }
+      key:    { description: "KAGGLE_KEYn secret (must own the bundle dataset)", default: "1" }
+      user:   { description: "Kaggle user of that key", default: "mani7673" }
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets[format('KAGGLE_KEY{0}', inputs.key)] }}
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q numpy opencv-python-headless pillow kaggle
+          test -n "$KAGGLE_API_TOKEN" || { echo "secret KAGGLE_KEY${{ inputs.key }} is empty"; exit 1; }
+          nproc; free -g; df -h . | tail -1
+      - name: Private bundle
+        run: |
+          kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }} -p "$RUNNER_TEMP/b" --unzip -q
+          tar -xf "$RUNNER_TEMP/b/bundle.tar" -C "$GITHUB_WORKSPACE"
+          rm -rf "$RUNNER_TEMP/b" pipeline2d/out
+          ln -s "$GITHUB_WORKSPACE/p2d_out" pipeline2d/out
+          # the laptop wrote absolute Windows paths into a few JSON files -> rewrite them for this machine
+          python3 - <<'EOF'
+          import glob, json, os
+          ws = os.environ["GITHUB_WORKSPACE"]; pre = "C:\\Users\\goddu\\repos\\toon-render-lab"
+          def fix(x):
+              if isinstance(x, dict): return {k: fix(v) for k, v in x.items()}
+              if isinstance(x, list): return [fix(v) for v in x]
+              if isinstance(x, str) and x.lower().startswith(pre.lower()): return ws + x[len(pre):].replace("\\", "/")
+              return x
+          n = 0
+          for f in glob.glob("p2d_out/**/*.json", recursive=True):
+              t = open(f, encoding="utf-8-sig").read()
+              if "C:\\\\" not in t and "C:\\\\".lower() not in t: continue
+              json.dump(fix(json.loads(t)), open(f, "w", encoding="utf-8"), ensure_ascii=False, indent=1); n += 1; print("fixed", f)
+          print(n, "files rewritten")
+          EOF
+          ls pipeline2d/out/${{ inputs.ep }} | head -30
+          du -sh p2d_out episodes 2>/dev/null || true
+      - name: Render
+        run: |
+          mkdir -p "$RUNNER_TEMP/out"; OUT="$RUNNER_TEMP/out/${{ inputs.name }}.mp4"
+          N="${{ inputs.slices }}"; [ -n "$N" ] || N=$(nproc)
+          U="${{ inputs.units }}"; ARGS="--slices $N"; [ -n "$U" ] && ARGS="$ARGS --units $U"
+          python3 pipeline2d/render_parallel.py ${{ inputs.ep }} "$OUT" $ARGS > "$RUNNER_TEMP/render.log" 2>&1 &
+          PID=$!
+          while kill -0 $PID 2>/dev/null; do
+            sleep 120; date -u +%H:%M
+            for l in pipeline2d/out/${{ inputs.ep }}/slices/slice_*.mp4.log; do [ -f "$l" ] && echo "  $(basename $l): $(grep -E 'frame|timeline|wrote|Error' $l | tail -1)"; done
+          done
+          RC=0; wait $PID || RC=$?
+          cat "$RUNNER_TEMP/render.log"
+          for l in pipeline2d/out/${{ inputs.ep }}/slices/slice_*.mp4.log; do echo "== $l"; tail -15 "$l"; done
+          [ $RC -eq 0 ] || exit $RC
+          ffprobe -v error -show_entries stream=codec_type,duration -of compact "$OUT"
+          ls -la "$OUT"
+      - name: Save to the private Kaggle dataset
+        run: |
+          D="$RUNNER_TEMP/ds"; mkdir -p "$D"; REF=${{ inputs.user }}/sonpur-renders
+          if kaggle datasets status $REF 2>/dev/null | grep -qi ready; then
+            kaggle datasets download $REF -p "$D" --unzip -q || true
+            cp "$RUNNER_TEMP/out/${{ inputs.name }}.mp4" "$D/"
+            echo "{\"title\": \"sonpur-renders\", \"id\": \"$REF\", \"licenses\": [{\"name\": \"other\"}]}" > "$D/dataset-metadata.json"
+            kaggle datasets version -p "$D" -m "${{ inputs.name }} (run ${{ github.run_id }})"
+          else
+            cp "$RUNNER_TEMP/out/${{ inputs.name }}.mp4" "$D/"
+            echo "{\"title\": \"sonpur-renders\", \"id\": \"$REF\", \"licenses\": [{\"name\": \"other\"}]}" > "$D/dataset-metadata.json"
+            kaggle datasets create -p "$D"
+          fi
+          ls -la "$D"
