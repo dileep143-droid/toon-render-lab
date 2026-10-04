@@ -10,17 +10,17 @@ import numpy as np
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); KEYS = os.path.join(HERE, "out", "keys")
 import poses as PS
-USE_MOUTH_PATCHES = False   # 4 Oct: the generated mouth edits sit on the chin (generic boxes) -> compose draws the mouth instead
+USE_MOUTH_PATCHES = os.environ.get("P2D_MOUTH_PATCHES", "0") == "1"   # 4 Oct: the generated mouth edits sit on the chin (generic boxes) -> compose draws the mouth instead
 
 # plan pose name -> base drawing ("action_index"); gestures and walks are chosen from the moves
 POSE2KEY = {"stand": "stand_0", "stand_3q": "stand_0", "walk": "walk_0", "sit_cross": "sit_2", "sit_hold": "sit_hold_0", "point": "wag_1",
             "salute": "salute_0", "reach": "reach_2", "hand_cheek": "hand_cheek_0", "hold_plate": "hold_plate_0"}
 FALLBACK = {"sit_hold_0": "sit_2", "wag_1": "point_1", "salute_0": "wave_1", "hand_cheek_0": "stand_0", "hold_plate_0": "eat_0"}
 # r5 (ep01 missing actions): plan pose name -> drawing; a missing drawing falls back to the nearest older pose
-POSE2KEY.update({"count": "count_0", "carry_walk": "carry_walk_0", "reach_up": "reach_up_0", "torch": "torch_0", "stool": "stool_1", "stool_climb": "stool_0",
+POSE2KEY.update({"count": "count_0", "carry_walk": "carry_walk_0", "reach_up": "reach_up_0", "torch": "torch_0", "stool": "stool_0", "stool_climb": "stool_climb_0",
                  "cry": "cry_0", "cry_sorry": "cry_1", "jasmine": "jasmine_0", "pull_ear": "pull_ear_0", "wince": "wince_0", "write": "write_0",
                  "net_swing": "net_swing_0", "net_tangled": "net_tangled_0", "pull": "pull_0", "fry": "fry_0", "offer": "offer_0", "belan": "belan_0", "chew": "chew_0"})
-FALLBACK.update({"count_0": "sit_hold_0", "carry_walk_0": "hold_plate_0", "reach_up_0": "reach_2", "torch_0": "point_1", "stool_1": "stand_0", "stool_0": "stand_0",
+FALLBACK.update({"count_0": "sit_hold_0", "carry_walk_0": "hold_plate_0", "reach_up_0": "reach_2", "torch_0": "point_1", "stool_climb_0": "stand_0", "stool_0": "stand_0",
                  "cry_0": "stand_0", "cry_1": "stand_0", "jasmine_0": "hand_cheek_0", "pull_ear_0": "reach_2", "wince_0": "hand_cheek_0", "write_0": "hold_plate_0",
                  "net_swing_0": "wave_1", "net_tangled_0": "stand_0", "pull_0": "reach_2", "fry_0": "hold_plate_0", "offer_0": "hold_plate_0", "belan_0": "wag_1"})
 # multi-drawing actions: while an "arm" (or "cycle") move is active, the action's own drawings alternate (frame order, frames each held for n/24 s)
