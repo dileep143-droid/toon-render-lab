@@ -17,6 +17,19 @@ def mouth_pt(rgba_path):
     return keyactor.mouth_pts(rgba_path, a)      # [cx, cy, width] or None
 
 
+def mouth_from_diff(master_rgb, open_rgb):
+    """mouth = largest changed blob between the master and its open-mouth edit (upper 60% of the figure)"""
+    import cv2
+    if master_rgb.shape != open_rgb.shape: return None
+    d = np.abs(master_rgb.astype(int) - open_rgb.astype(int)).sum(2) > 90
+    H = d.shape[0]; d[int(H * 0.6):] = False
+    d = cv2.morphologyEx(d.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+    n, lab, st, cen = cv2.connectedComponentsWithStats(d)
+    if n < 2: return None
+    i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    return [float(cen[i][0]), float(cen[i][1]), float(st[i, cv2.CC_STAT_WIDTH])]
+
+
 def ellipse_mask(h, w, cx, cy, rw, rh):
     yy, xx = np.mgrid[0:h, 0:w]
     d = ((xx - cx) / max(rw, 1)) ** 2 + ((yy - cy) / max(rh, 1)) ** 2
@@ -33,7 +46,6 @@ def main():
         sd = os.path.join(keys, stand.replace("/", os.sep)); crop = json.load(open(os.path.join(sd, "crop.json"))).get("crop")
         master_rgba = np.asarray(Image.open(os.path.join(sd, "rgba.png")).convert("RGBA"))
         mp = mouth_pt(os.path.join(sd, "rgba.png"))
-        if not mp: print("no mouth found on master", char); continue
         edits = {}
         for st in ("half", "open"):
             f = os.path.join(vx, "mouths", f"{char}_{st}.png")
@@ -44,7 +56,10 @@ def main():
                 im = im.crop(crop)
             edits[st] = np.asarray(im)
         if not edits: print("no mouth edits for", char); continue
+        if not mp and "open" in edits: mp = mouth_from_diff(master_rgba[:, :, :3], edits["open"]); mp and print("mouth from diff", char, [round(x) for x in mp])
+        if not mp: print("no mouth found on master", char); continue
         cx, cy, mw = mp; rw, rh = mw * 0.9, mw * 0.6
+        mys, mxs = np.nonzero(master_rgba[:, :, 3] > 64); mbox = (mxs.min(), mys.min(), mxs.max(), mys.max())
         bm = e.setdefault("body_mouth", {})
         for act, ids in e["actions"].items():
             for i, rel in enumerate(ids):
@@ -53,7 +68,13 @@ def main():
                 if rel == stand: pcx, pcy, pmw = cx, cy, mw
                 else:
                     q = mouth_pt(os.path.join(d, "rgba.png"))
-                    if not q: continue
+                    if not q:   # relative position inside the figure box (same fraction as on the master)
+                        ys_, xs_ = np.nonzero(rgba[:, :, 3] > 64)
+                        if not len(xs_): continue
+                        bx0, by0, bx1, by1 = xs_.min(), ys_.min(), xs_.max(), ys_.max()
+                        fx = (cx - mbox[0]) / max(mbox[2] - mbox[0], 1); fy = (cy - mbox[1]) / max(mbox[3] - mbox[1], 1)
+                        sc = (bx1 - bx0) / max(mbox[2] - mbox[0], 1)
+                        q = [bx0 + fx * (bx1 - bx0), by0 + fy * (by1 - by0), mw * sc]
                     pcx, pcy, pmw = q
                 s = pmw / mw
                 for st, ed in edits.items():
