@@ -7,7 +7,7 @@ on:
     inputs:
       ep:         { description: "episode id", default: "ep01" }
       art_run:    { description: "vertex_assets run id whose artifact holds masters/poses/mouths/plates/props (empty = Kaggle art dataset)", default: "" }
-      render:     { description: "1 = dispatch episode2d after the bundle", default: "1" }
+      render:     { description: "test = 1-minute test render (units 0:8) after the bundle, full = whole episode, 0 = none", default: "test" }
       name:       { description: "render output name", default: "ep01_auto" }
       key:        { description: "KAGGLE_KEYn", default: "1" }
       user:       { description: "Kaggle user", default: "mani7673" }
@@ -54,7 +54,9 @@ jobs:
           python gate_coverage.py ${{ inputs.ep }}
           python make_bundle.py ${{ inputs.ep }} --key ${{ inputs.key }}
       - name: Render
-        if: inputs.render == '1'
+        if: inputs.render == 'test' || inputs.render == 'full' || inputs.render == '1'
         run: |
           sleep 90
-          gh workflow run episode2d.yml -R ${{ github.repository }} -f ep=${{ inputs.ep }} -f name=${{ inputs.name }} -f key=${{ inputs.key }} -f user=${{ inputs.user }} -f mouth_patches=1 -f draw_mouth=0
+          U=""; N="${{ inputs.name }}"
+          if [ "${{ inputs.render }}" = "test" ]; then U="0:8"; N="${N}_test"; fi
+          gh workflow run episode2d.yml -R ${{ github.repository }} -f ep=${{ inputs.ep }} -f name="$N" -f units="$U" -f key=${{ inputs.key }} -f user=${{ inputs.user }} -f mouth_patches=1 -f draw_mouth=0
