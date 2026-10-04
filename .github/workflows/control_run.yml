@@ -1,0 +1,26 @@
+name: control_run
+# The kulfi-agent (cloud Claude) and the control-room site start factory workflows by committing control/RUN.json:
+#   {"workflow": "episode2d.yml", "inputs": {"ep": "ep01", "name": "ep01_full", "mouth_patches": "1", "draw_mouth": "0"}, "note": "why"}
+on:
+  push:
+    branches: [main]
+    paths: [control/RUN.json]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dispatch the requested workflow
+        env: { GH_TOKEN: ${{ github.token }} }
+        run: |
+          python3 - <<'EOF2'
+          import json, os, subprocess
+          r = json.load(open("control/RUN.json"))
+          wf = r["workflow"]; args = []
+          for k, v in (r.get("inputs") or {}).items(): args += ["-f", f"{k}={v}"]
+          print("dispatching", wf, args, "|", r.get("note", ""))
+          subprocess.run(["gh", "workflow", "run", wf, "--ref", "main", *args], check=True)
+          EOF2
