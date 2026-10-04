@@ -74,8 +74,10 @@ def main():
             if chars and c not in chars: continue
             desc = v.get("desc") or v.get("prompt") or str(v)
             f = os.path.join(out, "masters", f"{c}.png")
-            ok = gen(f"{STYLE}\nCharacter design, master reference: {desc}. Standing, full body from head to feet, front view, arms relaxed, "
-                     f"mouth closed, neutral friendly expression. Single character only, isolated on a plain pure white background, nothing else.", f, "3:4")
+            animal = any(w in desc.lower() for w in ("goat", "dog", "cow", "cat", "bird", "monkey", "buffalo"))
+            pose_txt = ("a real four-legged animal standing naturally on all four legs, side view facing right, whole body visible, NOT upright, NOT human-like" if animal else "Standing, full body from head to feet, front view, arms relaxed")
+            ok = gen(f"{STYLE}\nCharacter design, master reference: {desc}. {pose_txt}, "
+                     f"mouth closed, neutral friendly expression. Single character only, isolated on a plain pure white background, nothing else.", f, "4:3" if animal else "3:4")
             print("master", c, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
     if "poses" in only:
         for p in plan.get("poses", []):
@@ -98,7 +100,7 @@ def main():
             pid = pr["id"] if isinstance(pr, dict) else pr
             f = os.path.join(out, "props", f"{pid}.png")
             txt = (pr.get("prompt") if isinstance(pr, dict) else None) or PROP_TEXT.get(pid, pid.replace("_", " "))
-            ok = gen(f"{STYLE}\nSingle object only: {txt}. Isolated on a plain pure white background, nothing else, no hands, no text.", f, "1:1")
+            ok = gen(f"{STYLE}\nSingle object only, a plain inanimate object with NO face, no eyes, no mouth: {txt}. Isolated on a plain pure white background, nothing else, no hands, no text.", f, "1:1")
             print("prop", pid, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
     # contact sheet
     cells = []
