@@ -30,16 +30,16 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install -q numpy opencv-python-headless pillow kaggle
       - run: echo "KAGGLE_KEY${{ inputs.key }}=$KAGGLE_API_TOKEN" >> $GITHUB_ENV
-      - name: Fetch art
+      - name: Fetch art (Kaggle art dataset, then overlay a vertex_assets run artifact if given)
         run: |
           mkdir -p art
+          kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }}-art -p art --unzip -q || echo "no art dataset yet"
           if [ -n "${{ inputs.art_run }}" ]; then
             gh run download ${{ inputs.art_run }} -D art_dl -R ${{ github.repository }}
-            d=$(find art_dl -maxdepth 2 -type d -name masters | head -1); cp -r "$(dirname "$d")"/. art/
-          else
-            kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }}-art -p art --unzip -q
+            for d in $(find art_dl -maxdepth 3 -type d \( -name masters -o -name poses -o -name mouths -o -name plates -o -name props \)); do mkdir -p "art/$(basename $d)"; cp -r "$d"/. "art/$(basename $d)/"; done
           fi
-          ls art; ls art/poses | wc -l; ls art/mouths 2>/dev/null | wc -l
+          for d in masters poses mouths plates props; do echo "$d: $(ls art/$d 2>/dev/null | wc -l)"; done
+          test -n "$(ls art/masters 2>/dev/null)" || { echo "no masters found"; exit 1; }
       - name: Existing bundle (plan, audio, old keys) from Kaggle
         run: |
           kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }} -p b --unzip -q
