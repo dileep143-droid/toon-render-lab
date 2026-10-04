@@ -15,12 +15,17 @@ on:
       mouth_patches: { description: "1 = drawn mouth states from the key drawings (Vertex art), 0 = old behaviour", default: "1" }
       draw_mouth:    { description: "1 = compose draws a flat cartoon mouth, 0 = off", default: "0" }
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   render:
     runs-on: ubuntu-latest
     timeout-minutes: 350
     env:
       KAGGLE_API_TOKEN: ${{ secrets[format('KAGGLE_KEY{0}', inputs.key)] }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       PYTHONUTF8: "1"
       P2D_MOUTH_PATCHES: ${{ inputs.mouth_patches }}
       P2D_DRAW_MOUTH: ${{ inputs.draw_mouth }}
@@ -88,6 +93,24 @@ jobs:
           [ $RC -eq 0 ] || exit $RC
           ffprobe -v error -show_entries stream=codec_type,duration -of compact "$OUT"
           ls -la "$OUT"
+      - name: QA report (one frame per shot + Gemini judge) -> control/QA_<name>.md
+        if: always()
+        run: |
+          set +e
+          OUT="$RUNNER_TEMP/out/${{ inputs.name }}.mp4"; Q="$RUNNER_TEMP/qa"; mkdir -p "$Q" control
+          R="control/QA_${{ inputs.name }}.md"
+          if [ -f "$OUT" ]; then
+            python3 pipeline2d/qa_shots.py ${{ inputs.ep }} "$OUT" "$Q" ${{ inputs.units != '' && format('--units {0}', inputs.units) || '' }} > "$Q/qa.log" 2>&1
+            echo "# QA ${{ inputs.name }} (run ${{ github.run_id }}, $(date -u +%FT%TZ))" > "$R"
+            echo "" >> "$R"; echo "Frames: $(ls "$Q"/*.jpg 2>/dev/null | grep -vc sheet_) shots. Sheets: $(ls "$Q"/sheet_*.jpg 2>/dev/null | wc -l)." >> "$R"
+            echo "" >> "$R"; echo "## Gemini judge" >> "$R"
+            python3 tools/frame_check.py "$Q"/sheet_*.jpg --max 8 --q "Flat 2D cartoon episode frames. FAIL a frame if: a character's mouth patch is misplaced (dark/odd patch on chin, neck or cheek), a face is warped or squeezed, a white halo or jagged edge surrounds a character, a prop looks photographic/realistic instead of flat cartoon, a character floats or is cut strangely, clothing colour differs from the same character in other frames, text/gibberish appears, or the frame is black. Report per frame id (labels like s008_b) with the reason." >> "$R" 2>&1 || echo "(frame_check unavailable)" >> "$R"
+          else
+            echo "# QA ${{ inputs.name }}: RENDER FAILED (run ${{ github.run_id }})" > "$R"
+          fi
+          git config user.email "factory@kulfi"; git config user.name "factory-qa"
+          git add "$R"; git commit -m "QA report for ${{ inputs.name }} (run ${{ github.run_id }})" || true
+          git pull --rebase origin main || true; git push origin HEAD:main || true
       - name: Save to the private Kaggle dataset
         run: |
           D="$RUNNER_TEMP/ds"; mkdir -p "$D"; REF=${{ inputs.user }}/sonpur-renders
