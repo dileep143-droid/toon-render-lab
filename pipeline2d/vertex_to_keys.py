@@ -25,10 +25,11 @@ def cutout(path, tol=28):
     alpha = cv2.GaussianBlur(alpha, (3, 3), 0)
     rgba = np.dstack([im, alpha])
     ys, xs = np.nonzero(alpha > 64)
+    box = (0, 0, w, h)
     if len(xs):   # crop with a margin
-        x0, x1, y0, y1 = max(xs.min() - 8, 0), min(xs.max() + 9, w), max(ys.min() - 8, 0), min(ys.max() + 9, h)
-        rgba = rgba[y0:y1, x0:x1]
-    return Image.fromarray(rgba, "RGBA")
+        x0, x1, y0, y1 = int(max(xs.min() - 8, 0)), int(min(xs.max() + 9, w)), int(max(ys.min() - 8, 0)), int(min(ys.max() + 9, h))
+        rgba = rgba[y0:y1, x0:x1]; box = (x0, y0, x1, y1)
+    im = Image.fromarray(rgba, "RGBA"); im.info["crop"] = box; return im
 
 
 def main():
@@ -40,6 +41,7 @@ def main():
     try:
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from keyactor import POSE2KEY
     except Exception: POSE2KEY = {}
+    src_path = [None]
     def put(char, pose, img):
         """store under the key name keyactor will look up for this plan pose (e.g. sit_cross -> sit_2); later duplicates get the next index"""
         e = sel.setdefault(char, {"seed": 0, "body": body_map.get(char) or ("adult" if char in ADULTS else "child"), "actions": {}})
@@ -48,13 +50,14 @@ def main():
         if i < len(lst) and lst[i] is not None and not lst[i].endswith("/pad"): i = len(lst)
         rel = f"{char}/vx/{action}_{i}"
         d = os.path.join(keys, char, "vx", f"{action}_{i}"); os.makedirs(d, exist_ok=True); img.save(os.path.join(d, "rgba.png"))
+        json.dump({"crop": img.info.get("crop"), "src": src_path[0]}, open(os.path.join(d, "crop.json"), "w"))
         while len(lst) <= i: lst.append(None)
         lst[i] = rel
         for j in range(len(lst)):                       # fill gaps with this drawing so keyactor never sees None
             if lst[j] is None: lst[j] = rel
         return rel
     for f in sorted(glob.glob(os.path.join(vx, "masters", "*.png"))):
-        c = os.path.splitext(os.path.basename(f))[0]; put(c, "stand", cutout(f)); print("stand", c, flush=True)
+        c = os.path.splitext(os.path.basename(f))[0]; src_path[0] = f; put(c, "stand", cutout(f)); print("stand", c, flush=True)
     by_id = {p["id"]: p for p in plan.get("poses", [])}
     for f in sorted(glob.glob(os.path.join(vx, "poses", "*.png"))):
         pid = os.path.splitext(os.path.basename(f))[0]; p = by_id.get(pid)
@@ -62,7 +65,7 @@ def main():
             if "__" in pid: c, act = pid.split("__", 1); act = act.rsplit("_", 1)[0] if act[-1].isdigit() else act
             else: continue
         else: c, act = p["char"], p.get("pose", "stand")
-        put(c, act, cutout(f)); print("pose", pid, "->", c, act, flush=True)
+        src_path[0] = f; put(c, act, cutout(f)); print("pose", pid, "->", c, act, flush=True)
     json.dump(sel, open(sel_p, "w"), indent=1); print("selection:", {c: len(e["actions"]) for c, e in sel.items()})
     if assets:
         for sub in ("plates", "props"):
