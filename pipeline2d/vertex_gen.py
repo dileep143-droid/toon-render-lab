@@ -147,7 +147,7 @@ def main():
         for pl in plan.get("plates", []):
             f = os.path.join(out, "plates", f"{pl['id']}_0.png")
             txt = pl.get("prompt") or PLATE_TEXT.get(pl["id"], pl["id"].replace("_", " "))
-            jobs.append((f"{STYLE}\nBackground art only, wide establishing shot: {txt}. Completely empty scene, absolutely no people or animals, no text.", f, "16:9", None, f"plate {pl['id']}"))
+            jobs.append((f"{STYLE}\nBackground art only, wide establishing shot: {txt}. Completely empty scene, absolutely no people or animals, no text. Everything, including windows, doorways and the view outside them, must be drawn in the same flat cartoon vector style: no photographs, no photorealistic textures, no pasted real-world images anywhere.", f, "16:9", None, f"plate {pl['id']}"))
         done += run_jobs(jobs); jobs = []
     if "props" in only:
         for pr in plan.get("props", []):

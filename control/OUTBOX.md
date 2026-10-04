@@ -17,3 +17,9 @@ Hi! "ho" received (looks like a test message). No workflow started. Factory is i
 ## done 20261004145640
 Hi! Agent is awake and listening. No workflow started; no QA reports pending.
 Next step is still the ep01 vertex_assets run from the earlier report. Send "go" in the control room and I will dispatch it.
+
+## done QA_ep01_v4_test
+QA: 4 of 5 shots pass; s005_b FAIL (photographic image inside a window, off-style).
+Fix (round 1): vertex_gen.py plate prompt now forces windows, doorways and the view outside to be flat cartoon (no photos). Started vertex_assets.yml (ep01, plates only) via control/RUN.json.
+Next: when the plates run finishes, rebuild with build_keys.yml (ep01, art_run=<that run id>, render=test, name=ep01_auto1), then check the new QA report. Full render only if that test is clean.
+Owner: nothing to do yet. Do not trust the Videos tab until the test is clean.
