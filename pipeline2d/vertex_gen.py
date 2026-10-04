@@ -1,0 +1,122 @@
+"""Generate episode art with Gemini image models on Vertex AI (billed to the trial project, keyless on GitHub via WIF).
+  python vertex_gen.py <plan.json> <series.json> <out_dir> [--only masters,poses,plates,props] [--chars dadi,chhotu]
+Layout written: <out>/masters/<char>.png, <out>/poses/<pose_id>.png, <out>/plates/<plate_id>_0.png, <out>/props/<prop>.png, <out>/sheet.jpg
+Auth: GOOGLE_OAUTH_ACCESS_TOKEN env, else google-auth ADC, else `gcloud auth print-access-token`. Tokens are never printed."""
+import base64, json, os, subprocess, sys, time, urllib.error, urllib.request
+from PIL import Image
+
+PROJECT = os.environ.get("VERTEX_PROJECT", "project-5ab72bd2-b72e-41ff-a08")
+MODEL = os.environ.get("VERTEX_IMAGE_MODEL", "gemini-3.1-flash-image")
+STYLE = ("Flat 2D vector cartoon in the style of Indian animated moral-story YouTube channels: clean uniform black outlines, "
+         "flat cel shading, bright colours, large expressive eyes, kids TV animation, no text, no watermark.")
+PLATE_TEXT = {
+    "courtyard_morning": "the open mud courtyard of a village house in Sonpur, Bihar, at morning: charpai cot, tulsi plant, clay pots, neem tree, soft golden light",
+    "courtyard_noon": "the same village house courtyard at bright noon, hard shadows, blue sky",
+    "courtyard_evening": "the same village house courtyard at evening, orange sunset light",
+    "courtyard_night": "the same village house courtyard at night, moonlight, a lantern glowing, deep blue sky with stars",
+    "house_inside_noon": "inside a simple village house in Bihar: mud walls, wooden almirah, a chauki low table, shelf with brass pots, daylight from a window",
+    "house_inside_evening": "the same village house interior at evening, warm lamp light",
+    "well_peepal_evening": "a village well beside a huge peepal tree at evening, stone platform, bucket and rope, orange sky",
+    "well_peepal_dusk": "the same village well and peepal tree at dusk, purple sky, first stars",
+    "well_peepal_twilight": "the same village well and peepal tree in deep twilight, dark blue, fireflies",
+    "lallan_shop_evening": "a small village sweet shop (halwai) at evening: wooden counter, glass jars, trays of laddoos and jalebi, a hanging bulb, a plain signboard with no readable text",
+}
+PROP_TEXT = {
+    "laddoo": "a single round orange-yellow besan laddoo", "laddoo_big": "a big round golden laddoo, slightly shiny",
+    "empty_thali": "an empty round bronze thali plate", "laddoo_plate": "a bronze thali heaped with eleven round laddoos",
+    "belan": "a wooden rolling pin (belan)", "paraat": "a wide shallow steel paraat basin with besan dough",
+}
+
+
+def token():
+    t = os.environ.get("GOOGLE_OAUTH_ACCESS_TOKEN")
+    if t: return t
+    r = subprocess.run("gcloud auth print-access-token", shell=True, capture_output=True, text=True)
+    if r.returncode == 0 and r.stdout.strip(): return r.stdout.strip()
+    import google.auth, google.auth.transport.requests
+    c, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"]); c.refresh(google.auth.transport.requests.Request()); return c.token
+
+
+TOK = None
+def gen(prompt, out, ar="1:1", ref=None, tries=6):
+    global TOK
+    if os.path.exists(out): return True
+    TOK = TOK or token()
+    parts = []
+    if ref: parts.append({"inlineData": {"mimeType": "image/png", "data": base64.b64encode(open(ref, "rb").read()).decode()}})
+    parts.append({"text": prompt})
+    body = {"contents": [{"role": "user", "parts": parts}], "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": ar}}}
+    url = f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}/locations/global/publishers/google/models/{MODEL}:generateContent"
+    for a in range(tries):
+        req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "Authorization": "Bearer " + TOK})
+        try:
+            with urllib.request.urlopen(req, timeout=240) as r: j = json.load(r)
+            img = [p for p in j.get("candidates", [{}])[0].get("content", {}).get("parts", []) if "inlineData" in p]
+            if img:
+                open(out, "wb").write(base64.b64decode(img[0]["inlineData"]["data"])); return True
+            print("  no image:", os.path.basename(out), str(j)[:160], flush=True); return False
+        except urllib.error.HTTPError as e:
+            code = e.code; msg = e.read().decode(errors="ignore")[:120]
+            if code == 401: TOK = token(); continue
+            print(f"  {code} {os.path.basename(out)} retry {a+1}", flush=True); time.sleep(8 * (a + 1) if code == 429 else 4)
+    return False
+
+
+def main():
+    a = sys.argv[1:]
+    plan = json.load(open(a[0], encoding="utf-8-sig")); series = json.load(open(a[1], encoding="utf-8-sig")); out = a[2]
+    opt = lambda f, d: a[a.index(f) + 1] if f in a else d
+    only = opt("--only", "masters,poses,plates,props").split(","); chars = opt("--chars", "").split(",") if "--chars" in a else None
+    for d in ("masters", "poses", "plates", "props"): os.makedirs(os.path.join(out, d), exist_ok=True)
+    C = series["characters"]; t0 = time.time(); done = []
+    if "masters" in only:
+        for c, v in C.items():
+            if chars and c not in chars: continue
+            desc = v.get("desc") or v.get("prompt") or str(v)
+            f = os.path.join(out, "masters", f"{c}.png")
+            ok = gen(f"{STYLE}\nCharacter design, master reference: {desc}. Standing, full body from head to feet, front view, arms relaxed, "
+                     f"mouth closed, neutral friendly expression. Single character only, isolated on a plain pure white background, nothing else.", f, "3:4")
+            print("master", c, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+    if "poses" in only:
+        for p in plan.get("poses", []):
+            c = p["char"]
+            if chars and c not in chars: continue
+            ref = os.path.join(out, "masters", f"{c}.png")
+            if not os.path.exists(ref): print("  no master for", c); continue
+            f = os.path.join(out, "poses", f"{p['id']}.png")
+            ok = gen(f"{STYLE}\nDraw EXACTLY the same character as in the reference image (same face, hair, clothes, colours, proportions). "
+                     f"New pose: {p.get('prompt','')} (pose type: {p.get('pose','')}). Full body, isolated on a plain pure white background, nothing else.", f, "3:4", ref=ref)
+            print("pose", p["id"], ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+    if "plates" in only:
+        for pl in plan.get("plates", []):
+            f = os.path.join(out, "plates", f"{pl['id']}_0.png")
+            txt = pl.get("prompt") or PLATE_TEXT.get(pl["id"], pl["id"].replace("_", " "))
+            ok = gen(f"{STYLE}\nBackground art only, wide establishing shot: {txt}. Completely empty scene, absolutely no people or animals, no text.", f, "16:9")
+            print("plate", pl["id"], ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+    if "props" in only:
+        for pr in plan.get("props", []):
+            pid = pr["id"] if isinstance(pr, dict) else pr
+            f = os.path.join(out, "props", f"{pid}.png")
+            txt = (pr.get("prompt") if isinstance(pr, dict) else None) or PROP_TEXT.get(pid, pid.replace("_", " "))
+            ok = gen(f"{STYLE}\nSingle object only: {txt}. Isolated on a plain pure white background, nothing else, no hands, no text.", f, "1:1")
+            print("prop", pid, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+    # contact sheet
+    cells = []
+    for d, size in (("masters", (240, 320)), ("poses", (180, 240)), ("plates", (384, 216)), ("props", (160, 160))):
+        fs = sorted(os.listdir(os.path.join(out, d)))
+        for f in fs:
+            try: cells.append(Image.open(os.path.join(out, d, f)).convert("RGB").resize(size))
+            except Exception: pass
+    if cells:
+        W = 1920; x = y = 0; rowh = 0; rows = []
+        for im in cells:
+            if x + im.width > W: y += rowh; x = 0; rowh = 0
+            rows.append((im, x, y)); x += im.width; rowh = max(rowh, im.height)
+        sheet = Image.new("RGB", (W, y + rowh), "white")
+        for im, px, py in rows: sheet.paste(im, (px, py))
+        sheet.save(os.path.join(out, "sheet.jpg"), quality=85)
+    print("DONE", len(done), "images in", f"{time.time()-t0:.0f}s", flush=True)
+
+
+if __name__ == "__main__":
+    main()
