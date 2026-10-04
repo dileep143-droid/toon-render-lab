@@ -119,8 +119,8 @@ def main():
         done += run_jobs(jobs); jobs = []
     if "mouths" in only:
         os.makedirs(os.path.join(out, "mouths"), exist_ok=True)
-        MOUTH = {"half": "mouth slightly open as if saying 'eh', lips parted a little, no teeth",
-                 "open": "mouth wide open as if saying 'aa', dark mouth interior and a small tongue drawn in the same flat cartoon style"}
+        MOUTH = {"half": "mouth slightly open, lips parted a little, no teeth, no text anywhere",
+                 "open": "mouth wide open as if singing, dark mouth interior and a small tongue drawn in the same flat cartoon style, no text anywhere"}
         for c in C:
             if chars and c not in chars: continue
             ref = os.path.join(out, "masters", f"{c}.png")
