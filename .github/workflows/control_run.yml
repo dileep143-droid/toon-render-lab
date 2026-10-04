@@ -14,13 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Dispatch the requested workflow
-        env: { GH_TOKEN: ${{ github.token }} }
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python3 - <<'EOF2'
-          import json, os, subprocess
+          python3 - <<'PYEOF'
+          import json, subprocess
           r = json.load(open("control/RUN.json"))
           wf = r["workflow"]; args = []
           for k, v in (r.get("inputs") or {}).items(): args += ["-f", f"{k}={v}"]
           print("dispatching", wf, args, "|", r.get("note", ""))
           subprocess.run(["gh", "workflow", "run", wf, "--ref", "main", *args], check=True)
-          EOF2
+          PYEOF
