@@ -38,7 +38,19 @@ def token():
 
 
 TOK = None
-def gen(prompt, out, ar="1:1", ref=None, tries=6):
+# Parallel lanes: Vertex quotas are per model per region, so several (region, model) pairs run side by side.
+LANES = [("global", "gemini-3.1-flash-image"), ("global", "gemini-2.5-flash-image"), ("us-central1", "gemini-2.5-flash-image"),
+         ("europe-west4", "gemini-2.5-flash-image"), ("global", "gemini-3.1-flash-lite-image")]
+if os.environ.get("VERTEX_LANES"): LANES = [tuple(x.split(":")) for x in os.environ["VERTEX_LANES"].split(",")]
+import itertools, threading
+_lane_iter = itertools.cycle(range(len(LANES))); _lock = threading.Lock()
+
+
+def _next_lane():
+    with _lock: return LANES[next(_lane_iter)]
+
+
+def gen(prompt, out, ar="1:1", ref=None, tries=10):
     global TOK
     if os.path.exists(out): return True
     TOK = TOK or token()
@@ -46,8 +58,10 @@ def gen(prompt, out, ar="1:1", ref=None, tries=6):
     if ref: parts.append({"inlineData": {"mimeType": "image/png", "data": base64.b64encode(open(ref, "rb").read()).decode()}})
     parts.append({"text": prompt})
     body = {"contents": [{"role": "user", "parts": parts}], "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": ar}}}
-    url = f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}/locations/global/publishers/google/models/{MODEL}:generateContent"
     for a in range(tries):
+        loc, model = _next_lane()
+        host = "aiplatform.googleapis.com" if loc == "global" else f"{loc}-aiplatform.googleapis.com"
+        url = f"https://{host}/v1/projects/{PROJECT}/locations/{loc}/publishers/google/models/{model}:generateContent"
         req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "Authorization": "Bearer " + TOK})
         try:
             with urllib.request.urlopen(req, timeout=240) as r: j = json.load(r)
@@ -56,10 +70,24 @@ def gen(prompt, out, ar="1:1", ref=None, tries=6):
                 open(out, "wb").write(base64.b64decode(img[0]["inlineData"]["data"])); return True
             print("  no image:", os.path.basename(out), str(j)[:160], flush=True); return False
         except urllib.error.HTTPError as e:
-            code = e.code; msg = e.read().decode(errors="ignore")[:120]
+            code = e.code; e.read()
             if code == 401: TOK = token(); continue
-            print(f"  {code} {os.path.basename(out)} retry {a+1}", flush=True); time.sleep(8 * (a + 1) if code == 429 else 4)
+            if code == 404: continue                      # model not in this region -> next lane
+            print(f"  {code} {os.path.basename(out)} on {loc}/{model}, retry {a+1}", flush=True); time.sleep(3 + 3 * a if code == 429 else 4)
+        except Exception as e:
+            print("  err", os.path.basename(out), str(e)[:80], flush=True); time.sleep(4)
     return False
+
+
+def run_jobs(jobs, workers=None):
+    """jobs: list of (prompt, out, ar, ref, label). Runs them across the lanes in parallel; returns the outputs that succeeded."""
+    import concurrent.futures as cf
+    ok = []
+    with cf.ThreadPoolExecutor(workers or len(LANES)) as ex:
+        futs = {ex.submit(gen, p, o, ar, ref): (o, lab) for p, o, ar, ref, lab in jobs}
+        for f in cf.as_completed(futs):
+            o, lab = futs[f]; r = f.result(); print(lab, r, flush=True); r and ok.append(o)
+    return ok
 
 
 def main():
@@ -68,7 +96,7 @@ def main():
     opt = lambda f, d: a[a.index(f) + 1] if f in a else d
     only = opt("--only", "masters,poses,plates,props").split(","); chars = opt("--chars", "").split(",") if "--chars" in a else None
     for d in ("masters", "poses", "plates", "props", "mouths"): os.makedirs(os.path.join(out, d), exist_ok=True)
-    C = series["characters"]; t0 = time.time(); done = []
+    C = series["characters"]; t0 = time.time(); done = []; jobs = []
     if "masters" in only:
         for c, v in C.items():
             if chars and c not in chars: continue
@@ -76,9 +104,9 @@ def main():
             f = os.path.join(out, "masters", f"{c}.png")
             animal = any(w in desc.lower() for w in ("goat", "dog", "cow", "cat", "bird", "monkey", "buffalo"))
             pose_txt = ("a real four-legged animal standing naturally on all four legs, side view facing right, whole body visible, NOT upright, NOT human-like" if animal else "Standing, full body from head to feet, front view, arms relaxed")
-            ok = gen(f"{STYLE}\nCharacter design, master reference: {desc}. {pose_txt}, "
-                     f"mouth closed, neutral friendly expression. Single character only, isolated on a plain pure white background, nothing else.", f, "4:3" if animal else "3:4")
-            print("master", c, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+            jobs.append((f"{STYLE}\nCharacter design, master reference: {desc}. {pose_txt}, "
+                     f"mouth closed, neutral friendly expression. Single character only, isolated on a plain pure white background, nothing else.", f, "4:3" if animal else "3:4", None, f"master {c}"))
+        done += run_jobs(jobs); jobs = []
     if "poses" in only:
         for p in plan.get("poses", []):
             c = p["char"]
@@ -86,9 +114,9 @@ def main():
             ref = os.path.join(out, "masters", f"{c}.png")
             if not os.path.exists(ref): print("  no master for", c); continue
             f = os.path.join(out, "poses", f"{p['id']}.png")
-            ok = gen(f"{STYLE}\nDraw EXACTLY the same character as in the reference image (same face, hair, clothes, colours, proportions). "
-                     f"New pose: {p.get('prompt','')} (pose type: {p.get('pose','')}). Full body, isolated on a plain pure white background, nothing else.", f, "3:4", ref=ref)
-            print("pose", p["id"], ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+            jobs.append((f"{STYLE}\nDraw EXACTLY the same character as in the reference image (same face, hair, clothes, colours, proportions). "
+                     f"New pose: {p.get('prompt','')} (pose type: {p.get('pose','')}). Full body, isolated on a plain pure white background, nothing else.", f, "3:4", ref, f"pose {p['id']}"))
+        done += run_jobs(jobs); jobs = []
     if "mouths" in only:
         os.makedirs(os.path.join(out, "mouths"), exist_ok=True)
         MOUTH = {"half": "mouth slightly open as if saying 'eh', lips parted a little, no teeth",
@@ -99,22 +127,22 @@ def main():
             if not os.path.exists(ref): continue
             for st, d in MOUTH.items():
                 f = os.path.join(out, "mouths", f"{c}_{st}.png")
-                ok = gen(f"Edit this drawing: keep EVERYTHING exactly identical (same pose, size, position, clothes, colours, line style, white background) "
-                         f"and change ONLY the mouth: {d}. Output the full image at the same size.", f, "3:4", ref=ref)
-                print("mouth", c, st, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+                jobs.append((f"Edit this drawing: keep EVERYTHING exactly identical (same pose, size, position, clothes, colours, line style, white background) "
+                         f"and change ONLY the mouth: {d}. Output the full image at the same size.", f, "3:4", ref, f"mouth {c} {st}"))
+        done += run_jobs(jobs); jobs = []
     if "plates" in only:
         for pl in plan.get("plates", []):
             f = os.path.join(out, "plates", f"{pl['id']}_0.png")
             txt = pl.get("prompt") or PLATE_TEXT.get(pl["id"], pl["id"].replace("_", " "))
-            ok = gen(f"{STYLE}\nBackground art only, wide establishing shot: {txt}. Completely empty scene, absolutely no people or animals, no text.", f, "16:9")
-            print("plate", pl["id"], ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+            jobs.append((f"{STYLE}\nBackground art only, wide establishing shot: {txt}. Completely empty scene, absolutely no people or animals, no text.", f, "16:9", None, f"plate {pl['id']}"))
+        done += run_jobs(jobs); jobs = []
     if "props" in only:
         for pr in plan.get("props", []):
             pid = pr["id"] if isinstance(pr, dict) else pr
             f = os.path.join(out, "props", f"{pid}.png")
             txt = (pr.get("prompt") if isinstance(pr, dict) else None) or PROP_TEXT.get(pid, pid.replace("_", " "))
-            ok = gen(f"{STYLE}\nSingle object only, a plain inanimate object with NO face, no eyes, no mouth: {txt}. Isolated on a plain pure white background, nothing else, no hands, no text.", f, "1:1")
-            print("prop", pid, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+            jobs.append((f"{STYLE}\nSingle object only, a plain inanimate object with NO face, no eyes, no mouth: {txt}. Isolated on a plain pure white background, nothing else, no hands, no text.", f, "1:1", None, f"prop {pid}"))
+        done += run_jobs(jobs); jobs = []
     # contact sheet
     cells = []
     for d, size in (("masters", (240, 320)), ("mouths", (180, 240)), ("poses", (180, 240)), ("plates", (384, 216)), ("props", (160, 160))):
