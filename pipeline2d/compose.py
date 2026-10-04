@@ -258,6 +258,9 @@ def main(work, out_mp4, only=None, units=None):
     for sh in plan["shots"]:
         src_shots.append(sh)
         for si in ins.get(max([int(u) for u in sh["units"]] or [-1]), []):
+            if si.get("shot"):          # full shot spec (actors/set/objects/camera) written by edit_plan_props.py
+                src_shots.append(dict({"camera": {"from": [.5, .5, 1.0], "to": [.5, .5, 1.06]}, "objects": [], "sfx": []}, **si["shot"],
+                                      id=f"ins_{si.get('beat')}", units=[], plate=si["plate"], fixed_dur=float(si.get("dur", 3)))); continue
             acts = []
             for j, a in enumerate(si.get("actors", [])):
                 tok = a.split()[0]; walk = "walk" in a
@@ -351,7 +354,7 @@ def main(work, out_mp4, only=None, units=None):
         hands = {}
         for it in sh.get("set", []):      # set dressing BEHIND the actors (charpai, almirah, kadhai...): bottom-centre at (x, foot_y), height in plate fractions
             spr = props.get(it.get("prop"))
-            if spr is None: continue
+            if spr is None or t < it.get("show", -1e9) or t > it.get("hide", 1e9): continue   # show/hide: ep02 (absent = always)
             if it.get("flip"): spr = spr[:, ::-1]
             kk = it.get("height", .2) * Hp * sc / spr.shape[0]; bx, by = P2S(it.get("x", .5) * Wp, it.get("foot_y", .9) * Hp)
             M = np.float32([[kk, 0, bx - spr.shape[1] * kk / 2], [0, kk, by - spr.shape[0] * kk]])
@@ -381,6 +384,8 @@ def main(work, out_mp4, only=None, units=None):
                 arm_moves = []; use_arm = peeking = False
             else:
                 img, hand_sp = None, None
+            if use_keys and ac.get("tint") and any(t >= m.get("t0", 0) for m in [{"t0": ac.get("tint_t0", 0)}]):   # ep02: flour-white etc. [r,g,b,amount]
+                tc = ac["tint"]; img = img.copy(); img[:, :, :3] = (img[:, :, :3] * (1 - tc[3]) + np.float32(tc[:3]) * tc[3]).astype(np.uint8)
             closed = any(0 <= tg - b < 0.13 for b in blinks.get(ac["pose"], []))
             if not use_keys:
               arm_moves = [m for m in mv if m["type"] == "arm"]
@@ -446,6 +451,8 @@ def main(work, out_mp4, only=None, units=None):
                     uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); lift += math.sin(math.pi * uu) * .12 * ac.get("height", .5)
                 if m["type"] == "turn" and t >= m.get("t", 0): flip = not flip
                 if m["type"] == "sink": fy += m.get("dy", .04) * ease((t - m["t0"]) / max(.1, m["t1"] - m["t0"]))
+                if m["type"] == "fall" and t >= m["t0"]: rot += m.get("angle", -80) * ease((t - m["t0"]) / max(.1, m["t1"] - m["t0"]))   # ep02: topple about the feet, stays down
+                if m["type"] == "lift": lift += m.get("dy", .1) * ease((t - m["t0"]) / max(.1, m["t1"] - m["t0"])) * (1 if t <= m.get("t2", 1e9) else 0)
                 if m["type"] == "peek" and t <= m["t1"] + .3:      # after the peek he steps out (no clip) so his lines get a readable MCU
                     ex = m.get("edge_x", .2); clip = ex
                     wnorm = ac.get("height", .5) * (ps.bbox[2] - ps.bbox[0]) / max(1, ps.bbox[3] - ps.bbox[1]) * Hp / Wp
@@ -470,6 +477,9 @@ def main(work, out_mp4, only=None, units=None):
             lay = cv2.warpAffine(img, M, (OW, OH), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0))
             blend(frame, lay, P2S(clip * Wp, 0)[0] if clip is not None else None)
             if hand_sp: hands[ac["pose"]] = (M[0, 0] * hand_sp[0] + M[0, 1] * hand_sp[1] + M[0, 2], M[1, 0] * hand_sp[0] + M[1, 1] * hand_sp[1] + M[1, 2])
+            hands[ac["pose"] + ".foot"] = (fx, fyp)                                      # ep02 anchors: feet + head top (screen px)
+            hx_ = (bx0 + bx1) / 2; hy_ = ps.bbox[1]
+            hands[ac["pose"] + ".head"] = (M[0, 0] * hx_ + M[0, 1] * hy_ + M[0, 2], M[1, 0] * hx_ + M[1, 1] * hy_ + M[1, 2])
             mb = ps.mouth_box()
             if mb:
                 mx_, my_ = (mb[0] + mb[2]) / 2, (mb[1] + mb[3]) / 2
@@ -494,10 +504,18 @@ def main(work, out_mp4, only=None, units=None):
             t0, t1 = ob.get("t0", 0), ob.get("t1", 1); uu = ease((t - t0) / max(.1, t1 - t0))
             if t > t1 and str(ob.get("to")).endswith(".mouth"): continue
             if t < ob.get("show", -1e9) or t > ob.get("hide", 1e9): continue
-            px = pa[0] + (pb[0] - pa[0]) * uu; py = pa[1] + (pb[1] - pa[1]) * uu - math.sin(math.pi * uu) * .08 * OH * z
+            px = pa[0] + (pb[0] - pa[0]) * uu; py = pa[1] + (pb[1] - pa[1]) * uu - math.sin(math.pi * uu) * ob.get("arc", .08) * OH * z
+            if ob.get("flip"): spr = spr[:, ::-1]
             size = ob.get("scale", .05) * Hp * sc
             kk = size / max(spr.shape[:2]); M = np.float32([[kk, 0, px - spr.shape[1] * kk / 2], [0, kk, py - spr.shape[0] * kk / 2]])
             blend(frame, cv2.warpAffine(spr, M, (OW, OH), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0)))
+        for it in sh.get("front", []):     # ep02: foreground props IN FRONT of actors/objects (well rim, desk...), same placement as "set"
+            spr = props.get(it.get("prop"))
+            if spr is None or t < it.get("show", -1e9) or t > it.get("hide", 1e9): continue
+            if it.get("flip"): spr = spr[:, ::-1]
+            kk = it.get("height", .2) * Hp * sc / spr.shape[0]; bx, by = P2S(it.get("x", .5) * Wp, it.get("foot_y", .9) * Hp)
+            M = np.float32([[kk, 0, bx - spr.shape[1] * kk / 2], [0, kk, by - spr.shape[0] * kk]])
+            blend(frame, cv2.warpAffine(np.ascontiguousarray(spr), M, (OW, OH), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0)))
         if ff: ff.stdin.write(frame.tobytes())
         else: Image.fromarray(frame).save(os.path.join(work, f"frame_{fi:05d}.jpg"), quality=90)
         if fi % 240 == 0: print("frame", fi, "/", nF, flush=True)
