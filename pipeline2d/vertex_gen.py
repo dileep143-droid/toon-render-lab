@@ -67,7 +67,7 @@ def main():
     plan = json.load(open(a[0], encoding="utf-8-sig")); series = json.load(open(a[1], encoding="utf-8-sig")); out = a[2]
     opt = lambda f, d: a[a.index(f) + 1] if f in a else d
     only = opt("--only", "masters,poses,plates,props").split(","); chars = opt("--chars", "").split(",") if "--chars" in a else None
-    for d in ("masters", "poses", "plates", "props"): os.makedirs(os.path.join(out, d), exist_ok=True)
+    for d in ("masters", "poses", "plates", "props", "mouths"): os.makedirs(os.path.join(out, d), exist_ok=True)
     C = series["characters"]; t0 = time.time(); done = []
     if "masters" in only:
         for c, v in C.items():
@@ -89,6 +89,19 @@ def main():
             ok = gen(f"{STYLE}\nDraw EXACTLY the same character as in the reference image (same face, hair, clothes, colours, proportions). "
                      f"New pose: {p.get('prompt','')} (pose type: {p.get('pose','')}). Full body, isolated on a plain pure white background, nothing else.", f, "3:4", ref=ref)
             print("pose", p["id"], ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
+    if "mouths" in only:
+        os.makedirs(os.path.join(out, "mouths"), exist_ok=True)
+        MOUTH = {"half": "mouth slightly open as if saying 'eh', lips parted a little, no teeth",
+                 "open": "mouth wide open as if saying 'aa', dark mouth interior and a small tongue drawn in the same flat cartoon style"}
+        for c in C:
+            if chars and c not in chars: continue
+            ref = os.path.join(out, "masters", f"{c}.png")
+            if not os.path.exists(ref): continue
+            for st, d in MOUTH.items():
+                f = os.path.join(out, "mouths", f"{c}_{st}.png")
+                ok = gen(f"Edit this drawing: keep EVERYTHING exactly identical (same pose, size, position, clothes, colours, line style, white background) "
+                         f"and change ONLY the mouth: {d}. Output the full image at the same size.", f, "3:4", ref=ref)
+                print("mouth", c, st, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
     if "plates" in only:
         for pl in plan.get("plates", []):
             f = os.path.join(out, "plates", f"{pl['id']}_0.png")
@@ -104,7 +117,7 @@ def main():
             print("prop", pid, ok, f"{time.time()-t0:.0f}s", flush=True); ok and done.append(f)
     # contact sheet
     cells = []
-    for d, size in (("masters", (240, 320)), ("poses", (180, 240)), ("plates", (384, 216)), ("props", (160, 160))):
+    for d, size in (("masters", (240, 320)), ("mouths", (180, 240)), ("poses", (180, 240)), ("plates", (384, 216)), ("props", (160, 160))):
         fs = sorted(os.listdir(os.path.join(out, d)))
         for f in fs:
             try: cells.append(Image.open(os.path.join(out, d, f)).convert("RGB").resize(size))
