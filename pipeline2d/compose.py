@@ -340,7 +340,7 @@ def main(work, out_mp4, only=None, units=None):
         if mcu_ac is not None:
             h_ = mcu_ac.get("height", .5); top_ = mcu_ac.get("foot_y", .9) - h_
             z = min(MCU_ZMAX, max(z, 1 / (MCU_BODY * h_))); cx = mcu_ac.get("x", .5); cy = max(top_, .0) + .44 / z
-        tops = [ac.get("foot_y", .9) - ac.get("height", .5) for ac in sh.get("actors", [])] if mcu_ac is None else []
+        tops = [ac.get("foot_y", .9) - ac.get("height", .5) for ac in sh.get("actors", []) if not ac.get("no_frame")] if mcu_ac is None else []   # no_frame (ep02): lying actors / ground close-ups
         if tops:
             top = min(tops)
             if top < 0.04: top = 0.04
