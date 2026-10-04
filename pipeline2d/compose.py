@@ -9,6 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.dirname(HERE)
 FPS, OW, OH, SR = 24, 1280, 720, 48000
 FFMPEG = next((p for p in [r"C:\Users\goddu\Downloads\ffmpeg-master-latest-win64-gpl\bin\ffmpeg.exe", "ffmpeg"] if p == "ffmpeg" or os.path.exists(p)))
 GAP, LEAD, TAIL, NOAUDIO = 0.35, 0.35, 0.45, 1.3
+ESTAB, MCU_ZMAX, MCU_BODY = 2.5, 2.6, 0.62   # establishing seconds, max zoom (plate sharpness), share of the body in an MCU
 
 
 try:
@@ -39,7 +40,8 @@ def emo_key(e):
 
 def mouth_track(sig, n_frames, hold=3):
     """loudness -> 0 closed / 1 half / 2 open; >= `hold` frames per state (3 -> up to 8 changes/s), closed in silence"""
-    hop = SR // FPS; rms = np.array([np.sqrt(np.mean(sig[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(n_frames)])
+    hop = SR // FPS; sig = np.concatenate([sig, np.zeros(max(0, n_frames * hop - len(sig)), np.float32)])   # pad: an empty last frame gave NaN -> every mouth closed
+    rms = np.array([np.sqrt(np.mean(sig[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(n_frames)])
     rms = np.convolve(rms, np.ones(2) / 2, "same"); ref = np.percentile(rms, 95) + 1e-6
     raw = np.where(rms > 0.5 * ref, 2, np.where(rms > 0.16 * ref, 1, 0))
     out = raw.copy(); cur, since = 0, hold
@@ -172,6 +174,39 @@ def paste_rot(dst, src, pivot, ang):
     out[:, :, 3] = np.maximum(dst[:, :, 3], r[:, :, 3]); return out
 
 
+DRAW_MOUTH = True
+MOUTH_TEETH = False       # owner 4 Oct: no teeth, a simple open/close mouth is enough
+MOUTH_UP = 0.10           # the edit mask box sits lower than the lips
+DEBUG_MOUTH = bool(os.environ.get("DEBUG_MOUTH"))
+
+
+def draw_mouth(frame, c, bw, bh, state, prev=0):
+    """flat cartoon talking mouth over the drawing's mouth area: dark inside, upper teeth, pink tongue; 1 = half, 2 = open"""
+    cx, cy = c; w = max(4.0, bw * (.30 if state == 2 else .34)); h = max(2.0, bh * (.30 if state == 2 else .14))
+    cy -= bh * MOUTH_UP
+    if w < 5: return
+    x0, y0 = int(cx - w), int(cy - h * 1.6); x1, y1 = int(cx + w) + 1, int(cy + h * 1.6) + 1
+    if x1 <= 0 or y1 <= 0 or x0 >= frame.shape[1] or y0 >= frame.shape[0]: return
+    S4 = 4; rw, rh = (x1 - x0) * S4, (y1 - y0) * S4
+    ccx, ccy = (cx - x0) * S4, (cy - y0) * S4
+    m = np.zeros((rh, rw), np.uint8)
+    cv2.ellipse(m, (int(ccx), int(ccy)), (int(w * .5 * S4), int(h * .5 * S4)), 0, 0, 360, 255, -1)
+    col = np.zeros((rh, rw, 3), np.float32); col[:] = (92, 26, 30)
+    yy = np.arange(rh)[:, None]
+    teeth = (yy < ccy - h * .5 * S4 * .45) & (m > 0)
+    if MOUTH_TEETH: col[teeth] = (250, 248, 240)
+    tong = np.zeros((rh, rw), np.uint8)
+    if state == 2: cv2.ellipse(tong, (int(ccx), int(ccy + h * .30 * S4)), (int(w * .30 * S4), int(h * .26 * S4)), 0, 0, 360, 255, -1)
+    col[(tong > 0) & (m > 0)] = (226, 110, 120)
+    edge = cv2.dilate(m, np.ones((max(3, S4 * 2), max(3, S4 * 2)), np.uint8)) - m
+    col[edge > 0] = (60, 22, 18)
+    a = cv2.resize(np.maximum(m, edge).astype(np.float32) / 255, (x1 - x0, y1 - y0), interpolation=cv2.INTER_AREA)
+    col = cv2.resize(col, (x1 - x0, y1 - y0), interpolation=cv2.INTER_AREA)
+    fx0, fy0 = max(0, x0), max(0, y0); fx1, fy1 = min(frame.shape[1], x1), min(frame.shape[0], y1)
+    sub = frame[fy0:fy1, fx0:fx1].astype(np.float32); aa = a[fy0 - y0:fy1 - y0, fx0 - x0:fx1 - x0, None]
+    frame[fy0:fy1, fx0:fx1] = (sub * (1 - aa) + col[fy0 - y0:fy1 - y0, fx0 - x0:fx1 - x0] * aa).astype(np.uint8)
+
+
 def blend(dst, rgba, clip_x=None):
     a = rgba[:, :, 3:4].astype(np.float32) / 255
     if clip_x is not None: a[:, :max(0, int(clip_x))] = 0
@@ -287,8 +322,22 @@ def main(work, out_mp4, only=None, units=None):
         plate = plates[sh["plate"]]; Hp, Wp = plate.shape[:2]
         cam = sh.get("camera", {}); a0 = cam.get("from", [.5, .5, 1]); a1 = cam.get("to", a0); u = ease(t / sh["dur"])
         z = max(1.0, a0[2] + (a1[2] - a0[2]) * u); cx = a0[0] + (a1[0] - a0[0]) * u; cy = a0[1] + (a1[1] - a0[1]) * u
-        # keep every actor's head inside the frame (4% margin): move the camera up, and zoom out if that is not enough
-        tops = [ac.get("foot_y", .9) - ac.get("height", .5) for ac in sh.get("actors", [])]
+        # MCU rule (owner, 3 Oct): every spoken line = locked medium close-up of the speaker; wide only to establish (<= ESTAB s)
+        mcu_ac = None
+        if sh.get("mcu", True) and sh["spans"] and t >= min(ESTAB, sh["spans"][0]["t0"]):
+            sp_now = None
+            for sp in sh["spans"]:
+                if sp["t0"] - .15 <= t: sp_now = sp
+            if sp_now is not None:
+                ch = spk2char.get(sp_now["speaker"])
+                for ac in sh.get("actors", []):
+                    if (pose_char.get(ac["pose"]) or ac["pose"].split("_")[0]) != ch: continue
+                    if any(m["type"] in ("walk", "peek") and m["t0"] - .2 <= t <= m["t1"] + .3 for m in ac.get("moves", [])): continue
+                    mcu_ac = ac; break
+        if mcu_ac is not None:
+            h_ = mcu_ac.get("height", .5); top_ = mcu_ac.get("foot_y", .9) - h_
+            z = min(MCU_ZMAX, max(z, 1 / (MCU_BODY * h_))); cx = mcu_ac.get("x", .5); cy = max(top_, .0) + .44 / z
+        tops = [ac.get("foot_y", .9) - ac.get("height", .5) for ac in sh.get("actors", [])] if mcu_ac is None else []
         if tops:
             top = min(tops)
             if top < 0.04: top = 0.04
@@ -300,6 +349,13 @@ def main(work, out_mp4, only=None, units=None):
         Mbg = np.float32([[sc, 0, OW / 2 - cx * Wp * sc], [0, sc, OH / 2 - cy * Hp * sc]])
         frame = cv2.warpAffine(plate, Mbg, (OW, OH), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT)
         hands = {}
+        for it in sh.get("set", []):      # set dressing BEHIND the actors (charpai, almirah, kadhai...): bottom-centre at (x, foot_y), height in plate fractions
+            spr = props.get(it.get("prop"))
+            if spr is None: continue
+            if it.get("flip"): spr = spr[:, ::-1]
+            kk = it.get("height", .2) * Hp * sc / spr.shape[0]; bx, by = P2S(it.get("x", .5) * Wp, it.get("foot_y", .9) * Hp)
+            M = np.float32([[kk, 0, bx - spr.shape[1] * kk / 2], [0, kk, by - spr.shape[0] * kk]])
+            blend(frame, cv2.warpAffine(np.ascontiguousarray(spr), M, (OW, OH), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0)))
         for ac in sorted(sh.get("actors", []), key=lambda a: a.get("z", 1)):
             ps = poses.get(ac["pose"]); char = pose_char.get(ac["pose"]) or (ps.meta["char"] if ps else ac["pose"].split("_")[0])
             kc = KEYCH.get(char); pname = pose_name.get(ac["pose"]) or ("_".join(ac["pose"].split("_")[1:]) or "stand")
@@ -329,7 +385,7 @@ def main(work, out_mp4, only=None, units=None):
             if not use_keys:
               arm_moves = [m for m in mv if m["type"] == "arm"]
               use_arm = bool(arm_moves) and ps.arm is not None and ps.body is not None
-              peeking = any(m["type"] == "peek" and t <= m["t1"] + 0.3 for m in mv) and ps.body is not None
+              peeking = any(m["type"] == "peek" and m["t0"] <= t <= m["t1"] + 0.3 for m in mv) and ps.body is not None
               has_mouths = "mouth_open" in ps.sprites
               img = ps.face(closed and not expr, None if has_mouths else m_state, use_arm or peeking).copy()   # peeking: arm hidden
               if expr and expr in ps.sprites: ps.apply(img, expr, ew)
@@ -390,7 +446,7 @@ def main(work, out_mp4, only=None, units=None):
                     uu = (t - m["t0"]) / max(.1, m["t1"] - m["t0"]); lift += math.sin(math.pi * uu) * .12 * ac.get("height", .5)
                 if m["type"] == "turn" and t >= m.get("t", 0): flip = not flip
                 if m["type"] == "sink": fy += m.get("dy", .04) * ease((t - m["t0"]) / max(.1, m["t1"] - m["t0"]))
-                if m["type"] == "peek":
+                if m["type"] == "peek" and t <= m["t1"] + .3:      # after the peek he steps out (no clip) so his lines get a readable MCU
                     ex = m.get("edge_x", .2); clip = ex
                     wnorm = ac.get("height", .5) * (ps.bbox[2] - ps.bbox[0]) / max(1, ps.bbox[3] - ps.bbox[1]) * Hp / Wp
                     x0p = ex - wnorm * .55; uu = ease((t - m["t0"]) / max(.1, m["t1"] - m["t0"]))
@@ -419,17 +475,25 @@ def main(work, out_mp4, only=None, units=None):
                 mx_, my_ = (mb[0] + mb[2]) / 2, (mb[1] + mb[3]) / 2
                 if flip: mx_ = ps.W - mx_
                 hands[ac["pose"] + ".mouth"] = (M[0, 0] * mx_ + M[0, 1] * my_ + M[0, 2], M[1, 0] * mx_ + M[1, 1] * my_ + M[1, 2])
+                if use_keys and m_state in (1, 2) and DRAW_MOUTH:     # the generated mouth edits barely open -> draw a clear cartoon mouth
+                    kx = math.hypot(M[0, 0], M[1, 0])
+                    draw_mouth(frame, hands[ac["pose"] + ".mouth"], (mb[2] - mb[0]) * kx, (mb[3] - mb[1]) * kx, m_state, (m_prev or 0))
         # objects
         for ob in sh.get("objects", []):
             spr = props.get(ob.get("prop"))
             if spr is None: continue
             def anchor(a):
                 if isinstance(a, list): return P2S(a[0] * Wp, a[1] * Hp)
+                if isinstance(a, dict):
+                    b = anchor(a.get("at"))
+                    return None if b is None else (b[0] + a.get("dx", 0) * Hp * sc, b[1] + a.get("dy", 0) * Hp * sc)
+                if not isinstance(a, str): return None
                 return hands.get(a.replace(".hand", "")) if a.endswith(".hand") else hands.get(a)
             pa, pb = anchor(ob.get("from")), anchor(ob.get("to"))
             if pa is None or pb is None: continue
             t0, t1 = ob.get("t0", 0), ob.get("t1", 1); uu = ease((t - t0) / max(.1, t1 - t0))
             if t > t1 and str(ob.get("to")).endswith(".mouth"): continue
+            if t < ob.get("show", -1e9) or t > ob.get("hide", 1e9): continue
             px = pa[0] + (pb[0] - pa[0]) * uu; py = pa[1] + (pb[1] - pa[1]) * uu - math.sin(math.pi * uu) * .08 * OH * z
             size = ob.get("scale", .05) * Hp * sc
             kk = size / max(spr.shape[:2]); M = np.float32([[kk, 0, px - spr.shape[1] * kk / 2], [0, kk, py - spr.shape[0] * kk / 2]])
