@@ -26,3 +26,6 @@ Owner: nothing to do yet. Do not trust the Videos tab until the test is clean.
 
 ## progress QA_ep01_v4_test (round 1)
 Plates redraw (vertex_assets run 37213621286) succeeded. Started build_keys.yml (ep01, art_run=37213621286, render=test, name=ep01_auto1). Next: judge the new QA report; full render only if the test is clean. Owner: nothing yet.
+
+## progress QA_ep01_v5_test (round 1, retry)
+QA_ep01_v5_test is not a quality verdict: the render job failed because Kaggle dataset mani7673/sonpur-2d-ep01 returned 404 for 10 minutes (dataset still processing / infra), before any frame was rendered. No art fault found. Re-dispatched build_keys.yml once (ep01, same art_run 37213621286, render=test, name=ep01_auto1b). If it fails the same way, the owner should check the Kaggle dataset/token. Owner: nothing yet.

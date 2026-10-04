@@ -1,1 +1,1 @@
-{"workflow":"build_keys.yml","inputs":{"ep":"ep01","art_run":"37213621286","render":"test","name":"ep01_auto1"},"note":"round 1 test render after plates redraw (QA ep01_v4_test s005_b photographic window)"}
+{"workflow":"build_keys.yml","inputs":{"ep":"ep01","art_run":"37213621286","render":"test","name":"ep01_auto1b"},"note":"retry of round 1 test render: run 37215459245 failed on Kaggle dataset download 404 (infra, no test body ran)"}
