@@ -1,0 +1,226 @@
+{
+ "series": "Sonpur ki Toli (Hindi kids cartoon)",
+ "style": "Bright colourful 2D digital cartoon illustration like popular Indian moral-story kids' cartoons: clean thin dark-brown outlines, soft cel shading with smooth gradients, big shiny expressive eyes, cute rounded proportions, warm saturated colours, Indian village setting.",
+ "characters": {
+  "dadi": {
+   "speaker": "Dadi",
+   "desc": "a 70-year-old Indian village grandmother (Dadi), short and plump, round kind face with gentle smile wrinkles, white hair tied in a small neat bun, round thin gold-rimmed glasses, a round red kumkum dot (bottu) on her forehead, plain WHITE cotton saree with a broad RED border worn village style with the pallu over her shoulder, red and gold glass bangles on both wrists, barefoot, kind and funny",
+   "trigger": "sonpur_dadi",
+   "short": "plump old indian grandmother, white hair in a small bun, round gold glasses, red bindi dot, white saree with broad red border, red bangles",
+   "identity": "plump old indian grandmother, white hair in a small bun, round gold glasses, red bindi dot",
+   "outfit": "white saree with broad red border, red bangles"
+  },
+  "chhotu": {
+   "speaker": "Chhotu",
+   "desc": "Chhotu, an 8-year-old naughty Indian village boy, chubby cheeks, big mischievous dark eyes, short messy black hair, saffron-yellow cotton kurta and white pyjama, barefoot, a slightly round tummy, always hungry",
+   "trigger": "sonpur_chhotu",
+   "child": true,
+   "short": "chubby 8 year old indian village boy, messy black hair, big eyes, saffron yellow kurta, white pyjama, barefoot",
+   "identity": "chubby 8 year old indian village boy, messy black hair, big eyes",
+   "outfit": "saffron yellow kurta, white pyjama, barefoot",
+   "outfits": {
+    "default": "saffron yellow kurta, white pyjama, barefoot",
+    "school": "school uniform, white half-sleeve shirt, navy blue shorts, brown sandals, a dark blue school bag on his back"
+   },
+   "masters": {
+    "default": "keys_assets/masters/chhotu.png",
+    "school": "keys_assets/masters/chhotu_school.png"
+   }
+  },
+  "chamki": {
+   "speaker": "Chamki",
+   "animal": true,
+   "desc": "Chamki, a small cute white village goat with light-brown patches, floppy ears, tiny curved horns, a short upright tail, a red collar with a little brass bell, cheeky expression",
+   "trigger": "sonpur_chamki",
+   "short": "cute small white goat with light brown patches, floppy ears, tiny horns, red collar with brass bell",
+   "identity": "cute small white goat with light brown patches, floppy ears, tiny horns",
+   "outfit": "red collar with brass bell"
+  },
+  "sheru": {
+   "speaker": "Sheru",
+   "animal": true,
+   "desc": "Sheru, a lazy friendly light-brown Indian village dog (desi dog) with a white chest, floppy ears and a brown tail, usually sleeping",
+   "trigger": "sonpur_sheru",
+   "short": "friendly light brown indian village dog, white chest, floppy ears",
+   "identity": "friendly light brown indian village dog, white chest, floppy ears",
+   "outfit": "no collar"
+  },
+  "gudiya": {
+   "speaker": "Gudiya",
+   "desc": "Gudiya, a 9-year-old brave and kind Indian village girl, leader of the gang, long black braid with white jasmine (chameli) flowers, big bright eyes, red bindi, green half-sleeve blouse, long pink langa skirt with a pink sash, glass bangles, barefoot",
+   "trigger": "sonpur_gudiya",
+   "child": true,
+   "short": "9 year old cute little indian village girl, big head, long black braid with white jasmine flowers, big bright eyes, red bindi, green half-sleeve blouse covering the tummy, long pink langa skirt with a pink sash, glass bangles, barefoot",
+   "identity": "9 year old cute little indian village girl, big head, long black braid with white jasmine flowers, big bright eyes, red bindi",
+   "outfit": "green half-sleeve blouse covering the tummy, long pink langa skirt with a pink sash, glass bangles, barefoot",
+   "outfits": {
+    "default": "green half-sleeve blouse covering the tummy, long pink langa skirt with a pink sash, glass bangles, barefoot",
+    "school": "school uniform, light blue kameez with a red waist sash, long navy blue skirt, brown sandals"
+   },
+   "masters": {
+    "default": "keys_assets/masters/gudiya.png",
+    "school": "keys_assets/masters/gudiya_school.png"
+   },
+   "lora": "keys_assets/charlora/gudiya.safetensors"
+  },
+  "pinky": {
+   "speaker": "Pinky",
+   "desc": "Pinky, an 8-year-old know-it-all Indian village girl, short black hair in two small bunches with a red hairband, big round black-rimmed glasses, light blue knee-length frock with a red sash bow and red trim, black sandals",
+   "trigger": "sonpur_pinky",
+   "child": true,
+   "short": "8 year old indian village girl, short black hair in two small bunches with a red hairband, big round black-rimmed glasses, clever know-it-all look, big eyes, light blue knee-length frock with a red sash bow at the waist and red trim, black sandals",
+   "identity": "8 year old indian village girl, short black hair in two small bunches with a red hairband, big round black-rimmed glasses, clever know-it-all look, big eyes",
+   "outfit": "light blue knee-length frock with a red sash bow at the waist and red trim, black sandals",
+   "outfits": {
+    "default": "light blue knee-length frock with a red sash bow at the waist and red trim, black sandals",
+    "school": "school uniform, white half-sleeve shirt with red trim, pleated navy blue skirt, white socks, red sandals"
+   },
+   "masters": {
+    "default": "keys_assets/masters/pinky.png",
+    "school": "keys_assets/masters/pinky_school.png"
+   },
+   "lora": "keys_assets/charlora/pinky.safetensors"
+  },
+  "raju": {
+   "speaker": "Raju",
+   "desc": "Raju, a 13-year-old tall slim show-off Indian village boy ('Raju the Great'), short messy black hair, confident look, saffron-orange knee-length kurta, cream pyjama, brown sandals",
+   "trigger": "sonpur_raju",
+   "child": true,
+   "short": "13 year old tall slim indian village boy, short messy black hair, confident look, big eyes, saffron orange knee-length kurta, cream pyjama, brown sandals",
+   "identity": "13 year old tall slim indian village boy, short messy black hair, confident look, big eyes",
+   "outfit": "saffron orange knee-length kurta, cream pyjama, brown sandals",
+   "outfits": {
+    "default": "saffron orange knee-length kurta, cream pyjama, brown sandals",
+    "school": "school uniform, white half-sleeve shirt, grey-blue shorts, dark sandals, a dark school bag on his back"
+   },
+   "masters": {
+    "default": "keys_assets/masters/raju.png",
+    "school": "keys_assets/masters/raju_school.png"
+   },
+   "lora": "keys_assets/charlora/raju.safetensors"
+  },
+  "bablu": {
+   "speaker": "Bablu",
+   "desc": "Bablu, a very chubby round 10-year-old scaredy-cat Indian village boy, big round belly, chubby cheeks, short messy black hair, worried eyes, green checked half-sleeve shirt with pockets, khaki shorts, black sandals",
+   "trigger": "sonpur_bablu",
+   "child": true,
+   "short": "very fat chubby round 10 year old indian village boy, big round belly, chubby cheeks, short messy black hair, worried eyes, green checked half-sleeve shirt with buttons and pockets, khaki shorts, black sandals",
+   "identity": "very fat chubby round 10 year old indian village boy, big round belly, chubby cheeks, short messy black hair, worried eyes",
+   "outfit": "green checked half-sleeve shirt with buttons and pockets, khaki shorts, black sandals",
+   "outfits": {
+    "default": "green checked half-sleeve shirt with buttons and pockets, khaki shorts, black sandals",
+    "school": "school uniform, white half-sleeve shirt, dark navy blue shorts, brown sandals, a brown school bag on one shoulder"
+   },
+   "build": "chubby",
+   "masters": {
+    "default": "keys_assets/masters/bablu.png",
+    "school": "keys_assets/masters/bablu_school.png"
+   },
+   "lora": "keys_assets/charlora/bablu.safetensors"
+  },
+  "lallan": {
+   "speaker": "Lallan",
+   "desc": "Lallan, a dramatic fat jolly 40-year-old Indian village halwai (sweet-shop owner), huge round pot belly, bald head, big curled black moustache, red tilak dot, white sleeveless banian vest, white dhoti, barefoot",
+   "trigger": "sonpur_lallan",
+   "child": false,
+   "short": "fat jolly 40 year old indian sweet-maker, huge round pot belly, bald head, big curled black moustache, red tilak dot, white sleeveless banian vest with bare arms, no collar, white dhoti, barefoot",
+   "identity": "fat jolly 40 year old indian sweet-maker, huge round pot belly, bald head, big curled black moustache, red tilak dot",
+   "outfit": "white sleeveless banian vest with bare arms, no collar, white dhoti, barefoot",
+   "outfits": {
+    "default": "white sleeveless banian vest with bare arms, no collar, white dhoti, barefoot"
+   },
+   "build": "fat",
+   "lora": "keys_assets/charlora/lallan.safetensors"
+  },
+  "bhootu": {
+   "speaker": "Bhootu",
+   "name_hi": "भूतू",
+   "body": "ghost",
+   "child": false,
+   "desc": "Bhootu (भूतू), a cute funny kid-friendly snack-loving ghost: round white floating sheet-like body that tapers into one wispy curly tail (no legs), big round eyes, goofy greedy grin, pink cheeks, a curly nightcap-like tuft with a pom-pom, tiny hands, sweet crumbs around the mouth. Loves and steals snacks (laddoo, jalebi, samosa, pakoda). INVISIBLE to the characters, VISIBLE to viewers: render at ~85% opacity with a soft light-blue glow.",
+   "trigger": "sonpur_bhootu",
+   "identity": "cute funny white cartoon ghost, round soft sheet-like body tapering into one wispy curly tail, no legs, big round black eyes with blue shine, pink cheeks, goofy wide grin, curly nightcap-like tuft with a little white pom-pom on top, tiny white hands",
+   "outfit": "sweet crumbs around its mouth",
+   "short": "cute funny white cartoon ghost, round soft sheet-like body tapering into one wispy curly tail, no legs, big round black eyes with blue shine, pink cheeks, goofy wide grin, curly nightcap-like tuft with a little white pom-pom on top, tiny white hands, sweet crumbs around its mouth",
+   "look": [
+    "floating in the air",
+    "wispy curly tail instead of legs",
+    "greedy happy grin",
+    "snack crumbs on its face",
+    "soft light-blue glow"
+   ],
+   "neg": "legs, feet, toes, scary, horror, creepy, skull, blood, sharp teeth, evil, human, person, text, watermark, photo, 3d render, blurry, multiple views, duplicate, scenery, nsfw",
+   "render": {
+    "opacity": 0.85,
+    "glow": "light-blue (180,220,255), radius ~2.5% of sprite height, strength 0.6"
+   },
+   "voice": null,
+   "outfits": {
+    "default": "sweet crumbs around its mouth"
+   },
+   "lora": "keys_assets/charlora/bhootu.safetensors",
+   "masters": {
+    "default": "keys_assets/masters/bhootu.png"
+   }
+  },
+  "masterji": {
+   "speaker": "Masterji",
+   "name_hi": "मास्टरजी",
+   "body": "adult",
+   "child": false,
+   "desc": "Masterji, the village schoolteacher of Sonpur: kind but strict 50-year-old man, slim and tall, round black-rimmed spectacles, big thick curled black moustache, neatly combed side-parted black hair with grey temples, white full-sleeve shirt-kurta, brown sleeveless nehru jacket, white trousers, black sandals, often holds a piece of white chalk; booming voice, shouts 'shanti!' louder than anyone, secretly scared of lizards",
+   "trigger": "sonpur_masterji",
+   "identity": "cartoon caricature of a kind but strict 50 year old indian village schoolteacher, slim, tall, round black-rimmed spectacles, big thick curled black moustache, neatly combed side-parted black hair with grey temples",
+   "outfit": "white full-sleeve shirt-kurta, brown sleeveless nehru jacket, white trousers, black sandals, wristwatch",
+   "short": "cartoon caricature of a kind but strict 50 year old indian village schoolteacher, slim, tall, round black-rimmed spectacles, big thick curled black moustache, neatly combed side-parted black hair with grey temples, white full-sleeve shirt-kurta, brown sleeveless nehru jacket, white trousers, black sandals, wristwatch",
+   "outfits": {
+    "default": "white full-sleeve shirt-kurta, brown sleeveless nehru jacket, white trousers, black sandals, wristwatch"
+   },
+   "voice": [
+    "Male",
+    "Masterji, a strict 50-year-old village teacher, deep, firm, slow, big moustache energy"
+   ],
+   "master": "keys_assets/masters/masterji.png (design_a_s101, ep02)"
+  }
+ },
+ "sfx": {
+  "goat": "sfx/freesound/goat_bleat_677218.mp3",
+  "dog_snore": "sfx/freesound/dog_snore_509548.mp3",
+  "bangles": "sfx/freesound/bangles_646777.mp3",
+  "birds": "sfx/freesound/birds_327447.mp3",
+  "village": "sfx/freesound/village_day_553079.mp3",
+  "snore": "sfx/freesound/snore_760036.mp3",
+  "magic": "sfx/freesound/twinkle_578803.mp3",
+  "boing": "sfx/freesound/boing_731261.mp3",
+  "music": "sfx/freesound/dhol_418780.mp3",
+  "chalk": "sfx/freesound/chalk_656044.mp3",
+  "window_rattle": "sfx/freesound/window_rattle_371256.mp3",
+  "hay": "sfx/freesound/hay_770112.mp3",
+  "gong": "sfx/freesound/gong_803159.mp3",
+  "wind": "sfx/freesound/wind_182123.mp3",
+  "bucket_clank": "sfx/freesound/bucket_clank_528494.mp3",
+  "splash": "sfx/freesound/splash_189499.mp3",
+  "cartoon_fall": "sfx/freesound/cartoon_fall_395443.mp3",
+  "knock": "sfx/freesound/knock_268500.mp3",
+  "pop": "sfx/freesound/pop_202230.mp3",
+  "leaves": "sfx/freesound/leaves_475425.mp3",
+  "ding": "sfx/freesound/ding_332518.mp3",
+  "paper_rip": "sfx/freesound/paper_rip_136496.mp3",
+  "kids_laugh": "sfx/freesound/kids_laugh_616088.mp3",
+  "chew": "sfx/freesound/chew_257704.mp3",
+  "shop_bell": "sfx/freesound/shop_bell_556710.mp3",
+  "whoosh": "sfx/freesound/whoosh_423799.mp3",
+  "poof": "sfx/freesound/poof_343959.mp3",
+  "crickets_night": "sfx/freesound/crickets_night_522299.mp3",
+  "owl": "sfx/freesound/owl_465697.mp3",
+  "switch": "sfx/freesound/switch_348225.mp3",
+  "tap": "sfx/freesound/tap_212177.mp3",
+  "twinkle": "sfx/freesound/twinkle_462094.mp3",
+  "applause": "sfx/freesound/applause_25292.mp3",
+  "dog_sniff": "sfx/freesound/dog_sniff_528939.mp3",
+  "dog_bark": "sfx/freesound/dog_bark_277058.mp3",
+  "dog_whine": "sfx/freesound/dog_whine_505827.mp3",
+  "stomach": "sfx/freesound/stomach_447911.mp3",
+  "metal": "sfx/kenney/impact-sounds/Audio/impactMetal_heavy_000.ogg"
+ }
+}
