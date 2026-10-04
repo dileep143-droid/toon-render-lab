@@ -10,12 +10,51 @@ import numpy as np
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); KEYS = os.path.join(HERE, "out", "keys")
 import poses as PS
+USE_MOUTH_PATCHES = False   # 4 Oct: the generated mouth edits sit on the chin (generic boxes) -> compose draws the mouth instead
 
 # plan pose name -> base drawing ("action_index"); gestures and walks are chosen from the moves
 POSE2KEY = {"stand": "stand_0", "stand_3q": "stand_0", "walk": "walk_0", "sit_cross": "sit_2", "sit_hold": "sit_hold_0", "point": "wag_1",
             "salute": "salute_0", "reach": "reach_2", "hand_cheek": "hand_cheek_0", "hold_plate": "hold_plate_0"}
 FALLBACK = {"sit_hold_0": "sit_2", "wag_1": "point_1", "salute_0": "wave_1", "hand_cheek_0": "stand_0", "hold_plate_0": "eat_0"}
+# r5 (ep01 missing actions): plan pose name -> drawing; a missing drawing falls back to the nearest older pose
+POSE2KEY.update({"count": "count_0", "carry_walk": "carry_walk_0", "reach_up": "reach_up_0", "torch": "torch_0", "stool": "stool_1", "stool_climb": "stool_0",
+                 "cry": "cry_0", "cry_sorry": "cry_1", "jasmine": "jasmine_0", "pull_ear": "pull_ear_0", "wince": "wince_0", "write": "write_0",
+                 "net_swing": "net_swing_0", "net_tangled": "net_tangled_0", "pull": "pull_0", "fry": "fry_0", "offer": "offer_0", "belan": "belan_0", "chew": "chew_0"})
+FALLBACK.update({"count_0": "sit_hold_0", "carry_walk_0": "hold_plate_0", "reach_up_0": "reach_2", "torch_0": "point_1", "stool_1": "stand_0", "stool_0": "stand_0",
+                 "cry_0": "stand_0", "cry_1": "stand_0", "jasmine_0": "hand_cheek_0", "pull_ear_0": "reach_2", "wince_0": "hand_cheek_0", "write_0": "hold_plate_0",
+                 "net_swing_0": "wave_1", "net_tangled_0": "stand_0", "pull_0": "reach_2", "fry_0": "hold_plate_0", "offer_0": "hold_plate_0", "belan_0": "wag_1"})
+# multi-drawing actions: while an "arm" (or "cycle") move is active, the action's own drawings alternate (frame order, frames each held for n/24 s)
+CYCLE = {"count": ([0, 1, 2, 1], 5), "torch": ([0, 1], 8), "write": ([0, 1], 4), "net_swing": ([0, 1], 5), "fry": ([0, 1], 5), "belan": ([0, 1], 4), "pull": ([0, 1], 6)}
 EXPR_OF = {"laugh": "happy"}   # compose expression keys -> generated expression names
+
+
+MOUTH_CACHE = os.path.join(KEYS, "mouth_pts.json")
+_MP = None
+YUNET = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models", "yunet.onnx")   # OpenCV Zoo YuNet (MIT)
+
+
+def mouth_pts(key_id, rgba):
+    """real mouth position on a drawing (YuNet face landmarks: both mouth corners) -> [cx, cy, width] in drawing px, cached.
+    The generated mouth-edit masks were at fixed generic boxes (on the chin for most characters), so they are not used for placement."""
+    global _MP
+    if _MP is None:
+        try: _MP = json.load(open(MOUTH_CACHE))
+        except Exception: _MP = {}
+    if key_id in _MP: return _MP[key_id]
+    r = None
+    try:
+        import cv2
+        a = rgba.astype(np.float32); al = a[:, :, 3:4] / 255
+        bgr = (a[:, :, :3] * al + 200 * (1 - al))[:, :, ::-1].astype(np.uint8).copy()
+        h, w = bgr.shape[:2]; det = cv2.FaceDetectorYN.create(YUNET, "", (w, h), 0.5); _, f = det.detect(bgr)
+        if f is not None and len(f):
+            f = f[np.argmax(f[:, -1])]; r = [float((f[10] + f[12]) / 2), float((f[11] + f[13]) / 2), float(abs(f[12] - f[10]))]
+    except Exception as e:
+        print("mouth_pts", key_id, e)
+    _MP[key_id] = r
+    try: json.dump(_MP, open(MOUTH_CACHE, "w"))
+    except Exception: pass
+    return r
 
 
 def _load(i, f="rgba.png"):
@@ -105,6 +144,14 @@ class KeyChar:
     def drawing(self, pose, moves, t):
         """which drawing shows at time t: walk cycle (on threes) / gesture sequences / the pose's base drawing"""
         base = self.name(pose)
+        act = base.rsplit("_", 1)[0] if base else None
+        for m in moves:         # r5: carrying walk / rope pull etc. cycle their OWN drawings
+            if act == "carry_walk" and m["type"] == "walk" and m.get("t0", 0) <= t < m.get("t1", 0):
+                cyc = sorted(k for k in self.d if k.startswith("carry_walk_")); n = int((t - m["t0"]) * 24) // 6
+                return cyc[n % len(cyc)], "carry_walk_0", True
+            if act in CYCLE and m["type"] in ("arm", "cycle") and m.get("t0", 0) <= t <= m.get("t1", 0) + (1e9 if m.get("hold") else 0):
+                seq, hold = CYCLE[act]; seq = [f"{act}_{i}" for i in seq if f"{act}_{i}" in self.d]
+                if seq: return seq[(int((t - m["t0"]) * 24) // hold) % len(seq)], base, False
         for m in moves:
             if m["type"] == "walk" and m.get("t0", 0) <= t < m.get("t1", 0) and "walk_0" in self.d:
                 n = int((t - m["t0"]) * 24) // 3; cyc = [k for k in self.d if k.startswith("walk_")]
@@ -126,14 +173,16 @@ class KeyChar:
         e = EXPR_OF.get(expr, expr)
         if e and name in self.expr and self.expr[name].get(e) is not None and ew > 0.3: apply_patch(img, self.expr[name][e])
         mp = self.mouth.get(name, {})
-        if m_state is not None and mp:
+        if m_state is not None and mp and USE_MOUTH_PATCHES:
             st = {0: "closed", 1: "half", 2: "open"}[int(m_state)]
             if st != "closed" or e is None: apply_patch(img, mp.get(st))
         rb = self.box[ref]; ab = self.box[name]; kp = self.kp.get(name)
         cx = kp and (kp[8][0] + kp[11][0]) / 2 or (ab[0] + ab[2]) / 2; w = rb[2] - rb[0]; h = rb[3] - rb[1]
         bbox = (cx - w / 2, ab[3] - h, cx + w / 2, ab[3])          # fixed scale from the reference drawing, feet = this drawing's lowest row
         mb = None
-        if mp.get("half") is not None: mb = list(mp["half"][2])
+        mpt = mouth_pts(self.d.ids.get(name, name), self.d[name])
+        if mpt: mb = [mpt[0] - mpt[2] / 2, mpt[1] - mpt[2] * .35, mpt[0] + mpt[2] / 2, mpt[1] + mpt[2] * .35]
+        elif mp.get("half") is not None and USE_MOUTH_PATCHES: mb = list(mp["half"][2])
         return img, View(img.shape[1], img.shape[0], bbox, kp, "sit" if name.startswith("sit") else pose, self.cid, mb)
 
 
