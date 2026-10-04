@@ -29,3 +29,8 @@ Plates redraw (vertex_assets run 37213621286) succeeded. Started build_keys.yml 
 
 ## progress QA_ep01_v5_test (round 1, retry)
 QA_ep01_v5_test is not a quality verdict: the render job failed because Kaggle dataset mani7673/sonpur-2d-ep01 returned 404 for 10 minutes (dataset still processing / infra), before any frame was rendered. No art fault found. Re-dispatched build_keys.yml once (ep01, same art_run 37213621286, render=test, name=ep01_auto1b). If it fails the same way, the owner should check the Kaggle dataset/token. Owner: nothing yet.
+
+## done QA_ep01_v5_test
+The retry (ep01_auto1b, episode2d run 37216283367) also FAILED with no QA verdict: no frame was rendered. First failure was the Kaggle dataset mani7673/sonpur-2d-ep01 returning 404; the retry looks the same (infra, not an art fault). I will not retry a third time.
+Owner: please check on Kaggle that dataset mani7673/sonpur-2d-ep01 exists and has finished processing, and that the KAGGLE token secret is valid. Then say "go" in the control room and I will re-dispatch build_keys.yml (ep01, art_run=37213621286, render=test).
+Still pending: the ep01 s005_b window fix (plates redrawn, round 1) has not yet been test-rendered.
