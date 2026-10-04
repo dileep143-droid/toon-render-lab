@@ -20,6 +20,10 @@ def cutout(path, tol=28):
         if (255 - work[seed[1], seed[0]]).max() < tol * 2:
             cv2.floodFill(work, mask, seed, (0, 0, 0), (tol,) * 3, (tol,) * 3, cv2.FLOODFILL_MASK_ONLY | cv2.FLOODFILL_FIXED_RANGE | 4 | (255 << 8))
     bg = mask[1:-1, 1:-1] > 0
+    # halo: near-white pixels touching the background (soft glows, anti-aliased fringes) are background too
+    near_white = im.min(2) > 215
+    for _ in range(3):
+        bg = bg | (near_white & (cv2.dilate(bg.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0))
     alpha = np.where(bg, 0, 255).astype(np.uint8)
     alpha = cv2.erode(alpha, np.ones((3, 3), np.uint8))                        # shave the white fringe
     alpha = cv2.GaussianBlur(alpha, (3, 3), 0)
