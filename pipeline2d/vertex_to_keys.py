@@ -18,7 +18,7 @@ def cutout(path, tol=28):
     mask = np.zeros((h + 2, w + 2), np.uint8); work = im.copy()
     for seed in [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1), (w // 2, 0), (w // 2, h - 1), (0, h // 2), (w - 1, h // 2)]:
         if (255 - work[seed[1], seed[0]]).max() < tol * 2:
-            cv2.floodFill(work, mask, seed, (0, 0, 0), (tol,) * 3, (tol,) * 3, cv2.FLOODFILL_MASK_ONLY | 8 | (255 << 8))
+            cv2.floodFill(work, mask, seed, (0, 0, 0), (tol,) * 3, (tol,) * 3, cv2.FLOODFILL_MASK_ONLY | cv2.FLOODFILL_FIXED_RANGE | 4 | (255 << 8))
     bg = mask[1:-1, 1:-1] > 0
     alpha = np.where(bg, 0, 255).astype(np.uint8)
     alpha = cv2.erode(alpha, np.ones((3, 3), np.uint8))                        # shave the white fringe
