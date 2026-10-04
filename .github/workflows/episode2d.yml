@@ -12,6 +12,8 @@ on:
       name:   { description: "output file name (no extension)", default: "ep01_draft" }
       key:    { description: "KAGGLE_KEYn secret (must own the bundle dataset)", default: "1" }
       user:   { description: "Kaggle user of that key", default: "mani7673" }
+      mouth_patches: { description: "1 = drawn mouth states from the key drawings (Vertex art), 0 = old behaviour", default: "1" }
+      draw_mouth:    { description: "1 = compose draws a flat cartoon mouth, 0 = off", default: "0" }
 
 jobs:
   render:
@@ -20,6 +22,8 @@ jobs:
     env:
       KAGGLE_API_TOKEN: ${{ secrets[format('KAGGLE_KEY{0}', inputs.key)] }}
       PYTHONUTF8: "1"
+      P2D_MOUTH_PATCHES: ${{ inputs.mouth_patches }}
+      P2D_DRAW_MOUTH: ${{ inputs.draw_mouth }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
