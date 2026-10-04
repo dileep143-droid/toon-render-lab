@@ -25,6 +25,8 @@ FALLBACK.update({"count_0": "sit_hold_0", "carry_walk_0": "hold_plate_0", "reach
                  "net_swing_0": "wave_1", "net_tangled_0": "stand_0", "pull_0": "reach_2", "fry_0": "hold_plate_0", "offer_0": "hold_plate_0", "belan_0": "wag_1"})
 # multi-drawing actions: while an "arm" (or "cycle") move is active, the action's own drawings alternate (frame order, frames each held for n/24 s)
 CYCLE = {"count": ([0, 1, 2, 1], 5), "torch": ([0, 1], 8), "write": ([0, 1], 4), "net_swing": ([0, 1], 5), "fry": ([0, 1], 5), "belan": ([0, 1], 4), "pull": ([0, 1], 6)}
+# ep02 (additive; ep01 plans never use these pose names): clapping as a plan pose, clap drawings cycle while an "arm" move is active
+POSE2KEY.update({"clap": "clap_1"}); FALLBACK.update({"clap_1": "stand_0"}); CYCLE.update({"clap": ([0, 1, 2, 1], 3)})
 EXPR_OF = {"laugh": "happy"}   # compose expression keys -> generated expression names
 
 
