@@ -176,14 +176,14 @@ def paste_rot(dst, src, pivot, ang):
 
 DRAW_MOUTH = True
 MOUTH_TEETH = False       # owner 4 Oct: no teeth, a simple open/close mouth is enough
-MOUTH_UP = 0.10           # the edit mask box sits lower than the lips
+MOUTH_DOWN = 0.20         # shift of the opening below the lip line (fraction of its height)
 DEBUG_MOUTH = bool(os.environ.get("DEBUG_MOUTH"))
 
 
 def draw_mouth(frame, c, bw, bh, state, prev=0):
     """flat cartoon talking mouth over the drawing's mouth area: dark inside, upper teeth, pink tongue; 1 = half, 2 = open"""
-    cx, cy = c; w = max(4.0, bw * (.30 if state == 2 else .34)); h = max(2.0, bh * (.30 if state == 2 else .14))
-    cy -= bh * MOUTH_UP
+    cx, cy = c; w = max(4.0, bw * (.70 if state == 2 else .80)); h = max(2.0, bw * (.50 if state == 2 else .22))   # bw = corner-to-corner mouth width
+    cy += h * MOUTH_DOWN                                                                                           # the jaw drops: the opening grows downward from the lip line
     if w < 5: return
     x0, y0 = int(cx - w), int(cy - h * 1.6); x1, y1 = int(cx + w) + 1, int(cy + h * 1.6) + 1
     if x1 <= 0 or y1 <= 0 or x0 >= frame.shape[1] or y0 >= frame.shape[0]: return
