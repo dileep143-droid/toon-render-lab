@@ -1,0 +1,60 @@
+name: build_keys
+# Art -> key drawings -> mouth patches -> coverage gate -> bundle on Kaggle. Runs entirely on GitHub, so the cloud agent can rebuild
+# an episode without the laptop. Art comes from a vertex_assets run artifact (run id) or from the private Kaggle dataset
+# mani7673/sonpur-2d-<ep>-art. Then it dispatches the render when render=1.
+on:
+  workflow_dispatch:
+    inputs:
+      ep:         { description: "episode id", default: "ep01" }
+      art_run:    { description: "vertex_assets run id whose artifact holds masters/poses/mouths/plates/props (empty = Kaggle art dataset)", default: "" }
+      render:     { description: "1 = dispatch episode2d after the bundle", default: "1" }
+      name:       { description: "render output name", default: "ep01_auto" }
+      key:        { description: "KAGGLE_KEYn", default: "1" }
+      user:       { description: "Kaggle user", default: "mani7673" }
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets[format('KAGGLE_KEY{0}', inputs.key)] }}
+      GH_TOKEN: ${{ github.token }}
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -q numpy opencv-python-headless pillow kaggle
+      - run: echo "KAGGLE_KEY${{ inputs.key }}=$KAGGLE_API_TOKEN" >> $GITHUB_ENV
+      - name: Fetch art
+        run: |
+          mkdir -p art
+          if [ -n "${{ inputs.art_run }}" ]; then
+            gh run download ${{ inputs.art_run }} -D art_dl -R ${{ github.repository }}
+            d=$(find art_dl -maxdepth 2 -type d -name masters | head -1); cp -r "$(dirname "$d")"/. art/
+          else
+            kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }}-art -p art --unzip -q
+          fi
+          ls art; ls art/poses | wc -l; ls art/mouths 2>/dev/null | wc -l
+      - name: Existing bundle (plan, audio, old keys) from Kaggle
+        run: |
+          kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }} -p b --unzip -q
+          tar -xf b/bundle.tar -C "$GITHUB_WORKSPACE"; rm -rf b pipeline2d/out; ln -s "$GITHUB_WORKSPACE/p2d_out" pipeline2d/out
+          test -f pipeline2d/out/${{ inputs.ep }}/plan.json
+      - name: Convert, mouths, gate, bundle
+        run: |
+          cd pipeline2d
+          rm -rf out/keys/*/vx
+          python vertex_to_keys.py "$GITHUB_WORKSPACE/art" out/${{ inputs.ep }}/plan.json out/keys out/${{ inputs.ep }}/keys_selection.json --assets out/${{ inputs.ep }}/assets
+          python vertex_mouths.py "$GITHUB_WORKSPACE/art" out/keys out/${{ inputs.ep }}/keys_selection.json
+          python gate_coverage.py ${{ inputs.ep }}
+          python make_bundle.py ${{ inputs.ep }} --key ${{ inputs.key }}
+      - name: Render
+        if: inputs.render == '1'
+        run: |
+          sleep 90
+          gh workflow run episode2d.yml -R ${{ github.repository }} -f ep=${{ inputs.ep }} -f name=${{ inputs.name }} -f key=${{ inputs.key }} -f user=${{ inputs.user }} -f mouth_patches=1 -f draw_mouth=0
