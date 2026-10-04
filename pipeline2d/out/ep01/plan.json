@@ -1,0 +1,7275 @@
+{
+ "ep": "ep01",
+ "plates": [
+  {
+   "id": "courtyard_morning",
+   "time": ""
+  },
+  {
+   "id": "courtyard_noon",
+   "time": ""
+  },
+  {
+   "id": "house_inside_noon",
+   "time": ""
+  },
+  {
+   "id": "house_inside_evening",
+   "time": ""
+  },
+  {
+   "id": "well_peepal_evening",
+   "time": ""
+  },
+  {
+   "id": "lallan_shop_evening",
+   "time": ""
+  },
+  {
+   "id": "well_peepal_dusk",
+   "time": ""
+  },
+  {
+   "id": "well_peepal_twilight",
+   "time": ""
+  },
+  {
+   "id": "courtyard_evening",
+   "time": ""
+  },
+  {
+   "id": "courtyard_night",
+   "time": ""
+  }
+ ],
+ "props": [
+  {
+   "id": "laddoo",
+   "prompt": "a single round golden-yellow besan laddoo"
+  },
+  {
+   "id": "empty_thali",
+   "prompt": "an empty round shiny brass thali plate"
+  },
+  {
+   "id": "laddoo_plate",
+   "prompt": "a small steel plate with four yellow laddoos"
+  },
+  {
+   "id": "belan",
+   "prompt": "a smooth wooden Indian kitchen rolling pin"
+  },
+  {
+   "id": "paraat",
+   "prompt": "a large traditional Indian brass mixing plate filled with yellow besan flour dough"
+  },
+  {
+   "id": "laddoo_big",
+   "prompt": "a single giant round yellow besan laddoo, football-sized"
+  }
+ ],
+ "poses": [
+  {
+   "id": "dadi_sit_hold",
+   "char": "dadi",
+   "pose": "sit_hold",
+   "prompt": "smiling warmly and proudly, holding a bronze thali of laddoos on her lap"
+  },
+  {
+   "id": "dadi_sit_glasses",
+   "char": "dadi",
+   "pose": "sit_cross",
+   "prompt": "reading glasses pushed up on her head, looking around puzzled, hands resting in lap"
+  },
+  {
+   "id": "dadi_stand_shocked",
+   "char": "dadi",
+   "pose": "hand_cheek",
+   "prompt": "wide shocked eyes, mouth open in dismay, one hand pressed to cheek"
+  },
+  {
+   "id": "chhotu_stand",
+   "char": "chhotu",
+   "pose": "stand_3q",
+   "prompt": "wide mischievous dark eyes, hungry eager grin, clean face"
+  },
+  {
+   "id": "chhotu_salute",
+   "char": "chhotu",
+   "pose": "salute",
+   "prompt": "playful innocent smile, right hand raised in a crisp salute at the forehead"
+  },
+  {
+   "id": "chhotu_walk",
+   "char": "chhotu",
+   "pose": "walk",
+   "prompt": "tiptoeing sneaking expression, looking sideways with eyes wide open"
+  },
+  {
+   "id": "chhotu_reach",
+   "char": "chhotu",
+   "pose": "reach",
+   "prompt": "stretched forward greedily, mouth open ready to gulp, eyes sparkling"
+  },
+  {
+   "id": "chhotu_stand_crumbs",
+   "char": "chhotu",
+   "pose": "stand_3q",
+   "prompt": "smug guilty grin, yellow besan crumbs all around his mouth, hands by pockets"
+  },
+  {
+   "id": "chamki_side",
+   "char": "chamki",
+   "pose": "animal_side",
+   "prompt": "alert curious look, head tilted slightly, floppy ears perked"
+  },
+  {
+   "id": "sheru_lie",
+   "char": "sheru",
+   "pose": "animal_lie",
+   "prompt": "peacefully curled up, floppy ears relaxed, eyes shut in deep sleep"
+  },
+  {
+   "id": "dadi_point",
+   "char": "dadi",
+   "pose": "point",
+   "prompt": "squinting eyes with spectacles perched high on forehead, index finger raised in mild interrogation"
+  },
+  {
+   "id": "chhotu_point",
+   "char": "chhotu",
+   "pose": "point",
+   "prompt": "nervous grin with besan mouth, pointing index finger down toward the floor"
+  },
+  {
+   "id": "chhotu_hand_cheek",
+   "char": "chhotu",
+   "pose": "hand_cheek",
+   "prompt": "hand on cheek, rolling eyes upward while thinking hard to make up an excuse, yellow besan smeared around his mouth"
+  },
+  {
+   "id": "gudiya_stand",
+   "char": "gudiya",
+   "pose": "stand_3q",
+   "prompt": "suspicious, hands on hips, jasmine flower tucked neatly in braided hair, head tilted"
+  },
+  {
+   "id": "gudiya_stand_front",
+   "char": "gudiya",
+   "pose": "stand",
+   "prompt": "determined confident expression, leader posture with hands poised ready for action"
+  },
+  {
+   "id": "pinky_hand_cheek",
+   "char": "pinky",
+   "pose": "hand_cheek",
+   "prompt": "adjusting round spectacles on nose with one finger, holding a small school notebook, nerdy serious look"
+  },
+  {
+   "id": "pinky_stand",
+   "char": "pinky",
+   "pose": "stand",
+   "prompt": "Pinky standing, holding a small notebook"
+  },
+  {
+   "id": "gudiya_point",
+   "char": "gudiya",
+   "pose": "point",
+   "prompt": "Gudiya pointing forward with a serious planning expression"
+  },
+  {
+   "id": "bablu_scared",
+   "char": "bablu",
+   "pose": "stand",
+   "prompt": "Bablu standing, looking extremely terrified, trembling"
+  },
+  {
+   "id": "chhotu_nervous",
+   "char": "chhotu",
+   "pose": "hand_cheek",
+   "prompt": "Chhotu standing, sweating nervously, hand on his cheek"
+  },
+  {
+   "id": "raju_salute",
+   "char": "raju",
+   "pose": "salute",
+   "prompt": "Raju posing heroically, saluting with a confident smile"
+  },
+  {
+   "id": "raju_muffled",
+   "char": "raju",
+   "pose": "stand",
+   "prompt": "Raju standing, completely wrapped inside a green fishing net, looking muffled and embarrassed"
+  },
+  {
+   "id": "lallan_loving",
+   "char": "lallan",
+   "pose": "stand_3q",
+   "prompt": "Lallan standing, looking lovingly at his sweets with a dramatic happy expression"
+  },
+  {
+   "id": "lallan_hold_plate",
+   "char": "lallan",
+   "pose": "hold_plate",
+   "prompt": "proudly holding a plate of sweets close to his chest, dramatic crying expression"
+  },
+  {
+   "id": "raju_reach",
+   "char": "raju",
+   "pose": "reach",
+   "prompt": "leaning forward stylishly with one hand outstretched, looking confident"
+  },
+  {
+   "id": "bablu_stand",
+   "char": "bablu",
+   "pose": "stand",
+   "prompt": "scared expression, biting nails, looking around nervously"
+  },
+  {
+   "id": "dadi_reach",
+   "char": "dadi",
+   "pose": "reach",
+   "prompt": "holding a vintage flashlight, looking around with glasses pushed up on her head"
+  },
+  {
+   "id": "lallan_reach",
+   "char": "lallan",
+   "pose": "reach",
+   "prompt": "panting, wide frantic eyes, waving a wooden rolling pin in his forward hand"
+  },
+  {
+   "id": "chhotu_stand_nervous",
+   "char": "chhotu",
+   "pose": "stand",
+   "prompt": "nervous grin, shifty mischievous eyes looking sideways, hands tucked near bulging pocket"
+  },
+  {
+   "id": "lallan_walk",
+   "char": "lallan",
+   "pose": "walk",
+   "prompt": "wailing and panicking, brandishing a wooden rolling pin overhead"
+  },
+  {
+   "id": "raju_hand_cheek",
+   "char": "raju",
+   "pose": "hand_cheek",
+   "prompt": "wincing in pain, one hand rubbing his sore lower back, exhausted"
+  },
+  {
+   "id": "pinky_point",
+   "char": "pinky",
+   "pose": "point",
+   "prompt": "serious determined look, adjusting spectacles with other hand, index finger raised accusingly"
+  },
+  {
+   "id": "chamki_animal_side",
+   "char": "chamki",
+   "pose": "animal_side",
+   "prompt": "curious and sniffing forward, snout aimed down towards waist height"
+  },
+  {
+   "id": "gudiya_hold_plate",
+   "char": "gudiya",
+   "pose": "hold_plate",
+   "prompt": "stunned, staring down at an open palm, eyebrows raised in surprise"
+  },
+  {
+   "id": "chhotu_stand_crying",
+   "char": "chhotu",
+   "pose": "stand",
+   "prompt": "repentant, big tear droplets on chubby cheeks, trembling open mouth confessing the truth"
+  },
+  {
+   "id": "bablu_stand_3q",
+   "char": "bablu",
+   "pose": "stand_3q",
+   "prompt": "happy relieved expression, wearing a yellow t-shirt"
+  },
+  {
+   "id": "dadi_sit_cross",
+   "char": "dadi",
+   "pose": "sit_cross",
+   "prompt": "gentle smiling expression, wearing a light pink cotton saree, sitting cross-legged on a low wooden charpai"
+  },
+  {
+   "id": "chhotu_stand_3q",
+   "char": "chhotu",
+   "pose": "stand_3q",
+   "prompt": "surprised wide-eyed expression, looking to the right, wearing a green kurta"
+  },
+  {
+   "id": "raju_stand_3q",
+   "char": "raju",
+   "pose": "stand_3q",
+   "prompt": "relieved smiling expression, wearing a blue shirt"
+  },
+  {
+   "id": "pinky_stand_3q",
+   "char": "pinky",
+   "pose": "stand_3q",
+   "prompt": "teasing smirk, wearing glasses and a purple frock"
+  },
+  {
+   "id": "chhotu_sit_cross",
+   "char": "chhotu",
+   "pose": "sit_cross",
+   "prompt": "sitting cross-legged, looking mischievous with big dark eyes"
+  },
+  {
+   "id": "raju_sit_cross",
+   "char": "raju",
+   "pose": "sit_cross",
+   "prompt": "sitting cross-legged, holding a giant yellow laddoo that is crumbling into his lap"
+  },
+  {
+   "id": "bablu_sit_cross",
+   "char": "bablu",
+   "pose": "sit_cross",
+   "prompt": "sitting cross-legged, holding a small round yellow laddoo"
+  },
+  {
+   "id": "gudiya_sit_cross",
+   "char": "gudiya",
+   "pose": "sit_cross",
+   "prompt": "sitting cross-legged, laughing happily"
+  },
+  {
+   "id": "lallan_hold",
+   "char": "lallan",
+   "pose": "hold_plate",
+   "prompt": "standing, holding a steel plate full of hot jalebis with both hands"
+  },
+  {
+   "id": "sheru_sit",
+   "char": "sheru",
+   "pose": "animal_side",
+   "prompt": "friendly light-brown dog sitting up, looking happy"
+  },
+  {
+   "id": "dadi_count",
+   "char": "dadi",
+   "pose": "count"
+  },
+  {
+   "id": "dadi_carry_walk",
+   "char": "dadi",
+   "pose": "carry_walk"
+  },
+  {
+   "id": "dadi_torch",
+   "char": "dadi",
+   "pose": "torch"
+  },
+  {
+   "id": "chhotu_stool",
+   "char": "chhotu",
+   "pose": "stool"
+  },
+  {
+   "id": "chhotu_cry",
+   "char": "chhotu",
+   "pose": "cry"
+  },
+  {
+   "id": "gudiya_jasmine",
+   "char": "gudiya",
+   "pose": "jasmine"
+  },
+  {
+   "id": "gudiya_pull_ear",
+   "char": "gudiya",
+   "pose": "pull_ear"
+  },
+  {
+   "id": "pinky_write",
+   "char": "pinky",
+   "pose": "write"
+  },
+  {
+   "id": "raju_net_swing",
+   "char": "raju",
+   "pose": "net_swing"
+  },
+  {
+   "id": "raju_net_tangled",
+   "char": "raju",
+   "pose": "net_tangled"
+  },
+  {
+   "id": "pinky_pull",
+   "char": "pinky",
+   "pose": "pull"
+  },
+  {
+   "id": "bablu_pull",
+   "char": "bablu",
+   "pose": "pull"
+  },
+  {
+   "id": "raju_pull",
+   "char": "raju",
+   "pose": "pull"
+  },
+  {
+   "id": "lallan_fry",
+   "char": "lallan",
+   "pose": "fry"
+  },
+  {
+   "id": "lallan_offer",
+   "char": "lallan",
+   "pose": "offer"
+  },
+  {
+   "id": "lallan_belan",
+   "char": "lallan",
+   "pose": "belan"
+  }
+ ],
+ "shots": [
+  {
+   "id": "s001",
+   "units": [
+    0,
+    1
+   ],
+   "plate": "courtyard_morning",
+   "beat": "Morning in Dadi's courtyard; Dadi counts eleven laddoos on her lap while Sheru sleeps and Chamki wanders.",
+   "camera": {
+    "from": [
+     0.45,
+     0.55,
+     1.0
+    ],
+    "to": [
+     0.45,
+     0.59,
+     1.9
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_count",
+     "x": 0.45,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 11.8,
+       "t1": 12.8
+      },
+      {
+       "type": "arm",
+       "t0": 12.355999999999998,
+       "t1": 20.27
+      }
+     ]
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.75,
+     "foot_y": 0.9,
+     "height": 0.15,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tail",
+       "t0": 1.0,
+       "t1": 5.0
+      }
+     ]
+    },
+    {
+     "pose": "chamki_side",
+     "x": 0.18,
+     "foot_y": 0.88,
+     "height": 0.28,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 1.0,
+       "t1": 4.5,
+       "to_x": 0.28
+      },
+      {
+       "type": "turn",
+       "t": 6.0
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.545,
+      0.791
+     ],
+     "t0": 12.455999999999998,
+     "t1": 13.024290909090906,
+     "scale": 0.034,
+     "show": 12.405999999999997
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.561,
+      0.791
+     ],
+     "t0": 13.166363636363634,
+     "t1": 13.734654545454543,
+     "scale": 0.034,
+     "show": 13.116363636363634
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.5770000000000001,
+      0.791
+     ],
+     "t0": 13.87672727272727,
+     "t1": 14.44501818181818,
+     "scale": 0.034,
+     "show": 13.82672727272727
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.5930000000000001,
+      0.791
+     ],
+     "t0": 14.587090909090907,
+     "t1": 15.155381818181816,
+     "scale": 0.034,
+     "show": 14.537090909090907
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.545,
+      0.777
+     ],
+     "t0": 15.297454545454544,
+     "t1": 15.865745454545452,
+     "scale": 0.034,
+     "show": 15.247454545454543
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.561,
+      0.777
+     ],
+     "t0": 16.00781818181818,
+     "t1": 16.57610909090909,
+     "scale": 0.034,
+     "show": 15.95781818181818
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.5770000000000001,
+      0.777
+     ],
+     "t0": 16.718181818181815,
+     "t1": 17.286472727272724,
+     "scale": 0.034,
+     "show": 16.668181818181814
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.5930000000000001,
+      0.777
+     ],
+     "t0": 17.428545454545453,
+     "t1": 17.996836363636362,
+     "scale": 0.034,
+     "show": 17.378545454545453
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.545,
+      0.763
+     ],
+     "t0": 18.138909090909088,
+     "t1": 18.707199999999997,
+     "scale": 0.034,
+     "show": 18.088909090909087
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.561,
+      0.763
+     ],
+     "t0": 18.849272727272727,
+     "t1": 19.417563636363635,
+     "scale": 0.034,
+     "show": 18.799272727272726
+    },
+    {
+     "prop": "laddoo",
+     "from": [
+      0.47000000000000003,
+      0.726
+     ],
+     "to": [
+      0.5770000000000001,
+      0.763
+     ],
+     "t0": 19.55963636363636,
+     "t1": 20.12792727272727,
+     "scale": 0.034,
+     "show": 19.50963636363636
+    }
+   ],
+   "sfx": [
+    {
+     "id": "birds",
+     "t": 0.5
+    },
+    {
+     "id": "bangles",
+     "t": 11.6
+    }
+   ],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.45,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ],
+   "mcu": false
+  },
+  {
+   "id": "s002",
+   "units": [
+    2,
+    3
+   ],
+   "plate": "courtyard_morning",
+   "beat": "Chhotu peeks from behind the door craving laddoos, and Dadi playfully chides him about his breakfast.",
+   "camera": {
+    "from": [
+     0.35,
+     0.52,
+     1.25
+    ],
+    "to": [
+     0.4,
+     0.52,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.12,
+     "foot_y": 0.86,
+     "height": 0.48,
+     "flip": false,
+     "z": 3,
+     "moves": [
+      {
+       "type": "peek",
+       "t0": 0.0,
+       "t1": 1.5,
+       "edge_x": 0.14
+      },
+      {
+       "type": "tilt",
+       "t0": 2.0,
+       "t1": 4.0,
+       "angle": 8
+      }
+     ]
+    },
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.55,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 8.2,
+       "t1": 10.0
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_laddoos",
+     "from": [
+      0.54,
+      0.746
+     ],
+     "to": [
+      0.54,
+      0.746
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.13
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.55,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s003",
+   "units": [
+    4,
+    5
+   ],
+   "plate": "courtyard_morning",
+   "beat": "Chhotu steps forward with witty excuses, and Dadi firmly forbids anyone from touching the laddoos.",
+   "camera": {
+    "from": [
+     0.45,
+     0.55,
+     1.2
+    ],
+    "to": [
+     0.42,
+     0.55,
+     1.25
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.28,
+     "foot_y": 0.86,
+     "height": 0.48,
+     "flip": false,
+     "z": 3,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 2.0,
+       "to_x": 0.36
+      },
+      {
+       "type": "nod",
+       "t0": 2.2,
+       "t1": 3.2
+      }
+     ]
+    },
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.62,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 4.0,
+       "t1": 7.5,
+       "angle": -25,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_laddoos",
+     "from": [
+      0.61,
+      0.746
+     ],
+     "to": [
+      0.61,
+      0.746
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.13
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.62,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s004",
+   "units": [
+    6
+   ],
+   "plate": "courtyard_morning",
+   "beat": "Chhotu snaps to attention and obediently salutes Dadi, promising not to touch.",
+   "camera": {
+    "from": [
+     0.4,
+     0.52,
+     1.45
+    ],
+    "to": [
+     0.42,
+     0.52,
+     1.55
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_salute",
+     "x": 0.38,
+     "foot_y": 0.86,
+     "height": 0.48,
+     "flip": false,
+     "z": 3,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.3,
+       "t1": 1.8,
+       "angle": -30,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.65,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": true,
+     "z": 2,
+     "moves": []
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_laddoos",
+     "from": [
+      0.64,
+      0.746
+     ],
+     "to": [
+      0.64,
+      0.746
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.13
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.65,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s005",
+   "units": [
+    7,
+    8,
+    9
+   ],
+   "plate": "courtyard_morning",
+   "beat": "Dadi searches for her misplaced glasses on her head, Chamki bleats, and Dadi settles down to rest.",
+   "camera": {
+    "from": [
+     0.45,
+     0.52,
+     1.3
+    ],
+    "to": [
+     0.48,
+     0.52,
+     1.35
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_glasses",
+     "x": 0.55,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.5,
+       "t1": 2.5
+      },
+      {
+       "type": "sink",
+       "t0": 6.0,
+       "t1": 8.0,
+       "dy": 0.04
+      }
+     ]
+    },
+    {
+     "pose": "chamki_side",
+     "x": 0.22,
+     "foot_y": 0.88,
+     "height": 0.28,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "hop",
+       "t0": 4.0,
+       "t1": 4.6
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_covered",
+     "from": [
+      0.56,
+      0.746
+     ],
+     "to": [
+      0.56,
+      0.746
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.12
+    }
+   ],
+   "sfx": [
+    {
+     "id": "goat",
+     "t": 4.0
+    }
+   ],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.55,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s006",
+   "units": [
+    10,
+    11
+   ],
+   "plate": "courtyard_noon",
+   "beat": "In the afternoon quiet, Dadi and Sheru snore while hungry Chhotu sneaks past whispering to his belly.",
+   "camera": {
+    "from": [
+     0.48,
+     0.55,
+     1.15
+    ],
+    "to": [
+     0.38,
+     0.58,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_glasses",
+     "x": 0.68,
+     "foot_y": 0.85,
+     "height": 0.52,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.82,
+     "foot_y": 0.9,
+     "height": 0.15,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "chhotu_walk",
+     "x": 0.15,
+     "foot_y": 0.88,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 3.5,
+       "to_x": 0.35
+      },
+      {
+       "type": "shake",
+       "t0": 8.5,
+       "t1": 10.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "snore",
+     "t": 0.5
+    }
+   ],
+   "plate_planner": "plate_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.68,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s007",
+   "units": [
+    12,
+    13,
+    14
+   ],
+   "plate": "house_inside_noon",
+   "beat": "Inside by the almirah, Chhotu resolves to eat with his mouth and gobbles down laddoos one after another.",
+   "camera": {
+    "from": [
+     0.65,
+     0.5,
+     1.45
+    ],
+    "to": [
+     0.66,
+     0.48,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_reach",
+     "x": 0.65,
+     "foot_y": 0.85,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.5,
+       "t1": 2.5,
+       "angle": -35,
+       "count": 1
+      },
+      {
+       "type": "nod",
+       "t0": 4.3,
+       "t1": 5.5
+      },
+      {
+       "type": "arm",
+       "t0": 6.5,
+       "t1": 9.5,
+       "angle": -25,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.72,
+      0.42
+     ],
+     "to": "chhotu_reach.mouth",
+     "t0": 4.1,
+     "t1": 4.8,
+     "scale": 0.04
+    },
+    {
+     "prop": "thali_laddoos",
+     "from": [
+      0.84,
+      0.175
+     ],
+     "to": [
+      0.84,
+      0.175
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [
+    {
+     "id": "boing",
+     "t": 4.2
+    }
+   ],
+   "plate_planner": "plate_room",
+   "must_show": [
+    "beat 13: Show Chhotu dragging the chauki, climbing it, and looking at the thali."
+   ],
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    },
+    {
+     "prop": "chauki",
+     "x": 0.7,
+     "foot_y": 0.87,
+     "height": 0.1
+    }
+   ]
+  },
+  {
+   "id": "s008",
+   "units": [
+    15,
+    16
+   ],
+   "plate": "house_inside_noon",
+   "beat": "Chhotu tucks the last laddoo into his pocket and frantically hushes Sheru, who sniffs and stirs nearby.",
+   "camera": {
+    "from": [
+     0.55,
+     0.55,
+     1.3
+    ],
+    "to": [
+     0.52,
+     0.55,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand_crumbs",
+     "x": 0.62,
+     "foot_y": 0.85,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.5,
+       "t1": 1.8,
+       "angle": 25,
+       "count": 1
+      },
+      {
+       "type": "shake",
+       "t0": 3.3,
+       "t1": 5.2
+      }
+     ]
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.25,
+     "foot_y": 0.9,
+     "height": 0.15,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tail",
+       "t0": 3.2,
+       "t1": 5.5
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.64,
+      0.52
+     ],
+     "to": [
+      0.62,
+      0.68
+     ],
+     "t0": 0.5,
+     "t1": 1.8,
+     "scale": 0.04
+    },
+    {
+     "prop": "thali_empty",
+     "from": [
+      0.84,
+      0.175
+     ],
+     "to": [
+      0.84,
+      0.175
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [
+    {
+     "id": "dog_snore",
+     "t": 3.2
+    }
+   ],
+   "plate_planner": "plate_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    },
+    {
+     "prop": "chauki",
+     "x": 0.7,
+     "foot_y": 0.87,
+     "height": 0.1
+    }
+   ]
+  },
+  {
+   "id": "s009",
+   "units": [
+    17
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Dadi reaches the high almirah and gasps in utter shock to see the laddoo thali completely empty.",
+   "camera": {
+    "from": [
+     0.62,
+     0.5,
+     1.4
+    ],
+    "to": [
+     0.64,
+     0.48,
+     1.65
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_stand_shocked",
+     "x": 0.62,
+     "foot_y": 0.86,
+     "height": 0.6,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.5,
+       "t1": 2.5
+      },
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 3.5,
+       "angle": -20,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_empty",
+     "from": [
+      0.84,
+      0.175
+     ],
+     "to": [
+      0.84,
+      0.175
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s010",
+   "units": [
+    18
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Dadi discovers the empty laddoo thali on the almirah in shock; Gudiya enters gasping.",
+   "camera": {
+    "from": [
+     0.42,
+     0.55,
+     1.1
+    ],
+    "to": [
+     0.42,
+     0.55,
+     1.15
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_stand_shocked",
+     "x": 0.32,
+     "foot_y": 0.9,
+     "height": 0.58,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.2,
+       "t1": 1.8
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_jasmine",
+     "x": 0.9,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 1.5,
+       "to_x": 0.65
+      },
+      {
+       "type": "tilt",
+       "t0": 4.6,
+       "t1": 6.0,
+       "angle": -6
+      }
+     ]
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.85,
+     "foot_y": 0.92,
+     "height": 0.15,
+     "flip": true,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [
+    {
+     "prop": "thali_empty",
+     "from": [
+      0.84,
+      0.175
+     ],
+     "to": [
+      0.84,
+      0.175
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [
+    {
+     "id": "bangles",
+     "t": 0.2
+    }
+   ],
+   "plate_planner": "dadi_room",
+   "must_show": [
+    "beat 19: Show Gudiya putting jasmine in her braid as she enters."
+   ],
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s011",
+   "units": [
+    19,
+    20
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Chhotu walks in casually with yellow besan on his face; Gudiya notices and questions him.",
+   "camera": {
+    "from": [
+     0.5,
+     0.52,
+     1.2
+    ],
+    "to": [
+     0.52,
+     0.52,
+     1.25
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.25,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 1.8,
+       "to_x": 0.45
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.72,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 2.2,
+       "t1": 3.4
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s012",
+   "units": [
+    21,
+    22
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Chhotu claims his yellow smear is a moustache; Dadi squints without her glasses.",
+   "camera": {
+    "from": [
+     0.45,
+     0.45,
+     1.8
+    ],
+    "to": [
+     0.43,
+     0.43,
+     1.85
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.38,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 0.5,
+       "t1": 2.0
+      }
+     ]
+    },
+    {
+     "pose": "dadi_point",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.58,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 5.0,
+       "t1": 7.0,
+       "angle": 6
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s013",
+   "units": [
+    23,
+    24
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Chhotu spins a tale about a magical laddoo thief, startling Gudiya.",
+   "camera": {
+    "from": [
+     0.52,
+     0.5,
+     1.25
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_reach",
+     "x": 0.42,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.4,
+       "t1": 2.4,
+       "angle": -30,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.72,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 4.5,
+       "t1": 6.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s014",
+   "units": [
+    25
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Close-up of Chhotu acting out how the thief flew through the window and wolfed down the sweets.",
+   "camera": {
+    "from": [
+     0.48,
+     0.45,
+     2.0
+    ],
+    "to": [
+     0.48,
+     0.43,
+     2.05
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_reach",
+     "x": 0.48,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 0.2,
+       "t1": 1.5
+      },
+      {
+       "type": "arm",
+       "t0": 1.8,
+       "t1": 4.8,
+       "angle": -45,
+       "count": 3
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "magic",
+     "t": 1.2
+    }
+   ],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s015",
+   "units": [
+    26,
+    27
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Dadi asks what the thief looked like; Chhotu scrambles for thoughts and says he was invisible.",
+   "camera": {
+    "from": [
+     0.5,
+     0.48,
+     1.4
+    ],
+    "to": [
+     0.48,
+     0.48,
+     1.45
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_point",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.58,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.3,
+       "t1": 2.0,
+       "angle": -25,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_hand_cheek",
+     "x": 0.62,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 3.8,
+       "t1": 6.5,
+       "angle": -8
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s016",
+   "units": [
+    28,
+    29
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Gudiya catches that the window was shut; Chhotu bluffs that the thief slips through like air.",
+   "camera": {
+    "from": [
+     0.55,
+     0.5,
+     1.35
+    ],
+    "to": [
+     0.55,
+     0.5,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_stand",
+     "x": 0.4,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.3,
+       "t1": 1.8
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_reach",
+     "x": 0.68,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 2.7,
+       "t1": 5.2,
+       "angle": -35,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s017",
+   "units": [
+    30,
+    31,
+    32
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Dadi asks Chhotu where he was; Chhotu blames his nap with Sheru, who snorts loudly in his sleep.",
+   "camera": {
+    "from": [
+     0.5,
+     0.55,
+     1.1
+    ],
+    "to": [
+     0.5,
+     0.55,
+     1.15
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_point",
+     "x": 0.25,
+     "foot_y": 0.9,
+     "height": 0.58,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 0.3,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_point",
+     "x": 0.52,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 3.3,
+       "t1": 5.5,
+       "angle": -30,
+       "count": 1
+      },
+      {
+       "type": "nod",
+       "t0": 7.8,
+       "t1": 9.2
+      }
+     ]
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.8,
+     "foot_y": 0.92,
+     "height": 0.15,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tail",
+       "t0": 4.6,
+       "t1": 8.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "dog_snore",
+     "t": 4.6
+    }
+   ],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s018",
+   "units": [
+    33
+   ],
+   "plate": "house_inside_evening",
+   "beat": "Narrator warns that one lie breeds ten more, as Chhotu smiles nervously while Dadi and Gudiya wonder.",
+   "camera": {
+    "from": [
+     0.5,
+     0.52,
+     1.25
+    ],
+    "to": [
+     0.5,
+     0.52,
+     1.05
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_stand_shocked",
+     "x": 0.25,
+     "foot_y": 0.9,
+     "height": 0.58,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 3.0,
+       "t1": 6.0,
+       "angle": 5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.75,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 5.0,
+       "t1": 7.5
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "dadi_room",
+   "set": [
+    {
+     "prop": "almirah",
+     "x": 0.84,
+     "foot_y": 0.8,
+     "height": 0.62
+    }
+   ]
+  },
+  {
+   "id": "s019",
+   "units": [
+    34
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "At the peepal tree and well, Gudiya rallies the village children to catch the mysterious laddoo thief.",
+   "camera": {
+    "from": [
+     0.48,
+     0.55,
+     1.15
+    ],
+    "to": [
+     0.52,
+     0.52,
+     1.25
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_stand_front",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 3.0
+      },
+      {
+       "type": "arm",
+       "t0": 4.5,
+       "t1": 6.8,
+       "angle": -35,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "pinky_hand_cheek",
+     "x": 0.72,
+     "foot_y": 0.9,
+     "height": 0.49,
+     "flip": true,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "village",
+     "t": 0.1
+    },
+    {
+     "id": "birds",
+     "t": 3.0
+    }
+   ],
+   "plate_planner": "peepal_well",
+   "must_show": [
+    "beat 23: Ensure the peepal tree is clearly visible in the background."
+   ]
+  },
+  {
+   "id": "s020",
+   "units": [
+    35
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Pinky adjusts her glasses and confidently argues that book thieves only strike on Tuesdays.",
+   "camera": {
+    "from": [
+     0.65,
+     0.45,
+     1.85
+    ],
+    "to": [
+     0.65,
+     0.43,
+     1.95
+    ]
+   },
+   "actors": [
+    {
+     "pose": "pinky_hand_cheek",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.49,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 0.8,
+       "t1": 2.5
+      },
+      {
+       "type": "tilt",
+       "t0": 3.0,
+       "t1": 4.5,
+       "angle": 6
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand_front",
+     "x": 0.38,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "peepal_well"
+  },
+  {
+   "id": "s021",
+   "units": [
+    36,
+    37
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Pinky and Gudiya discuss the thief's schedule near the well.",
+   "camera": {
+    "from": [
+     0.48,
+     0.5,
+     1.8
+    ],
+    "to": [
+     0.48,
+     0.5,
+     1.8
+    ]
+   },
+   "actors": [
+    {
+     "pose": "pinky_hand_cheek",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.5,
+       "t1": 3.0,
+       "angle": -20,
+       "count": 2
+      },
+      {
+       "type": "nod",
+       "t0": 8.0,
+       "t1": 9.5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.6,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 5.5,
+       "t1": 6.8
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal"
+  },
+  {
+   "id": "s022",
+   "units": [
+    38,
+    39
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Bablu runs terrified behind Chhotu, while Chhotu feels squashed.",
+   "camera": {
+    "from": [
+     0.46,
+     0.5,
+     2.0
+    ],
+    "to": [
+     0.46,
+     0.5,
+     2.0
+    ]
+   },
+   "actors": [
+    {
+     "pose": "bablu_scared",
+     "x": 0.68,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 1.2,
+       "to_x": 0.42
+      },
+      {
+       "type": "peek",
+       "t0": 1.3,
+       "t1": 3.5,
+       "edge_x": 0.48
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 3.9,
+       "t1": 5.5,
+       "angle": 6
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal"
+  },
+  {
+   "id": "s023",
+   "units": [
+    40
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Raju boasts about his great plan and net.",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     2.2
+    ],
+    "to": [
+     0.5,
+     0.5,
+     2.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "raju_net_swing",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.8,
+       "t1": 2.5,
+       "angle": -25,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal",
+   "set": []
+  },
+  {
+   "id": "s024",
+   "units": [
+    41
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Raju ends up trapped inside his own net.",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     2.2
+    ],
+    "to": [
+     0.5,
+     0.5,
+     2.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "raju_net_tangled",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.5,
+       "t1": 2.5
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "boing",
+     "t": 0.2
+    }
+   ],
+   "plate_planner": "plate_well_peepal",
+   "must_show": [
+    "beat 25: Show Raju swinging the net in the air before it falls on him."
+   ],
+   "set": []
+  },
+  {
+   "id": "s025",
+   "units": [
+    42,
+    43,
+    44
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Gudiya asks Chhotu for clues; Chhotu invents a blue tail and Pinky notes it down.",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.5
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.5
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_point",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_nervous",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 6.0,
+       "t1": 7.5
+      }
+     ]
+    },
+    {
+     "pose": "pinky_write",
+     "x": 0.7,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 8.5,
+       "t1": 10.0,
+       "angle": -15,
+       "count": 3
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal",
+   "must_show": [
+    "beat 26: Show Pinky writing 'blue tail' in her notebook."
+   ],
+   "set": []
+  },
+  {
+   "id": "s026",
+   "units": [
+    45,
+    46,
+    47
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Chhotu describes the thief's love for round things and singing.",
+   "camera": {
+    "from": [
+     0.52,
+     0.5,
+     1.8
+    ],
+    "to": [
+     0.52,
+     0.5,
+     1.8
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_nervous",
+     "x": 0.4,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      },
+      {
+       "type": "nod",
+       "t0": 9.0,
+       "t1": 11.0
+      }
+     ]
+    },
+    {
+     "pose": "bablu_scared",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 6.9,
+       "t1": 8.4
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal"
+  },
+  {
+   "id": "s027",
+   "units": [
+    48,
+    49
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Gudiya plans the trap; Raju asks for help from inside the net.",
+   "camera": {
+    "from": [
+     0.52,
+     0.5,
+     1.6
+    ],
+    "to": [
+     0.52,
+     0.5,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_point",
+     "x": 0.4,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 3.0,
+       "angle": -20,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "raju_net_tangled",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 10.0,
+       "t1": 12.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well_peepal",
+   "set": []
+  },
+  {
+   "id": "s028",
+   "units": [
+    50
+   ],
+   "plate": "well_peepal_evening",
+   "beat": "Narrator notes how Chhotu's lie is growing longer than the tree.",
+   "camera": {
+    "from": [
+     0.3,
+     0.5,
+     1.1
+    ],
+    "to": [
+     0.7,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.2,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 5.0,
+       "to_x": 0.8
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "village",
+     "t": 0.5
+    }
+   ],
+   "plate_planner": "plate_well_peepal"
+  },
+  {
+   "id": "s029",
+   "units": [
+    51,
+    52
+   ],
+   "plate": "lallan_shop_evening",
+   "beat": "Lallan talks to his jalebis; Gudiya requests four laddoos.",
+   "camera": {
+    "from": [
+     0.55,
+     0.5,
+     1.4
+    ],
+    "to": [
+     0.55,
+     0.5,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_fry",
+     "x": 0.28,
+     "foot_y": 0.9,
+     "height": 0.6,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 3.0,
+       "angle": 20,
+       "count": 2
+      },
+      {
+       "type": "arm",
+       "t0": 0.4,
+       "t1": 7.0
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.58,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 7.0,
+       "t1": 8.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.75,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 3,
+     "moves": []
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "bangles",
+     "t": 1.0
+    }
+   ],
+   "plate_planner": "plate_lallan_shop",
+   "must_show": [
+    "beat 28: Show Lallan working at his kadhai with frying jalebis."
+   ],
+   "set": [
+    {
+     "prop": "jalebi_plate",
+     "x": 0.22,
+     "foot_y": 0.8,
+     "height": 0.08
+    }
+   ]
+  },
+  {
+   "id": "s030",
+   "units": [
+    53,
+    54
+   ],
+   "plate": "lallan_shop_evening",
+   "beat": "Gudiya asks Lallan for laddoos; Lallan gets horrified and hugs his sweets dramatically",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.0
+    ],
+    "to": [
+     0.4,
+     0.5,
+     1.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_hold_plate",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.6,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 2.0,
+       "t1": 3.5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.6,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 0.5,
+       "t1": 1.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.8,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [
+    {
+     "prop": "jalebi_plate",
+     "from": [
+      0.32,
+      0.552
+     ],
+     "to": [
+      0.32,
+      0.552
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.1
+    }
+   ],
+   "sfx": [
+    {
+     "id": "bangles",
+     "t": 4.0
+    }
+   ],
+   "plate_planner": "plate_lallan",
+   "set": [
+    {
+     "prop": "kadhai",
+     "x": 0.12,
+     "foot_y": 0.93,
+     "height": 0.16
+    }
+   ]
+  },
+  {
+   "id": "s031",
+   "units": [
+    55,
+    56
+   ],
+   "plate": "lallan_shop_evening",
+   "beat": "Raju tries to look cool but slips his hand right into Lallan's syrup pot",
+   "camera": {
+    "from": [
+     0.7,
+     0.5,
+     1.5
+    ],
+    "to": [
+     0.7,
+     0.5,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "raju_reach",
+     "x": 0.75,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.5,
+       "t1": 2.0,
+       "angle": -25,
+       "count": 2
+      },
+      {
+       "type": "sink",
+       "t0": 2.2,
+       "t1": 3.0,
+       "dy": 0.05
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "boing",
+     "t": 2.2
+    }
+   ],
+   "plate_planner": "plate_lallan",
+   "set": [
+    {
+     "prop": "kadhai",
+     "x": 0.12,
+     "foot_y": 0.93,
+     "height": 0.16
+    },
+    {
+     "prop": "jalebi_plate",
+     "x": 0.22,
+     "foot_y": 0.8,
+     "height": 0.08
+    },
+    {
+     "prop": "paraat",
+     "x": 0.7,
+     "foot_y": 0.93,
+     "height": 0.07
+    }
+   ]
+  },
+  {
+   "id": "s032",
+   "units": [
+    57,
+    58
+   ],
+   "plate": "lallan_shop_evening",
+   "beat": "Lallan hands over the four laddoos to Gudiya, who promises to return them",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.1
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_offer",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.6,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.6,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 4.0,
+       "t1": 5.5
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo_plate",
+     "from": [
+      0.35,
+      0.65
+     ],
+     "to": [
+      0.55,
+      0.68
+     ],
+     "t0": 1.5,
+     "t1": 3.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_lallan",
+   "must_show": [
+    "beat 31: Show Lallan actively handing the laddoos to Gudiya instead of her just taking them."
+   ],
+   "set": [
+    {
+     "prop": "kadhai",
+     "x": 0.12,
+     "foot_y": 0.93,
+     "height": 0.16
+    },
+    {
+     "prop": "jalebi_plate",
+     "x": 0.22,
+     "foot_y": 0.8,
+     "height": 0.08
+    }
+   ]
+  },
+  {
+   "id": "s033",
+   "units": [
+    59,
+    60
+   ],
+   "plate": "lallan_shop_evening",
+   "beat": "Chhotu asks for a laddoo but Gudiya pulls his ear and scolds him",
+   "camera": {
+    "from": [
+     0.5,
+     0.4,
+     2.0
+    ],
+    "to": [
+     0.5,
+     0.4,
+     2.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.6,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 0.2,
+       "t1": 1.5,
+       "angle": -8
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_point",
+     "x": 0.4,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 2.2,
+       "t1": 4.0,
+       "angle": 15,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo_plate",
+     "from": [
+      0.4,
+      0.68
+     ],
+     "to": [
+      0.4,
+      0.68
+     ],
+     "t0": 0.0,
+     "t1": 3.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "plate_lallan",
+   "must_show": [
+    "beat 32: Free Gudiya's hands so she can gently pull Chhotu's ear."
+   ],
+   "set": [
+    {
+     "prop": "kadhai",
+     "x": 0.12,
+     "foot_y": 0.93,
+     "height": 0.16
+    },
+    {
+     "prop": "jalebi_plate",
+     "x": 0.22,
+     "foot_y": 0.8,
+     "height": 0.08
+    }
+   ]
+  },
+  {
+   "id": "s034",
+   "units": [
+    61,
+    62,
+    63
+   ],
+   "plate": "well_peepal_dusk",
+   "beat": "Behind the bushes, Gudiya explains the plan but Pinky questions how they'll see the thief",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.2
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_point",
+     "x": 0.4,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "peek",
+       "t0": 0.0,
+       "t1": 1.5,
+       "edge_x": 0.3
+      }
+     ]
+    },
+    {
+     "pose": "pinky_stand",
+     "x": 0.6,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "peek",
+       "t0": 2.0,
+       "t1": 3.5,
+       "edge_x": 0.5
+      }
+     ]
+    },
+    {
+     "pose": "bablu_stand",
+     "x": 0.75,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "village",
+     "t": 0.5
+    }
+   ],
+   "plate_planner": "plate_well",
+   "set": [
+    {
+     "prop": "laddoo_plate",
+     "x": 0.46,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s035",
+   "units": [
+    64,
+    65
+   ],
+   "plate": "well_peepal_dusk",
+   "beat": "Chamki chews the rope, the net falls on Sheru, and Raju jumps out but slips",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.0
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chamki_side",
+     "x": 0.2,
+     "foot_y": 0.92,
+     "height": 0.28,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "hop",
+       "t0": 0.5,
+       "t1": 1.2
+      }
+     ]
+    },
+    {
+     "pose": "sheru_lie",
+     "x": 0.45,
+     "foot_y": 0.95,
+     "height": 0.15,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "bablu_stand",
+     "x": 0.6,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "raju_reach",
+     "x": 0.85,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 3.0,
+       "t1": 4.5,
+       "to_x": 0.78
+      },
+      {
+       "type": "sink",
+       "t0": 4.6,
+       "t1": 5.2,
+       "dy": 0.08
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "rope",
+     "from": [
+      0.22,
+      0.3
+     ],
+     "to": [
+      0.22,
+      0.3
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.1
+    },
+    {
+     "prop": "fishing_net",
+     "from": [
+      0.45,
+      0.2
+     ],
+     "to": [
+      0.45,
+      0.8899999999999999
+     ],
+     "t0": 1.0,
+     "t1": 1.6,
+     "scale": 0.22
+    }
+   ],
+   "sfx": [
+    {
+     "id": "boing",
+     "t": 4.5
+    }
+   ],
+   "plate_planner": "plate_well",
+   "set": [
+    {
+     "prop": "laddoo_plate",
+     "x": 0.46,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s036",
+   "units": [
+    66,
+    67
+   ],
+   "plate": "well_peepal_dusk",
+   "beat": "Pinky peers closer and realizes the thief is actually Sheru eating the laddoos",
+   "camera": {
+    "from": [
+     0.4,
+     0.5,
+     1.5
+    ],
+    "to": [
+     0.4,
+     0.5,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "pinky_stand",
+     "x": 0.3,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_point",
+     "x": 0.55,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 3.0,
+       "t1": 4.5
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well",
+   "set": [
+    {
+     "prop": "laddoo_plate",
+     "x": 0.46,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s037",
+   "units": [
+    68,
+    69
+   ],
+   "plate": "well_peepal_dusk",
+   "beat": "Bablu screams 'Ghost!' as Dadi enters holding a flashlight, looking for her glasses",
+   "camera": {
+    "from": [
+     0.6,
+     0.5,
+     1.2
+    ],
+    "to": [
+     0.6,
+     0.5,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "bablu_stand",
+     "x": 0.3,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "turn",
+       "t": 1.0
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.45,
+     "foot_y": 0.92,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "dadi_torch",
+     "x": 0.9,
+     "foot_y": 0.9,
+     "height": 0.6,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 2.0,
+       "t1": 4.5,
+       "to_x": 0.75
+      },
+      {
+       "type": "arm",
+       "t0": 0.5,
+       "t1": 5.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [
+    {
+     "id": "magic",
+     "t": 2.0
+    }
+   ],
+   "plate_planner": "plate_well",
+   "set": []
+  },
+  {
+   "id": "s038",
+   "units": [
+    70
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Lallan runs in panting, waving his rolling pin to protect his sweets",
+   "camera": {
+    "from": [
+     0.3,
+     0.5,
+     1.5
+    ],
+    "to": [
+     0.3,
+     0.5,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_belan",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.6,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 4.0,
+       "angle": -30,
+       "count": 3
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "plate_well",
+   "set": []
+  },
+  {
+   "id": "s039",
+   "units": [
+    71
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Lallan arrives panting with his rolling pin; Gudiya tells him the thief was not found",
+   "camera": {
+    "from": [
+     0.55,
+     0.55,
+     1.15
+    ],
+    "to": [
+     0.5,
+     0.55,
+     1.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_belan",
+     "x": 0.72,
+     "foot_y": 0.9,
+     "height": 0.62,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.38,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 9.8,
+       "t1": 11.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand_nervous",
+     "x": 0.22,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": false,
+     "z": 1,
+     "moves": []
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk",
+   "set": []
+  },
+  {
+   "id": "s040",
+   "units": [
+    72,
+    73
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Chhotu misdirects Lallan toward his shop; Lallan rushes off wailing for his jalebis",
+   "camera": {
+    "from": [
+     0.5,
+     0.55,
+     1.2
+    ],
+    "to": [
+     0.65,
+     0.55,
+     1.25
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand_nervous",
+     "x": 0.28,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 0.5,
+       "t1": 2.0,
+       "angle": 8
+      }
+     ]
+    },
+    {
+     "pose": "lallan_walk",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.62,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 6.2,
+       "t1": 11.0,
+       "to_x": 1.15
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "jalebi_plate",
+     "from": [
+      0.75416,
+      0.5589999999999999
+     ],
+     "to": [
+      0.75416,
+      0.5589999999999999
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s041",
+   "units": [
+    74,
+    75
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Bablu fears the ghost will haunt his sleep while Raju groans over his injured back",
+   "camera": {
+    "from": [
+     0.42,
+     0.52,
+     1.3
+    ],
+    "to": [
+     0.48,
+     0.52,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "bablu_stand",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.45,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "raju_hand_cheek",
+     "x": 0.55,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 7.5,
+       "t1": 9.5,
+       "angle": -10
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk",
+   "must_show": [
+    "beat 38: Show the kids sitting tiredly on the well parapet instead of standing."
+   ]
+  },
+  {
+   "id": "s042",
+   "units": [
+    76,
+    77
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Pinky worries about Dadi's incomplete puja; Gudiya rallies everyone to stay vigilant",
+   "camera": {
+    "from": [
+     0.48,
+     0.52,
+     1.3
+    ],
+    "to": [
+     0.42,
+     0.52,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "pinky_point",
+     "x": 0.38,
+     "foot_y": 0.9,
+     "height": 0.47,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 0.8,
+       "t1": 3.0,
+       "angle": -25,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_stand",
+     "x": 0.58,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 8.0,
+       "t1": 10.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s043",
+   "units": [
+    78
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Chhotu watches his friends dejected, guilt growing heavier than the laddoo in his belly",
+   "camera": {
+    "from": [
+     0.48,
+     0.45,
+     1.8
+    ],
+    "to": [
+     0.48,
+     0.42,
+     2.0
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand_nervous",
+     "x": 0.48,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "sink",
+       "t0": 2.0,
+       "t1": 4.5,
+       "dy": 0.03
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s044",
+   "units": [
+    79,
+    80
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Chamki sniffs Chhotu's bulging pocket; Chhotu scolds her as the pocket rips and laddoo pops out",
+   "camera": {
+    "from": [
+     0.42,
+     0.6,
+     1.4
+    ],
+    "to": [
+     0.45,
+     0.6,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand_nervous",
+     "x": 0.52,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "turn",
+       "t": 1.8
+      }
+     ]
+    },
+    {
+     "pose": "chamki_animal_side",
+     "x": 0.32,
+     "foot_y": 0.9,
+     "height": 0.28,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "hop",
+       "t0": 0.2,
+       "t1": 0.8
+      },
+      {
+       "type": "tail",
+       "t0": 0.0,
+       "t1": 3.0
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.5,
+      0.68
+     ],
+     "to": [
+      0.85,
+      0.45
+     ],
+     "t0": 2.5,
+     "t1": 3.2,
+     "scale": 0.04
+    }
+   ],
+   "sfx": [
+    {
+     "id": "goat",
+     "t": 0.2
+    },
+    {
+     "id": "boing",
+     "t": 2.5
+    }
+   ],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s045",
+   "units": [
+    81,
+    82,
+    83
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Gudiya catches Dadi's laddoo, and Raju and Pinky realize Chhotu is the thief",
+   "camera": {
+    "from": [
+     0.48,
+     0.54,
+     1.25
+    ],
+    "to": [
+     0.52,
+     0.54,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_hold_plate",
+     "x": 0.32,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "raju_hand_cheek",
+     "x": 0.52,
+     "foot_y": 0.9,
+     "height": 0.5,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 4.5,
+       "t1": 6.5,
+       "angle": 10
+      }
+     ]
+    },
+    {
+     "pose": "pinky_point",
+     "x": 0.72,
+     "foot_y": 0.9,
+     "height": 0.47,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 7.5,
+       "t1": 10.0,
+       "angle": -30,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.35,
+      0.65
+     ],
+     "to": [
+      0.35,
+      0.65
+     ],
+     "t0": 0.0,
+     "t1": 12.0,
+     "scale": 0.04
+    }
+   ],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s046",
+   "units": [
+    84
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Chhotu breaks down in tears and confesses to eating all the laddoos and making up the thief",
+   "camera": {
+    "from": [
+     0.5,
+     0.45,
+     2.0
+    ],
+    "to": [
+     0.5,
+     0.42,
+     2.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_cry",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 3.0
+      },
+      {
+       "type": "shake",
+       "t0": 6.0,
+       "t1": 8.0
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk",
+   "set": []
+  },
+  {
+   "id": "s047",
+   "units": [
+    85,
+    86
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Bablu is immensely relieved there is no ghost, and Chhotu sniffles apologetically",
+   "camera": {
+    "from": [
+     0.45,
+     0.52,
+     1.4
+    ],
+    "to": [
+     0.45,
+     0.52,
+     1.45
+    ]
+   },
+   "actors": [
+    {
+     "pose": "bablu_stand",
+     "x": 0.32,
+     "foot_y": 0.9,
+     "height": 0.45,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.2,
+       "t1": 1.5,
+       "to_x": 0.42
+      },
+      {
+       "type": "nod",
+       "t0": 1.8,
+       "t1": 3.0
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand_crying",
+     "x": 0.58,
+     "foot_y": 0.9,
+     "height": 0.46,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 3.5,
+       "t1": 5.5
+      }
+     ]
+    }
+   ],
+   "objects": [],
+   "sfx": [],
+   "plate_planner": "well_peepal_dusk"
+  },
+  {
+   "id": "s048",
+   "units": [
+    87
+   ],
+   "plate": "well_peepal_twilight",
+   "beat": "Chhotu confesses there is no magic thief, and Bablu hugs him in relief",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.5
+    ],
+    "to": [
+     0.45,
+     0.7,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_stand",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.0
+      }
+     ]
+    },
+    {
+     "pose": "bablu_stand_3q",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 4.5,
+       "t1": 6.5,
+       "to_x": 0.48
+      }
+     ]
+    }
+   ],
+   "plate_planner": "well_peepal",
+   "objects": []
+  },
+  {
+   "id": "s049",
+   "units": [
+    88,
+    89,
+    90
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Chhotu confesses to Dadi in the courtyard, and she says she already knew",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.5
+    ],
+    "to": [
+     0.5,
+     0.7,
+     1.5
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.52,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 5.0,
+       "t1": 6.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand_3q",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 7.5,
+       "t1": 9.0
+      }
+     ]
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "objects": [],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.65,
+     "foot_y": 1.03,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s050",
+   "units": [
+    91,
+    92
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Dadi explains she smelled the besan, and Chhotu promises never to lie again",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.5
+    ],
+    "to": [
+     0.5,
+     0.7,
+     1.7
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.52,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 2.0,
+       "t1": 4.5,
+       "angle": -20,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand_3q",
+     "x": 0.35,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 11.5,
+       "t1": 13.5,
+       "to_x": 0.52
+      }
+     ]
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": [
+      0.36,
+      0.708
+     ],
+     "to": [
+      0.36,
+      0.708
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.012
+    }
+   ],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.65,
+     "foot_y": 1.03,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s051",
+   "units": [
+    93,
+    94,
+    95
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Dadi suggests making new laddoos, and Raju is relieved he won't have to use the net",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.4
+    ],
+    "to": [
+     0.48,
+     0.7,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.7,
+     "foot_y": 0.9,
+     "height": 0.52,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.5,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "raju_stand_3q",
+     "x": 0.25,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 3,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 8.0,
+       "t1": 9.5
+      }
+     ]
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "objects": [],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.7,
+     "foot_y": 1.03,
+     "height": 0.2
+    },
+    {
+     "prop": "paraat_besan",
+     "x": 0.5,
+     "foot_y": 0.97,
+     "height": 0.08
+    }
+   ]
+  },
+  {
+   "id": "s052",
+   "units": [
+    96,
+    97,
+    98
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Gudiya and Pinky banter about plans with holes in them",
+   "camera": {
+    "from": [
+     0.4,
+     0.7,
+     1.6
+    ],
+    "to": [
+     0.42,
+     0.7,
+     1.6
+    ]
+   },
+   "actors": [
+    {
+     "pose": "gudiya_stand",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 1,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 3.0,
+       "angle": -30,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "pose": "pinky_stand_3q",
+     "x": 0.55,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 6.0,
+       "t1": 8.0,
+       "angle": 8
+      }
+     ]
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "objects": [],
+   "set": [
+    {
+     "prop": "paraat_besan",
+     "x": 0.5,
+     "foot_y": 0.97,
+     "height": 0.08
+    }
+   ]
+  },
+  {
+   "id": "s053",
+   "units": [
+    99,
+    100
+   ],
+   "plate": "courtyard_evening",
+   "beat": "The narrator introduces the laddoo factory, and Pinky suggests square laddoos",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.4
+    ],
+    "to": [
+     0.5,
+     0.7,
+     1.4
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.52,
+     "flip": true,
+     "z": 1,
+     "moves": []
+    },
+    {
+     "pose": "pinky_stand_3q",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 4.5,
+       "t1": 6.5,
+       "angle": -25,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_stand",
+     "x": 0.48,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 3,
+     "moves": []
+    }
+   ],
+   "objects": [
+    {
+     "prop": "paraat",
+     "from": [
+      0.65,
+      0.85
+     ],
+     "to": [
+      0.65,
+      0.85
+     ],
+     "t0": 0,
+     "t1": 8,
+     "scale": 0.15
+    }
+   ],
+   "sfx": [
+    {
+     "id": "music",
+     "t": 0.1
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "must_show": [
+    "beat 45: Have everyone sit around the charpai with the paraat in the middle."
+   ],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.65,
+     "foot_y": 1.03,
+     "height": 0.2
+    },
+    {
+     "prop": "laddoo_plate",
+     "x": 0.62,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s054",
+   "units": [
+    101,
+    102
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Dadi says laddoos must be round, and Raju shows off a giant laddoo",
+   "camera": {
+    "from": [
+     0.5,
+     0.7,
+     1.4
+    ],
+    "to": [
+     0.45,
+     0.7,
+     1.5
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.65,
+     "foot_y": 0.9,
+     "height": 0.52,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 2.0,
+       "t1": 3.5
+      }
+     ]
+    },
+    {
+     "pose": "raju_reach",
+     "x": 0.3,
+     "foot_y": 0.9,
+     "height": 0.48,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 8.0,
+       "t1": 10.5,
+       "angle": -20,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "objects": [
+    {
+     "prop": "paraat",
+     "from": [
+      0.65,
+      0.85
+     ],
+     "to": [
+      0.65,
+      0.85
+     ],
+     "t0": 0,
+     "t1": 12,
+     "scale": 0.15
+    },
+    {
+     "prop": "laddoo_big",
+     "from": [
+      0.65,
+      0.85
+     ],
+     "to": "raju_reach.hand",
+     "t0": 8.0,
+     "t1": 9.5,
+     "scale": 0.08
+    }
+   ],
+   "plate_planner": "dadi_aangan",
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.65,
+     "foot_y": 1.03,
+     "height": 0.2
+    },
+    {
+     "prop": "laddoo_plate",
+     "x": 0.62,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s055",
+   "units": [
+    103
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Raju shows off his giant laddoo which immediately crumbles into his lap",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.0
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "raju_sit_cross",
+     "x": 0.5,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 2.0,
+       "t1": 3.5
+      }
+     ]
+    },
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.2,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "chhotu_sit_cross",
+     "x": 0.8,
+     "foot_y": 0.85,
+     "height": 0.4,
+     "flip": true,
+     "z": 2,
+     "moves": []
+    }
+   ],
+   "sfx": [
+    {
+     "id": "music",
+     "t": 0.1
+    }
+   ],
+   "plate_planner": "aangan_evening",
+   "objects": [
+    {
+     "prop": "big_laddoo",
+     "from": [
+      0.5,
+      0.6925
+     ],
+     "to": [
+      0.5,
+      0.6925
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.09,
+     "hide": 2.2
+    },
+    {
+     "prop": "paraat_besan",
+     "from": [
+      0.5,
+      0.769
+     ],
+     "to": [
+      0.5,
+      0.769
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.08,
+     "show": 2.2
+    }
+   ],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.2,
+     "foot_y": 0.98,
+     "height": 0.2
+    },
+    {
+     "prop": "paraat_besan",
+     "x": 0.5,
+     "foot_y": 0.97,
+     "height": 0.08
+    },
+    {
+     "prop": "laddoo_plate",
+     "x": 0.62,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s056",
+   "units": [
+    104,
+    105,
+    106,
+    107
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Chamki the goat sneaks up and eats Bablu's laddoo, startling him",
+   "camera": {
+    "from": [
+     0.4,
+     0.5,
+     1.2
+    ],
+    "to": [
+     0.4,
+     0.5,
+     1.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "bablu_sit_cross",
+     "x": 0.4,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 2.5,
+       "t1": 3.5
+      }
+     ]
+    },
+    {
+     "pose": "chamki_side",
+     "x": 0.7,
+     "foot_y": 0.85,
+     "height": 0.28,
+     "flip": true,
+     "z": 3,
+     "moves": [
+      {
+       "type": "hop",
+       "t0": 1.5,
+       "t1": 2.2
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_sit_cross",
+     "x": 0.15,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    }
+   ],
+   "sfx": [
+    {
+     "id": "goat",
+     "t": 1.5
+    }
+   ],
+   "plate_planner": "aangan_evening",
+   "objects": [],
+   "set": [
+    {
+     "prop": "paraat_besan",
+     "x": 0.5,
+     "foot_y": 0.97,
+     "height": 0.08
+    },
+    {
+     "prop": "laddoo_plate",
+     "x": 0.62,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s057",
+   "units": [
+    108,
+    109
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Chhotu tells his rumbling tummy to wait, impressing Gudiya",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.3
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_sit_cross",
+     "x": 0.4,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "nod",
+       "t0": 1.0,
+       "t1": 2.5
+      }
+     ]
+    },
+    {
+     "pose": "gudiya_sit_cross",
+     "x": 0.7,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "tilt",
+       "t0": 3.5,
+       "t1": 5.0,
+       "angle": 8
+      }
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "id": "boing",
+     "t": 0.5
+    }
+   ],
+   "plate_planner": "aangan_evening",
+   "must_show": [
+    "beat 49: Show Chhotu carefully rolling laddoos and his tummy gurgling."
+   ],
+   "objects": [],
+   "set": [
+    {
+     "prop": "paraat_besan",
+     "x": 0.5,
+     "foot_y": 0.97,
+     "height": 0.08
+    },
+    {
+     "prop": "laddoo_plate",
+     "x": 0.62,
+     "foot_y": 0.97,
+     "height": 0.06
+    }
+   ]
+  },
+  {
+   "id": "s058",
+   "units": [
+    110
+   ],
+   "plate": "courtyard_evening",
+   "beat": "Lallan arrives at the door relieved that his jalebis are safe",
+   "camera": {
+    "from": [
+     0.4,
+     0.5,
+     1.1
+    ],
+    "to": [
+     0.4,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "lallan_hold",
+     "x": 0.7,
+     "foot_y": 0.85,
+     "height": 0.6,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.0,
+       "t1": 2.0,
+       "to_x": 0.55
+      }
+     ]
+    },
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.3,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "chhotu_sit_cross",
+     "x": 0.1,
+     "foot_y": 0.85,
+     "height": 0.4,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    }
+   ],
+   "plate_planner": "aangan_evening",
+   "objects": [
+    {
+     "prop": "jalebi_plate",
+     "from": [
+      0.5992,
+      0.52
+     ],
+     "to": [
+      0.5992,
+      0.52
+     ],
+     "t0": 0.0,
+     "t1": 0.0,
+     "scale": 0.09
+    }
+   ],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.3,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s059",
+   "units": [
+    111,
+    112
+   ],
+   "plate": "courtyard_night",
+   "beat": "After puja, Dadi hands the first sweet to Chhotu for speaking the truth",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.2
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.2
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_hold",
+     "x": 0.3,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 1.0,
+       "t1": 2.5,
+       "angle": -20,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_sit_cross",
+     "x": 0.7,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": true,
+     "z": 2,
+     "moves": []
+    }
+   ],
+   "objects": [
+    {
+     "prop": "laddoo",
+     "from": "dadi_sit_hold.hand",
+     "to": "chhotu_sit_cross.hand",
+     "t0": 1.5,
+     "t1": 3.0,
+     "scale": 0.05
+    }
+   ],
+   "sfx": [
+    {
+     "id": "bangles",
+     "t": 1.2
+    }
+   ],
+   "plate_planner": "aangan_night",
+   "must_show": [
+    "beat 51: Show a lit diya near Dadi, laddoos in everyone's hands, and kids sitting at a distance."
+   ],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.3,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s060",
+   "units": [
+    113,
+    114
+   ],
+   "plate": "courtyard_night",
+   "beat": "Dadi smiles, and Sheru wakes up right on cue when it is time to eat",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.1
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.2,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "gudiya_sit_cross",
+     "x": 0.5,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "sheru_sit",
+     "x": 0.8,
+     "foot_y": 0.85,
+     "height": 0.3,
+     "flip": true,
+     "z": 1,
+     "moves": [
+      {
+       "type": "hop",
+       "t0": 1.5,
+       "t1": 2.2
+      }
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "id": "village",
+     "t": 0.1
+    }
+   ],
+   "plate_planner": "aangan_night",
+   "objects": [],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.2,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s061",
+   "units": [
+    115,
+    116,
+    117
+   ],
+   "plate": "courtyard_night",
+   "beat": "Dadi wonders where her glasses are, Chhotu jokes then points to her head",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.3
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.3
+    ]
+   },
+   "actors": [
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.3,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": [
+      {
+       "type": "shake",
+       "t0": 0.5,
+       "t1": 2.0
+      }
+     ]
+    },
+    {
+     "pose": "chhotu_point",
+     "x": 0.7,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": true,
+     "z": 2,
+     "moves": [
+      {
+       "type": "arm",
+       "t0": 3.5,
+       "t1": 5.0,
+       "angle": -30,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "plate_planner": "aangan_night",
+   "objects": [],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.3,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s062",
+   "units": [
+    118
+   ],
+   "plate": "courtyard_night",
+   "beat": "Chhotu admits he is hungry, while Chamki slyly runs off with Dadi's glasses",
+   "camera": {
+    "from": [
+     0.5,
+     0.5,
+     1.1
+    ],
+    "to": [
+     0.5,
+     0.5,
+     1.1
+    ]
+   },
+   "actors": [
+    {
+     "pose": "chhotu_sit_cross",
+     "x": 0.5,
+     "foot_y": 0.85,
+     "height": 0.45,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "dadi_sit_cross",
+     "x": 0.2,
+     "foot_y": 0.85,
+     "height": 0.5,
+     "flip": false,
+     "z": 2,
+     "moves": []
+    },
+    {
+     "pose": "chamki_side",
+     "x": 0.8,
+     "foot_y": 0.85,
+     "height": 0.28,
+     "flip": true,
+     "z": 3,
+     "moves": [
+      {
+       "type": "walk",
+       "t0": 0.5,
+       "t1": 2.5,
+       "to_x": 1.2
+      }
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "id": "goat",
+     "t": 1.0
+    }
+   ],
+   "plate_planner": "aangan_night",
+   "objects": [],
+   "set": [
+    {
+     "prop": "charpai",
+     "x": 0.2,
+     "foot_y": 0.98,
+     "height": 0.2
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  "Dadi covering the thali with a cloth and walking inside the house (beat 5/6 shown implicitly by cut to room)",
+  "Chhotu dragging a wooden chauki stool to the almirah and falling with a thud (dhapp)",
+  "Gudiya tucking jasmine flowers into braid during entrance (depicted with jasmine already in hair)",
+  "Sheru physically rolling over on the floor (depicted as snoring and tail wag in sleep)",
+  "Raju swinging the fishing net in the air and it falling on him (simplified into two separate shots showing before and after)",
+  "Pinky and Bablu pulling the net to spin Raju out (skipped to keep focus on dialogue flow)",
+  "Raju style se dukan ke khambhe par haath tikata hai aur phisalta hai (simplified to a slip and sink move)",
+  "Bablu and Chhotu spin round and round (simplified to Bablu turning in panic)",
+  "Bablu hugging Chhotu physically (shown walking close and nodding with relief instead)",
+  "सब चारपाई के चारों तरफ़ बैठे हैं। बीच में बेसन की बड़ी परात।",
+  "राजू एक फ़ुटबॉल जितना बड़ा लड्डू उठाता है। वो टूटकर उसकी गोद में बिखर जाता है।",
+  "चमकी पीछे से आकर बबलू का एक लड्डू चुपके से खा जाती है।",
+  "छोटू बड़े ध्यान से लड्डू बना रहा है। एक भी नहीं खाता। उसका पेट गुड़गुड़ाता है।",
+  "लल्लन दरवाज़े पर आता है, हाथ में जलेबी की थाली।",
+  "दीया जल चुका है — दादी के पास, बच्चे दूर बैठे हैं। सबके हाथ में एक-एक लड्डू।",
+  "सब हँसते हैं। शेरू भी उठकर बैठ जाता है, उसकी नाक लड्डू की तरफ़।",
+  "चमकी दादी के सिर से चश्मा उठाकर भाग जाती है।"
+ ],
+ "units": {
+  "0": {
+   "scene": 1,
+   "speaker": "Narrator",
+   "emotion": "warm",
+   "text": "ये है सोनपुर गाँव। और ये है दादी का आँगन। आज शाम को यहाँ पूजा है, और दादी बना रही हैं अपने मशहूर बेसन के लड्डू!",
+   "request": 1,
+   "idx": 0,
+   "start": 0.225,
+   "end": 11.781,
+   "dur": 11.556,
+   "wav": "clips/u000_narrator.wav",
+   "chunks": 4,
+   "est": 0.0,
+   "expect_s": 4.6
+  },
+  "1": {
+   "scene": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "text": "एक, दो, तीन... ग्यारह लड्डू! बस, पूजा के लिए पूरे हो गए।",
+   "request": 1,
+   "idx": 1,
+   "start": 12.207,
+   "end": 20.421,
+   "dur": 8.214,
+   "wav": "clips/u001_dadi.wav",
+   "chunks": 6,
+   "est": 12.26,
+   "expect_s": 2.2
+  },
+  "2": {
+   "scene": 1,
+   "speaker": "Chhotu",
+   "emotion": "dreamy",
+   "text": "आहा... कितनी अच्छी ख़ुशबू! दादी, मुझे भूख लगी है!",
+   "request": 1,
+   "idx": 2,
+   "start": 20.938,
+   "end": 28.982,
+   "dur": 8.044,
+   "wav": "clips/u002_chhotu.wav",
+   "chunks": 2,
+   "est": 21.43,
+   "expect_s": 1.8
+  },
+  "3": {
+   "scene": 1,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "text": "अभी तो तूने चार पराठे खाए हैं, छोटू!",
+   "request": 1,
+   "idx": 3,
+   "start": 29.573,
+   "end": 32.466,
+   "dur": 2.893,
+   "wav": "clips/u003_dadi.wav",
+   "chunks": 1,
+   "est": 29.62,
+   "expect_s": 1.4
+  },
+  "4": {
+   "scene": 1,
+   "speaker": "Chhotu",
+   "emotion": "innocent",
+   "text": "वो तो सुबह वाली भूख थी। ये अभी वाली भूख है।",
+   "request": 1,
+   "idx": 4,
+   "start": 32.788,
+   "end": 36.036,
+   "dur": 3.249,
+   "wav": "clips/u004_chhotu.wav",
+   "chunks": 2,
+   "est": 32.8,
+   "expect_s": 1.6
+  },
+  "5": {
+   "scene": 1,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "text": "ये लड्डू भगवान जी के लिए हैं। पूजा के बाद सबको मिलेंगे। तब तक कोई हाथ नहीं लगाएगा। समझे?",
+   "request": 1,
+   "idx": 5,
+   "start": 36.657,
+   "end": 44.252,
+   "dur": 7.595,
+   "wav": "clips/u005_dadi.wav",
+   "chunks": 3,
+   "est": 36.66,
+   "expect_s": 3.7
+  },
+  "6": {
+   "scene": 1,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "text": "समझ गया, दादी! हाथ नहीं लगाऊँगा।",
+   "request": 1,
+   "idx": 6,
+   "start": 44.962,
+   "end": 47.215,
+   "dur": 2.253,
+   "wav": "clips/u006_chhotu.wav",
+   "chunks": 2,
+   "est": 44.82,
+   "expect_s": 1.4
+  },
+  "7": {
+   "scene": 1,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "text": "अरे, मेरा चश्मा कहाँ गया? अभी तो यहीं था!",
+   "request": 1,
+   "idx": 7,
+   "start": 47.814,
+   "end": 51.738,
+   "dur": 3.924,
+   "wav": "clips/u007_dadi.wav",
+   "chunks": 2,
+   "est": 48.02,
+   "expect_s": 1.5
+  },
+  "8": {
+   "scene": 1,
+   "speaker": "Chamki",
+   "emotion": "curious",
+   "text": "में-में!",
+   "sfx": true,
+   "idx": 8
+  },
+  "9": {
+   "scene": 1,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "text": "चमकी, तू भी नहीं बताएगी। चल, मैं थोड़ा लेट जाती हूँ।",
+   "request": 1,
+   "idx": 9,
+   "start": 52.138,
+   "end": 57.904,
+   "dur": 5.766,
+   "wav": "clips/u009_dadi.wav",
+   "chunks": 4,
+   "est": 52.2,
+   "expect_s": 1.9
+  },
+  "10": {
+   "scene": 2,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "text": "दोपहर हो गई। दादी सो गईं। शेरू सो गया। और छोटू का पेट... बिल्कुल नहीं सोया!",
+   "request": 1,
+   "idx": 10,
+   "start": 58.496,
+   "end": 66.647,
+   "dur": 8.15,
+   "wav": "clips/u010_narrator.wav",
+   "chunks": 4,
+   "est": 58.88,
+   "expect_s": 2.9
+  },
+  "11": {
+   "scene": 2,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "text": "श्श्श, पेट जी! चुप रहो! दादी जाग जाएँगी।",
+   "request": 1,
+   "idx": 11,
+   "start": 67.29,
+   "end": 70.683,
+   "dur": 3.393,
+   "wav": "clips/u011_chhotu.wav",
+   "chunks": 4,
+   "est": 67.5,
+   "expect_s": 1.5
+  },
+  "12": {
+   "scene": 2,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "text": "दादी ने कहा था, हाथ नहीं लगाऊँगा। तो मैं... मुँह लगाऊँगा!",
+   "request": 1,
+   "idx": 12,
+   "start": 71.34,
+   "end": 75.351,
+   "dur": 4.011,
+   "wav": "clips/u012_chhotu.wav",
+   "chunks": 3,
+   "est": 71.45,
+   "expect_s": 2.0
+  },
+  "13": {
+   "scene": 2,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "text": "म्म्म! बस एक। सिर्फ़ एक।",
+   "request": 1,
+   "idx": 13,
+   "start": 75.699,
+   "end": 77.945,
+   "dur": 2.246,
+   "wav": "clips/u013_chhotu.wav",
+   "chunks": 1,
+   "est": 76.34,
+   "expect_s": 1.1
+  },
+  "14": {
+   "scene": 2,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "text": "\"बस एक\" बोलते-बोलते छोटू ने गिनना ही छोड़ दिया।",
+   "request": 1,
+   "idx": 14,
+   "start": 78.454,
+   "end": 82.515,
+   "dur": 4.062,
+   "wav": "clips/u014_narrator.wav",
+   "chunks": 2,
+   "est": 78.52,
+   "expect_s": 1.9
+  },
+  "15": {
+   "scene": 2,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "text": "ये बाद के लिए। बाद वाली भूख के लिए!",
+   "request": 1,
+   "idx": 15,
+   "start": 83.018,
+   "end": 86.156,
+   "dur": 3.138,
+   "wav": "clips/u015_chhotu.wav",
+   "chunks": 1,
+   "est": 83.06,
+   "expect_s": 1.4
+  },
+  "16": {
+   "scene": 2,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "text": "नहीं शेरू, सो जाओ! तुम कुछ नहीं देख रहे हो!",
+   "request": 1,
+   "idx": 16,
+   "start": 86.435,
+   "end": 89.257,
+   "dur": 2.822,
+   "wav": "clips/u016_chhotu.wav",
+   "chunks": 1,
+   "est": 86.54,
+   "expect_s": 1.6
+  },
+  "17": {
+   "scene": 3,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "text": "हाय राम! मेरे लड्डू! थाली खाली है!",
+   "request": 1,
+   "idx": 17,
+   "start": 89.672,
+   "end": 94.292,
+   "dur": 4.62,
+   "wav": "clips/u017_dadi.wav",
+   "chunks": 3,
+   "est": 90.3,
+   "expect_s": 1.3
+  },
+  "18": {
+   "scene": 3,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "text": "क्या? ग्यारह के ग्यारह लड्डू ग़ायब?",
+   "request": 1,
+   "idx": 18,
+   "start": 94.604,
+   "end": 97.932,
+   "dur": 3.328,
+   "wav": "clips/u018_gudiya.wav",
+   "chunks": 2,
+   "est": 94.62,
+   "expect_s": 1.5
+  },
+  "19": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "text": "क्या हुआ, दादी? कोई बात है क्या?",
+   "request": 1,
+   "idx": 19,
+   "start": 98.618,
+   "end": 100.709,
+   "dur": 2.091,
+   "wav": "clips/u019_chhotu.wav",
+   "chunks": 2,
+   "est": 98.5,
+   "expect_s": 1.2
+  },
+  "20": {
+   "scene": 3,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "text": "छोटू... तेरे मुँह पर ये पीला-पीला क्या है?",
+   "request": 1,
+   "idx": 20,
+   "start": 101.284,
+   "end": 105.194,
+   "dur": 3.91,
+   "wav": "clips/u020_gudiya.wav",
+   "chunks": 2,
+   "est": 101.86,
+   "expect_s": 1.5
+  },
+  "21": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "text": "ये? ये तो... मेरी नई मूँछ है! मास्टरजी जैसी।",
+   "request": 1,
+   "idx": 21,
+   "start": 105.571,
+   "end": 110.555,
+   "dur": 4.985,
+   "wav": "clips/u021_chhotu.wav",
+   "chunks": 4,
+   "est": 105.66,
+   "expect_s": 1.5
+  },
+  "22": {
+   "scene": 3,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "text": "मुझे चश्मे के बिना कुछ दिखता भी नहीं।",
+   "request": 1,
+   "idx": 22,
+   "start": 110.95,
+   "end": 115.311,
+   "dur": 4.361,
+   "wav": "clips/u022_dadi.wav",
+   "chunks": 1,
+   "est": 110.98,
+   "expect_s": 1.5
+  },
+  "23": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "text": "दादी! मैंने देखा! एक... एक जादुई लड्डू चोर आया था!",
+   "request": 1,
+   "idx": 23,
+   "start": 115.99,
+   "end": 120.394,
+   "dur": 4.404,
+   "wav": "clips/u023_chhotu.wav",
+   "chunks": 3,
+   "est": 116.1,
+   "expect_s": 1.9
+  },
+  "24": {
+   "scene": 3,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "text": "जादुई लड्डू चोर?",
+   "request": 1,
+   "idx": 24,
+   "start": 120.844,
+   "end": 123.38,
+   "dur": 2.535,
+   "wav": "clips/u024_gudiya.wav",
+   "chunks": 2,
+   "est": 120.62,
+   "expect_s": 0.7
+  },
+  "25": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "text": "हाँ! वो उड़कर आया, खिड़की से। फुर्र से थाली में घुसा, और गप-गप सारे लड्डू खा गया!",
+   "request": 1,
+   "idx": 25,
+   "start": 123.685,
+   "end": 129.424,
+   "dur": 5.739,
+   "wav": "clips/u025_chhotu.wav",
+   "chunks": 4,
+   "est": 123.3,
+   "expect_s": 3.2
+  },
+  "26": {
+   "scene": 3,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "text": "अच्छा? और वो दिखता कैसा था?",
+   "request": 1,
+   "idx": 26,
+   "start": 129.889,
+   "end": 133.646,
+   "dur": 3.757,
+   "wav": "clips/u026_dadi.wav",
+   "chunks": 2,
+   "est": 130.25,
+   "expect_s": 1.1
+  },
+  "27": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "text": "वो... वो... दिखता ही नहीं था! वो जादुई है ना, इसलिए!",
+   "request": 1,
+   "idx": 27,
+   "start": 134.106,
+   "end": 138.946,
+   "dur": 4.84,
+   "wav": "clips/u027_chhotu.wav",
+   "chunks": 1,
+   "est": 134.22,
+   "expect_s": 1.7
+  },
+  "28": {
+   "scene": 3,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "text": "पर छोटू, खिड़की तो सुबह से बंद है।",
+   "request": 1,
+   "idx": 28,
+   "start": 139.254,
+   "end": 141.851,
+   "dur": 2.597,
+   "wav": "clips/u028_gudiya.wav",
+   "chunks": 2,
+   "est": 139.3,
+   "expect_s": 1.4
+  },
+  "29": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "text": "तो वो बंद खिड़की से भी निकल जाता है! हवा की तरह! फुर्र!",
+   "request": 1,
+   "idx": 29,
+   "start": 142.296,
+   "end": 145.907,
+   "dur": 3.612,
+   "wav": "clips/u029_chhotu.wav",
+   "chunks": 1,
+   "est": 141.72,
+   "expect_s": 2.2
+  },
+  "30": {
+   "scene": 3,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "text": "और तू उस वक़्त कहाँ था, छोटू?",
+   "request": 1,
+   "idx": 30,
+   "start": 146.114,
+   "end": 149.361,
+   "dur": 3.247,
+   "wav": "clips/u030_dadi.wav",
+   "chunks": 1,
+   "est": 146.16,
+   "expect_s": 1.2
+  },
+  "31": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "text": "मैं? मैं तो... शेरू के साथ सो रहा था! है ना, शेरू?",
+   "request": 1,
+   "idx": 31,
+   "start": 150.231,
+   "end": 154.796,
+   "dur": 4.566,
+   "wav": "clips/u031_chhotu.wav",
+   "chunks": 2,
+   "est": 150.32,
+   "expect_s": 1.5
+  },
+  "32": {
+   "scene": 3,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "text": "देखा? शेरू भी \"हाँ\" बोल रहा है।",
+   "request": 1,
+   "idx": 32,
+   "start": 155.695,
+   "end": 157.461,
+   "dur": 1.766,
+   "wav": "clips/u032_chhotu.wav",
+   "chunks": 1,
+   "est": 155.68,
+   "expect_s": 1.0
+  },
+  "33": {
+   "scene": 3,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "text": "और यहीं से शुरू हुआ छोटू का पहला झूठ। बेचारे को पता नहीं था कि झूठ भी लड्डू की तरह होता है — एक खाओ, तो दूसरा माँगता है!",
+   "request": 1,
+   "idx": 33,
+   "start": 158.309,
+   "end": 169.185,
+   "dur": 10.876,
+   "wav": "clips/u033_narrator.wav",
+   "chunks": 3,
+   "est": 158.2,
+   "expect_s": 4.7
+  },
+  "34": {
+   "scene": 4,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "text": "दोस्तों, सोनपुर में एक जादुई लड्डू चोर घूम रहा है। शाम को पूजा है। हमें उसे पकड़ना होगा। चलो, प्लान बनाते हैं!",
+   "request": 1,
+   "idx": 34,
+   "start": 169.498,
+   "end": 177.433,
+   "dur": 7.934,
+   "wav": "clips/u034_gudiya.wav",
+   "chunks": 2,
+   "est": 169.56,
+   "expect_s": 4.4
+  },
+  "35": {
+   "scene": 4,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "text": "असल में, मैंने किताब में पढ़ा है कि लड्डू चोर सिर्फ़ मंगलवार को आते हैं।",
+   "request": 1,
+   "idx": 35,
+   "start": 178.007,
+   "end": 183.035,
+   "dur": 5.028,
+   "wav": "clips/u035_pinky.wav",
+   "chunks": 2,
+   "est": 178.17,
+   "expect_s": 2.8
+  },
+  "36": {
+   "scene": 4,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "text": "पिंकी, आज तो बुधवार है।",
+   "request": 1,
+   "idx": 36,
+   "start": 183.485,
+   "end": 185.583,
+   "dur": 2.098,
+   "wav": "clips/u036_gudiya.wav",
+   "chunks": 2,
+   "est": 183.36,
+   "expect_s": 0.9
+  },
+  "37": {
+   "scene": 4,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "text": "तो... असल में, ये ज़रूर ओवरटाइम कर रहा होगा।",
+   "request": 1,
+   "idx": 37,
+   "start": 186.096,
+   "end": 192.258,
+   "dur": 6.163,
+   "wav": "clips/u037_pinky.wav",
+   "chunks": 5,
+   "est": 186.08,
+   "expect_s": 1.9
+  },
+  "38": {
+   "scene": 4,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "text": "जादुई? दिखता नहीं? मतलब... भूत!",
+   "request": 1,
+   "idx": 38,
+   "start": 192.614,
+   "end": 196.511,
+   "dur": 3.897,
+   "wav": "clips/u038_bablu.wav",
+   "chunks": 3,
+   "est": 191.96,
+   "expect_s": 1.3
+  },
+  "39": {
+   "scene": 4,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "text": "बबलू भैया, मेरे पीछे आप पूरे नहीं आते!",
+   "request": 1,
+   "idx": 39,
+   "start": 197.272,
+   "end": 200.154,
+   "dur": 2.882,
+   "wav": "clips/u039_chhotu.wav",
+   "chunks": 2,
+   "est": 197.19,
+   "expect_s": 1.5
+  },
+  "40": {
+   "scene": 4,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "text": "डरो मत! राजू द ग्रेट आ गया है! कोई भी चोर हो, ये जाल उसे पकड़ लेगा।",
+   "request": 1,
+   "idx": 40,
+   "start": 200.945,
+   "end": 206.917,
+   "dur": 5.972,
+   "wav": "clips/u040_raju.wav",
+   "chunks": 2,
+   "est": 201.08,
+   "expect_s": 2.7
+  },
+  "41": {
+   "scene": 4,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "text": "ये... ये तो प्रैक्टिस थी। जाल ठीक काम कर रहा है।",
+   "request": 1,
+   "idx": 41,
+   "start": 207.579,
+   "end": 214.03,
+   "dur": 6.451,
+   "wav": "clips/u041_raju.wav",
+   "chunks": 5,
+   "est": 207.58,
+   "expect_s": 1.8
+  },
+  "42": {
+   "scene": 4,
+   "speaker": "Gudiya",
+   "emotion": "giggling",
+   "text": "छोटू, तुमने चोर देखा है। हमें बताओ, उसकी और क्या निशानी है?",
+   "request": 1,
+   "idx": 42,
+   "start": 214.277,
+   "end": 219.949,
+   "dur": 5.672,
+   "wav": "clips/u042_gudiya.wav",
+   "chunks": 3,
+   "est": 213.56,
+   "expect_s": 2.4
+  },
+  "43": {
+   "scene": 4,
+   "speaker": "Chhotu",
+   "emotion": "nervous",
+   "text": "निशानी? अं... उसकी... एक नीली पूँछ है!",
+   "request": 1,
+   "idx": 43,
+   "start": 220.079,
+   "end": 222.785,
+   "dur": 2.706,
+   "wav": "clips/u043_chhotu.wav",
+   "chunks": 3,
+   "est": 220.27,
+   "expect_s": 1.3
+  },
+  "44": {
+   "scene": 4,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "text": "नीली पूँछ। और?",
+   "request": 1,
+   "idx": 44,
+   "start": 223.598,
+   "end": 225.75,
+   "dur": 2.152,
+   "wav": "clips/u044_pinky.wav",
+   "chunks": 2,
+   "est": 223.5,
+   "expect_s": 0.5
+  },
+  "45": {
+   "scene": 4,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "text": "और वो गोल-गोल चीज़ें ही खाता है। लड्डू, गोलगप्पे, गेंद...",
+   "request": 1,
+   "idx": 45,
+   "start": 226.589,
+   "end": 233.443,
+   "dur": 6.854,
+   "wav": "clips/u045_chhotu.wav",
+   "chunks": 3,
+   "est": 226.5,
+   "expect_s": 2.1
+  },
+  "46": {
+   "scene": 4,
+   "speaker": "Bablu",
+   "emotion": "scared",
+   "text": "गेंद भी? मेरी क्रिकेट बॉल!",
+   "request": 1,
+   "idx": 46,
+   "start": 233.731,
+   "end": 235.284,
+   "dur": 1.553,
+   "wav": "clips/u046_bablu.wav",
+   "chunks": 1,
+   "est": 233.42,
+   "expect_s": 1.0
+  },
+  "47": {
+   "scene": 4,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "text": "और जब वो खाता है, तो गाना गाता है — \"लड्डू-लड्डू, गप्पू-गप्पू!\"",
+   "request": 1,
+   "idx": 47,
+   "start": 235.821,
+   "end": 240.188,
+   "dur": 4.367,
+   "wav": "clips/u047_chhotu.wav",
+   "chunks": 1,
+   "est": 234.88,
+   "expect_s": 2.4
+  },
+  "48": {
+   "scene": 4,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "text": "अगर वो गोल चीज़ें खाता है, तो हम उसे गोल चीज़ से ही पकड़ेंगे। लल्लन चाचा से लड्डू लाते हैं, पीपल के नीचे रखते हैं, और ऊपर जाल लगाते हैं!",
+   "request": 1,
+   "idx": 48,
+   "start": 240.823,
+   "end": 250.475,
+   "dur": 9.652,
+   "wav": "clips/u048_gudiya.wav",
+   "chunks": 2,
+   "est": 240.06,
+   "expect_s": 5.5
+  },
+  "49": {
+   "scene": 4,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "text": "बढ़िया प्लान! पर पहले कोई मुझे इस जाल से बाहर निकालो।",
+   "request": 1,
+   "idx": 49,
+   "start": 250.914,
+   "end": 254.692,
+   "dur": 3.779,
+   "wav": "clips/u049_raju.wav",
+   "chunks": 1,
+   "est": 250.36,
+   "expect_s": 2.4
+  },
+  "50": {
+   "scene": 4,
+   "speaker": "Narrator",
+   "emotion": "warm",
+   "text": "देखा? एक झूठ से नीली पूँछ बनी, पूँछ से गाना बना। छोटू का झूठ अब पीपल के पेड़ से भी लंबा हो रहा था।",
+   "request": 1,
+   "idx": 50,
+   "start": 255.047,
+   "end": 264.56,
+   "dur": 9.513,
+   "wav": "clips/u050_narrator.wav",
+   "chunks": 4,
+   "est": 255.04,
+   "expect_s": 3.7
+  },
+  "51": {
+   "scene": 5,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "text": "अरे मेरे गोल-गोल बच्चों! धूप में मत बैठो, काले हो जाओगे। चलो, शीरे में डुबकी लगाओ।",
+   "request": 2,
+   "idx": 51,
+   "start": 0.0,
+   "end": 6.686,
+   "dur": 6.686,
+   "wav": "clips/u051_lallan.wav",
+   "chunks": 2,
+   "est": 0.0,
+   "expect_s": 3.2
+  },
+  "52": {
+   "scene": 5,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "text": "लल्लन चाचा, हमें चार लड्डू चाहिए। हम जादुई लड्डू चोर के लिए जाल बिछा रहे हैं।",
+   "request": 2,
+   "idx": 52,
+   "start": 7.172,
+   "end": 12.377,
+   "dur": 5.205,
+   "wav": "clips/u052_gudiya.wav",
+   "chunks": 2,
+   "est": 6.76,
+   "expect_s": 3.3
+  },
+  "53": {
+   "scene": 5,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "text": "क्या? लड्डू चोर? गाँव में?",
+   "request": 2,
+   "idx": 53,
+   "start": 12.725,
+   "end": 16.791,
+   "dur": 4.066,
+   "wav": "clips/u053_lallan.wav",
+   "chunks": 3,
+   "est": 12.6,
+   "expect_s": 0.9
+  },
+  "54": {
+   "scene": 5,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "text": "नहीं! मेरे बच्चों को कोई हाथ नहीं लगाएगा! जलेबी रानी, डरना मत, चाचा है ना!",
+   "request": 2,
+   "idx": 54,
+   "start": 17.395,
+   "end": 23.132,
+   "dur": 5.738,
+   "wav": "clips/u054_lallan.wav",
+   "chunks": 4,
+   "est": 16.82,
+   "expect_s": 2.9
+  },
+  "55": {
+   "scene": 5,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "text": "चिंता मत करो, चाचा। राजू द ग्रेट है ना।",
+   "request": 2,
+   "idx": 55,
+   "start": 23.457,
+   "end": 26.367,
+   "dur": 2.909,
+   "wav": "clips/u055_raju.wav",
+   "chunks": 1,
+   "est": 23.52,
+   "expect_s": 1.5
+  },
+  "56": {
+   "scene": 5,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "text": "ये... ये भी प्लान का हिस्सा था। हाथ मीठा हो, तो चोर पास आएगा।",
+   "request": 2,
+   "idx": 56,
+   "start": 26.756,
+   "end": 31.714,
+   "dur": 4.958,
+   "wav": "clips/u056_raju.wav",
+   "chunks": 2,
+   "est": 26.82,
+   "expect_s": 2.2
+  },
+  "57": {
+   "scene": 5,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "text": "ये लो चार लड्डू। पर इन्हें प्यार से रखना। ये मेरे सबसे शरीफ़ बच्चे हैं। कभी कड़ाही से बाहर नहीं कूदते।",
+   "request": 2,
+   "idx": 57,
+   "start": 32.342,
+   "end": 40.787,
+   "dur": 8.445,
+   "wav": "clips/u057_lallan.wav",
+   "chunks": 5,
+   "est": 32.22,
+   "expect_s": 4.2
+  },
+  "58": {
+   "scene": 5,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "text": "पक्का, चाचा। चोर पकड़ते ही वापस ले आएँगे।",
+   "request": 2,
+   "idx": 58,
+   "start": 41.273,
+   "end": 44.23,
+   "dur": 2.957,
+   "wav": "clips/u058_gudiya.wav",
+   "chunks": 2,
+   "est": 41.37,
+   "expect_s": 1.7
+  },
+  "59": {
+   "scene": 5,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "text": "चाचा, मुझे भूख लगी है!",
+   "request": 2,
+   "idx": 59,
+   "start": 44.434,
+   "end": 46.582,
+   "dur": 2.147,
+   "wav": "clips/u059_chhotu.wav",
+   "chunks": 1,
+   "est": 44.12,
+   "expect_s": 0.8
+  },
+  "60": {
+   "scene": 5,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "text": "छोटू! ये चोर के लिए हैं, तेरे लिए नहीं!",
+   "request": 2,
+   "idx": 60,
+   "start": 47.172,
+   "end": 50.138,
+   "dur": 2.967,
+   "wav": "clips/u060_gudiya.wav",
+   "chunks": 1,
+   "est": 47.43,
+   "expect_s": 1.4
+  },
+  "61": {
+   "scene": 6,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "text": "प्लान ये है — चोर लड्डू खाने आएगा, मैं रस्सी खींचूँगी, जाल गिरेगा, और चोर पकड़ा जाएगा!",
+   "request": 2,
+   "idx": 61,
+   "start": 50.576,
+   "end": 57.07,
+   "dur": 6.494,
+   "wav": "clips/u061_gudiya.wav",
+   "chunks": 1,
+   "est": 50.18,
+   "expect_s": 3.4
+  },
+  "62": {
+   "scene": 6,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "text": "गुड़िया, लेकिन चोर तो दिखता ही नहीं। जाल गिरेगा तो पता कैसे चलेगा कि अंदर कोई है?",
+   "request": 2,
+   "idx": 62,
+   "start": 57.585,
+   "end": 62.49,
+   "dur": 4.905,
+   "wav": "clips/u062_pinky.wav",
+   "chunks": 2,
+   "est": 57.6,
+   "expect_s": 3.2
+  },
+  "63": {
+   "scene": 6,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "text": "अं... वो... प्लान का ये हिस्सा मैं कल बनाऊँगी।",
+   "request": 2,
+   "idx": 63,
+   "start": 62.863,
+   "end": 67.216,
+   "dur": 4.353,
+   "wav": "clips/u063_gudiya.wav",
+   "chunks": 3,
+   "est": 63.68,
+   "expect_s": 1.5
+  },
+  "64": {
+   "scene": 6,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "text": "सुनो! कुतर-कुतर! चोर आ गया!",
+   "request": 2,
+   "idx": 64,
+   "start": 67.923,
+   "end": 70.976,
+   "dur": 3.054,
+   "wav": "clips/u064_bablu.wav",
+   "chunks": 2,
+   "est": 67.14,
+   "expect_s": 1.2
+  },
+  "65": {
+   "scene": 6,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "text": "पकड़ लिया! राजू द ग्रेट ने चोर पकड़ लिया!",
+   "request": 2,
+   "idx": 65,
+   "start": 71.507,
+   "end": 74.277,
+   "dur": 2.77,
+   "wav": "clips/u065_raju.wav",
+   "chunks": 2,
+   "est": 71.56,
+   "expect_s": 1.7
+  },
+  "66": {
+   "scene": 6,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "text": "असल में... चोर की पूँछ नीली नहीं, भूरी है। और ये भौंकता है।",
+   "request": 2,
+   "idx": 66,
+   "start": 74.857,
+   "end": 80.277,
+   "dur": 5.42,
+   "wav": "clips/u066_pinky.wav",
+   "chunks": 3,
+   "est": 74.84,
+   "expect_s": 2.1
+  },
+  "67": {
+   "scene": 6,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "text": "पिंकी, ये चोर नहीं, शेरू है!",
+   "request": 2,
+   "idx": 67,
+   "start": 80.77,
+   "end": 83.449,
+   "dur": 2.679,
+   "wav": "clips/u067_gudiya.wav",
+   "chunks": 1,
+   "est": 80.86,
+   "expect_s": 0.9
+  },
+  "68": {
+   "scene": 6,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "text": "भूत! भूऽऽत!",
+   "request": 2,
+   "idx": 68,
+   "start": 83.99,
+   "end": 86.291,
+   "dur": 2.301,
+   "wav": "clips/u068_bablu.wav",
+   "chunks": 1,
+   "est": 84.72,
+   "expect_s": 0.4
+  },
+  "69": {
+   "scene": 6,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "text": "अरे बच्चों, मैं हूँ। अपना चश्मा ढूँढ रही थी। किसी ने देखा?",
+   "request": 2,
+   "idx": 69,
+   "start": 86.828,
+   "end": 92.912,
+   "dur": 6.083,
+   "wav": "clips/u069_dadi.wav",
+   "chunks": 3,
+   "est": 87.0,
+   "expect_s": 2.1
+  },
+  "70": {
+   "scene": 7,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "text": "बच्चों! मैं भी आ गया! अगर चोर मेरी जलेबियों तक पहुँचा, तो ये बेलन... ये बेलन उसे प्यार से समझाएगा!",
+   "request": 2,
+   "idx": 70,
+   "start": 93.658,
+   "end": 103.226,
+   "dur": 9.568,
+   "wav": "clips/u070_lallan.wav",
+   "chunks": 1,
+   "est": 94.82,
+   "expect_s": 4.0
+  },
+  "71": {
+   "scene": 7,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "text": "चाचा, हमें चोर मिला ही नहीं।",
+   "request": 2,
+   "idx": 71,
+   "start": 103.523,
+   "end": 106.068,
+   "dur": 2.544,
+   "wav": "clips/u071_gudiya.wav",
+   "chunks": 2,
+   "est": 103.12,
+   "expect_s": 1.0
+  },
+  "72": {
+   "scene": 7,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "text": "वो... वो ना, अब लल्लन चाचा की दुकान की तरफ़ गया होगा! मैंने उसकी नीली पूँछ उधर जाते देखी!",
+   "request": 2,
+   "idx": 72,
+   "start": 106.59,
+   "end": 112.466,
+   "dur": 5.876,
+   "wav": "clips/u072_chhotu.wav",
+   "chunks": 2,
+   "est": 106.08,
+   "expect_s": 3.5
+  },
+  "73": {
+   "scene": 7,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "text": "हाय! मेरी जलेबियाँ अकेली हैं! मैं आया, मेरे बच्चों!",
+   "request": 2,
+   "idx": 73,
+   "start": 113.091,
+   "end": 118.626,
+   "dur": 5.535,
+   "wav": "clips/u073_lallan.wav",
+   "chunks": 1,
+   "est": 113.12,
+   "expect_s": 1.8
+  },
+  "74": {
+   "scene": 7,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "text": "अब मैं रात को सो भी नहीं पाऊँगा। नीली पूँछ वाला भूत गाना गाएगा, \"लड्डू-लड्डू, गप्पू-गप्पू\"...",
+   "request": 2,
+   "idx": 74,
+   "start": 119.294,
+   "end": 126.394,
+   "dur": 7.1,
+   "wav": "clips/u074_bablu.wav",
+   "chunks": 1,
+   "est": 119.78,
+   "expect_s": 3.5
+  },
+  "75": {
+   "scene": 7,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "text": "और मेरी कमर! राजू द ग्रेट आज तीन बार गिरा है। ये चोर बहुत ख़तरनाक है।",
+   "request": 2,
+   "idx": 75,
+   "start": 126.654,
+   "end": 134.573,
+   "dur": 7.919,
+   "wav": "clips/u075_raju.wav",
+   "chunks": 3,
+   "est": 127.1,
+   "expect_s": 3.1
+  },
+  "76": {
+   "scene": 7,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "text": "और पूजा के लिए लड्डू भी नहीं हैं। दादी कितनी दुखी हैं। वो कह रही थीं, इस बार पूजा अधूरी रह जाएगी।",
+   "request": 2,
+   "idx": 76,
+   "start": 135.258,
+   "end": 142.859,
+   "dur": 7.601,
+   "wav": "clips/u076_pinky.wav",
+   "chunks": 4,
+   "est": 135.18,
+   "expect_s": 3.8
+  },
+  "77": {
+   "scene": 7,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "text": "कोई बात नहीं। कल सुबह फिर नया प्लान बनाएँगे। हम पूरी रात जागेंगे, जब तक चोर नहीं मिलता!",
+   "request": 2,
+   "idx": 77,
+   "start": 143.541,
+   "end": 149.085,
+   "dur": 5.544,
+   "wav": "clips/u077_gudiya.wav",
+   "chunks": 3,
+   "est": 142.7,
+   "expect_s": 3.8
+  },
+  "78": {
+   "scene": 7,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "text": "छोटू का पेट तो भरा था। पर अब उसके दिल में कुछ भारी-भारी सा लग रहा था। लड्डू से भी भारी।",
+   "request": 2,
+   "idx": 78,
+   "start": 149.518,
+   "end": 157.021,
+   "dur": 7.503,
+   "wav": "clips/u078_narrator.wav",
+   "chunks": 3,
+   "est": 149.5,
+   "expect_s": 3.5
+  },
+  "79": {
+   "scene": 8,
+   "speaker": "Chamki",
+   "emotion": "sniffing",
+   "text": "में-में!",
+   "sfx": true,
+   "idx": 79
+  },
+  "80": {
+   "scene": 8,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "text": "नहीं चमकी, नहीं! वो मेरी बाद वाली भूख है!",
+   "request": 2,
+   "idx": 80,
+   "start": 157.684,
+   "end": 161.011,
+   "dur": 3.327,
+   "wav": "clips/u080_chhotu.wav",
+   "chunks": 2,
+   "est": 156.94,
+   "expect_s": 1.5
+  },
+  "81": {
+   "scene": 8,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "text": "छोटू... ये तो दादी वाला लड्डू है।",
+   "request": 2,
+   "idx": 81,
+   "start": 161.576,
+   "end": 165.828,
+   "dur": 4.252,
+   "wav": "clips/u081_gudiya.wav",
+   "chunks": 2,
+   "est": 161.94,
+   "expect_s": 1.1
+  },
+  "82": {
+   "scene": 8,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "text": "तो नीली पूँछ वाला चोर...",
+   "request": 2,
+   "idx": 82,
+   "start": 166.604,
+   "end": 169.357,
+   "dur": 2.753,
+   "wav": "clips/u082_raju.wav",
+   "chunks": 1,
+   "est": 166.42,
+   "expect_s": 0.8
+  },
+  "83": {
+   "scene": 8,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "text": "असल में... चोर की पूँछ नहीं, जेब है!",
+   "request": 2,
+   "idx": 83,
+   "start": 169.696,
+   "end": 174.901,
+   "dur": 5.204,
+   "wav": "clips/u083_pinky.wav",
+   "chunks": 4,
+   "est": 169.18,
+   "expect_s": 1.3
+  },
+  "84": {
+   "scene": 8,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "text": "हाँ! मैंने ही सारे लड्डू खाए! कोई जादुई चोर नहीं है। ना नीली पूँछ, ना गाना। मुझे भूख लगी थी, फिर डर लगा, फिर झूठ बोलता गया... सॉरी! सबको सॉरी!",
+   "request": 2,
+   "idx": 84,
+   "start": 175.4,
+   "end": 187.519,
+   "dur": 12.119,
+   "wav": "clips/u084_chhotu.wav",
+   "chunks": 8,
+   "est": 174.94,
+   "expect_s": 5.3
+  },
+  "85": {
+   "scene": 8,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "text": "मतलब... कोई भूत नहीं है?",
+   "request": 2,
+   "idx": 85,
+   "start": 188.027,
+   "end": 189.755,
+   "dur": 1.728,
+   "wav": "clips/u085_bablu.wav",
+   "chunks": 2,
+   "est": 187.9,
+   "expect_s": 1.0
+  },
+  "86": {
+   "scene": 8,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "text": "नहीं, बबलू भैया। भूत नहीं। बस मैं।",
+   "request": 2,
+   "idx": 86,
+   "start": 190.331,
+   "end": 195.684,
+   "dur": 5.353,
+   "wav": "clips/u086_chhotu.wav",
+   "chunks": 4,
+   "est": 190.12,
+   "expect_s": 1.3
+  },
+  "87": {
+   "scene": 8,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "text": "उफ़्फ़! थैंक यू, छोटू! अब मैं सो पाऊँगा!",
+   "request": 2,
+   "idx": 87,
+   "start": 195.931,
+   "end": 199.982,
+   "dur": 4.051,
+   "wav": "clips/u087_bablu.wav",
+   "chunks": 1,
+   "est": 196.67,
+   "expect_s": 1.4
+  },
+  "88": {
+   "scene": 9,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "text": "दादी, लड्डू मैंने खाए थे। और फिर झूठ बोला। सॉरी।",
+   "request": 2,
+   "idx": 88,
+   "start": 200.745,
+   "end": 205.333,
+   "dur": 4.588,
+   "wav": "clips/u088_chhotu.wav",
+   "chunks": 3,
+   "est": 200.8,
+   "expect_s": 1.8
+  },
+  "89": {
+   "scene": 9,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "text": "मुझे पता था, छोटू।",
+   "request": 2,
+   "idx": 89,
+   "start": 205.856,
+   "end": 208.195,
+   "dur": 2.339,
+   "wav": "clips/u089_dadi.wav",
+   "chunks": 1,
+   "est": 205.46,
+   "expect_s": 0.6
+  },
+  "90": {
+   "scene": 9,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "text": "पता था? पर आपका चश्मा तो...",
+   "request": 2,
+   "idx": 90,
+   "start": 208.662,
+   "end": 211.024,
+   "dur": 2.362,
+   "wav": "clips/u090_chhotu.wav",
+   "chunks": 2,
+   "est": 208.46,
+   "expect_s": 1.1
+  },
+  "91": {
+   "scene": 9,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "text": "चश्मा नहीं था, पर नाक तो थी। तेरे मुँह से बेसन की ख़ुशबू आ रही थी। मैं बस इंतज़ार कर रही थी कि तू ख़ुद सच बोले।",
+   "request": 2,
+   "idx": 91,
+   "start": 211.525,
+   "end": 222.839,
+   "dur": 11.315,
+   "wav": "clips/u091_dadi.wav",
+   "chunks": 4,
+   "est": 212.57,
+   "expect_s": 4.4
+  },
+  "92": {
+   "scene": 9,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "text": "अब कभी झूठ नहीं बोलूँगा, दादी। झूठ बहुत थकाता है!",
+   "request": 2,
+   "idx": 92,
+   "start": 223.481,
+   "end": 227.05,
+   "dur": 3.569,
+   "wav": "clips/u092_chhotu.wav",
+   "chunks": 1,
+   "est": 223.96,
+   "expect_s": 2.0
+  },
+  "93": {
+   "scene": 9,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "text": "चलो, अब सब मिलकर नए लड्डू बनाते हैं। पूजा में अभी समय है।",
+   "request": 2,
+   "idx": 93,
+   "start": 227.524,
+   "end": 234.306,
+   "dur": 6.782,
+   "wav": "clips/u093_dadi.wav",
+   "chunks": 2,
+   "est": 228.64,
+   "expect_s": 2.5
+  },
+  "94": {
+   "scene": 9,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "text": "मतलब अब मुझे जाल लेकर और नहीं गिरना पड़ेगा?",
+   "request": 2,
+   "idx": 94,
+   "start": 234.828,
+   "end": 238.626,
+   "dur": 3.798,
+   "wav": "clips/u094_raju.wav",
+   "chunks": 2,
+   "est": 234.2,
+   "expect_s": 2.1
+  },
+  "95": {
+   "scene": 9,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "text": "नहीं राजू, अब बस बेसन में हाथ डालना है।",
+   "request": 2,
+   "idx": 95,
+   "start": 238.928,
+   "end": 246.085,
+   "dur": 7.157,
+   "wav": "clips/u095_dadi.wav",
+   "chunks": 3,
+   "est": 240.36,
+   "expect_s": 1.6
+  },
+  "96": {
+   "scene": 9,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "text": "चलो, प्लान बनाते हैं! लड्डू बनाने का प्लान! इस बार प्लान में कोई छेद नहीं होगा!",
+   "request": 2,
+   "idx": 96,
+   "start": 246.629,
+   "end": 252.553,
+   "dur": 5.924,
+   "wav": "clips/u096_gudiya.wav",
+   "chunks": 4,
+   "est": 246.32,
+   "expect_s": 3.2
+  },
+  "97": {
+   "scene": 9,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "text": "असल में, गुड़िया, तुम्हारे हर प्लान में एक छेद होता है।",
+   "request": 2,
+   "idx": 97,
+   "start": 253.031,
+   "end": 257.394,
+   "dur": 4.363,
+   "wav": "clips/u097_pinky.wav",
+   "chunks": 2,
+   "est": 252.44,
+   "expect_s": 2.2
+  },
+  "98": {
+   "scene": 9,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "text": "तो इस बार छेद में बेसन भर देंगे!",
+   "request": 2,
+   "idx": 98,
+   "start": 257.941,
+   "end": 259.88,
+   "dur": 1.939,
+   "wav": "clips/u098_gudiya.wav",
+   "chunks": 1,
+   "est": 257.34,
+   "expect_s": 1.4
+  },
+  "99": {
+   "scene": 10,
+   "speaker": "Narrator",
+   "emotion": "warm",
+   "text": "और फिर शुरू हुई सोनपुर की सबसे मज़ेदार लड्डू फ़ैक्ट्री!",
+   "request": 3,
+   "idx": 99,
+   "start": 0.234,
+   "end": 4.54,
+   "dur": 4.306,
+   "wav": "clips/u099_narrator.wav",
+   "chunks": 1,
+   "est": 0.0,
+   "expect_s": 2.5
+  },
+  "100": {
+   "scene": 10,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "text": "असल में, लड्डू चौकोर बनाने चाहिए। वो ज़्यादा देर टिकते हैं।",
+   "request": 3,
+   "idx": 100,
+   "start": 5.061,
+   "end": 9.039,
+   "dur": 3.978,
+   "wav": "clips/u100_pinky.wav",
+   "chunks": 1,
+   "est": 4.77,
+   "expect_s": 2.4
+  },
+  "101": {
+   "scene": 10,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "text": "पिंकी बिटिया, लड्डू गोल ही अच्छे लगते हैं। गोल-गोल घुमाओ, ऐसे।",
+   "request": 3,
+   "idx": 101,
+   "start": 9.61,
+   "end": 17.21,
+   "dur": 7.6,
+   "wav": "clips/u101_dadi.wav",
+   "chunks": 3,
+   "est": 11.06,
+   "expect_s": 2.5
+  },
+  "102": {
+   "scene": 10,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "text": "देखो, राजू द ग्रेट का सुपर लड्डू! सबसे बड़ा!",
+   "request": 3,
+   "idx": 102,
+   "start": 17.835,
+   "end": 22.753,
+   "dur": 4.918,
+   "wav": "clips/u102_raju.wav",
+   "chunks": 3,
+   "est": 17.9,
+   "expect_s": 1.8
+  },
+  "103": {
+   "scene": 10,
+   "speaker": "Raju",
+   "emotion": "sheepish",
+   "text": "ये... ये चूरा-लड्डू है। नया डिज़ाइन।",
+   "request": 3,
+   "idx": 103,
+   "start": 22.984,
+   "end": 26.003,
+   "dur": 3.018,
+   "wav": "clips/u103_raju.wav",
+   "chunks": 1,
+   "est": 22.94,
+   "expect_s": 1.3
+  },
+  "104": {
+   "scene": 10,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "text": "मेरे लड्डू एकदम गोल बने हैं!",
+   "request": 3,
+   "idx": 104,
+   "start": 26.574,
+   "end": 28.528,
+   "dur": 1.954,
+   "wav": "clips/u104_bablu.wav",
+   "chunks": 1,
+   "est": 25.9,
+   "expect_s": 1.3
+  },
+  "105": {
+   "scene": 10,
+   "speaker": "Chamki",
+   "emotion": "happy",
+   "text": "में-में!",
+   "sfx": true,
+   "idx": 105
+  },
+  "106": {
+   "scene": 10,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "text": "भूत! मेरा लड्डू भूत ले गया!",
+   "request": 3,
+   "idx": 106,
+   "start": 28.99,
+   "end": 30.967,
+   "dur": 1.978,
+   "wav": "clips/u106_bablu.wav",
+   "chunks": 2,
+   "est": 29.14,
+   "expect_s": 1.1
+  },
+  "107": {
+   "scene": 10,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "text": "बबलू, वो चमकी है!",
+   "request": 3,
+   "idx": 107,
+   "start": 31.395,
+   "end": 33.736,
+   "dur": 2.341,
+   "wav": "clips/u107_gudiya.wav",
+   "chunks": 1,
+   "est": 31.02,
+   "expect_s": 0.7
+  },
+  "108": {
+   "scene": 10,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "text": "पेट जी, ये पूजा के लड्डू हैं। सब्र करो!",
+   "request": 3,
+   "idx": 108,
+   "start": 34.24,
+   "end": 37.111,
+   "dur": 2.871,
+   "wav": "clips/u108_chhotu.wav",
+   "chunks": 3,
+   "est": 34.24,
+   "expect_s": 1.5
+  },
+  "109": {
+   "scene": 10,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "text": "वाह छोटू! आज तो तुम सचमुच बड़े हो गए।",
+   "request": 3,
+   "idx": 109,
+   "start": 37.426,
+   "end": 40.895,
+   "dur": 3.469,
+   "wav": "clips/u109_gudiya.wav",
+   "chunks": 1,
+   "est": 37.76,
+   "expect_s": 1.6
+  },
+  "110": {
+   "scene": 10,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "text": "मेरी जलेबियाँ सही-सलामत हैं! चोर आया ही नहीं। ख़ुशी में पूजा के लिए ये जलेबियाँ मेरी तरफ़ से!",
+   "request": 3,
+   "idx": 110,
+   "start": 41.227,
+   "end": 48.017,
+   "dur": 6.79,
+   "wav": "clips/u110_lallan.wav",
+   "chunks": 1,
+   "est": 41.5,
+   "expect_s": 3.5
+  },
+  "111": {
+   "scene": 11,
+   "speaker": "Dadi",
+   "emotion": "warm",
+   "text": "अब सबको प्रसाद। और पहला लड्डू... छोटू को, जिसने सच बोला।",
+   "request": 3,
+   "idx": 111,
+   "start": 48.643,
+   "end": 55.446,
+   "dur": 6.802,
+   "wav": "clips/u111_dadi.wav",
+   "chunks": 4,
+   "est": 47.96,
+   "expect_s": 2.5
+  },
+  "112": {
+   "scene": 11,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "text": "झूठ वाला लड्डू पेट में भारी लगता था। सच वाला लड्डू हल्का-हल्का और मीठा-मीठा है!",
+   "request": 3,
+   "idx": 112,
+   "start": 56.034,
+   "end": 62.931,
+   "dur": 6.897,
+   "wav": "clips/u112_chhotu.wav",
+   "chunks": 1,
+   "est": 57.04,
+   "expect_s": 3.3
+  },
+  "113": {
+   "scene": 11,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "text": "सच बोलने वाले का मन भी लड्डू जैसा मीठा रहता है।",
+   "request": 3,
+   "idx": 113,
+   "start": 63.308,
+   "end": 69.585,
+   "dur": 6.277,
+   "wav": "clips/u113_dadi.wav",
+   "chunks": 1,
+   "est": 63.9,
+   "expect_s": 2.0
+  },
+  "114": {
+   "scene": 11,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "text": "देखो, शेरू जाग गया! खाने के टाइम पर हमेशा जाग जाता है!",
+   "request": 3,
+   "idx": 114,
+   "start": 70.043,
+   "end": 74.513,
+   "dur": 4.47,
+   "wav": "clips/u114_gudiya.wav",
+   "chunks": 1,
+   "est": 70.62,
+   "expect_s": 2.2
+  },
+  "115": {
+   "scene": 12,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "text": "अरे, मेरा चश्मा फिर कहाँ गया?",
+   "request": 3,
+   "idx": 115,
+   "start": 74.859,
+   "end": 78.642,
+   "dur": 3.784,
+   "wav": "clips/u115_dadi.wav",
+   "chunks": 1,
+   "est": 76.22,
+   "expect_s": 1.2
+  },
+  "116": {
+   "scene": 12,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "text": "दादी, उसे जादुई चश्मा चोर ले गया!",
+   "request": 3,
+   "idx": 116,
+   "start": 79.16,
+   "end": 82.123,
+   "dur": 2.964,
+   "wav": "clips/u116_chhotu.wav",
+   "chunks": 2,
+   "est": 78.88,
+   "expect_s": 1.4
+  },
+  "117": {
+   "scene": 12,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "text": "नहीं-नहीं, सच बोलूँगा — वो आपके सिर पर है!",
+   "request": 3,
+   "idx": 117,
+   "start": 82.694,
+   "end": 85.653,
+   "dur": 2.959,
+   "wav": "clips/u117_chhotu.wav",
+   "chunks": 1,
+   "est": 82.32,
+   "expect_s": 1.6
+  },
+  "118": {
+   "scene": 12,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "text": "अब तो मुझे सच में भूख लगी है!",
+   "request": 3,
+   "idx": 118,
+   "start": 86.065,
+   "end": 88.84,
+   "dur": 2.775,
+   "wav": "clips/u118_chhotu.wav",
+   "chunks": 1,
+   "est": 86.68,
+   "expect_s": 1.2
+  }
+ },
+ "silent_inserts": [
+  {
+   "after_unit": 6,
+   "beat": "5",
+   "plate": "courtyard_morning",
+   "dur": 3.5,
+   "text": "Dadi covers the laddoo thali with a cloth (thali_covered), rises from the charpai, carries it in both hands, walks round the charpai to the house door and goes inside",
+   "actors": [
+    "dadi_stand_3q walk (to door)"
+   ],
+   "objects": [
+    "thali_covered carried (hold_plate)"
+   ],
+   "shot": {
+    "actors": [
+     {
+      "pose": "dadi_carry_walk",
+      "x": 0.3,
+      "foot_y": 0.9,
+      "height": 0.6,
+      "z": 2,
+      "moves": [
+       {
+        "type": "walk",
+        "t0": 0.2,
+        "t1": 3.3,
+        "from_x": 0.3,
+        "to_x": 0.62
+       }
+      ]
+     }
+    ],
+    "set": [
+     {
+      "prop": "charpai",
+      "x": 0.3,
+      "foot_y": 0.98,
+      "height": 0.2
+     }
+    ],
+    "camera": {
+     "from": [
+      0.45,
+      0.52,
+      1.25
+     ],
+     "to": [
+      0.5,
+      0.52,
+      1.3
+     ]
+    },
+    "mcu": false
+   }
+  },
+  {
+   "after_unit": 6,
+   "beat": "6",
+   "plate": "house_inside_noon",
+   "dur": 3.5,
+   "text": "Dadi enters the room and puts the covered thali on TOP of the tall almirah (reach), glasses on her head, then leaves",
+   "actors": [
+    "dadi_reach"
+   ],
+   "objects": [
+    "thali_covered -> almirah top"
+   ],
+   "shot": {
+    "actors": [
+     {
+      "pose": "dadi_reach",
+      "x": 0.66,
+      "foot_y": 0.9,
+      "height": 0.6,
+      "z": 2,
+      "moves": []
+     }
+    ],
+    "set": [
+     {
+      "prop": "almirah",
+      "x": 0.84,
+      "foot_y": 0.8,
+      "height": 0.62
+     }
+    ],
+    "objects": [
+     {
+      "prop": "thali_covered",
+      "from": [
+       0.7,
+       0.55
+      ],
+      "to": [
+       0.84,
+       0.175
+      ],
+      "t0": 0.8,
+      "t1": 2.2,
+      "scale": 0.08
+     }
+    ],
+    "camera": {
+     "from": [
+      0.7,
+      0.5,
+      1.3
+     ],
+     "to": [
+      0.72,
+      0.48,
+      1.35
+     ]
+    },
+    "mcu": false
+   }
+  },
+  {
+   "after_unit": 16,
+   "beat": "17",
+   "plate": "house_inside_noon",
+   "dur": 2.5,
+   "text": "Sheru goes back to sleep; Chhotu slips off the chauki: dhapp + stars (cartoon impact stars) and a thud sfx",
+   "actors": [
+    "chhotu_stand (fall/sink)",
+    "sheru_animal_lie"
+   ],
+   "objects": [
+    "chauki"
+   ],
+   "sfx": [
+    "thud"
+   ],
+   "shot": {
+    "actors": [
+     {
+      "pose": "chhotu_stand",
+      "x": 0.7,
+      "foot_y": 0.87,
+      "height": 0.48,
+      "z": 3,
+      "moves": [
+       {
+        "type": "sink",
+        "t0": 0.6,
+        "t1": 1.1,
+        "dy": 0.1
+       }
+      ]
+     },
+     {
+      "pose": "sheru_lie",
+      "x": 0.25,
+      "foot_y": 0.9,
+      "height": 0.15,
+      "z": 1,
+      "moves": []
+     }
+    ],
+    "set": [
+     {
+      "prop": "almirah",
+      "x": 0.84,
+      "foot_y": 0.8,
+      "height": 0.62
+     },
+     {
+      "prop": "chauki",
+      "x": 0.7,
+      "foot_y": 0.87,
+      "height": 0.1
+     }
+    ],
+    "sfx": [
+     {
+      "id": "thud",
+      "t": 1.1
+     }
+    ],
+    "camera": {
+     "from": [
+      0.6,
+      0.55,
+      1.3
+     ],
+     "to": [
+      0.62,
+      0.58,
+      1.4
+     ]
+    },
+    "mcu": false
+   }
+  },
+  {
+   "after_unit": 49,
+   "beat": "27",
+   "plate": "well_peepal_evening",
+   "dur": 3,
+   "text": "Pinky, Bablu and Gudiya pull the net; Raju spins out of it, dizzy, and sits (stars)",
+   "actors": [
+    "pinky_stand",
+    "bablu_stand",
+    "gudiya_stand",
+    "raju_stand (spin, sink)"
+   ],
+   "objects": [
+    "fishing_net"
+   ],
+   "shot": {
+    "actors": [
+     {
+      "pose": "pinky_pull",
+      "x": 0.22,
+      "foot_y": 0.9,
+      "height": 0.48,
+      "z": 3,
+      "moves": []
+     },
+     {
+      "pose": "bablu_pull",
+      "x": 0.36,
+      "foot_y": 0.9,
+      "height": 0.48,
+      "z": 4,
+      "moves": []
+     },
+     {
+      "pose": "raju_net_tangled",
+      "x": 0.66,
+      "foot_y": 0.9,
+      "height": 0.5,
+      "z": 2,
+      "moves": [
+       {
+        "type": "sink",
+        "t0": 1.6,
+        "t1": 2.4,
+        "dy": 0.06
+       }
+      ]
+     }
+    ],
+    "camera": {
+     "from": [
+      0.45,
+      0.55,
+      1.2
+     ],
+     "to": [
+      0.45,
+      0.55,
+      1.25
+     ]
+    },
+    "mcu": false
+   }
+  }
+ ]
+}
