@@ -10,3 +10,10 @@ Summary of the factory (from pipeline2d/VERTEX_FACTORY.md; no workflow started):
 
 Most important next step: run vertex_assets.yml for ep01 (masters, plates, props), convert with vertex_to_keys.py, then render a 3-shot look test via episode2d.yml for you to review.
 Owner decision: say "go" and I will dispatch the ep01 vertex_assets run (costs a little Vertex trial credit).
+
+## done 20261004145626
+Hi! "ho" received (looks like a test message). No workflow started. Factory is idle: no QA reports exist yet, nothing to fix.
+
+## done 20261004145640
+Hi! Agent is awake and listening. No workflow started; no QA reports pending.
+Next step is still the ep01 vertex_assets run from the earlier report. Send "go" in the control room and I will dispatch it.
