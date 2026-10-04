@@ -81,6 +81,26 @@ def main():
                     pcx, pcy, pmw = q
                 pys, pxs = np.nonzero(rgba[:, :, 3] > 64); pfw = max(1, pxs.max() - pxs.min()) if len(pxs) else fw
                 pmw = float(min(max(pmw, 0.07 * pfw), 0.16 * pfw)); s = pmw / mw
+                # per-pose edits (mouths/<pose_id>_{half,open}.png) give the exact mouth for THIS drawing
+                src_json = os.path.join(d, "crop.json"); srcinfo = json.load(open(src_json)) if os.path.exists(src_json) else {}
+                pid = os.path.splitext(os.path.basename(srcinfo.get("src") or ""))[0]; pcrop = srcinfo.get("crop")
+                own = {}
+                for st in ("half", "open"):
+                    f = os.path.join(vx, "mouths", f"{pid}_{st}.png")
+                    if pid and os.path.exists(f):
+                        im = Image.open(f).convert("RGB")
+                        if pcrop: im = im.resize(Image.open(srcinfo["src"]).size).crop(pcrop)
+                        if im.size == (W, H): own[st] = np.asarray(im)
+                if "open" in own:
+                    q2 = mouth_from_diff(rgba[:, :, :3], own["open"])
+                    if q2:
+                        pcx, pcy, pmw = q2; pmw = float(min(max(pmw, 0.07 * pfw), 0.16 * pfw)); rw2, rh2 = pmw * 0.9, pmw * 0.6
+                        for st, ed in own.items():
+                            mask = ellipse_mask(H, W, pcx, pcy, rw2, rh2); mask[rgba[:, :, 3] < 32] = 0
+                            md = os.path.join(d, f"m_{st}"); os.makedirs(md, exist_ok=True)
+                            Image.fromarray(np.dstack([ed, rgba[:, :, 3]]), "RGBA").save(os.path.join(md, "raw.png")); Image.fromarray(mask, "L").save(os.path.join(md, "mask.png"))
+                            bm.setdefault(name, {})[st] = f"{rel}/m_{st}"; n_ok += 1
+                        continue
                 for st, ed in edits.items():
                     raw = rgba[:, :, :3].copy()
                     if rel == stand: raw = ed.copy() if ed.shape[:2] == raw.shape[:2] else raw
