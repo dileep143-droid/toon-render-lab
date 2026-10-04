@@ -1,1 +1,1 @@
-{"workflow":"vertex_assets.yml","inputs":{"ep":"ep01","only":"plates","chars":""},"note":"redraw plates: QA ep01_v4_test s005_b had a photographic image in the window; prompt now forbids photo content"}
+{"workflow":"build_keys.yml","inputs":{"ep":"ep01","art_run":"37213621286","render":"test","name":"ep01_auto1"},"note":"round 1 test render after plates redraw (QA ep01_v4_test s005_b photographic window)"}
