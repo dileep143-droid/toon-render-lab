@@ -26,7 +26,7 @@ def files(ep):
         walk(json.load(open(sel)))
         for i in ids:
             d = os.path.join(O, "keys", i.replace("/", os.sep))
-            if os.path.isdir(d): out += [os.path.join(d, f) for f in (("raw.png", "mask.png") if "~" in i else ("rgba.png",)) if os.path.exists(os.path.join(d, f))]
+            if os.path.isdir(d): out += [os.path.join(d, f) for f in ("rgba.png", "raw.png", "mask.png") if os.path.exists(os.path.join(d, f))]
             elif os.path.isfile(i): out.append(i)
     plan = json.load(open(os.path.join(W, "plan.json"), encoding="utf-8-sig"))
     AU = os.path.join(REPO, "episodes", ep, "audio_full")
