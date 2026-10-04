@@ -27,6 +27,7 @@ FALLBACK.update({"count_0": "sit_hold_0", "carry_walk_0": "hold_plate_0", "reach
 CYCLE = {"count": ([0, 1, 2, 1], 5), "torch": ([0, 1], 8), "write": ([0, 1], 4), "net_swing": ([0, 1], 5), "fry": ([0, 1], 5), "belan": ([0, 1], 4), "pull": ([0, 1], 6)}
 # ep02 (additive; ep01 plans never use these pose names): clapping as a plan pose, clap drawings cycle while an "arm" move is active
 POSE2KEY.update({"clap": "clap_1"}); FALLBACK.update({"clap_1": "stand_0"}); CYCLE.update({"clap": ([0, 1, 2, 1], 3)})
+POSE2KEY.update({"animal_side": "animal_side_0", "animal_lie": "animal_lie_0", "animal_stand": "stand_0"}); FALLBACK.update({"animal_side_0": "stand_0", "animal_lie_0": "stand_0"})
 EXPR_OF = {"laugh": "happy"}   # compose expression keys -> generated expression names
 
 
@@ -127,7 +128,7 @@ class KeyChar:
             T = PS.load(body, act) if os.path.exists(os.path.join(PS.PD, f"{body}_{act}.json")) else None
             for i, k in enumerate(ids):
                 if not os.path.exists(os.path.join(KEYS, k.replace("/", os.sep), "rgba.png")): continue
-                self.d.ids[f"{act}_{i}"] = k; self.kp[f"{act}_{i}"] = T["frames"][i]["kp"] if T and i < len(T["frames"]) else None
+                self.d.ids[f"{act}_{i}"] = k; self.kp[f"{act}_{i}"] = T["frames"][i]["kp"] if T and i < len(T["frames"]) and "/vx/" not in k else None   # vx (Vertex) drawings have no skeleton -> no head warp
         self.mouth = {n: {s: _patch(None, e) for s, e in v.items()} for n, v in sel.get("body_mouth", {}).items()}
         self.expr = {n: {s: _patch(None, e) for s, e in v.items()} for n, v in sel.get("body_expr", {}).items()}
         self.box = _Boxes(self.d)
