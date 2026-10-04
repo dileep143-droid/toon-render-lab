@@ -174,7 +174,7 @@ def paste_rot(dst, src, pivot, ang):
     out[:, :, 3] = np.maximum(dst[:, :, 3], r[:, :, 3]); return out
 
 
-DRAW_MOUTH = True
+DRAW_MOUTH = os.environ.get("P2D_DRAW_MOUTH", "1") == "1"
 MOUTH_TEETH = False       # owner 4 Oct: no teeth, a simple open/close mouth is enough
 MOUTH_DOWN = 0.20         # shift of the opening below the lip line (fraction of its height)
 DEBUG_MOUTH = bool(os.environ.get("DEBUG_MOUTH"))
