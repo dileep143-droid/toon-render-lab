@@ -40,6 +40,10 @@ jobs:
           if [ -f "$RUNNER_TEMP/b/bundle.tar" ]; then tar -xf "$RUNNER_TEMP/b/bundle.tar" -C "$GITHUB_WORKSPACE"
           else ls "$RUNNER_TEMP/b"; cp -r "$RUNNER_TEMP/b/." "$GITHUB_WORKSPACE/"; fi
           test -f p2d_out/${{ inputs.ep }}/plan.json || { echo "plan.json missing after unpack"; find "$GITHUB_WORKSPACE/p2d_out" -maxdepth 2 | head; exit 1; }
+          # small PATCH dataset (plan.json etc.) overrides the bundle, so plan fixes do not need a 555 MB re-upload
+          if kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }}-patch -p "$RUNNER_TEMP/patch" --unzip -q 2>/dev/null; then
+            for f in "$RUNNER_TEMP"/patch/*.json; do [ -f "$f" ] && cp -v "$f" p2d_out/${{ inputs.ep }}/; done
+          else echo "no patch dataset"; fi
           rm -rf "$RUNNER_TEMP/b" pipeline2d/out
           ln -s "$GITHUB_WORKSPACE/p2d_out" pipeline2d/out
           # the laptop wrote absolute Windows paths into a few JSON files -> rewrite them for this machine
