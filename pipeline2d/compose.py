@@ -264,7 +264,7 @@ def main(work, out_mp4, only=None, units=None):
             fade = np.minimum(1, np.minimum(np.arange(len(bed)) / SR / 1.5, (len(bed) - np.arange(len(bed))) / SR / 2.0))
             add(bed * fade, 0, gain)
     mix = np.clip(mix / max(1.0, np.abs(mix).max() / 0.95), -1, 1)
-    wav_path = os.path.join(work, "mix.wav")
+    wav_path = os.path.splitext(out_mp4)[0] + ".mix.wav" if only is None else os.path.join(work, "mix.wav")   # per-slice temp names (parallel slices collided)
     with wave.open(wav_path, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes((mix * 32767).astype(np.int16).tobytes())
 
@@ -275,7 +275,7 @@ def main(work, out_mp4, only=None, units=None):
         while t < total: b.append(t); t += rnd.uniform(2.2, 4.8)
         blinks[pid] = b
 
-    vid_tmp = os.path.join(work, "video_only.mp4")
+    vid_tmp = os.path.splitext(out_mp4)[0] + ".video_only.mp4"
     ff = None
     if only is None:
         ff = subprocess.Popen([FFMPEG, "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{OW}x{OH}", "-r", str(FPS), "-i", "-",
@@ -441,6 +441,7 @@ def main(work, out_mp4, only=None, units=None):
         ff.stdin.close(); ff.wait()
         subprocess.run([FFMPEG, "-y", "-v", "error", "-i", vid_tmp, "-i", wav_path, "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest", out_mp4], check=True)
         os.remove(vid_tmp)
+        if wav_path.endswith(".mix.wav") and os.path.exists(wav_path): os.remove(wav_path)
         print("wrote", out_mp4)
 
 
