@@ -15,9 +15,13 @@ from diffusers.utils import export_to_video, load_image
 
 MID = "Wan-AI/Wan2.2-TI2V-5B-Diffusers"
 t0 = time.time()
+from diffusers import WanTransformer3DModel
 vae = AutoencoderKLWan.from_pretrained(MID, subfolder="vae", torch_dtype=torch.float32)
-pipe = WanImageToVideoPipeline.from_pretrained(MID, vae=vae, torch_dtype=torch.bfloat16)
-pipe.transformer.to(torch.float16)
+# load the transformer straight in fp16: converting after loading doubled system RAM and the kernel was killed
+tr = WanTransformer3DModel.from_pretrained(MID, subfolder="transformer", torch_dtype=torch.float16, low_cpu_mem_usage=True)
+pipe = WanImageToVideoPipeline.from_pretrained(MID, vae=vae, transformer=tr, torch_dtype=torch.bfloat16, low_cpu_mem_usage=True)
+gc.collect()
+sh("free -g")
 pipe.enable_model_cpu_offload()
 try: pipe.vae.enable_tiling()
 except Exception as e: print("no vae tiling:", e)
