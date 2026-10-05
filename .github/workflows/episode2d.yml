@@ -41,7 +41,7 @@ jobs:
           nproc; free -g; df -h . | tail -1
       - name: Private bundle
         run: |
-          for i in 1 2 3 4 5 6 7 8 9 10; do
+          for i in $(seq 1 40); do
             kaggle datasets download ${{ inputs.user }}/sonpur-2d-${{ inputs.ep }} -p "$RUNNER_TEMP/b" --unzip -q && break
             echo "download failed (dataset may still be processing), retry $i in 60 s"; sleep 60
           done
