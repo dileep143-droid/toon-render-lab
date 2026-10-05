@@ -34,3 +34,6 @@ QA_ep01_v5_test is not a quality verdict: the render job failed because Kaggle d
 The retry (ep01_auto1b, episode2d run 37216283367) also FAILED with no QA verdict: no frame was rendered. First failure was the Kaggle dataset mani7673/sonpur-2d-ep01 returning 404; the retry looks the same (infra, not an art fault). I will not retry a third time.
 Owner: please check on Kaggle that dataset mani7673/sonpur-2d-ep01 exists and has finished processing, and that the KAGGLE token secret is valid. Then say "go" in the control room and I will re-dispatch build_keys.yml (ep01, art_run=37213621286, render=test).
 Still pending: the ep01 s005_b window fix (plates redrawn, round 1) has not yet been test-rendered.
+
+## progress QA_ep01_v5_test (round 1, test clean)
+New test render (episode2d run 37271386811, started by the owner) is clean: 5 of 5 shots pass, including the s005_b window fix. Started the FULL ep01 render (episode2d.yml, units empty, name=ep01_auto1_full) via control/RUN.json. Next: judge QA_ep01_auto1_full.md; if clean, write done and tell the owner to watch it on the Videos tab and upload privately. Owner: nothing yet.
