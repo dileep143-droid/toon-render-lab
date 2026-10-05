@@ -49,3 +49,8 @@ Next: ep02 art (vertex_assets) once you say "go".
 QA_ep01_v6_full is not a quality verdict: episode2d run 37275258909 (started by the owner at commit d83d711, mouth_sheet change-mask work) FAILED in the "Private bundle" step after 10 minutes, before any frame was rendered. Same signature as the earlier Kaggle 404 failures (private dataset download timing out). No art fault found; nothing changed in code. I did not retry (the run was not mine, and the earlier two retries failed the same way).
 Owner: check on Kaggle that the private bundle dataset mani7673/sonpur-2d-ep01 (or the one made by make_bundle for v6) exists and finished processing, and that the Kaggle token secret is valid. Then say "go" in the control room and I will re-dispatch a test render first.
 Still valid: ep01_auto1_full (55/62 pass) is ready for you on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
+
+## done QA_ep01_v6_full (run 37276570786)
+Second QA_ep01_v6_full report, run 37276570786, is again "RENDER FAILED" with no frame verdict. It was started by the owner after commit f9adf3b (episode2d now waits up to 40 min for Kaggle to finish processing a new bundle), so this is a different run from 37275258909. No art fault found; I changed no code and did not retry (owner is actively iterating on the bundle/Kaggle wait).
+Owner: if this failed again at "Private bundle", the Kaggle dataset/token is still the problem (check it exists, finished processing, token secret valid). If it failed somewhere else, open run 37276570786 logs.
+Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
