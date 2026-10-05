@@ -54,3 +54,8 @@ Still valid: ep01_auto1_full (55/62 pass) is ready for you on the Videos tab; ch
 Second QA_ep01_v6_full report, run 37276570786, is again "RENDER FAILED" with no frame verdict. It was started by the owner after commit f9adf3b (episode2d now waits up to 40 min for Kaggle to finish processing a new bundle), so this is a different run from 37275258909. No art fault found; I changed no code and did not retry (owner is actively iterating on the bundle/Kaggle wait).
 Owner: if this failed again at "Private bundle", the Kaggle dataset/token is still the problem (check it exists, finished processing, token secret valid). If it failed somewhere else, open run 37276570786 logs.
 Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
+
+## done QA_ep01_v6_full (run 37280971688)
+Third QA_ep01_v6_full report is again "RENDER FAILED", no frame verdict. The run was CANCELLED in the "Private bundle" step after ~37 min, on commit 536acb2, i.e. BEFORE commit 5b0446a (bundle now fetched from the private kulfi-assets release, Kaggle only as fallback). So it still used the old Kaggle wait. No art fault; I changed no code and did not retry.
+Owner: re-run a test render (episode2d, ep01, units = first shots) on the current main (5b0446a or later) to check the new release-bundle path. Say "go" in the control room and I will dispatch it.
+Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
