@@ -1,0 +1,31 @@
+name: blender2d_pilot
+# Headless Blender cut-out render of one shot (layers: set, body, mouth sprites; mouth timing from Rhubarb).
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Blender
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq libxi6 libxkbcommon0 libxrender1 libgl1 libegl1 ffmpeg > /dev/null
+          wget -q https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf blender-4.2.3-linux-x64.tar.xz && mv blender-4.2.3-linux-x64 blender
+          ./blender/blender --version | head -1
+      - name: Render pilot shot
+        run: ./blender/blender -b -P blender2d/scene.py -- blender2d/pilot "$GITHUB_WORKSPACE/pilot_dadi.mp4" 2>&1 | grep -vE "^Fra:|Rendering" | tail -40
+      - name: Frames sheet
+        run: |
+          ls -la pilot_dadi.mp4
+          ffmpeg -y -loglevel error -i pilot_dadi.mp4 -vf "fps=2,scale=480:-1,tile=4x4" -frames:v 1 pilot_sheet.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blender2d-pilot-${{ github.run_id }}
+          path: |
+            pilot_dadi.mp4
+            pilot_sheet.jpg
+          retention-days: 7
