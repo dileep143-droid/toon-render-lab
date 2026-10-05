@@ -69,3 +69,9 @@ ep01_v8_full (run 37293389439, owner-started, includes the ai_matte/mouth change
 Remaining faults: s010, s038 ("laddoo floating on shirt") and s061 ("laddoo floating in mid-air") - the laddoo is a held/thrown prop, so likely judge nitpicks; s027 (character cut off at left frame edge) - probably deliberate framing. I could not see the frames, so I changed no code and started no render.
 Owner: watch ep01_v8_full on the Videos tab, check s010, s027, s038, s061, and upload PRIVATELY if happy. If any is truly wrong, tell me the shot id in the control room and I will fix just that (test render first).
 Next: ep02 art once you say "go".
+
+## done QA_ep01_v9_full
+ep01_v9_full (run 37296437649, mouth change back to the owner-approved v6 area, commit 181acf1) finished: 58 pass / 4 fail, same score as v8. No black frames, warped faces, text or colour slips.
+Faults: s010, s038 (laddu "floating on shirt") and s061 (floating laddu) are the same held/thrown-prop nitpicks as v8. NEW vs v8: s061 and s062 mention a "stray artifact box on the floor" - this could be a real leftover rectangle (e.g. an un-keyed background patch) or a judge misreading of a prop. I cannot see frames from the repo, so I changed no code and started no render (no safe fix without seeing it).
+Owner: watch ep01_v9_full on the Videos tab, look at s061 and s062 for a box on the floor, and check s010/s038. If s062 has a real box, tell me in the control room and I will fix it (test render first). Upload PRIVATELY only if happy.
+Next: ep02 art once you say "go".
