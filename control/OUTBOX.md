@@ -59,3 +59,7 @@ Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shot
 Third QA_ep01_v6_full report is again "RENDER FAILED", no frame verdict. The run was CANCELLED in the "Private bundle" step after ~37 min, on commit 536acb2, i.e. BEFORE commit 5b0446a (bundle now fetched from the private kulfi-assets release, Kaggle only as fallback). So it still used the old Kaggle wait. No art fault; I changed no code and did not retry.
 Owner: re-run a test render (episode2d, ep01, units = first shots) on the current main (5b0446a or later) to check the new release-bundle path. Say "go" in the control room and I will dispatch it.
 Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
+
+## done QA_ep01_v7_full (run 37291802741)
+QA_ep01_v7_full is "RENDER FAILED", not a quality verdict. Run 37291802741 (owner-started, commit 9e2b940, ai_matte/mouth work) was CANCELLED in the Render step after ~12 min. Good news: the "Private bundle" step now SUCCEEDED in 12 s, so the release-bundle path (5b0446a) works and the old Kaggle 404 problem is gone. No frame was judged; I changed no code and did not retry (the run was not mine and looks cancelled by hand).
+Owner: if you want a verdict on the new mouth/matte changes, say "go" and I will dispatch a test render (render=test) first. Still valid: ep01_auto1_full (55/62 pass) is on the Videos tab; check s010, s021, s027, s028, s038, s052, s061 and upload privately.
