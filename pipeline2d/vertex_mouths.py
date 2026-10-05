@@ -38,6 +38,22 @@ def mouth_from_diff(master_rgb, open_rgb, expect=None, fw=None):
     return [x, y, w]
 
 
+def red_mouth_centre(rgba, edited, expect, fw):
+    """The edit may also touch the eyes; the MOUTH is the changed area that turned red/pink (lips, tongue, inside of mouth),
+    which eyes never are. Returns the centre of those pixels near the expected spot, or None."""
+    import cv2
+    e = edited.astype(int); d = np.abs(rgba[:, :, :3].astype(int) - e).sum(2) > 60
+    red = (e[:, :, 0] > 100) & (e[:, :, 0] > e[:, :, 1] * 1.35) & (e[:, :, 0] > e[:, :, 2] * 1.15)
+    H, W = d.shape; yy, xx = np.mgrid[0:H, 0:W]
+    m = d & red & (rgba[:, :, 3] > 32) & (((xx - expect[0]) ** 2 + (yy - expect[1]) ** 2) <= (0.30 * fw) ** 2)
+    m = cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    n, lab, st, cen = cv2.connectedComponentsWithStats(m)
+    if n < 2: return None
+    i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    if st[i, cv2.CC_STAT_AREA] < 15: return None
+    return (float(cen[i][0]), float(cen[i][1]))
+
+
 def change_mask(rgba, edited, centre, fw, pb):
     """Patch mask = the pixels the mouth edit actually changed (no guessing where the mouth is): every changed region near the
     mouth centre, inside the head area, closed + dilated + feathered. It covers the OLD mouth and the NEW mouth together, so a
@@ -62,9 +78,7 @@ def change_mask(rgba, edited, centre, fw, pb):
         x, y, w, h = st2[i, 0], st2[i, 1], st2[i, 2], st2[i, 3]
         if x == 0 or y == 0 or x + w >= W or y + h >= H: bg |= lab2 == i
     bg = cv2.dilate(bg.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
-    yy, xx = np.mgrid[0:H, 0:W]
-    near = ((xx - centre[0]) ** 2 + (yy - centre[1]) ** 2) <= (0.14 * fw) ** 2
-    keep &= near & ~bg
+    keep &= ~bg          # owner approved the v6 mouth area; only the edit's white background is taken out of it
     if keep.sum() < 30: return None
     m = cv2.GaussianBlur((keep * 255).astype(np.uint8), (7, 7), 0)
     m[rgba[:, :, 3] < 32] = 0
