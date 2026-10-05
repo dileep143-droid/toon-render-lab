@@ -63,3 +63,9 @@ Still valid: ep01_auto1_full (55/62 pass) is ready on the Videos tab; check shot
 ## done QA_ep01_v7_full (run 37291802741)
 QA_ep01_v7_full is "RENDER FAILED", not a quality verdict. Run 37291802741 (owner-started, commit 9e2b940, ai_matte/mouth work) was CANCELLED in the Render step after ~12 min. Good news: the "Private bundle" step now SUCCEEDED in 12 s, so the release-bundle path (5b0446a) works and the old Kaggle 404 problem is gone. No frame was judged; I changed no code and did not retry (the run was not mine and looks cancelled by hand).
 Owner: if you want a verdict on the new mouth/matte changes, say "go" and I will dispatch a test render (render=test) first. Still valid: ep01_auto1_full (55/62 pass) is on the Videos tab; check s010, s021, s027, s028, s038, s052, s061 and upload privately.
+
+## done QA_ep01_v8_full
+ep01_v8_full (run 37293389439, owner-started, includes the ai_matte/mouth changes up to 3b4c836) finished: 58 pass / 4 fail (better than auto1's 55/62). No black frames, warped faces, text or colour slips.
+Remaining faults: s010, s038 ("laddoo floating on shirt") and s061 ("laddoo floating in mid-air") - the laddoo is a held/thrown prop, so likely judge nitpicks; s027 (character cut off at left frame edge) - probably deliberate framing. I could not see the frames, so I changed no code and started no render.
+Owner: watch ep01_v8_full on the Videos tab, check s010, s027, s038, s061, and upload PRIVATELY if happy. If any is truly wrong, tell me the shot id in the control room and I will fix just that (test render first).
+Next: ep02 art once you say "go".
