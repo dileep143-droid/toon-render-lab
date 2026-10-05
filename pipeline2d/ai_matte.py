@@ -35,6 +35,13 @@ def matte(sess, rgb):
     aa = np.maximum(a, 0.05)[..., None]
     un = np.clip((c - (1 - aa)) / aa, 0, 1)
     c[edge] = un[edge]
+    # transparent pixels still carry the white page colour; the renderer's smooth move/scale/rotate blends them into the
+    # edge (white rim only while moving), so give every transparent pixel the colour of the nearest solid pixel
+    from scipy.ndimage import distance_transform_edt
+    solid = a > 0.5
+    if solid.any():
+        _, (iy, ix) = distance_transform_edt(~solid, return_indices=True)
+        c = np.where(solid[..., None], c, c[iy, ix])
     return np.dstack([(c * 255).astype(np.uint8), (a * 255).astype(np.uint8)])
 
 
