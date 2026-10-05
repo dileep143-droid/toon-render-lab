@@ -13,7 +13,8 @@ dur = cues[-1]["end"]; NF = int(dur * FPS) + 12
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene
-sc.render.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items] else "BLENDER_EEVEE"
+sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"; sc.cycles.samples = 2; sc.cycles.use_denoising = False   # no GPU on CI: flat emissive planes need almost no samples
+sc.cycles.max_bounces = 2; sc.cycles.transparent_max_bounces = 4
 sc.render.resolution_x, sc.render.resolution_y = 1920, 1080
 sc.render.fps = FPS; sc.frame_start, sc.frame_end = 1, NF
 sc.render.film_transparent = False
