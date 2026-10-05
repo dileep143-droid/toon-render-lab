@@ -17,8 +17,9 @@ def mouth_pt(rgba_path):
     return keyactor.mouth_pts(rgba_path, a)      # [cx, cy, width] or None
 
 
-def mouth_from_diff(master_rgb, open_rgb):
-    """mouth = largest changed blob between the master and its open-mouth edit (upper 60% of the figure)"""
+def mouth_from_diff(master_rgb, open_rgb, expect=None, fw=None):
+    """mouth = changed blob between a drawing and its open-mouth edit. With expect=(x,y) (where the mouth should be) and fw (figure
+    width) the blob nearest to the expectation wins and must be mouth-sized (4-25% of fw) and within 0.35*fw of it; else None."""
     import cv2
     if master_rgb.shape != open_rgb.shape: return None
     d = np.abs(master_rgb.astype(int) - open_rgb.astype(int)).sum(2) > 90
@@ -26,8 +27,36 @@ def mouth_from_diff(master_rgb, open_rgb):
     d = cv2.morphologyEx(d.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
     n, lab, st, cen = cv2.connectedComponentsWithStats(d)
     if n < 2: return None
-    i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
-    return [float(cen[i][0]), float(cen[i][1]), float(st[i, cv2.CC_STAT_WIDTH])]
+    cands = [(i, float(cen[i][0]), float(cen[i][1]), float(st[i, cv2.CC_STAT_WIDTH]), int(st[i, cv2.CC_STAT_AREA])) for i in range(1, n) if st[i, cv2.CC_STAT_AREA] > 30]
+    if not cands: return None
+    if expect is None or not fw:
+        i, x, y, w, a = max(cands, key=lambda c: c[4]); return [x, y, w]
+    ok = [c for c in cands if 0.04 * fw <= c[3] <= 0.25 * fw]
+    if not ok: return None
+    i, x, y, w, a = min(ok, key=lambda c: (c[1] - expect[0]) ** 2 + (c[2] - expect[1]) ** 2)
+    if ((x - expect[0]) ** 2 + (y - expect[1]) ** 2) ** 0.5 > 0.35 * fw: return None
+    return [x, y, w]
+
+
+def change_mask(rgba, edited, centre, fw, pb):
+    """Patch mask = the pixels the mouth edit actually changed (no guessing where the mouth is): every changed region near the
+    mouth centre, inside the head area, closed + dilated + feathered. It covers the OLD mouth and the NEW mouth together, so a
+    drawing can never show two mouths. Returns None when the edit changed nothing usable."""
+    import cv2
+    d = np.abs(rgba[:, :, :3].astype(int) - edited.astype(int)).sum(2) > 60
+    d &= rgba[:, :, 3] > 32
+    y_lim = int(pb[1] + 0.45 * (pb[3] - pb[1])); d[y_lim:] = False          # head and shoulders only
+    d = cv2.morphologyEx(d.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8))
+    n, lab, st, cen = cv2.connectedComponentsWithStats(d)
+    keep = np.zeros(d.shape, dtype=bool); r = 0.30 * fw
+    for i in range(1, n):
+        if st[i, cv2.CC_STAT_AREA] < 20: continue
+        if ((cen[i][0] - centre[0]) ** 2 + (cen[i][1] - centre[1]) ** 2) ** 0.5 <= r: keep |= lab == i
+    if keep.sum() < 30: return None
+    keep = cv2.dilate(keep.astype(np.uint8), np.ones((9, 9), np.uint8))
+    m = cv2.GaussianBlur((keep * 255).astype(np.uint8), (7, 7), 0)
+    m[rgba[:, :, 3] < 32] = 0
+    return m
 
 
 def ellipse_mask(h, w, cx, cy, rw, rh):
@@ -91,16 +120,20 @@ def main():
                         im = Image.open(f).convert("RGB")
                         if pcrop: im = im.resize(Image.open(srcinfo["src"]).size).crop(pcrop)
                         if im.size == (W, H): own[st] = np.asarray(im)
+                if rel == stand and not own: own = {k: v for k, v in edits.items() if v.shape[:2] == (H, W)}
                 if "open" in own:
-                    q2 = mouth_from_diff(rgba[:, :, :3], own["open"])
-                    if q2:
-                        pcx, pcy, pmw = q2; pmw = float(min(max(pmw, 0.07 * pfw), 0.16 * pfw)); rw2, rh2 = pmw * 0.9, pmw * 0.6
-                        for st, ed in own.items():
-                            mask = ellipse_mask(H, W, pcx, pcy, rw2, rh2); mask[rgba[:, :, 3] < 32] = 0
-                            md = os.path.join(d, f"m_{st}"); os.makedirs(md, exist_ok=True)
-                            Image.fromarray(np.dstack([ed, rgba[:, :, 3]]), "RGBA").save(os.path.join(md, "raw.png")); Image.fromarray(mask, "L").save(os.path.join(md, "mask.png"))
-                            bm.setdefault(name, {})[st] = f"{rel}/m_{st}"; n_ok += 1
-                        continue
+                    pys, pxs = np.nonzero(rgba[:, :, 3] > 64); pb = (pxs.min(), pys.min(), pxs.max(), pys.max())
+                    ex = pb[0] + (cx - mbox[0]) / max(mbox[2] - mbox[0], 1) * (pb[2] - pb[0]); ey = pb[1] + (cy - mbox[1]) / max(mbox[3] - mbox[1], 1) * (pb[3] - pb[1])
+                    q2 = mouth_from_diff(rgba[:, :, :3], own["open"], expect=(ex, ey), fw=max(1, pb[2] - pb[0]))
+                    centre = (q2[0], q2[1]) if q2 else (ex, ey)
+                    made = 0
+                    for st, ed in own.items():
+                        mask = change_mask(rgba, ed, centre, max(1, pb[2] - pb[0]), pb)   # exactly what the edit changed, old + new mouth
+                        if mask is None: continue
+                        md = os.path.join(d, f"m_{st}"); os.makedirs(md, exist_ok=True)
+                        Image.fromarray(np.dstack([ed, rgba[:, :, 3]]), "RGBA").save(os.path.join(md, "raw.png")); Image.fromarray(mask, "L").save(os.path.join(md, "mask.png"))
+                        bm.setdefault(name, {})[st] = f"{rel}/m_{st}"; n_ok += 1; made += 1
+                    if made: continue
                 for st, ed in edits.items():
                     raw = rgba[:, :, :3].copy()
                     if rel == stand: raw = ed.copy() if ed.shape[:2] == raw.shape[:2] else raw
