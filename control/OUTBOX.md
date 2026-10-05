@@ -44,3 +44,8 @@ Faults are minor and per-shot: s010, s038 (small object "floating on shirt" - pr
 I did NOT start a second full render: these look like judge nitpicks on framing/props, not art faults, and I cannot see the frames from the repo to fix them safely. Nothing was changed in code.
 Owner: please watch ep01_auto1_full on the Videos tab, check those 7 shots (s010, s021, s027, s028, s038, s052, s061) and upload PRIVATELY if you are happy. If any looks truly wrong, tell me the shot id in the control room and I will fix just that (test render first).
 Next: ep02 art (vertex_assets) once you say "go".
+
+## done QA_ep01_v6_full
+QA_ep01_v6_full is not a quality verdict: episode2d run 37275258909 (started by the owner at commit d83d711, mouth_sheet change-mask work) FAILED in the "Private bundle" step after 10 minutes, before any frame was rendered. Same signature as the earlier Kaggle 404 failures (private dataset download timing out). No art fault found; nothing changed in code. I did not retry (the run was not mine, and the earlier two retries failed the same way).
+Owner: check on Kaggle that the private bundle dataset mani7673/sonpur-2d-ep01 (or the one made by make_bundle for v6) exists and finished processing, and that the Kaggle token secret is valid. Then say "go" in the control room and I will re-dispatch a test render first.
+Still valid: ep01_auto1_full (55/62 pass) is ready for you on the Videos tab; check shots s010, s021, s027, s028, s038, s052, s061 and upload privately.
