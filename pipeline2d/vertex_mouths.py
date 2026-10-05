@@ -53,7 +53,19 @@ def change_mask(rgba, edited, centre, fw, pb):
         if st[i, cv2.CC_STAT_AREA] < 20: continue
         if ((cen[i][0] - centre[0]) ** 2 + (cen[i][1] - centre[1]) ** 2) ** 0.5 <= r: keep |= lab == i
     if keep.sum() < 30: return None
-    keep = cv2.dilate(keep.astype(np.uint8), np.ones((9, 9), np.uint8))
+    keep = cv2.dilate(keep.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
+    # the edit also nudges hair/head outlines: never copy the edit's own white background, and stay close to the mouth
+    white = (edited.min(2) > 225).astype(np.uint8)
+    n2, lab2, st2, _ = cv2.connectedComponentsWithStats(white)
+    H, W = white.shape; bg = np.zeros_like(keep)
+    for i in range(1, n2):
+        x, y, w, h = st2[i, 0], st2[i, 1], st2[i, 2], st2[i, 3]
+        if x == 0 or y == 0 or x + w >= W or y + h >= H: bg |= lab2 == i
+    bg = cv2.dilate(bg.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
+    yy, xx = np.mgrid[0:H, 0:W]
+    near = ((xx - centre[0]) ** 2 + (yy - centre[1]) ** 2) <= (0.14 * fw) ** 2
+    keep &= near & ~bg
+    if keep.sum() < 30: return None
     m = cv2.GaussianBlur((keep * 255).astype(np.uint8), (7, 7), 0)
     m[rgba[:, :, 3] < 32] = 0
     return m
@@ -70,6 +82,8 @@ def main():
     vx, keys, sel_p = sys.argv[1:4]
     sel = json.load(open(sel_p)); n_ok = 0
     for char, e in sel.items():
+        if char in ("chamki", "sheru"):          # animals: the mouth edit redraws the whole head, so no mouth layer
+            e.pop("body_mouth", None); continue
         stand = e["actions"].get("stand", [None])[0]
         if not stand: continue
         sd = os.path.join(keys, stand.replace("/", os.sep)); crop = json.load(open(os.path.join(sd, "crop.json"))).get("crop")
