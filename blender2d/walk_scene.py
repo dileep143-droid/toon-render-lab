@@ -9,7 +9,7 @@ from side_puppet import SidePuppet
 from walk_legs import DrawnLegs, render_walk
 import cv2
 FF = shutil.which("ffmpeg") or r"C:\Users\goddu\Downloads\ffmpeg-master-latest-win64-gpl\bin\ffmpeg.exe"
-FPS, PERIOD, CH_H, GROUND = 24, 0.8, 760, 1045
+FPS, PERIOD, CH_H, GROUND = 24, 0.8, 720, 985     # ground line well above the frame edge (toes were clipped)
 
 
 def stand_frame(sp, legs, k, ss=2):
