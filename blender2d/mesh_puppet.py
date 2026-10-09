@@ -63,6 +63,8 @@ class Puppet:
             V, T, Wv = self._mesh(L[..., 3], step, gname)
             self.layers.append({"name": gname, "img": L, "V": V, "T": T, "W": Wv})
         self.layers_alt = {}; self._add_pose_arms(P, step)
+        nu = os.path.join(P, "body_nounder.png")
+        self.body_nounder = np.asarray(Image.open(nu).convert("RGBA")).astype(np.float32) / 255 if os.path.exists(nu) else None
 
     def _add_pose_arms(self, P, step):
         for name, pp in self.poses.items():
@@ -142,6 +144,8 @@ class Puppet:
             Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(BONES))
             src = L["img"]
             if L["name"] == "head" and pose.get("face", "closed") != "closed": src = self.heads[pose["face"]]   # mouth / blink swap
+            if L0["name"] == "body" and self.body_nounder is not None and (pose.get("arm_L") or pose.get("arm_R")):
+                src = self.body_nounder                         # arm swapped to a drawing: the under-arm strip must not show
             lay = np.clip(self._warp(L, Vd, src, ss), 0, 1); out = lay + out * (1 - lay[..., 3:])
         out = cv2.resize(out, (self.W, self.H), interpolation=cv2.INTER_AREA)
         a = np.clip(out[..., 3:], 0, 1); rgb = np.where(a > 1e-4, out[..., :3] / np.maximum(a, 1e-4), 0)
