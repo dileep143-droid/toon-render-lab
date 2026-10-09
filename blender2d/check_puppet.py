@@ -27,7 +27,8 @@ for name, pose in POSES.items():
     inv = (~a).astype(np.uint8); hn, hl, hs, _ = cv2.connectedComponentsWithStats(inv)
     border = set(np.unique(np.r_[hl[0], hl[-1], hl[:, 0], hl[:, -1]]))
     dy = int(round(pose.get("dy", 0)))
-    torso = np.roll(cv2.erode((pz.layers[[l["name"] for l in pz.layers].index("body")]["img"][..., 3] > 0.5).astype(np.uint8), np.ones((7, 7), np.uint8)), dy, 0) > 0
+    tsrc = pz.body_nounder if pz.body_nounder is not None else pz.layers[[l["name"] for l in pz.layers].index("body")]["img"]
+    torso = np.roll(cv2.erode((tsrc[..., 3] > 0.5).astype(np.uint8), np.ones((7, 7), np.uint8)), dy, 0) > 0
     holes = int(sum(1 for j in range(1, hn) if j not in border and (hl[torso] == j).sum() > 15))
     edge = cv2.morphologyEx(a.astype(np.uint8), cv2.MORPH_GRADIENT, np.ones((3, 3), np.uint8)) > 0
     r = {"pieces": parts, "holes": holes, "sharp": sharp(im, edge)}
@@ -46,7 +47,8 @@ for name, pose in POSES.items():
     if holes: fails.append(f"{name}: background shows inside the torso ({holes} spot(s))")
     res[name] = r; Image.fromarray(im).save(os.path.join(OUT, f"{name}.png"))
 for name, r in res.items():
-    if name != "rest" and r["sharp"] < 0.85 * res["rest"]["sharp"]: fails.append(f"{name}: edges blurred ({r['sharp']:.0f} vs rest {res['rest']['sharp']:.0f})")
+    # swapped drawings have their own line weight, so they are not compared with the rest pose
+    if name != "rest" and not name.startswith("draw_") and r["sharp"] < 0.85 * res["rest"]["sharp"]: fails.append(f"{name}: edges blurred ({r['sharp']:.0f} vs rest {res['rest']['sharp']:.0f})")
 # SHAPE test over a whole swing: the arm must keep its area and its width at every angle (catches pinched / noodle arms that
 # the connected-figure test passes)
 def arm_stats(pose, side):
