@@ -7,8 +7,12 @@ P = os.path.join(D, "parts"); rig = json.load(open(os.path.join(P, "rig.json")))
 cues = json.load(open(os.path.join(D, "line_rhubarb.json")))["mouthCues"]; TALK = cues[-1]["end"]
 FPS = 24; T0 = 5.8; END = T0 + TALK + 1.0; NF = int(END * FPS)
 bpy.ops.wm.read_factory_settings(use_empty=True)
-sc = bpy.context.scene; sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"; sc.cycles.samples = 2; sc.cycles.use_denoising = False
+sc = bpy.context.scene; sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"; sc.cycles.samples = 8; sc.cycles.use_denoising = False; sc.cycles.filter_width = 1.0
 sc.cycles.transparent_max_bounces = 32; sc.cycles.max_bounces = 2
+if os.environ.get("PUPPET_GPU"):                     # Kaggle / any NVIDIA box: Cycles on CUDA, more samples
+    pr = bpy.context.preferences.addons["cycles"].preferences; pr.compute_device_type = "CUDA"; pr.get_devices()
+    for dv in pr.devices: dv.use = dv.type == "CUDA"
+    sc.cycles.device = "GPU"; sc.cycles.samples = int(os.environ.get("PUPPET_SAMPLES", "32"))
 sc.render.resolution_x, sc.render.resolution_y = 1920, 1080; sc.render.fps = FPS; sc.frame_start, sc.frame_end = 1, NF
 sc.view_settings.view_transform = "Standard"
 CH = 6.4; S = CH / H                                   # character canvas height in scene units
@@ -112,5 +116,5 @@ sc.sequence_editor_create()
 seq = sc.sequence_editor.sequences if hasattr(sc.sequence_editor, "sequences") else sc.sequence_editor.strips
 seq.new_sound("line", os.path.join(D, "line.wav"), 1, int(T0 * FPS))
 r = sc.render; r.image_settings.file_format = "FFMPEG"; r.ffmpeg.format = "MPEG4"; r.ffmpeg.codec = "H264"; r.ffmpeg.audio_codec = "AAC"
-r.ffmpeg.constant_rate_factor = "HIGH"; r.filepath = OUT
+r.ffmpeg.constant_rate_factor = "PERC_LOSSLESS"; r.filepath = OUT
 bpy.ops.render.render(animation=True); print("RENDERED", OUT, NF, "frames")
