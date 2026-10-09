@@ -1,0 +1,30 @@
+name: puppet_pilot
+# 2D cut-out puppet animation (walk, wave, talk with lip sync) rendered headless in Blender.
+on:
+  workflow_dispatch:
+    inputs:
+      char: { description: "character folder under blender2d/puppet", default: "chhotu" }
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Blender
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq libxi6 libxkbcommon0 libxrender1 libgl1 libegl1 ffmpeg > /dev/null
+          wget -q https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          tar -xf blender-4.2.3-linux-x64.tar.xz && mv blender-4.2.3-linux-x64 blender
+      - name: Render puppet
+        run: ./blender/blender -b -P blender2d/puppet_scene.py -- blender2d/puppet/${{ inputs.char }} blender2d/puppet/plate.png "$GITHUB_WORKSPACE/puppet_${{ inputs.char }}.mp4" 2>&1 | grep -vE "^Fra:|Rendering|Sample" | tail -40
+      - name: Frame sheet
+        run: ffmpeg -y -loglevel error -i puppet_${{ inputs.char }}.mp4 -vf "fps=1,scale=480:-1,tile=6x4" -frames:v 1 puppet_sheet.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: puppet-${{ inputs.char }}-${{ github.run_id }}
+          path: |
+            puppet_${{ inputs.char }}.mp4
+            puppet_sheet.jpg
+          retention-days: 7
