@@ -34,14 +34,12 @@ def timeline(cues, talk_end):
         br = math.sin(2 * math.pi * t / 2.6)               # idle breathing (spine_anim_mcp gen_idle): chest lift, head counter-sway, arm drift
         p["dy"] = -2.0 * br; p["head"] = 1.2 * math.sin(2 * math.pi * t / 2.6 + math.pi / 4)
         p["arm_upper_L"] = 1.5 * br; p["arm_upper_R"] = -1.5 * br
-        # WAVE: 2 frames of anticipation (hanging arm lifts 35 deg), swap to the wave DRAWING, forearm waves +-14, swap back
-        if W0 - 2 / FPS <= t < W0 or W1 <= t < W1 + 2 / FPS: p["arm_upper_L"] = 35; p["arm_lower_L"] = 15
-        elif W0 <= t < W1:
+        # WAVE: swap to the wave DRAWING, forearm waves +-14, swap back
+        if W0 <= t < W1:                                  # straight swap to the drawing (TV style; rotated "anticipation" arm looked thin)
             p["arm_L"] = "wave"; p["pose_wave_lower"] = 14 * math.sin(2 * math.pi * 2.2 * (t - W0)); p["head"] += 3
         if t >= T0:
             tt = t - T0; p["head"] += 2.5 * math.sin(2 * math.pi * tt / 2.3)
-            if G0 - 2 / FPS <= t < G0 or G1 <= t < G1 + 2 / FPS: p["arm_upper_L"] = 25; p["arm_lower_L"] = 20
-            elif G0 <= t < G1:
+            if G0 <= t < G1:
                 p["arm_L"] = "explain"; p["pose_explain_lower"] = 5 * math.sin(2 * math.pi * (t - G0) / 1.1)
             p["arm_upper_R"] = -1.5 * br - 6 * max(0, math.sin(2 * math.pi * tt / 3.7)) ** 2      # small emphasis beats with the other arm
         p = {k: (round(v, 1) if isinstance(v, float) else v) for k, v in p.items()}
