@@ -62,6 +62,14 @@ for i in comps:
     if is_leg:
         add(f"leg_{side}", grow, A, pivot, "body", -1)                 # legs behind the kurta hem
     else:
+        # the visible arm starts below the sleeve stump that stays on the body: move the pivot up to the real shoulder and give the
+        # upper arm its own sleeve top (a disc of apose pixels around the shoulder), so a big swing never leaves the arm floating
+        fig_top = np.nonzero(mA.any(1))[0].min()
+        sh_y = int(row - 0.07 * (hem_y - fig_top)); sh_x = px + (-0.25 if side == "L" else 0.25) * (st[i, 2])
+        pivot = (sh_x, sh_y)
+        yy_, xx_ = np.mgrid[0:H, 0:W]; rad = 0.55 * st[i, 2]
+        disc = (((xx_ - px) ** 2 + (yy_ - (sh_y + row) / 2) ** 2) <= rad ** 2) & (yy_ > sh_y - 6)
+        grow = (grow.astype(bool) | (disc & (mA == 1))).astype(np.uint8)
         yy = np.nonzero(m)[0]; elbow_y = int(yy.min() + 0.45 * (yy.max() - yy.min()))
         ex = np.nonzero(m[elbow_y])[0]; elbow = (ex.mean() if len(ex) else px, elbow_y)
         upper = grow.copy(); upper[elbow_y + 14:] = 0
