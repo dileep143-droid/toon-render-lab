@@ -6,9 +6,10 @@ def sh(c, tail=3000):
 W = "/kaggle/working"; R = f"{W}/repo"; OUT = f"{W}/out"; os.makedirs(OUT, exist_ok=True)
 sh(f"git clone -q --depth 1 https://github.com/dileep143-droid/toon-render-lab {R}")
 os.chdir(R)
-sh(f"python blender2d/walk_scene.py blender2d/puppet/chhotu_side blender2d/puppet/plate.png {OUT}/walk_chhotu.mp4")
-v = f"{OUT}/walk_chhotu.mp4"
-if os.path.exists(v):
-    sh(f"ffmpeg -y -loglevel error -i {v} -vf 'fps=4,scale=480:-1,tile=6x4' -frames:v 1 {OUT}/sheet.jpg")
-    sh(f"ffmpeg -y -loglevel error -ss 1.6 -t 0.8 -i {v} -vf 'fps=12,crop=iw:460:0:600,scale=960:-1,tile=2x5' -frames:v 1 {OUT}/legs_cycle.jpg")
+for style in ("normal", "sneak"):
+    v = f"{OUT}/walk_{style}.mp4"
+    sh(f"python blender2d/walk_scene.py blender2d/puppet/chhotu_side blender2d/puppet/plate.png {v} {style}")
+    if os.path.exists(v):
+        sh(f"ffmpeg -y -loglevel error -i {v} -vf 'fps=4,scale=480:-1,tile=6x4' -frames:v 1 {OUT}/sheet_{style}.jpg")
+        sh(f"ffmpeg -y -loglevel error -ss 1.6 -t 0.8 -i {v} -vf 'fps=12,crop=iw:500:0:560,scale=960:-1,tile=2x5' -frames:v 1 {OUT}/legs_{style}.jpg")
 print("ALL DONE", os.listdir(OUT))
