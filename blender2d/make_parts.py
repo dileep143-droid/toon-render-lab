@@ -94,6 +94,19 @@ for v in ("closed", "mouth_half", "mouth_open", "mouth_o", "blink"):
         M, inl = cv2.estimateAffinePartial2D(np.float32([kV[m.queryIdx].pt for m in mt]), np.float32([kA[m.trainIdx].pt for m in mt]), method=cv2.RANSAC, ransacReprojThreshold=3)
         src = cv2.warpAffine(V, M, (W, H), flags=cv2.INTER_CUBIC, borderValue=(255, 255, 255))
         print(v, "aligned, inliers", int(inl.sum()), "scale", round(float(np.hypot(M[0, 0], M[0, 1])), 4))
+        # keep ONE base head: take only the region the edit really changed (mouth, or eyes for a blink) from the variant,
+        # feathered into the closed head, so face shape, hair, lines and shading never flicker between frames
+        diff = (np.abs(src.astype(int) - A.astype(int)).sum(2) > 70) & (head_m == 1)
+        hy = np.nonzero(head_m.any(1))[0]; face_top = hy.min() + 0.35 * (hy.max() - hy.min())
+        diff[: int(face_top)] = False                                   # never take hair from the variant
+        n2, lab2, st2, _ = cv2.connectedComponentsWithStats(diff.astype(np.uint8))
+        keep = np.zeros_like(diff)
+        if n2 > 1:
+            big2 = sorted(range(1, n2), key=lambda j: -st2[j, 4])[:2 if v == "blink" else 1]
+            for j in big2: keep |= lab2 == j
+        keep = cv2.dilate(keep.astype(np.uint8), np.ones((13, 13), np.uint8))
+        a = cv2.GaussianBlur(keep.astype(np.float32), (11, 11), 0)[..., None]
+        src = (A.astype(np.float32) * (1 - a) + src.astype(np.float32) * a).astype(np.uint8)
     add(f"head_{v}", head_m, src, (nx, neck_y), "body", 5)
 json.dump(rig, open(os.path.join(OUT, "rig.json"), "w"), indent=1)
 print("pieces:", list(rig["pieces"]), "neck_y", neck_y, "hem_y", hem_y)
