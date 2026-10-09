@@ -39,7 +39,18 @@ if add.any():
     bodyp[..., :3] = rgb; bodyp[..., 3] = np.where(add, 255, bodyp[..., 3]); Image.fromarray(bodyp).save(os.path.join(P, "body.png"))
 print("torso side filled px:", int(add.sum()))
 body_cut = bodyp.copy()                                   # pose arms are cut against the body BEFORE the under-arm strip
+# the body edge that the hanging arms used to hide has NO outline in the drawing: ink it (3 px, the drawing's line colour) so a
+# swapped-away arm never leaves a soft, unoutlined kurta side
+arms_rest = np.zeros(body_cut.shape[:2], np.uint8)
+for n in ("arm_upper_L", "arm_lower_L", "arm_upper_R", "arm_lower_R"):
+    fp = os.path.join(P, n + ".png")
+    if os.path.exists(fp): arms_rest |= (np.asarray(Image.open(fp))[..., 3] > 60).astype(np.uint8)
+bmc = (body_cut[..., 3] > 127).astype(np.uint8)
+edge = (bmc == 1) & (cv2.erode(bmc, np.ones((7, 7), np.uint8)) == 0) & (cv2.dilate(arms_rest, np.ones((9, 9), np.uint8)) == 1)
+edge[: int(neck + 25)] = False
+body_cut[edge, :3] = (28, 22, 22)
 Image.fromarray(body_cut).save(os.path.join(P, "body_nounder.png"))   # used while an arm is swapped to a pose drawing (no strip showing)
+print("inked hidden body edge px:", int(edge.sum()))
 # UNDERLAY: extend the kurta ~14 px under where the arms rest (hidden at rest) so a small arm sway never opens a background slit
 bm = (bodyp[..., 3] > 127).astype(np.uint8)
 arms_a = np.zeros_like(bm)
