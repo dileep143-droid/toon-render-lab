@@ -39,6 +39,7 @@ if add.any():
     bodyp[..., :3] = rgb; bodyp[..., 3] = np.where(add, 255, bodyp[..., 3]); Image.fromarray(bodyp).save(os.path.join(P, "body.png"))
 print("torso side filled px:", int(add.sum()))
 body_cut = bodyp.copy()                                   # pose arms are cut against the body BEFORE the under-arm strip
+Image.fromarray(body_cut).save(os.path.join(P, "body_nounder.png"))   # used while an arm is swapped to a pose drawing (no strip showing)
 # UNDERLAY: extend the kurta ~14 px under where the arms rest (hidden at rest) so a small arm sway never opens a background slit
 bm = (bodyp[..., 3] > 127).astype(np.uint8)
 arms_a = np.zeros_like(bm)
