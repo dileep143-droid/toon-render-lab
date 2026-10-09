@@ -14,14 +14,19 @@ PYJ, PYJ_SHADE, INK = np.array([242, 242, 244]), np.array([206, 207, 214]), np.a
 
 
 class DrawnLegs:
-    def __init__(self, D, sp):
-        self.sp = sp; J = sp.J; self.J = J
+    def __init__(self, D, sp, style="normal"):
+        """style 'normal': straight legs, the stance leg works like a pendulum (hips rise over each step, lowest at contact);
+        style 'sneak': hips low, knees bent all the time (creeping - e.g. sneaking off with the laddoos). Owner-approved 9 Oct."""
+        self.sp = sp; J = sp.J; self.J = J; self.style = style
         self.hip = J["hip"].copy(); self.ground = float(J["ankle_front"][1]) + 2
-        Dv = self.ground - float(self.hip[1]); self.l1 = self.l2 = 0.54 * Dv          # slight knee bend when standing (cartoon feel)
-        self.drop = 0.12 * Dv                                                           # hips sit a little lower while walking -> real stride
-        Dw = Dv - self.drop
+        Dv = self.ground - float(self.hip[1]); self.Dv = Dv
         self.w_top, self.w_knee, self.w_ank = 96.0, 74.0, 66.0                          # pyjama widths measured on the drawing
-        reach = self.l1 + self.l2; self.stride = 2 * math.sqrt(max(10.0, (0.97 * reach) ** 2 - Dw ** 2)); self.lift = 0.16 * Dv
+        if style == "sneak":
+            self.l1 = self.l2 = 0.54 * Dv; self.drop = 0.12 * Dv; Dw = Dv - self.drop
+            reach = self.l1 + self.l2; self.stride = 2 * math.sqrt(max(10.0, (0.97 * reach) ** 2 - Dw ** 2)); self.lift = 0.16 * Dv
+        else:
+            self.l1 = self.l2 = 0.506 * Dv; self.drop = 0.0                             # legs straight when standing
+            self.reach = (self.l1 + self.l2) * 0.996; self.stride = 0.74 * Dv; self.lift = 0.075 * Dv
         # the character's own FOOT: skin + outline pixels of the near leg below the pyjama hem, anchored at the ankle
         P = os.path.join(D, "parts"); leg = np.asarray(Image.open(os.path.join(P, "leg_front.png")).convert("RGBA"))
         a = leg[..., 3] > 40; rgb = leg[..., :3].astype(int); y = np.arange(leg.shape[0])[:, None]
@@ -81,7 +86,17 @@ def render_walk(sp, legs, t, period=0.8, ss=2, hip_dx=0.0):
     """One walk frame on the character canvas. hip_dx shifts the body (the scene supplies forward travel)."""
     tn = (t / period) % 1.0; bob = 6.0 * abs(math.sin(2 * math.pi * tn))             # up at passing, down at contact (x2 per cycle)
     w = 2 * math.pi / period
-    pose = {"dy": legs.drop - bob + 6.0, "body": 1.2 * math.sin(2 * w * t), "arm_u": -18 * math.sin(w * t) - 0.0, "arm_l": 6 + 6 * math.sin(w * t + math.pi)}
+    if legs.style == "sneak": dy = legs.drop - bob + 6.0
+    else:
+        # pendulum: hip height set by the planted (stance) leg kept straight -> lowest at contact, highest at passing
+        dys = []
+        for ph in (0.0, 0.5):
+            u = (tn + ph) % 1.0
+            if u < 0.6:
+                dx = legs.stride / 2 - legs.stride * (u / 0.6)
+                dys.append(legs.Dv - math.sqrt(max(1.0, legs.reach ** 2 - dx ** 2)))
+        dy = max(dys) if dys else 0.0
+    pose = {"dy": dy, "body": 1.2 * math.sin(2 * w * t), "arm_u": -18 * math.sin(w * t) - 0.0, "arm_l": 6 + 6 * math.sin(w * t + math.pi)}
     # body + arm from the puppet (legs drawn separately)
     keep = [L for L in sp.layers if L["name"] in ("body", "arm")]; saved = sp.layers; sp.layers = keep
     top = np.asarray(sp.render(pose, ss=ss)).astype(np.float32) / 255; sp.layers = saved
