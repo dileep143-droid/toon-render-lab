@@ -35,12 +35,15 @@ def timeline(cues, talk_end):
         p["dy"] = -2.0 * br; p["head"] = 1.2 * math.sin(2 * math.pi * t / 2.6 + math.pi / 4)
         p["arm_upper_L"] = 1.5 * br; p["arm_upper_R"] = -1.5 * br
         # WAVE: swap to the wave DRAWING, forearm waves +-14, swap back
-        if W0 <= t < W1:                                  # straight swap to the drawing (TV style; rotated "anticipation" arm looked thin)
-            p["arm_L"] = "wave"; p["pose_wave_lower"] = 14 * math.sin(2 * math.pi * 2.2 * (t - W0)); p["head"] += 3
+        if W0 <= t < W1:
+            # the wave is 3 DRAWINGS swapped every 3 frames (in, upright, out, upright) - like TV cartoons. Bending the drawn forearm
+            # stretched the sleeve and changed the hand's size (owner, 9 Oct: "still not perfect")
+            k = int((f - int(W0 * FPS)) // 3) % 4
+            p["arm_L"] = ("wave2", "wave", "wave3", "wave")[k]; p["head"] += 3
         if t >= T0:
             tt = t - T0; p["head"] += 2.5 * math.sin(2 * math.pi * tt / 2.3)
             if G0 <= t < G1:
-                p["arm_L"] = "explain"; p["pose_explain_lower"] = 5 * math.sin(2 * math.pi * (t - G0) / 1.1)
+                p["arm_L"] = "explain"                          # held drawing, no bending
             p["arm_upper_R"] = -1.5 * br - 6 * max(0, math.sin(2 * math.pi * tt / 3.7)) ** 2      # small emphasis beats with the other arm
         p = {k: (round(v, 1) if isinstance(v, float) else v) for k, v in p.items()}
         poses.append(p)
