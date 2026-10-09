@@ -1,5 +1,93 @@
-{"_note": "hand-placed joints (canvas px), checked on _joints.png. Main rig + pose-arm drawings.",
- "head": [461, 430], "arm_upper_L": [560, 475], "arm_lower_L": [618, 640], "arm_upper_R": [340, 478], "arm_lower_R": [283, 640],
- "leg_L": [505, 880], "leg_R": [405, 880],
- "poses": {"wave": {"side": "L", "shoulder": [575, 470], "elbow": [707, 512], "hand": [716, 300]},
-           "explain": {"side": "L", "shoulder": [578, 478], "elbow": [622, 618], "hand": [780, 560]}}}
+{
+ "_note": "hand-placed joints (canvas px), checked on _joints.png. Main rig + pose-arm drawings.",
+ "head": [
+  461,
+  430
+ ],
+ "arm_upper_L": [
+  560,
+  475
+ ],
+ "arm_lower_L": [
+  618,
+  640
+ ],
+ "arm_upper_R": [
+  340,
+  478
+ ],
+ "arm_lower_R": [
+  283,
+  640
+ ],
+ "leg_L": [
+  505,
+  880
+ ],
+ "leg_R": [
+  405,
+  880
+ ],
+ "poses": {
+  "wave": {
+   "side": "L",
+   "shoulder": [
+    575,
+    470
+   ],
+   "elbow": [
+    707,
+    512
+   ],
+   "hand": [
+    716,
+    300
+   ]
+  },
+  "explain": {
+   "side": "L",
+   "shoulder": [
+    578,
+    478
+   ],
+   "elbow": [
+    622,
+    618
+   ],
+   "hand": [
+    780,
+    560
+   ]
+  },
+  "wave2": {
+   "side": "L",
+   "shoulder": [
+    575,
+    470
+   ],
+   "elbow": [
+    707,
+    512
+   ],
+   "hand": [
+    690,
+    300
+   ]
+  },
+  "wave3": {
+   "side": "L",
+   "shoulder": [
+    575,
+    470
+   ],
+   "elbow": [
+    707,
+    512
+   ],
+   "hand": [
+    745,
+    300
+   ]
+  }
+ }
+}
