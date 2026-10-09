@@ -21,7 +21,11 @@ class DrawnLegs:
         self.hip = J["hip"].copy(); self.ground = float(J["ankle_front"][1]) + 2
         Dv = self.ground - float(self.hip[1]); self.Dv = Dv
         self.w_top, self.w_knee, self.w_ank = 96.0, 74.0, 66.0                          # pyjama widths measured on the drawing
-        if style == "sneak":
+        self.stance = 0.6; self.lean = 0.0; self.arm = 18.0; self.period = 0.8
+        if style == "run":                                                              # MOTION_GUIDE run: flight phase, longer stride, lean
+            self.l1 = self.l2 = 0.506 * Dv; self.drop = 0.07 * Dv; self.stance = 0.38; self.lean = -7.0; self.arm = 34.0; self.period = 0.5
+            self.reach = (self.l1 + self.l2) * 0.996; self.stride = 0.95 * Dv; self.lift = 0.26 * Dv
+        elif style == "sneak":
             self.l1 = self.l2 = 0.54 * Dv; self.drop = 0.12 * Dv; Dw = Dv - self.drop
             reach = self.l1 + self.l2; self.stride = 2 * math.sqrt(max(10.0, (0.97 * reach) ** 2 - Dw ** 2)); self.lift = 0.16 * Dv
         else:
@@ -41,9 +45,10 @@ class DrawnLegs:
 
     def foot_target(self, t_norm, phase, hip_x):
         u = (t_norm + phase) % 1.0; S = self.stride
-        if u < 0.6:                                                                   # STANCE: planted, slides back relative to the hip
-            return np.array([hip_x + S / 2 - S * (u / 0.6), self.ground]), 0.0
-        v = (u - 0.6) / 0.4                                                           # SWING: arc forward, toes point down a little
+        st = self.stance
+        if u < st:                                                                    # STANCE: planted, slides back relative to the hip
+            return np.array([hip_x + S / 2 - S * (u / st), self.ground]), 0.0
+        v = (u - st) / (1 - st)                                                       # SWING: arc forward, toes point down a little
         return np.array([hip_x - S / 2 + S * v, self.ground - self.lift * math.sin(math.pi * v)]), 18.0 * math.sin(math.pi * v)
 
     def knee(self, H, A):
@@ -87,16 +92,18 @@ def render_walk(sp, legs, t, period=0.8, ss=2, hip_dx=0.0):
     tn = (t / period) % 1.0; bob = 6.0 * abs(math.sin(2 * math.pi * tn))             # up at passing, down at contact (x2 per cycle)
     w = 2 * math.pi / period
     if legs.style == "sneak": dy = legs.drop - bob + 6.0
+    elif legs.style == "run": dy = legs.drop + 0.06 * legs.Dv * math.cos(4 * math.pi * tn)     # low at contact, high in flight (2x per cycle)
     else:
         # pendulum: hip height set by the planted (stance) leg kept straight -> lowest at contact, highest at passing
         dys = []
         for ph in (0.0, 0.5):
             u = (tn + ph) % 1.0
-            if u < 0.6:
-                dx = legs.stride / 2 - legs.stride * (u / 0.6)
+            if u < legs.stance:
+                dx = legs.stride / 2 - legs.stride * (u / legs.stance)
                 dys.append(legs.Dv - math.sqrt(max(1.0, legs.reach ** 2 - dx ** 2)))
         dy = max(dys) if dys else 0.0
-    pose = {"dy": dy, "body": 1.2 * math.sin(2 * w * t), "arm_u": -18 * math.sin(w * t) - 0.0, "arm_l": 6 + 6 * math.sin(w * t + math.pi)}
+    pose = {"dy": dy, "body": legs.lean + 1.2 * math.sin(2 * w * t), "arm_u": -legs.arm * math.sin(w * t),
+            "arm_l": (40 if legs.style == "run" else 6) + 6 * math.sin(w * t + math.pi)}
     # body + arm from the puppet (legs drawn separately)
     keep = [L for L in sp.layers if L["name"] in ("body", "arm")]; saved = sp.layers; sp.layers = keep
     top = np.asarray(sp.render(pose, ss=ss)).astype(np.float32) / 255; sp.layers = saved
@@ -108,7 +115,7 @@ def render_walk(sp, legs, t, period=0.8, ss=2, hip_dx=0.0):
     a = top[..., 3:]; out = top[..., :3] * a + canvas[..., :3] * (1 - a)                # body over the premultiplied legs
     alpha = a + canvas[..., 3:] * (1 - a)
     rgb = np.where(alpha > 1e-4, out / np.maximum(alpha, 1e-4), 0)
-    return Image.fromarray((np.dstack([np.clip(rgb, 0, 1), np.clip(alpha, 0, 1)]) * 255).astype(np.uint8)), legs.stride / (0.6 * period)
+    return Image.fromarray((np.dstack([np.clip(rgb, 0, 1), np.clip(alpha, 0, 1)]) * 255).astype(np.uint8)), legs.stride / (legs.stance * period)
 
 
 if __name__ == "__main__":
