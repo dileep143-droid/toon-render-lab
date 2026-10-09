@@ -38,7 +38,20 @@ if add.any():
     rgb[edge & add] = (25, 20, 20)                                              # outline along the new side seam
     bodyp[..., :3] = rgb; bodyp[..., 3] = np.where(add, 255, bodyp[..., 3]); Image.fromarray(bodyp).save(os.path.join(P, "body.png"))
 print("torso side filled px:", int(add.sum()))
-Bm = (bodyp[..., 3] > 127)
+body_cut = bodyp.copy()                                   # pose arms are cut against the body BEFORE the under-arm strip
+# UNDERLAY: extend the kurta ~14 px under where the arms rest (hidden at rest) so a small arm sway never opens a background slit
+bm = (bodyp[..., 3] > 127).astype(np.uint8)
+arms_a = np.zeros_like(bm)
+for n in ("arm_upper_L", "arm_lower_L", "arm_upper_R", "arm_lower_R"):
+    fp = os.path.join(P, n + ".png")
+    if os.path.exists(fp): arms_a |= (np.asarray(Image.open(fp))[..., 3] > 60).astype(np.uint8)
+under = (cv2.dilate(bm, np.ones((29, 29), np.uint8)) == 1) & (arms_a == 1) & (bm == 0)
+under[: int(neck + 25)] = False; under[hem - 5:] = False
+if under.any():
+    inner = cv2.erode(bm, np.ones((9, 9), np.uint8)) == 1; _, (jy, jx) = distance_transform_edt(~inner, return_indices=True)
+    bodyp[under, :3] = bodyp[jy[under], jx[under], :3]; bodyp[under, 3] = 255; Image.fromarray(bodyp).save(os.path.join(P, "body.png"))
+print("under-arm kurta px:", int(under.sum()))
+Bm = (body_cut[..., 3] > 127)
 # ---- 2 pose arms
 orb = cv2.ORB_create(5000); gA = cv2.cvtColor(A, cv2.COLOR_RGB2GRAY)
 for spec in sys.argv[3:]:
@@ -56,7 +69,7 @@ for spec in sys.argv[3:]:
     headm = np.asarray(Image.open(os.path.join(P, "head_closed.png")))[..., 3] > 60
     headm = cv2.dilate(headm.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
     outside = (mV == 1) & ~Bm & ~headm & sidem
-    over = (np.abs(Va.astype(int) - bodyp[..., :3].astype(int)).sum(2) > 80) & Bm & sidem & (mV == 1)
+    over = (np.abs(Va.astype(int) - body_cut[..., :3].astype(int)).sum(2) > 80) & Bm & sidem & (mV == 1)
     over &= ~headm
     arm = (outside | over).astype(np.uint8); arm[hem - 10:] = 0
     arm = cv2.morphologyEx(arm, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
