@@ -41,8 +41,9 @@ root = empty("root", (X0, GROUND + CH / 2, 0)); by = root.location.y
 to_world = lambda px, py: (root.location.x + (px - W / 2) * S, root.location.y + (H / 2 - py) * S, 0)
 E = {"body": empty("E_body", to_world(*pcs["body"]["pivot"]), root)}
 for n in ("leg_back", "leg_front", "arm"): E[n] = empty("E_" + n, to_world(*pcs[n]["pivot"]), E["body"])
-for n, p in pcs.items():
-    ob = plane(n, os.path.join(P, n + ".png"), W * S, H * S, 0.02 * p["z"]); ob.location = (root.location.x, root.location.y, 0.02 * p["z"])
+for i, (n, p) in enumerate(pcs.items()):
+    zz = 0.02 * p["z"] + 0.0015 * i                     # unique depth per piece (coplanar planes get skipped on GPU)
+    ob = plane(n, os.path.join(P, n + ".png"), W * S, H * S, zz); ob.location = (root.location.x, root.location.y, zz)
     bpy.context.view_layer.update(); ob.parent = E[n]; ob.matrix_parent_inverse = E[n].matrix_world.inverted()
 
 
