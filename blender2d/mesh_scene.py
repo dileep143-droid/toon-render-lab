@@ -75,7 +75,8 @@ if __name__ == "__main__":
         border = set(np.unique(np.r_[hl[0], hl[-1], hl[:, 0], hl[:, -1]]))
         holes = sum(1 for j in range(1, hn) if j not in border and (hl[TORSO] == j).sum() > 15)     # background INSIDE the torso only
         return pieces, holes
-    _pz = Puppet(D); TORSO = cv2.erode((_pz.layers[[l["name"] for l in _pz.layers].index("body")]["img"][..., 3] > 0.5).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0
+    _pz = Puppet(D); _ts = _pz.body_nounder if _pz.body_nounder is not None else _pz.layers[[l["name"] for l in _pz.layers].index("body")]["img"]
+    TORSO = cv2.erode((_ts[..., 3] > 0.5).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0     # the clean torso (strip excluded)
     rest_holes = 0
     bad = []
     for i in range(len(keys)):
