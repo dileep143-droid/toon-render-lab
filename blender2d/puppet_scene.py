@@ -48,9 +48,12 @@ for name, p in [kv for kv in rig["pieces"].items() if kv[0] == "body"] + [kv for
     E[name] = empty("E_" + name, to_world(*p["pivot"]), par)
 headE = empty("E_head", to_world(*rig["pieces"]["head_closed"]["pivot"]), E["body"])
 planes = {}
-for name, p in rig["pieces"].items():
-    ob = plane(name, os.path.join(P, name + ".png"), W * S, H * S, 0.02 * p["z"] + (0.001 if name.startswith("head_") else 0))
-    ob.location = (root.location.x, root.location.y, 0.02 * p["z"]); bpy.context.view_layer.update()
+for i, (name, p) in enumerate(rig["pieces"].items()):
+    # every piece gets its OWN depth: two full-canvas planes at the same depth (left/right leg, both upper arms) make the GPU
+    # renderer skip one of them (missing leg / missing arms / faded hands in the 9 Oct Kaggle render)
+    zz = 0.02 * p["z"] + 0.0015 * i
+    ob = plane(name, os.path.join(P, name + ".png"), W * S, H * S, zz)
+    ob.location = (root.location.x, root.location.y, zz); bpy.context.view_layer.update()
     par = headE if name.startswith("head_") else E[name]
     ob.parent = par; ob.matrix_parent_inverse = par.matrix_world.inverted(); planes[name] = ob
 
