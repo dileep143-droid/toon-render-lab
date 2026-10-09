@@ -72,13 +72,15 @@ if __name__ == "__main__":
     def figure_ok(path):
         a = np.asarray(Image.open(path))[..., 3] > 127; n, lab, st, _ = cv2.connectedComponentsWithStats(a.astype(np.uint8))
         pieces = int((st[1:, 4] > 40).sum()); inv = (~a).astype(np.uint8); hn, hl, hs, _ = cv2.connectedComponentsWithStats(inv)
-        border = set(np.unique(np.r_[hl[0], hl[-1], hl[:, 0], hl[:, -1]])); holes = sum(1 for j in range(1, hn) if j not in border and hs[j, 4] > 25)
+        border = set(np.unique(np.r_[hl[0], hl[-1], hl[:, 0], hl[:, -1]]))
+        holes = sum(1 for j in range(1, hn) if j not in border and (hl[TORSO] == j).sum() > 15)     # background INSIDE the torso only
         return pieces, holes
-    rest_holes = figure_ok(os.path.join(tmp, f"u{0:04d}.png"))[1]
+    _pz = Puppet(D); TORSO = cv2.erode((_pz.layers[[l["name"] for l in _pz.layers].index("body")]["img"][..., 3] > 0.5).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0
+    rest_holes = 0
     bad = []
     for i in range(len(keys)):
         pc, ho = figure_ok(os.path.join(tmp, f"u{i:04d}.png"))
-        if pc != 1 or ho > max(rest_holes, 2): bad.append((i, pc, ho, keys[i][:90]))
+        if pc != 1 or ho > rest_holes: bad.append((i, pc, ho, keys[i][:90]))
     print("FRAME CHECK:", "PASS" if not bad else f"FAIL {len(bad)} poses", flush=True)
     for b_ in bad[:12]: print("  bad pose", b_, flush=True)
     plate = Image.open(PLATE).convert("RGB").resize((1920, 1080), Image.LANCZOS)
