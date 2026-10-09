@@ -28,8 +28,8 @@ def stand_frame(sp, legs, k, ss=2):
 
 
 if __name__ == "__main__":
-    D, PLATE, OUT = sys.argv[1:4]
-    sp = SidePuppet(D); legs = DrawnLegs(D, sp); scale = CH_H / sp.H
+    D, PLATE, OUT = sys.argv[1:4]; STYLE = sys.argv[4] if len(sys.argv) > 4 else "normal"
+    sp = SidePuppet(D); legs = DrawnLegs(D, sp, STYLE); scale = CH_H / sp.H
     speed = legs.stride / (0.6 * PERIOD) * scale                                     # screen px / s that keeps the feet planted
     x_end = 960 - legs.hip[0] * scale; cycles = 4; T_walk = cycles * PERIOD
     x_start = x_end - speed * T_walk; NF = int((T_walk + 1.6) * FPS)
