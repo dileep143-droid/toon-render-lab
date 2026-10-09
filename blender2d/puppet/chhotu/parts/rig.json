@@ -6,32 +6,32 @@
  "pieces": {
   "arm_upper_L": {
    "pivot": [
-    579.0,
-    508.0
+    580.0,
+    503.0
    ],
    "parent": "body",
    "z": 2
   },
   "arm_lower_L": {
    "pivot": [
-    630.0,
-    686.0
+    620.5,
+    644.0
    ],
    "parent": "arm_upper_L",
    "z": 3
   },
   "arm_upper_R": {
    "pivot": [
-    309.75,
-    501.0
+    321.5,
+    509.0
    ],
    "parent": "body",
    "z": 2
   },
   "arm_lower_R": {
    "pivot": [
-    277.0,
-    689.0
+    280.0,
+    640.0
    ],
    "parent": "arm_upper_R",
    "z": 3
