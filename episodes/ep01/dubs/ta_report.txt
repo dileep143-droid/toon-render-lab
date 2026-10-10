@@ -1,0 +1,52 @@
+ta: 116/116 lines placed, track 641.65s (target 641.65s), -14.0 LUFS / -3.1 dBTP (premaster -13.2, gain -0.84 dB)
+sped up: 35 (max tempo 1.150, cap 1.15)
+spill into the pause (later lines wait): 28; lines starting late: 20; max drift 2.11s
+speech dub/hindi: 548.7s / 539.7s
+tail lines moved earlier to end inside the video: 0 (max 0.00s)
+words cut: 0
+missing lines: []
+subtitles: C:\Users\goddu\repos\toon-render-lab\episodes\ep01\subtitles\ta.srt (116 cues)
+
+unit   1 @   12.35s: dub 11.78s, tempo 1.150, starts +0.00s, spill 1.39s
+unit   2 @   21.34s: dub 6.64s, tempo 1.000, starts +1.39s, spill 0.00s
+unit   3 @   29.75s: dub 4.72s, tempo 1.150, starts +0.00s, spill 0.57s
+unit   4 @   33.41s: dub 2.88s, tempo 1.000, starts +0.57s, spill 0.00s
+unit   7 @   55.49s: dub 6.01s, tempo 1.035, starts +0.00s, spill 0.01s
+unit   9 @   61.42s: dub 9.77s, tempo 1.150, starts +0.01s, spill 2.11s
+unit  10 @   67.94s: dub 9.28s, tempo 1.150, starts +2.11s, spill 1.77s
+unit  11 @   76.47s: dub 3.21s, tempo 1.150, starts +1.77s, spill 0.48s
+unit  12 @   80.68s: dub 4.05s, tempo 1.076, starts +0.48s, spill 0.00s
+unit  13 @   85.04s: dub 3.41s, tempo 1.150, starts +0.00s, spill 0.50s
+unit  14 @   87.62s: dub 4.03s, tempo 1.000, starts +0.50s, spill 0.00s
+unit  19 @  111.66s: dub 2.62s, tempo 1.124, starts +0.00s, spill 0.01s
+unit  26 @  143.93s: dub 4.25s, tempo 1.069, starts +0.00s, spill 0.00s
+unit  28 @  153.70s: dub 4.10s, tempo 1.150, starts +0.00s, spill 0.73s
+unit  29 @  156.65s: dub 4.59s, tempo 1.150, starts +0.73s, spill 0.43s
+unit  30 @  161.06s: dub 3.31s, tempo 1.087, starts +0.43s, spill 0.01s
+unit  34 @  183.78s: dub 8.81s, tempo 1.019, starts +0.00s, spill 0.00s
+unit  38 @  207.75s: dub 5.26s, tempo 1.150, starts +0.00s, spill 0.41s
+unit  39 @  212.03s: dub 2.70s, tempo 1.000, starts +0.41s, spill 0.00s
+unit  43 @  235.76s: dub 5.03s, tempo 1.150, starts +0.00s, spill 1.44s
+unit  44 @  238.82s: dub 1.98s, tempo 1.150, starts +1.44s, spill 0.33s
+unit  45 @  241.77s: dub 4.44s, tempo 1.000, starts +0.33s, spill 0.00s
+unit  46 @  248.95s: dub 3.11s, tempo 1.150, starts +0.00s, spill 0.91s
+unit  47 @  250.88s: dub 3.66s, tempo 1.000, starts +0.91s, spill 0.00s
+unit  51 @  284.08s: dub 8.72s, tempo 1.150, starts +0.00s, spill 0.81s
+unit  52 @  290.97s: dub 5.71s, tempo 1.126, starts +0.81s, spill 0.01s
+unit  60 @  332.01s: dub 3.76s, tempo 1.031, starts +0.00s, spill 0.00s
+unit  62 @  342.60s: dub 5.60s, tempo 1.086, starts +0.00s, spill 0.01s
+unit  64 @  353.01s: dub 3.36s, tempo 1.017, starts +0.00s, spill 0.01s
+unit  84 @  463.31s: dub 16.81s, tempo 1.150, starts +0.00s, spill 1.75s
+unit  85 @  476.29s: dub 2.31s, tempo 1.150, starts +1.75s, spill 1.87s
+unit  86 @  478.32s: dub 4.08s, tempo 1.000, starts +1.87s, spill 0.00s
+unit  88 @  489.34s: dub 6.13s, tempo 1.150, starts +0.00s, spill 0.53s
+unit  89 @  494.28s: dub 2.54s, tempo 1.150, starts +0.53s, spill 0.17s
+unit  90 @  496.97s: dub 3.20s, tempo 1.143, starts +0.17s, spill 0.01s
+unit  92 @  511.80s: dub 4.43s, tempo 1.050, starts +0.00s, spill 0.00s
+unit  94 @  523.30s: dub 4.36s, tempo 1.102, starts +0.00s, spill 0.01s
+unit  98 @  546.42s: dub 3.84s, tempo 1.150, starts +0.00s, spill 0.76s
+unit  99 @  549.12s: dub 3.76s, tempo 1.000, starts +0.76s, spill 0.00s
+unit 106 @  580.03s: dub 3.33s, tempo 1.150, starts +0.00s, spill 0.70s
+unit 107 @  582.33s: dub 2.52s, tempo 1.087, starts +0.70s, spill 0.00s
+unit 114 @  622.02s: dub 6.27s, tempo 1.150, starts +0.00s, spill 0.27s
+unit 115 @  627.30s: dub 4.01s, tempo 1.071, starts +0.27s, spill 0.01s

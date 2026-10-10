@@ -1,0 +1,99 @@
+{
+ "e1_13_1": {
+  "kernel": "musthafadudekula/kulfi-e1split-13-1",
+  "key": 13,
+  "dir": "e1_13_1",
+  "jobs": [
+   [
+    "te",
+    "te",
+    "mms"
+   ],
+   [
+    "mr",
+    "mr",
+    "mms"
+   ]
+  ]
+ },
+ "e1_14_1": {
+  "kernel": "ramu24/kulfi-e1split-14-1",
+  "key": 14,
+  "dir": "e1_14_1",
+  "jobs": [
+   [
+    "ml",
+    "ml",
+    "mms"
+   ]
+  ]
+ },
+ "e1_16_1": {
+  "kernel": "reddy60/kulfi-e1split-16-1",
+  "key": 16,
+  "dir": "e1_16_1",
+  "jobs": [
+   [
+    "ta",
+    "ta",
+    "whisper"
+   ],
+   [
+    "kn",
+    "kn",
+    "whisper"
+   ]
+  ]
+ },
+ "e1_13_2": {
+  "kernel": "musthafadudekula/kulfi-e1split-13-2",
+  "key": 13,
+  "dir": "e1_13_2",
+  "jobs": [
+   [
+    "or",
+    "or",
+    "mms"
+   ],
+   [
+    "as",
+    "as",
+    "mms"
+   ]
+  ]
+ },
+ "e1_14_2": {
+  "kernel": "ramu24/kulfi-e1split-14-2",
+  "key": 14,
+  "dir": "e1_14_2",
+  "jobs": [
+   [
+    "bn",
+    "bn",
+    "mms"
+   ],
+   [
+    "gu",
+    "gu",
+    "mms"
+   ]
+  ]
+ },
+ "e1_17_1": {
+  "kernel": "gopalaganeshk/kulfi-e1split-17-1",
+  "key": 17,
+  "dir": "e1_17_1",
+  "jobs": [
+   [
+    "pa",
+    "pa",
+    "whisper"
+   ],
+   [
+    "en",
+    "en",
+    "whisper"
+   ]
+  ]
+ }
+}

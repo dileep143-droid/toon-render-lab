@@ -1,0 +1,4 @@
+hi: clean Hindi track copied from E:\KulfiKahani_AI_Studio\19_ep01_audio_fix\ep01_audio_clean_hi.wav
+116 lines at their measured positions (align.json), track 641.65s, -14.0 LUFS / -3.1 dBTP
+words cut: 0
+subtitles: C:\Users\goddu\repos\toon-render-lab\episodes\ep01\subtitles\hi.srt
