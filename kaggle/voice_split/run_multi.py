@@ -117,10 +117,22 @@ def mms_words(path, code, sil=None):
 
 # ---- script-agnostic text handling ----
 TAG = re.compile(r"<[^>]+>")
+BLOCK = {"hi": 0x0900, "mr": 0x0900, "bn": 0x0980, "as": 0x0980, "pa": 0x0A00, "gu": 0x0A80, "or": 0x0B00, "ta": 0x0B80, "te": 0x0C00, "kn": 0x0C80, "ml": 0x0D00}
+FOLD = {"base": None}       # set per language in do_lang: ASR text in ANY Indic script is mapped letter-for-letter into the target block
+SAME = {0x09F0: 0x09B0, 0x09F1: 0x09AC}   # Assamese ra/wa -> Bengali ra/ba (Whisper writes Assamese in Bengali or even Gurmukhi script)
+def fold(s):
+    s = unicodedata.normalize("NFC", TAG.sub(" ", s)); base = FOLD["base"]
+    if base is None: return s
+    out = []
+    for ch in s:
+        o = ord(ch)
+        if 0x0900 <= o < 0x0D80: o = base + (o - 0x0900) % 0x80
+        out.append(chr(SAME.get(o, o)))
+    return unicodedata.normalize("NFC", "".join(out))
 def skel(s):   # letters only (Indic consonants + independent vowels; Latin letters), lower-cased; matras/virama/punctuation dropped
-    return "".join(ch.lower() for ch in unicodedata.normalize("NFC", TAG.sub(" ", s)) if unicodedata.category(ch)[0] == "L")
+    return "".join(ch.lower() for ch in fold(s) if unicodedata.category(ch)[0] == "L")
 def norm(s):   # letters + marks (for asr_sim)
-    return "".join(ch.lower() for ch in unicodedata.normalize("NFC", TAG.sub(" ", s)) if unicodedata.category(ch)[0] in "LM")
+    return "".join(ch.lower() for ch in fold(s) if unicodedata.category(ch)[0] in "LM")
 
 def silences(path, noise="-35dB", d=0.2):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", f"silencedetect=noise={noise}:d={d}", "-f", "null", "-"],
@@ -291,6 +303,7 @@ def safe(s): return re.sub(r"\W+", "", s) or "x"
 
 def do_lang(code, out_name=None, engine=None):
     out_name = out_name or code; engine = engine or ENGINE.get(code, "whisper")
+    FOLD["base"] = BLOCK.get(code)
     OUT = f"{OUT0}/{out_name}"; shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT + "/clips", exist_ok=True); os.makedirs(OUT + "/mouth", exist_ok=True)
     units = json.load(open(f"{EPV}/{code}/units.json", encoding="utf-8"))["units"]
