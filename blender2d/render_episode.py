@@ -16,6 +16,7 @@ SHAPE = {"X": "closed", "A": "closed", "B": "mouth_half", "C": "mouth_half", "D"
 LIGHT = {"night": (0.80, 0.84, 1.0), "evening": (1.0, 0.94, 0.86), "sepia": (1.0, 0.88, 0.70)}           # character grade per scene (bg name)
 HOLD = {"radio", "kite", "namaste"}                                                    # held all shot; other poses are talk-gestures
 FACE_ALIAS = {"raju": {"mouth_o": "mouth_half", "mouth_half": "mouth_open"}}              # raju: his o/half drawings came out swapped
+NO_ARM_MOTION = {"lallan", "jugaadu_chacha"}                                                            # arm drawn merged into the belly: moving it shows a thin cut (owner 10 Oct)
 NAME2DIR = {"Chhotu": "chhotu", "Gudiya": "gudiya", "Raju": "raju", "Dadi": "dadi", "Lallan": "lallan", "Masterji": "masterji",
             "Jugaadu Chacha": "jugaadu_chacha", "Sheru": "sheru"}
 
@@ -269,7 +270,7 @@ def actor_image(a, cast, tb, ts, dur, speaking, timed, cache):
                 elif tl < 0.30: e = (tl - 0.12) / 0.18; pose[bone] = round(sgn * 32 * (1 - (1 - e) ** 2))
                 else: pose[f"arm_{dside}"] = nm
             elif tpost < 0.35: e = tpost / 0.35; pose[bone] = round(sgn * 22 * (1 - e) ** 2)
-        if cur and not any(k_.startswith("arm_") for k_ in pose):                        # TALKING HAND for anyone without a gesture: the forearm lifts
+        if cur and who not in NO_ARM_MOTION and not any(k_.startswith("arm_") for k_ in pose):                      # TALKING HAND for anyone without a gesture: the forearm lifts
             tl, rem = ts - cur[0], cur[0] + cur[1]["dur"] - ts                           # and moves with the speech, eased in/out (bones, no new art)
             env = min(1.0, tl / 0.25, max(0.0, rem) / 0.25); env = env * env * (3 - 2 * env)
             pose["arm_upper_R"] = -2 * round(4 * env); pose["arm_lower_R"] = 2 * round((24 + 5 * math.sin(2 * math.pi * 1.3 * tl)) * env)   # elbow bends, hand up in front
