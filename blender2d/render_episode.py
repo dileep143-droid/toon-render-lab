@@ -15,6 +15,7 @@ PUP = os.path.join(HERE, "puppet")
 SHAPE = {"X": "closed", "A": "closed", "B": "mouth_half", "C": "mouth_half", "D": "mouth_open", "E": "mouth_o", "F": "mouth_o", "G": "mouth_half", "H": "mouth_half"}
 LIGHT = {"night": (0.80, 0.84, 1.0), "evening": (1.0, 0.94, 0.86), "sepia": (1.0, 0.88, 0.70)}           # character grade per scene (bg name)
 HOLD = {"radio", "kite", "namaste"}                                                    # held all shot; other poses are talk-gestures
+FACE_ALIAS = {"raju": {"mouth_o": "mouth_half", "mouth_half": "mouth_open"}}              # raju: his o/half drawings came out swapped
 NAME2DIR = {"Chhotu": "chhotu", "Gudiya": "gudiya", "Raju": "raju", "Dadi": "dadi", "Lallan": "lallan", "Masterji": "masterji",
             "Jugaadu Chacha": "jugaadu_chacha", "Sheru": "sheru"}
 
@@ -226,6 +227,7 @@ def actor_image(a, cast, tb, ts, dur, speaking, timed, cache):
     else: moving = False
     blink = int(ts * 24) % 70 < 3 and not speaking
     face = mouth_track(speaking, ts - next(st for st, l in timed if l is speaking)) if speaking else ("blink" if blink else "closed")
+    face = FACE_ALIAS.get(who, {}).get(face, face)
     if view in ("toward", "away"):                                                       # WALK-AND-TALK in depth: toward camera = the FRONT puppet
         t0, t1 = a.get("t0", 0), a.get("t1", dur); u = min(1, max(0, (ts - t0) / max(0.01, t1 - t0)))   # (lips, blinks, gestures) with stepping legs;
         moving = t0 <= ts <= t1; h = a.get("h0", h) + (h - a.get("h0", h)) * u               # far = small/high, near = big/low
@@ -267,6 +269,10 @@ def actor_image(a, cast, tb, ts, dur, speaking, timed, cache):
                 elif tl < 0.30: e = (tl - 0.12) / 0.18; pose[bone] = round(sgn * 32 * (1 - (1 - e) ** 2))
                 else: pose[f"arm_{dside}"] = nm
             elif tpost < 0.35: e = tpost / 0.35; pose[bone] = round(sgn * 22 * (1 - e) ** 2)
+        if cur and not any(k_.startswith("arm_") for k_ in pose):                        # TALKING HAND for anyone without a gesture: the forearm lifts
+            tl, rem = ts - cur[0], cur[0] + cur[1]["dur"] - ts                           # and moves with the speech, eased in/out (bones, no new art)
+            env = min(1.0, tl / 0.25, max(0.0, rem) / 0.25); env = env * env * (3 - 2 * env)
+            pose["arm_upper_R"] = -2 * round(4 * env); pose["arm_lower_R"] = 2 * round((24 + 5 * math.sin(2 * math.pi * 1.3 * tl)) * env)   # elbow bends, hand up in front
         if pz is None:
             spr = cast.sprite(os.path.join(PUP, who, "apose.png")); return spr, x, g, h
         key = (who, json.dumps(pose, sort_keys=True))
