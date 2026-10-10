@@ -75,3 +75,7 @@ ep01_v9_full (run 37296437649, mouth change back to the owner-approved v6 area, 
 Faults: s010, s038 (laddu "floating on shirt") and s061 (floating laddu) are the same held/thrown-prop nitpicks as v8. NEW vs v8: s061 and s062 mention a "stray artifact box on the floor" - this could be a real leftover rectangle (e.g. an un-keyed background patch) or a judge misreading of a prop. I cannot see frames from the repo, so I changed no code and started no render (no safe fix without seeing it).
 Owner: watch ep01_v9_full on the Videos tab, look at s061 and s062 for a box on the floor, and check s010/s038. If s062 has a real box, tell me in the control room and I will fix it (test render first). Upload PRIVATELY only if happy.
 Next: ep02 art once you say "go".
+
+## done 20261004145640
+Hi! The factory agent is awake. Nothing is running and there is nothing pending: QA_ep01_v9_full is already reported (58/62 pass). Newest requests "hi"/"ho" were greetings (20261004145626 is covered by this reply too).
+Owner: check s061/s062 of ep01_v9_full for a box on the floor and upload PRIVATELY if happy. Tell me a shot id, or say "go" for ep02 art, and I will start (test render first).
