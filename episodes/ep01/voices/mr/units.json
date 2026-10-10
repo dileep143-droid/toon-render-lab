@@ -1,0 +1,938 @@
+{
+ "lang": "mr",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "हे आहे आपलं सोनपूर गाव. अन् हे आजीचं वाडं. आज संध्याकाळी इथं पूजा आहे, अन् आजी बनवतेय तिचे मस्त बेसन लाडू!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "एक, दोन, तीन... अकरा लाडू! बस, पूजेसाठी बास झाले बाप्पा.",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "आहा... कसला भारी वास! आजी, मला खूप भूक लागलीये!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "आत्ताच तर तू चार पराठे खाल्ले जो, छोटू!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ती तर सकाळची भूक होती. ही आत्ताची भूक आहे.",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "हे लाडू देवासाठी हायेत. पूजेनंतरच भेटतील तुले. तोवर हात नकाय लावू. समजला का?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "समजलं आजी! अजिबात हात नाही लावणार.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "अरे देवा, माहा चष्मा कुठं गेला? आत्ताच इथं होता!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "चमकी, तू बी नाई सांगत. चाल, मी जरा टेकून राहते.",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "दुपार झाली. आजी झोपली. शेरू झोपला. अन् छोटूचं पोट... अजिबात नाही झोपलं!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "श्श्श, पोटोबा! गप्प बसा! आजी जागेल ना.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "आजी म्हणाली होती, हात लावू नकोस. मग मी... तोंड लावेन!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "यम्मी! फक्त एकच. एकच लाडू.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"फक्त एक\" म्हणता म्हणता छोटू मोजायचंच विसरून गेला.",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "हे नंतरसाठी. नंतरच्या भुकेसाठी!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "नाही शेरू, झोप पाहू! तू काहीच नाही बघतोयस!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "अरे बापरे! माहे लाडू! ताट तर रिकामं हाय!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "काय? अकराच्या अकरा लाडू गायब?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "काय झालं आजी? काही अडचण आहे का?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "छोटू... तुझ्या तोंडाला हे पिवळं पिवळं काय आहे?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "हे? हे तर... माझी नवीन मिशी आहे! गुरुजींसारखी.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "मले चष्म्याशिवाय काही दिसत बी नाई जो.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "आजी! मी पाहिलं! एक... एक जादुई लाडू चोर आला होता!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "जादुई लाडू चोर?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "हो! तो उडून आला, खिडकीतून. फुर्र करून ताटात शिरला, अन् गपागप सगळे लाडू खाऊन गेला!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "अस्सं? मंग कसा दिसत होता तो?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "तो... तो... दिसतच नव्हता! तो जादुई आहे ना, म्हणून!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "पण छोटू, खिडकी तर सकाळपासून बंद आहे.",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "मग तो बंद खिडकीतून पण पार होतो! वाऱ्यासारखा! फुर्र!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "मंग तू तव्हा कुठं होता बे, छोटू?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "मी? मी तर... शेरूसोबत झोपलो होतो! हो ना शेरू?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "बघितलंस? शेरू पण \"हो\" म्हणतोय.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "अन् इथूनच सुरू झालं छोटूचं पहिलं खोटं बोलणं. बिचाऱ्याला ठाऊक नव्हतं की खोटं पण लाडूसारखं असतं — एक खाल्लं, की दुसरं मागतं!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "मित्रांनो, सोनपूरमध्ये एक जादुई लाडू चोर फिरतोय. संध्याकाळी पूजा आहे. आपल्याला त्याला पकडावंच लागेल. चला, प्लॅन करूया!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "खरं तर, मी पुस्तकात वाचलंय की लाडू चोर फक्त मंगळवारीच येतात.",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "पिंकी, आज तर बुधवार आहे.",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "तर... खरं तर, हा नक्कीच ओव्हरटाईम करत असेल.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "जादुई? दिसत नाही? म्हणजे... भूत!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "बबलू दादा, माझ्या मागे तुम्ही लपूच शकत नाही!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "घाबरू नका! राजू द ग्रेट आलाय! कोणताही चोर असू दे, हे जाळं त्याला पकडेलच.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "हे... ही तर प्रॅक्टिस होती. जाळं एकदम मस्त काम करतंय.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "छोटू, तू चोर बघितलास ना. सांग ना, त्याची आणखी काय खूण आहे?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "खूण? अं... त्याला... एक निळी शेपूट आहे!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "निळी शेपूट. आणि?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "आणि तो फक्त गोल गोल गोष्टीच खातो. लाडू, शेवपूरी, चेंडू...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "चेंडू पण? माझी क्रिकेटची बॉल!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "आणि खाताना तो गाणंसुद्धा गातो — \"लाडू-लाडू, गप्पू-गप्पू!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "जर तो गोल गोष्टी खातो, तर आपण त्याला गोल गोष्टीनेच पकडू! लल्लन काकांकडून लाडू आणू, पिंपळाखाली ठेवू, आणि वर जाळं लावू!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "मस्त प्लॅन! पण आधी कोणीतरी मला या जाळ्यातून बाहेर काढा.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "बघितलंत? एका खोट्यामुळे निळी शेपूट बनली, शेपटावरून गाणं बनलं. छोटूचं खोटं आता पिंपळाच्या झाडापेक्षाही लांब होत चाललं होतं.",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "अरे माझ्या गोल गोल बाळांनो! उन्हात बसू नका, काळे व्हाल. चला, पाकात डुबकी मारा.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "लल्लन काका, आम्हाला चार लाडू हवेत. आम्ही जादुई लाडू चोरासाठी जाळं रचतोय.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "काय? लाडू चोर? आपल्या गावात?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "नाही! माझ्या पोरांना कोणी हात नाही लावणार! जिलेबी राणी, घाबरू नको, काका आहे ना!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "काळजी नका करू काका. राजू द ग्रेट आहे ना.",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "हे... हेसुद्धा प्लॅनचाच भाग होतं. हात गोड असले की चोर जवळ येईल.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "हे घ्या चार लाडू. पण सांभाळून ठेवा. हे माझे एकदम गुणी बाळ आहेत. कढईतून कधी बाहेर उडी नाही मारत.",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "नक्की काका. चोर पकडला की लगेच परत आणतो.",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "काका, मला भूक लागलीये!",
+   "request": 2
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "छोटू! हे चोरासाठी आहेत, तुझ्यासाठी नाहीत!",
+   "request": 2
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "प्लॅन असा आहे — चोर लाडू खायला येईल, मी दोरी ओढीन, जाळं पडेल, आणि चोर पकडला जाईल!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "गुडिया, पण चोर तर दिसतच नाही. जाळं पडल्यावर आत कोणी आहे हे कसं कळणार?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "अं... ते... प्लॅनचा हा भाग मी उद्या ठरवेन.",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "ऐका! कुरुम-कुरुम! चोर आला!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "पकडला! राजू द ग्रेटने चोराला पकडला!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "खरं तर... चोराची शेपूट निळी नाही, तपकिरी आहे. आणि हा भुंकतोय.",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "पिंकी, हा चोर नाही, शेरू आहे!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "भूत! भूऽऽत!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "अरे लेकरांनो, मी हाय रे. माहा चष्मा शोधून रायली. पाहिला का कोणी?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "मुलांनो! मी पण आलो! जर चोर माझ्या जिलेब्यांपर्यंत पोहोचला, तर हा लाटना... हा लाटना त्याला प्रेमाने समजवेल!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "काका, आम्हाला चोर सापडलाच नाही.",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "तो... तो ना, आता लल्लन काकांच्या दुकानाकडे गेला असेल! मी त्याची निळी शेपूट तिकडे जाताना पाहिली!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "आई गं! माझ्या जिलेब्या एकट्या आहेत! आलो रे माझ्या बाळांनो!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "आता मी रात्री झोपू पण शकणार नाही. निळ्या शेपटाचं भूत गाणं गाईल, \"लाडू-लाडू, गप्पू-गप्पू\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "आणि माझी कंबर! राजू द ग्रेट आज तीन वेळा पडलाय. हा चोर खूप भयंकर आहे.",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "आणि पूजेसाठी लाडू पण नाहीत. आजी किती दुःखी आहे. ती म्हणत होती, या वेळी पूजा अपूर्णच राहील.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "काही हरकत नाही. उद्या सकाळी नवीन प्लॅन बनवू. आपण रात्रभर जागे राहू, जोपर्यंत चोर सापडत नाही!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "छोटूचं पोट तर भरलं होतं. पण आता त्याच्या मनावर खूप ओझं आल्यासारखं वाटत होतं. लाडूपेक्षाही जड.",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "नाही चमकी, नाही! ती माझी नंतरची भूक आहे!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "छोटू... हा तर आजीचा लाडू आहे.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "म्हणजे निळ्या शेपटाचा चोर...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "खरं तर... चोराची शेपूट नाही, खिसा आहे!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "हो! मीच सगळे लाडू खाल्ले! कोणताही जादुई चोर नाहीये. ना निळी शेपूट, ना गाणं. मला भूक लागली होती, मग भीती वाटली, म्हणून मी खोटं बोलत गेलो... सॉरी! सगळ्यांना sorry!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "म्हणजे... काही भूत-बीत नाहीये?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "नाही बबलू दादा. भूत नाही. फक्त मीच.",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "हुश्श! थँक्यू छोटू! आता मी शांत झोपू शकेन!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "आजी, लाडू मीच खाल्ले होते. आणि नंतर खोटं बोललो. सॉरी.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "मले माहीत होतं बे, छोटू.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "माहित होतं? पण तुझा चष्मा तर...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "चष्मा नव्हता, पण नाक तर होतं ना बाप्पा! तुझ्या तोंडाला बेसनचा वास येत होता. मी तर फक्त तू स्वतः खरं सांगशील याचीच वाट पाहून रायले होते.",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "आता कधीच खोटं नाही बोलणार आजी. खोटं बोलल्याने खूप थकवा येतो!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "चाल, आता सगळे मिळून नवीन लाडू बनवू. पूजेले अजून वेळ हाय.",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "म्हणजे आता मला जाळं घेऊन पुन्हा पडावं नाही लागणार?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "नाही रे राजू, आता फक्त बेसनात हात घालायचा हाय.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "चला, प्लॅन बनवूया! लाडू बनवायचा प्लॅन! या वेळी प्लॅनमध्ये कसलाच प्रॉब्लेम असणार नाही!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "खरं तर, गुडिया, तुझ्या प्रत्येक प्लॅनमध्ये काही ना काही घोळ असतोच.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "तर या वेळी त्या घोळात बेसनच भरून टाकू!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "आणि मग सुरू झाली सोनपूरची सगळ्यात भारी लाडू फॅक्टरी!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "खरं तर, लाडू चौकोनी बनवायला हवेत. ते जास्त टिकतात.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "पिंकी पोरी, लाडू गोलच चांगले वाटतात. असे गोल-गोल वळायचे, असे.",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "बघा, राजू द ग्रेटचा सुपर लाडू! सगळ्यात मोठा!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "हे... हा चुरा-लाडू आहे. नवीन डिझाईन.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "माझे लाडू अगदी गोलमटोल बनलेत!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "अरे देवा! माझा लाडू भूत घेऊन गेलं!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "बबलू, ती चमकी आहे!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "पोटोबा, हे पूजेचे लाडू आहेत. जरा धीर धरा!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "वाह छोटू! आज तर तू खरोखर मोठा झालास.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "माझ्या जिलेब्या सुखरूप आहेत! चोर आलाच नाही. आनंदात पूजेसाठी या जिलेब्या माझ्याकडून!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "आता सगळ्यांना प्रसाद. अन् पहिला लाडू... छोटूले, ज्यानं खरं सांगितलं.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "खोट्याचा लाडू पोटात जड वाटत होता. खऱ्याचा लाडू हलका-हलका अन् गोड-गोड आहे!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "खरं बोलणाऱ्याचं मन बी लाडूसारखं गोड राहते बाप्पा.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "बघा, शेरू जागा झाला! खायच्या वेळी नेहमी जागा होतो!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "अरे देवा, माहा चष्मा परत कुठं गेला?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "आजी, त्याला जादुई चष्मा चोर घेऊन गेला!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "नाही-नाही, खरं सांगेन — तो तुझ्या डोक्यावरच आहे!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "आता मात्र मला मनापासून भूक लागलीये!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

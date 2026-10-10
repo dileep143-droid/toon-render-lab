@@ -1,4 +1,4 @@
-"""Kaggle: split ep02 voice takes in MANY languages (one TTS request each: voices/<code>/req_01.wav + units.json) into one clip per
+"""Kaggle: split voice takes in MANY languages (TTS requests: voices/<code>/req_01.wav [+ req_02.wav ...] + units.json; units with request == k are in req_0k.wav, in order) into one clip per
 script line, trim (80 ms pad), loudness-normalise to -16 LUFS (peak clamp), Rhubarb (phonetic) mouth cues.
 Generalised from kaggle/voice_split/run.py (the Hindi job, kept untouched).
   * Whisper word timestamps (large-v3 on GPU) give line-start anchors; a DP snaps cuts to silences / RMS minima.
@@ -12,11 +12,12 @@ then zipped to /kaggle/working/out/<name>.zip (loose files removed)."""
 LANGS = ["te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "or", "as", "en"]   # __LANGS__ (the launcher may override this line)
 EXTRA = []        # __EXTRA__ extra validation jobs: (code, out_name, engine), e.g. ("bn", "bn_mms", "mms")
 ENGINE = {"or": "mms"}                     # aligner per language: whisper (default) | mms | silence
-MMS_CODE = {"or": "ory", "bn": "ben", "hi": "hin", "te": "tel", "en": "eng", "as": "asm", "pa": "pan"}
+MMS_CODE = {"or": "ory", "bn": "ben", "hi": "hin", "te": "tel", "en": "eng", "as": "asm", "pa": "pan", "gu": "guj", "ml": "mal", "mr": "mar", "ta": "tam", "kn": "kan"}
 import os, sys, json, re, glob, subprocess, time, difflib, unicodedata, urllib.request, shutil, zipfile, traceback
 from concurrent.futures import ThreadPoolExecutor
 T0 = time.time()
-OUT0 = "/kaggle/working/out"; REPO = "/tmp/repo"; EPV = REPO + "/episodes/ep02_dil_ki_baat_radio/voices"
+OUT0 = "/kaggle/working/out"; REPO = "/tmp/repo"
+EPV = REPO + "/episodes/ep02_dil_ki_baat_radio/voices"   # __EPV__ (the launcher may override this line, e.g. episodes/ep01/voices)
 os.makedirs(OUT0, exist_ok=True)
 
 def log(*a): print(f"[{time.time()-T0:6.0f}s]", *a, flush=True)
@@ -309,21 +310,26 @@ def do_lang(code, out_name=None, engine=None):
     units = json.load(open(f"{EPV}/{code}/units.json", encoding="utf-8"))["units"]
     ids = [u["id"] for u in units]; assert len(set(ids)) == len(ids), "duplicate ids"
     empty = [u["id"] for u in units if not skel(u["text"])]; assert not empty, f"empty skeleton for ids {empty}"
-    wav = f"{EPV}/{code}/req_01.wav"; texts = [u["text"] for u in units]
-    try: y, sr, spans, dbg = split_take(wav, texts, "req_01", code, engine)
-    except Exception as e:
-        if engine != "mms": raise
-        traceback.print_exc(); log(code, "MMS FAILED -> silence fallback", e); engine = "silence"
-        y, sr, spans, dbg = split_take(wav, texts, "req_01", code, "silence"); dbg["mms_error"] = repr(e)[:300]
-    assert len(spans) == len(units)
-    rows = []
-    for u, sp in zip(units, spans):
-        name = f"{u['id']:03d}_{safe(u['speaker'])}.wav"
-        dur, lufs, cl = finish_clip(y, sr, sp, f"{OUT}/clips/{name}")
-        rows.append(dict(id=u["id"], speaker=u["speaker"], emotion=u["emotion"], radio=u["radio"], text=u["text"],
-                         clip="clips/" + name, duration_s=round(dur, 3), mouth=f"mouth/{u['id']:03d}.json",
-                         source="req_01", src_start=round(sp[2], 3), src_end=round(sp[3], 3),
-                         lufs_in=None if lufs is None else round(lufs, 1), peak_clamped=cl, request=u.get("request", 1)))
+    # one take per TTS request: units with request == k were recorded (in units.json order) in req_0k.wav
+    reqs = sorted(set(u.get("request", 1) for u in units)); rows, dbgs = [], []
+    for rq in reqs:
+        grp = [u for u in units if u.get("request", 1) == rq]; tag = f"req_{rq:02d}"
+        wav = f"{EPV}/{code}/{tag}.wav"; texts = [u["text"] for u in grp]; eng = engine
+        try: y, sr, spans, dbg = split_take(wav, texts, tag, code, eng)
+        except Exception as e:
+            if eng != "mms": raise
+            traceback.print_exc(); log(code, tag, "MMS FAILED -> silence fallback", e); eng = "silence"
+            y, sr, spans, dbg = split_take(wav, texts, tag, code, "silence"); dbg["mms_error"] = repr(e)[:300]
+        assert len(spans) == len(grp); dbgs.append(dbg)
+        if eng == "silence": engine = "silence"
+        for u, sp in zip(grp, spans):
+            name = f"{u['id']:03d}_{safe(u['speaker'])}.wav"
+            dur, lufs, cl = finish_clip(y, sr, sp, f"{OUT}/clips/{name}")
+            rows.append(dict(id=u["id"], speaker=u["speaker"], emotion=u["emotion"], radio=u["radio"], text=u["text"],
+                             clip="clips/" + name, duration_s=round(dur, 3), mouth=f"mouth/{u['id']:03d}.json",
+                             source=tag, src_start=round(sp[2], 3), src_end=round(sp[3], 3),
+                             lufs_in=None if lufs is None else round(lufs, 1), peak_clamped=cl, request=rq))
+    assert len(rows) == len(units)
     def rhub(r):
         p = subprocess.run([RH, "-q", "-f", "json", "-r", "phonetic", "--extendedShapes", "GHX", "-o", f"{OUT}/{r['mouth']}", f"{OUT}/{r['clip']}"],
                            capture_output=True, text=True)
@@ -348,7 +354,7 @@ def do_lang(code, out_name=None, engine=None):
         flag += " <-- ASR" if r["asr_sim"] is not None and r["asr_sim"] < 0.5 else ""
         print(f"{out_name} {r['id']:3d} {r['speaker']:8s} {r['duration_s']:5.2f}s sim={r['asr_sim']} cues={r['mouth_cues']}{flag} | {r['text'][:40]} || {(r['asr'] or '')[:40]}", flush=True)
     json.dump(rows, open(OUT + "/lines_timed.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    json.dump(dict(debug=[dbg], retake_applied_ids=[], lang=code, engine=engine), open(OUT + "/split_debug.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(dict(debug=dbgs, retake_applied_ids=[], lang=code, engine=engine), open(OUT + "/split_debug.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     n_wav = len(glob.glob(OUT + "/clips/*.wav")); n_m = len(glob.glob(OUT + "/mouth/*.json"))
     sims = [r["asr_sim"] for r in rows if r["asr_sim"] is not None]
     log(f"{out_name} DONE engine={engine} clips={n_wav} mouth={n_m} rows={len(rows)} expected={len(units)} "

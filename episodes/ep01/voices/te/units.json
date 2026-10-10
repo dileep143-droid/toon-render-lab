@@ -1,0 +1,938 @@
+{
+ "lang": "te",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఇది సోంపూర్ ఊరు. ఇక్కడ ఉంది అవ్వ ముంగిలి! ఈ సాయంత్రం ఇక్కడ పూజుంది, అవ్వ తన ప్రసిద్ధ శనగపిండి లడ్డూలు చేస్తోంది!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ఒకటీ, రెండు, మూడు... పదకొండు లడ్డూలు! చాలు, పూజకి సరిపోనాయి!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ఆహా... ఎంత మంచి కమ్మటి వాసనో! బామ్మ, నాకు ఆకలేస్తోంది!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ఇప్పుడేటి నాలుగు పరోటాలు తిన్నావురా, చోటూ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "అది ప్రొద్దుటి ఆకలి బామ్మ! ఇది ఇప్పటి ఆకలి!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "ఈ లడ్డూలు దేవుడి కోసమే. పూజయ్యాక అందరికీ ఇత్తాను. అప్పటిదాకా ఎవ్వరూ చెయ్యి పెట్టకూడదు, విన్నావా?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "అర్థమైంది బామ్మ! చెయ్యి అసలు పెట్టను!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "ఓలమ్మో, నా కళ్లజోడు ఎక్కడికెళ్ళింది? ఇక్కడే ఉన్నాదిగా!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "సమకీ, నువ్వుకూడా సెప్పవులే. సరే, సేపు పడుకుంటాను.",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "మధ్యాహ్నం అయింది. బామ్మ పడుకుంది. షేరూ పడుకున్నాడు. కానీ చోటూ కడుపు... అస్సలు పడుకోలేదు!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ష్ష్, కడుపు బాబాయ్! ఊరుకో! బామ్మ మేల్కొంటుంది.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "బామ్మ చెయ్యి పెట్టొద్దంది కదా. అందుకే నేను... నోరు పెడతాను!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "ఎమ్మ్మ్! ఒక్కటే. ఒకే ఒక్కటి!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ఒక్కటే\" అంటూ అంటూ చోటూ లెక్కపెట్టడమే మానేశాడు.",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇది తర్వాత కోసం. తరువాత వచ్చే ఆకలి కోసం!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "వద్దు షేరూ, పడుకో! నువ్వేమీ చూడట్లేదు అసలు!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ఓరి దేవుడా! నా లడ్డూలు! పళ్లెం ఖాళీగా ఉన్నాది!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "ఏంటి? పదకొండు లడ్డూలు మాయమైపోయాయా?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "ఏమైంది బామ్మ? ఏమైనా విశేషమా?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "చోటూ... నీ మూతికి ఈ పసుపు రంగు ఏంటి?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ఇదా? ఇది... నా కొత్త మీసం! మాస్టారు మీసం లాగా.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "నాకు కళ్లజోడు లేకపోతే ఏటి కనబడదు మరి.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "బామ్మ! నేను చూశాను! ఒక... ఒక మాయల లడ్డూ దొంగ వచ్చాడు!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "మాయల లడ్డూ దొంగా?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "అవును! ఎగురుతూ వచ్చాడు, కిటికీలోంచి. ఫుర్రున పళ్లెంలోకి దూకి, గప్-గప్ లడ్డూలన్నీ తినేశాడు!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "అవునా? మరి వాడు ఎలగ ఉండేవాడు?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "వాడు... వాడు... కనబడనేలేదు! మాయల దొంగ కదా, అందుకే!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "కానీ చోటూ, కిటికీ ఉదయం నుంచీ మూసే ఉంది.",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "వాడు మూసిన కిటికీలోంచి కూడా దూరిపోతాడు! గాలిలాగా! ఫుర్రు!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "మరి నువ్వు ఆ వేళ ఎక్కడున్నావ్ రా, చోటూ?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "నేనా? నేనైతే... షేరూతో పడుకున్నాను! అవునా, షేరూ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "చూశారా? షేరూ కూడా \"అవును\" అంటున్నాడు.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "అలా చోటూ మొదటి అబద్ధం మొదలైంది. పాపం వాడికి తెలీదు, అబద్ధం కూడా లడ్డూ లాంటిదే — ఒకటి తింటే, ఇంకొకటి కావాలంటుంది!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "స్నేహితులారా, సోంపూర్ లో ఒక మాయల లడ్డూ దొంగ తిరుగుతున్నాడు. సాయంత్రం పూజుంది. వాడిని పట్టుకోవాలి. పదా, ప్లాన్ వేద్దాం!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "నిజానికి, నేను పుస్తకంలో చదివాను, లడ్డూ దొంగలు మంగళవారమే వస్తారని.",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "పింకీ, ఈరోజు బుధవారం కదా.",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "అంటే... నిజానికి, వీడు ఓవర్ టైమ్ చేస్తూ ఉండాలి.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "మాయల దొంగా? కనబడడా? అంటే... దయ్యం!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "బబ్లూ అన్నయ్య, నా వెనుక మీరు అసలు పట్టరు!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "భయపడకండి! రాజు ది గ్రేట్ వచ్చేశాడు! ఏ దొంగ అయినా, ఈ వల పట్టుకుంటుంది.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "ఇది... ఇది ప్రాక్టీస్ అంతే. వల బాగానే పనిచేస్తోంది.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "చోటూ, నువ్వు దొంగని చూశావు కదా. చెప్పు, వాడికి ఇంకేమైనా గుర్తులు ఉన్నాయా?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "గుర్తులా? ఆ... వాడికి... ఒక నీలం తోక ఉంది!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "నీలం తోక. ఇంకా?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "ఇంకా వాడు గుండ్రటి వస్తువులే తింటాడు. లడ్డూలు, పానీపూరీలు, బంతులు...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "బంతులా? నా క్రికెట్ బంతి!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "ఇంకా వాడు తింటున్నప్పుడు, పాట పాడతాడు — \"లడ్డూ-లడ్డూ, గప్పూ-గప్పూ!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "వాడు గుండ్రటివి తింటే, మనం గుండ్రటి దాంతోనే పట్టుకుందాం. లల్లన్ మావయ్య దగ్గర లడ్డూలు తెచ్చి, రావి చెట్టు కింద పెట్టి, పైన వల వేద్దాం!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "సూపర్ ప్లాన్! కానీ ముందు నన్ను ఈ వలలోంచి బయటికి తీయండి.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "చూశారా? ఒక అబద్ధం నీలం తోకైంది, తోక పాటైంది. చోటూ అబద్ధం ఇప్పుడు రావి చెట్టు కంటే పొడవుగా పెరుగుతోంది.",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "అయ్యో నా గుండ్రటి పిల్లలారా! ఎండలో కూర్చోకండి, నల్లగా అయిపోతారు. రండి, పాకంలో మునకలేయండి.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "లల్లన్ మావయ్యా, మాకు నాలుగు లడ్డూలు కావాలి. మేము మాయల లడ్డూ దొంగకి వల వేస్తున్నాం.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "ఏంటి? లడ్డూ దొంగా? మన ఊరిలోనా?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "వద్దు! నా పిల్లల జోలికి ఎవరూ రాకూడదు! జిలేబీ రాణి, భయపడకు, మావయ్య ఉన్నాడుగా!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "కంగారుపడకండి మావయ్యా. రాజు ది గ్రేట్ ఉన్నాడుగా.",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "ఇది... ఇది కూడా ప్లాన్ లో భాగమే. చెయ్యి తియ్యగా ఉంటే, దొంగ దగ్గరికి వస్తాడు.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "ఇదిగో నాలుగు లడ్డూలు. జాగ్రత్తగా చూసుకోండి. ఇవి నా చాలా మంచోళ్లు. ఎప్పుడూ మూకుడు దాటి బయట పడవు.",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ఖచ్చితంగా మావయ్యా. దొంగ దొరగ్గానే తిరిగితెచ్చేస్తాం.",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "మావయ్యా, నాకు ఆకలేస్తోంది!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "చోటూ! ఇవి దొంగ కోసం, నీ కోసం కాదు!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "ప్లాన్ ఏంటంటే — దొంగ లడ్డూ తినడానికి రాగానే, నేను తాడు లాగుతాను, వల పడుతుంది, దొంగ దొరికిపోతాడు!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "గుడియా, కానీ దొంగ కనబడడు కదా. వల పడ్డా లోపల ఎవడైనా ఉన్నాడో లేదో ఎలా తెలుస్తుంది?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "అదీ... అంటే... ప్లాన్ లో ఈ భాగాన్ని రేపు ఆలోచిస్తాను.",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "వినండి! కొరుకుతున్న శబ్దం! దొంగ వచ్చేశాడు!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "పట్టుకున్నా! రాజు ది గ్రేట్ దొంగని పట్టుకున్నాడు!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "నిజానికి... దొంగ తోక నీలం కాదు, గోధుమ రంగు. ఇది మొరుగుతోంది కూడా.",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "పింకీ, వీడు దొంగ కాదు, షేరూ!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "దయ్యం! దయ్యం!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ఓయ్ గుంటలారా, నేనేనే. నా కళ్లజోడు వెతుకుతున్నాను. ఎవరైనా చూసారేటి?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "పిల్లలు! నేను కూడా వచ్చేశాను! దొంగ గాని నా జిలేబీల దగ్గరికి వస్తే, ఈ అప్పడాల కర్ర... వాడికి బాగా బుద్ధి చెప్తుంది!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "మావయ్యా, మాకు దొంగ దొరకనే లేదు.",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "వాడు... వాడు ఇప్పుడు లల్లన్ మావయ్య కొట్టు వైపు వెళ్ళుంటాడు! నేను వాడి నీలం తోక అటు వెళ్లడం చూశాను!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "అయ్యో! నా జిలేబీలు ఒంటరిగా ఉన్నాయి! వచ్చెస్తున్నాను నా పిల్లలారా!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "ఇక నేను రాత్రి నిద్రపోలేను. నీలం తోక దయ్యం పాట పాడుతుంది, \"లడ్డూ-లడ్డూ, గప్పూ-గప్పూ\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "నా నడుము నొప్పి! రాజు ది గ్రేట్ ఈరోజు మూడు సార్లు పడ్డాడు. ఈ దొంగ చాలా ప్రమాదకారి.",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "పూజకి లడ్డూలు కూడా లేవు. బామ్మ ఎంత బాధపడుతోందో. ఈసారి పూజ పూర్తి కాదేమో అని అంటోంది.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "పర్లేదు. రేపు ఉదయం మళ్లీ కొత్త ప్లాన్ వేద్దాం. దొంగ దొరికేదాకా రాత్రంతా మెలకువగానే ఉందాం!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "చోటూ కడుపు అయితే నిండింది. కానీ ఇప్పుడు వాడి మనసులో ఏదో బరువుగా అనిపిస్తోంది. లడ్డూ కంటే బరువుగా.",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "వద్దు చమ్కీ, వద్దు! అది నా తర్వాత ఆకలి కోసం!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "చోటూ... ఇది బామ్మ చేసిన లడ్డూ కదా.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "అంటే నీలం తోక దొంగ...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "నిజానికి... దొంగకి ఉంది తోక కాదు, జేబు!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "అవును! నేనే లడ్డూలన్నీ తినేశాను! ఏ మాయల దొంగా లేడు. నీలం తోకా లేదు, పాటా లేదు. నాకు ఆకలేసింది, తరవాత భయమేసింది, అందుకే అబద్ధాలు చెప్తూ వచ్చాను... క్షమించండి! అందరూ క్షమించండి!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "అంటే... దయ్యం ఏమీ లేదా?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "లేదు బబ్లూ అన్నయ్యా. దయ్యం లేదు. నేనే.",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "అబ్బా! థాంక్యూ చోటూ! ఇప్పుడు నేను హాయిగా నిద్రపోతాను!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "బామ్మ, లడ్డూలు నేనే తిన్నాను. ఆపై అబద్ధం చెప్పాను. నన్ను క్షమించు.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "నాకు తెలుసులే రా, చోటూ.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "తెలుసా? మరి నీ కళ్లజోడు...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "కళ్లజోడు లేకపోతే ఏటి, ముక్కు ఉన్నాదిగా. నీ మూతి నుంచి శనగపిండి వాసన వస్తున్నాది. నువ్వే సొంతంగా నిజం సెప్తావని చూత్తున్నాను.",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "ఇక ఎప్పుడూ అబద్ధం చెప్పను బామ్మ. అబద్ధం బాగా అలసిపోయేలా చేస్తుంది!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "పదండి, అందరం కలిసి కొత్త లడ్డూలు సేద్దాం. పూజకి ఇంకా టైము ఉన్నాది.",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "అంటే ఇక నేను వల పట్టుకుని కింద పడక్కర్లేదా?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "లేదు రాజు, ఇప్పుడు సనగపిండి కలపడమే.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "పదా, ప్లాన్ వేద్దాం! లడ్డూలు చేసే ప్లాన్! ఈసారి ప్లాన్ లో ఎలాంటి లోపం ఉండదు!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "నిజానికి, గుడియా, నీ ప్రతి ప్లాన్ లోనూ ఒక లోపం ఉంటుంది.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "అయితే ఈసారి ఆ లోపంలో శనగపిండి నింపేద్దాం!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఇక అప్పుడు మొదలైంది సోంపూర్ లోనే అత్యంత సరదా లడ్డూల ఫ్యాక్టరీ!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "నిజానికి, లడ్డూలు చతురస్రంగా చేయాలి. అవి ఎక్కువ సేపు నిలుస్తాయి.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "పింకీ అమ్మడూ, లడ్డూలు గుండ్రంగానే బాగుంటాయి. ఇలగ చుట్టాలి, చూడు.",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "చూడండి, రాజు ది గ్రేట్ సూపరు లడ్డూ! అందరికంటే పెద్దది!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ఇది... ఇది పొడి లడ్డూ. కొత్త డిజైన్.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "నా లడ్డూలు భలే గుండ్రంగా వచ్చాయి!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "దయ్యం! నా లడ్డూని దయ్యం తీసుకెళ్లిపోయింది!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "బబ్లూ, అది చమ్కీ!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "కడుపు బాబాయ్, ఇవి పూజ లడ్డూలు. కాస్త ఓపిక పట్టు!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "వాహ్ చోటూ! ఈరోజు నువ్వు నిజంగా పెద్దవాడివయ్యావు.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "నా జిలేబీలు క్షేమంగా ఉన్నాయి! దొంగ రానేలేదు. ఈ ఆనందంలో పూజకి ఈ జిలేబీలు నా తరఫు కానుక!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఇక అందరికీ ప్రసాదం. మొదటి లడ్డూ... నిజం సెప్పిన చోటూకే!",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "అబద్ధం లడ్డూ కడుపులో బరువుగా అనిపించేది. నిజం లడ్డూ చాలా తేలికగా, తియ్యగా ఉంది!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "నిజం సెప్పేటోళ్ల మనసు కూడా లడ్డూలాగే తియ్యగా ఉంటాది.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "చూడండి, షేరూ లేచాడు! తినే సమయానికి ఎప్పుడూ లేచేస్తాడు!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ఓలమ్మో, నా కళ్లజోడు మళ్లీ ఎక్కడికెళ్ళిందో?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "బామ్మ, దాన్ని మాయల కళ్లజోడు దొంగ పట్టుకెళ్లాడు!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "లేదు లేదు, నిజమే చెప్తా — అది నీ తల పైన ఉంది!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ఇప్పుడు నాకు నిజంగా ఆకలేస్తోంది!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

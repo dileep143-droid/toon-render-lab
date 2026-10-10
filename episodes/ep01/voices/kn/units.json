@@ -1,0 +1,938 @@
+{
+ "lang": "kn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಇದು ಸೋನಾಪುರ ಅನ್ನೋ ಊರು. ಇದು ಅಜ್ಜಿಯ ಮನೆ ಅಂಗಳ! ಇವತ್ತು ಸಂಜೆ ಇಲ್ಲಿ ಪೂಜೆ ಇದೆ, ಅಜ್ಜಿ ತಮ್ಮ ಪ್ರಸಿದ್ಧ ಕಡಲೆಹಿಟ್ಟಿನ ಲಾಡು ಮಾಡ್ತಿದ್ದಾರೆ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಒಂದ್, ಎರೆಡ್, ಮೂರ್... ಹನ್ನೊಂದ್ ಲಾಡು! ಸಾಕು, ಪೂಜೆಗೆ ಸರಿ ಆತು ನೋಡ್ರಿ.",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಆಹಾ... ಎಂಥಾ ಮಸ್ತ್ ವಾಸನೆ! ಅಜ್ಜಿ, ನಂಗೆ ಹೊಟ್ಟೆ ಹಸ್ತಿದೆ!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಈಗಷ್ಟ ನಾಲ್ಕು ಪರಾಠಾ ತಿಂದಿಯಲ್ಲಾ, ಚೋಟೂ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಅದು ಬೆಳಗಿನ ಹಸಿವು. ಇದು ಈಗಿನ ಹಸಿವು!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "ಈ ಲಾಡು ದೇವರಿಗೈತಿ. ಪೂಜೆ ಆದ್ಮೇಲೆ ಸಿಗ್ತಾವ. ಅಲ್ಲಿವರ್ಗೂ ಯಾರೂ ಮುಟ್ಟಬಾರ್ದು, ತಿಳಿತಾ?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "ತಿಳೀತು ಅಜ್ಜಿ! ನಾನಂತೂ ಮುಟ್ಟಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "ಯಪ್ಪಾ, ನನ್ನ ಕನ್ನಡಕ ಎಲ್ಲೇ ಹೋತು? ಈಗ ಇಲ್ಲೇ ಇತ್ತಲ್ಲಾ!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ಚಮ್ಕಿ, ನೀನೂ ಹೇಳಲ್ಲ ಬಿಡು. ನಡೆ, ನಾನ್ ಸ್ವಲ್ಪ ಒಡ್ಕೋತೀನಿ.",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "ಮಧ್ಯಾಹ್ನ ಆಯ್ತು. ಅಜ್ಜಿ ಮಲಗಿದ್ರು. ಶೇರೂ ಮಲಗಿದ. ಆದ್ರೆ ಚೋಟೂ ಹೊಟ್ಟೆ... ಮಲಗಲೇ ಇಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ಶ್ಶ್, ಹೊಟ್ಟೆರಾಯ! ಸುಮ್ನೆ ಇರು! ಅಜ್ಜಿ ಎದ್ದುಬಿಡ್ತಾರೆ.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ ಕೈ ಹಚ್ಚಬೇಡ ಅಂದ್ರು. ಹಾಗಾದ್ರೆ ನಾನ್... ಬಾಯಿ ಹಚ್ಚತೀನಿ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "ಮ್ಮ್ಮ್! ಒಂದೇ ಒಂದು. ಬರಿ ಒಂದೇ.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ಒಂದೇ ಒಂದು\" ಅಂದ್ಕೊಳ್ತಾ ಚೋಟೂ ಎಣಿಸೋದನ್ನೇ ಮರೆತುಬಿಟ್ಟ!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಇದು ಆಮೇಲೆ ತಿನ್ನೋಕೆ. ಆಮೇಲೆ ಬರೋ ಹಸಿವಿಗೆ!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "ಇಲ್ಲ ಶೇರೂ, ಮಲಗೋ! ನೀನೇನೂ ನೋಡ್ತಿಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಶಿವ ಶಿವಾ! ನನ್ನ ಲಾಡು! ತಟ್ಟೆ ಖಾಲಿ ಐತಿ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "ಏನು? ಹನ್ನೊಂದಕ್ಕೆ ಹನ್ನೊಂದೂ ಲಾಡು ಗಾಯಬ್?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "ಏನಾಯ್ತು ಅಜ್ಜಿ? ಏನಾದ್ರೂ ವಿಷಯನಾ?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ಚೋಟೂ... ನಿನ್ ಬಾಯಿ ಮೇಲೆ ಹಳದಿ ಹಳದಿ ಏನಿದು?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ಇದಾ? ಇದು... ನನ್ ಹೊಸ ಮೀಸೆ! ಮೇಷ್ಟ್ರ ತರ.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "ನಂಗೆ ಕನ್ನಡಕ ಇಲ್ಲದೆ ಏನೂ ಕಾಣಿಸಂಗಿಲ್ಲ ನೋಡ್ರಿ.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ! ನಾನ್ ನೋಡಿದೆ! ಒಬ್ಬ... ಒಬ್ಬ ಮಾಂತ್ರಿಕ ಲಾಡು ಕಳ್ಳ ಬಂದಿದ್ದ!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ಮಾಂತ್ರಿಕ ಲಾಡು ಕಳ್ಳನಾ?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "ಹೌದು! ಕಿಟಕಿಯಿಂದ ಹಾರ್ಕೊಂಡು ಬಂದ. ಥಟ್ಟನೆ ತಟ್ಟೆಗೆ ಬಿದ್ದು, ಗಪ್-ಗಪ್ ಅಂತ ಎಲ್ಲ ತಿಂದ್ಬುಟ್ಟ!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "ಹೌದೇನ್ರೀ? ಮತ್ತೆ ಅವ್ನ ಹೆಂಗ್ ಕಾಣಿಸ್ತಿದ್ದ?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "ಅವನು... ಅವನು... ಕಾಣಿಸ್ತಾನೇ ಇರ್ಲಿಲ್ಲ! ಅವನು ಮಂತ್ರವಾದಿ ಅಲ್ವಾ, ಅದಿಕ್ಕೆ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "ಆದ್ರೆ ಚೋಟೂ, ಕಿಟಕಿ ಬೆಳಗ್ಗಿಂದ ಮುಚ್ಚಿದೆಯಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "ಅವನು ಮುಚ್ಚಿರೋ ಕಿಟಕಿಯಿಂದಲೂ ಹೋಗ್ತಾನೆ! ಗಾಳಿ ತರ! ಫುರ್ರ್ ಅಂತ!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ಮತ್ತೆ ನೀ ಆ ಹೊತ್ತಿನಲ್ಲಿ ಎಲ್ಲಿದ್ದಿ ಚೋಟೂ?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "ನಾನಾ? ನಾನು... ಶೇರೂ ಜೊತೆ ಮಲಗಿದ್ದೆ! ಹೌದಲ್ವಾ ಶೇರೂ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "ನೋಡಿದ್ರಾ? ಶೇರೂ ಕೂಡ \"ಹೌದು\" ಅಂತಿದ್ದಾನೆ.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "ಇಲ್ಲಿಂದಲೇ ಶುರುವಾಯ್ತು ಚೋಟೂವಿನ ಮೊದಲ ಸುಳ್ಳು! ಪಾಪ ಅವನಿಗೆ ಗೊತ್ತಿರ್ಲಿಲ್ಲ, ಸುಳ್ಳು ಕೂಡ ಲಾಡು ತರಾನೇ — ಒಂದು ಹೇಳಿದ್ರೆ, ಇನ್ನೊಂದು ಬೇಕಾಗುತ್ತೆ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ಫ್ರೆಂಡ್ಸ್, ಸೋನಾಪುರದಲ್ಲಿ ಮಾಂತ್ರಿಕ ಲಾಡು ಕಳ್ಳ ಅಡ್ಡಾಡ್ತಿದ್ದಾನೆ. ಸಂಜೆ ಪೂಜೆ ಇದೆ. ನಾವ್ ಅವನನ್ನ ಹಿಡಿಲೇಬೇಕು. ಬನ್ನಿ, ಪ್ಲಾನ್ ಮಾಡೋಣ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ, ನಾನ್ ಪುಸ್ತಕದಲ್ಲಿ ಓದಿದ್ದೀನಿ, ಲಾಡು ಕಳ್ಳಂದಿರು ಮಂಗಳವಾರ ಮಾತ್ರ ಬರ್ತಾರೆ.",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "ಪಿಂಕಿ, ಇವತ್ತು ಬುಧವಾರ ಕಣೆ.",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ಅಂದ್ರೆ... ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ, ಇವನು ಓವರ್‌ಟೈಮ್ ಕೆಲಸ ಮಾಡ್ತಿರಬೇಕು.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "ಮಾಯಾವಿ? ಕಾಣ್ಸಲ್ವಾ? ಅಂದ್ರೆ... ದೆವ್ವ!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "ಬಬ್ಲೂ ಅಣ್ಣಾ, ನನ್ ಹಿಂದೆ ನೀವು ಪೂರ್ತಿ ಬೀರಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "ಹೆದರ್ಬೇಡಿ! ಗ್ರೇಟ್ ರಾಜು ಬಂದಿದ್ದಾನೆ! ಯಾವ್ದೇ ಕಳ್ಳ ಇರಲಿ, ಈ ಬಲೆ ಅವ್ನನ್ನ ಹಿಡಿಯುತ್ತೆ.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "ಇದು... ಇದು ಪ್ರಾಕ್ಟೀಸ್ ಅಷ್ಟೇ. ಬಲೆ ಸಕ್ಕತ್ತಾಗಿ ಕೆಲಸ ಮಾಡ್ತಿದೆ.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ಚೋಟೂ, ನೀನು ಕಳ್ಳನ್ನ ನೋಡಿದ್ದೀಯಾ. ಹೇಳು, ಅವನ ಇನ್ನೇನು ಗುರುತಿತ್ತು?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಗುರುತಾ? ಹುಂ... ಅವನಿಗೆ... ಒಂದು ನೀಲಿ ಬಾಲ ಇದೆ!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "ನೀಲಿ ಬಾಲ. ಆಮೇಲೆ?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "ಆಮೇಲೆ ಅವನು ಉಂಡೆ ವಸ್ತುಗಳನ್ನೇ ತಿನ್ನೋದು. ಲಾಡು, ಪಾನಿಪುರಿ, ಚೆಂಡು...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಚೆಂಡು ಕೂಡನಾ? ಅಯ್ಯೋ ನನ್ ಕ್ರಿಕೆಟ್ ಬಾಲ್!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "ಆಮೇಲೆ ತಿನ್ನಬೇಕಾದ್ರೆ ಹಾಡು ಹಾಡ್ತಾನೆ — \"ಲಾಡು-ಲಾಡು, ಗಪ್ಪು-ಗಪ್ಪು!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "ಅವನು ಉಂಡೆ ವಸ್ತು ತಿನ್ನೋದಾದ್ರೆ, ನಾವ್ ಅವನನ್ನ ಉಂಡೆ ವಸ್ತುವಿನಿಂದಲೇ ಹಿಡಿಯೋಣ! ಲಲ್ಲನ್ ಕಾಕಾನಿಂದ ಲಾಡು ತಂದು, ಅರಳಿಮರ ಕೆಳಗೆ ಇಟ್ಟು, ಮೇಲೆ ಬಲೆ ಹಾಕೋಣ!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "ಸೂಪರ್ ಪ್ಲಾನ್! ಆದ್ರೆ ಮೊದಲು ಯಾರಾದ್ರೂ ನನ್ನ ಈ ಬಲೆಯಿಂದ ಹೊರಗೆ ತೆಗೀರಿ.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ನೋಡಿದ್ರಾ? ಒಂದು ಸುಳ್ಳಿನಿಂದ ನೀಲಿ ಬಾಲ ಬಂತು, ಬಾಲದಿಂದ ಹಾಡು ಬಂತು! ಚೋಟೂವಿನ ಸುಳ್ಳು ಈಗ ಅರಳಿಮರಕ್ಕಿಂತ ಉದ್ದ ಆಗ್ತಿತ್ತು!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ ನನ್ ಉಂಡೆ ಮಕ್ಕಳೇ! ಬಿಸಿಲಲ್ಲಿ ಕೂರ್ಬೇಡಿ, ಕಪ್ಪಾಗ್ತೀರಾ. ಬನ್ನಿ, ಜೇನಿನ ಪಾಕದಲ್ಲಿ ಮುಳುಗಿ!",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "ಲಲ್ಲನ್ ಮಾವ, ನಮಗೆ ನಾಲ್ಕು ಲಾಡು ಬೇಕು. ನಾವು ಮಾಂತ್ರಿಕ ಲಾಡು ಕಳ್ಳನಿಗೆ ಬಲೆ ಬೀಸ್ತಿದ್ದೀವಿ.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "ಏನು? ಲಾಡು ಕಳ್ಳನಾ? ನಮ್ಮೂರಿನಲ್ಲಾ?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ! ನನ್ ಮಕ್ಕಳನ್ನ ಯಾರೂ ಮುಟ್ಟಬಾರ್ದು! ಜಿಲೇಬಿ ರಾಣಿ, ಹೆದರ್ಬೇಡ, ಮಾವ ಇದ್ದೀನಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "ಚಿಂತೆ ಮಾಡ್ಬೇಡಿ ಮಾವ, ಗ್ರೇಟ್ ರಾಜು ಇದ್ದಾನಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "ಇದು... ಇದೂ ಪ್ಲಾನ್‌ನ ಭಾಗನೇ! ಕೈ ಸಿಹಿಯಾದ್ರೆ, ಕಳ್ಳ ಹತ್ತಿರ ಬರ್ತಾನೆ.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "ತಗೋಳಿ ನಾಲ್ಕು ಲಾಡು. ಆದ್ರೆ ಜೋಪಾನವಾಗಿ ಇಡಿ. ಇವರು ನನ್ ಅತ್ಯಂತ ಸಾಧು ಮಕ್ಕಳು, ಯಾವತ್ತೂ ಬಾಣಲೆಯಿಂದ ಹೊರಗೆ ಹಾರಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ಖಂಡಿತ ಮಾವ. ಕಳ್ಳ ಸಿಕ್ಕ ತಕ್ಷಣ ವಾಪಸ್ ತರ್ತೀವಿ.",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "ಮಾವ, ನಂಗೆ ಹೊಟ್ಟೆ ಹಸ್ತಿದೆ!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "ಚೋಟೂ! ಇದು ಕಳ್ಳನಿಗೆ, ನಿನಗಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "ಪ್ಲಾನ್ ಏನಂದ್ರೆ — ಕಳ್ಳ ಲಾಡು ತಿನ್ನೋಕೆ ಬರ್ತಾನೆ, ನಾನ್ ಹಗ್ಗ ಎಳಿತೀನಿ, ಬಲೆ ಬೀಳುತ್ತೆ, ಕಳ್ಳ ಸಿಕ್ಕಿಬೀಳ್ತಾನೆ!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ಗುಡಿಯಾ, ಆದ್ರೆ ಕಳ್ಳ ಕಾಣಿಸ್ಲೇ ಇಲ್ವಲ್ಲ. ಬಲೆ ಬಿದ್ದಾಗ ಒಳಗೆ ಯಾರಿದ್ದಾರೆ ಅಂತ ಹೆಂಗೆ ಗೊತ್ತಾಗುತ್ತೆ?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಅಂ... ಅದು... ಪ್ಲಾನ್‌ನ ಈ ಭಾಗನ ನಾನ್ ನಾಳೆ ಮಾಡ್ತೀನಿ.",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "ಕೇಳಿ! ಕುರುಕ್-ಕುರುಕ್! ಕಳ್ಳ ಬಂದ್ಬಿಟ್ಟ!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "ಹಿಡಿದೆ! ಗ್ರೇಟ್ ರಾಜು ಕಳ್ಳನನ್ನ ಹಿಡಿದುಬಿಟ್ಟ!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ... ಕಳ್ಳನ ಬಾಲ ನೀಲಿ ಇಲ್ಲ, ಕಂದು ಬಣ್ಣದಲ್ಲಿದೆ. ಆಮೇಲೆ ಇದು ಲೊಳ್ ಅಂತಿದೆ.",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ಪಿಂಕಿ, ಇವನು ಕಳ್ಳನಲ್ಲ, ಶೇರೂ!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "ದೆವ್ವ! ದೆವ್ವ!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ಲೇ ಮಕ್ಕಳಾ, ನಾನ್ ನೋಡ್ರಿ. ನನ್ ಕನ್ನಡಕ ಹುಡುಕಾಡ್ತಿದ್ದೆ. ಯಾರಾದ್ರೂ ನೋಡಿದಿರಾ?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "ಮಕ್ಕಳಾ! ನಾನೂ ಬಂದೆ! ಕಳ್ಳ ನನ್ ಜಿಲೇಬಿ ಹತ್ರ ಹೋದ್ರೆ, ಈ ಲಾಟಣಿಗೆ... ಈ ಲಾಟಣಿಗೆ ಅವ್ನಿಗೆ ಸರಿಯಾಗಿ ಬುದ್ಧಿ ಕಲಿಸುತ್ತೆ!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "ಮಾವ, ನಮಗೆ ಕಳ್ಳ ಸಿಗ್ಲೇ ಇಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "ಅವನು... ಅವನು ಲಲ್ಲನ್ ಮಾವನ ಅಂಗಡಿ ಕಡೆಗೆ ಹೋಗಿರ್ಬೇಕು! ನಾನ್ ಅವನ ನೀಲಿ ಬಾಲ ಆಕಡೆ ಹೋಗೋದನ್ನ ನೋಡಿದೆ!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ! ನನ್ ಜಿಲೇಬಿಗಳು ಒಂಟಿಯಾಗಿವೆ! ಬಂದೆ ನನ್ ಮಕ್ಕಳೇ, ಬಂದೆ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "ಈಗ ನಾನ್ ರಾತ್ರಿ ಮಲಗೋಕೂ ಆಗಲ್ಲ. ನೀಲಿ ಬಾಲದ ದೆವ್ವ ಹಾಡು ಹಾಡುತ್ತೆ, \"ಲಾಡು-ಲಾಡು, ಗಪ್ಪು-ಗಪ್ಪು\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "ಆಮೇಲೆ ನನ್ ನಡು! ಗ್ರೇಟ್ ರಾಜು ಇವತ್ತು ಮೂರು ಸಾರಿ ಬಿದ್ದಿದ್ದಾನೆ. ಈ ಕಳ್ಳ ತುಂಬಾ ಡೇಂಜರಸ್!",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "ಪೂಜೆಗೆ ಲಾಡು ಕೂಡ ಇಲ್ಲ. ಅಜ್ಜಿ ಎಷ್ಟು ಬೇಜಾರಾಗಿದ್ದಾರೆ. ಈ ಸಲ ಪೂಜೆ ಅಪೂರ್ಣ ಆಗುತ್ತೆ ಅಂತಿದ್ರು.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "ಪರವಾಗಿಲ್ಲ. ನಾಳೆ ಬೆಳಗ್ಗೆ ಮತ್ತೆ ಹೊಸ ಪ್ಲಾನ್ ಮಾಡೋಣ. ಕಳ್ಳ ಸಿಗೋವರ್ಗೂ ನಾವ್ ರಾತ್ರಿ ಪೂರ್ತಿ ಎಚ್ಚರ ಇರೋಣ!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ಚೋಟೂ ಹೊಟ್ಟೆ ಅಂತೂ ತುಂಬಿತ್ತು. ಆದ್ರೆ ಈಗ ಅವನ ಮನಸ್ಸಿಗೆ ತುಂಬಾ ಬೇಜಾರಾಗ್ತಿತ್ತು. ಲಾಡುಗಿಂತಲೂ ಭಾರವಾಗಿ!",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ಬೇಡ ಚಮ್ಕಿ, ಬೇಡ! ಅದು ಆಮೇಲೆ ಬರೋ ಹಸಿವಿಗೆ!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ಚೋಟೂ... ಇದು ಅಜ್ಜಿ ಮಾಡಿದ ಲಾಡ ಅಲ್ವಾ.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ಹಾಗಾದ್ರೆ ನೀಲಿ ಬಾಲದ ಕಳ್ಳ...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ... ಕಳ್ಳನಿಗೆ ಬಾಲ ಇಲ್ಲ, ಜೇಬು ಇದೆ!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "ಹೌದು! ನಾನೇ ಎಲ್ಲ ಲಾಡು ತಿಂದಿದ್ದು! ಯಾವ ಮಾಂತ್ರಿಕ ಕಳ್ಳನೂ ಇಲ್ಲ. ನೀಲಿ ಬಾಲನೂ ಇಲ್ಲ, ಹಾಡೂ ಇಲ್ಲ. ನಂಗೆ ಹಸಿವಾಗಿತ್ತು, ಆಮೇಲೆ ಹೆದರಿಕೆಯಾಯ್ತು, ಸುಳ್ಳು ಹೇಳ್ತಾ ಹೋದೆ... ಸೋರಿ! ಎಲ್ಲರಿಗೂ ಸೋರಿ!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ಅಂದ್ರೆ... ಯಾವ ದೆವ್ವನೂ ಇಲ್ವಾ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "ಇಲ್ಲ ಬಬ್ಲೂ ಅಣ್ಣಾ. ದೆವ್ವ ಇಲ್ಲ. ಬರಿ ನಾನು.",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "ಅಬ್ಬಾ! ಥ್ಯಾಂಕ್ ಯು ಚೋಟೂ! ಈಗ ನಾನ್ ನೆಮ್ಮದಿಯಾಗಿ ಮಲಗ್ತೀನಿ!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ, ಲಾಡು ತಿಂದಿದ್ದು ನಾನು. ಆಮೇಲೆ ಸುಳ್ಳು ಹೇಳಿದೆ. ಸೋರಿ.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "ನಂಗೆ ಗೊತ್ತಿತ್ತಲ್ಲೋ ಚೋಟೂ.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಗೊತ್ತಿತ್ತಾ? ಆದ್ರೆ ನಿಮ್ಮ ಕನ್ನಡಕ...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "ಕನ್ನಡಕ ಇರ್ಲಿಲ್ಲ, ಆದ್ರೆ ಮೂಗು ಇತ್ತಲ್ಲಾ! ನಿನ್ ಬಾಯಿಂದ ಕಡಲೆಹಿಟ್ಟಿನ ವಾಸನೆ ಬರ್ತಿತ್ತು. ನೀನೇ ನಿಜ ಹೇಳ್ತಿಯಾ ಅಂತ ಕಾಯ್ತಿದ್ದೆ ಅಷ್ಟೆ.",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "ಇನ್ನೊಮ್ಮೆ ಯಾವತ್ತೂ ಸುಳ್ಳು ಹೇಳಲ್ಲ ಅಜ್ಜಿ. ಸುಳ್ಳು ಹೇಳಿ ಸಾಕಾಯ್ತು!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "ಬರ್ರಿ, ಈಗ ಎಲ್ರೂ ಸೇರಿ ಹೊಸ ಲಾಡು ಮಾಡೋಣು. ಪೂಜೆಗೆ ಇನ್ನೂ ಟೈಮ್ ಐತಿ.",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ಅಂದ್ರೆ ಈಗ ನಾನ್ ಬಲೆ ಹಿಡ್ಕೊಂಡು ಮತ್ತೆ ಬೀಳೋದು ಬೇಡ್ವಾ?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಇಲ್ಲ ರಾಜು, ಈಗ ಬರಿ ಹಿಟ್ಟಿಗೆ ಕೈ ಹಚ್ಚಬೇಕು ಅಷ್ಟೇ.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಬನ್ನಿ ಪ್ಲಾನ್ ಮಾಡೋಣ! ಲಾಡು ಮಾಡೋ ಪ್ಲಾನ್! ಈ ಸಲ ಪ್ಲಾನ್‌ನಲ್ಲಿ ಯಾವ ಲೋಪನೂ ಇರಲ್ಲ!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ, ಗುಡಿಯಾ, ನಿನ್ ಪ್ರತಿಯೊಂದು ಪ್ಲಾನ್‌ನಲ್ಲೂ ಒಂದು ತೂತು ಇರುತ್ತೆ.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "ಹಾಗಾದ್ರೆ ಈ ಸಲ ಆ ತೂತಿಗೆ ಹಿಟ್ಟು ತುಂಬಿಬಿಡೋಣ!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಆಮೇಲೆ ಶುರುವಾಯ್ತು ಸೋನಾಪುರದ ಅತ್ಯಂತ ಮಜವಾದ ಲಾಡು ಫ್ಯಾಕ್ಟರಿ!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "ನಿಜ ಹೇಳ್ಬೇಕಂದ್ರೆ, ಲಾಡುಗಳನ್ನ ಚೌಕವಾಗಿ ಮಾಡಬೇಕು. ಅವು ತುಂಬಾ ದಿನ ಇರ್ತವೆ.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಪಿಂಕಿ ಮಗಳೇ, ಲಾಡು ಉಂಡೆಗೆ ಚಂದ ನೋಡ್ರಿ. ಉಂಡೆ ಉಂಡೆ ಮಾಡ್ರಿ, ಹೀಂಗೆ.",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "ನೋಡಿ, ಗ್ರೇಟ್ ರಾಜುವಿನ ಸೂಪರ್ ಲಾಡು! ಎಲ್ಲರಿಗಿಂತ ದೊಡ್ಡದು!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಇದು... ಇದು ಪುಡಿ-ಲಾಡು! ಹೊಸ ಡಿಸೈನ್.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "ನನ್ ಲಾಡು ಪಕ್ಕಾ ಉಂಡೆಯಾಗಿ ಬಂದಿದೆ!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "ದೆವ್ವ! ನನ್ ಲಾಡೂನಾ ದೆವ್ವ ತಗೊಂಡು ಹೋಯ್ತು!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಬಬ್ಲೂ, ಅದು ಚಮ್ಕಿ ಕಣೋ!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "ಹೊಟ್ಟೆರಾಯ, ಇದು ಪೂಜೆ ಲಾಡು! ಸಮಾಧಾನವಾಗಿ ಇರು!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "ವಾಹ್ ಚೋಟೂ! ಇವತ್ತು ನೀನು ನಿಜಕ್ಕೂ ದೊಡ್ಡವನಾದೆ.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ನನ್ ಜಿಲೇಬಿಗಳು ಆರಾಮಾಗಿವೆ! ಕಳ್ಳ ಬರಲೇ ಇಲ್ಲ. ಖುಷಿಯಲ್ಲಿ ಪೂಜೆಗೆ ಈ ಜಿಲೇಬಿಗಳು ನನ್ ಕಡೆಯಿಂದ!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಈಗ ಎಲ್ರಿಗೂ ಪ್ರಸಾದ. ಮತ್ತೆ ಮೊದಲನೇ ಲಾಡು... ನಿಜ ಹೇಳಿದ ಚೋಟೂಗೆ.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "ಸುಳ್ಳಿನ ಲಾಡು ಹೊಟ್ಟೆಯಲ್ಲಿ ಭಾರ ಅನಿಸ್ತಿತ್ತು. ಸತ್ಯದ ಲಾಡು ಹಗುರ ಹಾಗೂ ಸಿಹಿ ಸಿಹಿಯಾಗಿದೆ!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "ನಿಜ ಮಾತಾಡೋರ ಮನಸೂ ಲಾಡು ಥರಾನೇ ಸಿಹಿಯಾಗಿ ಇರ್ತೈತಿ.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ನೋಡಿ, ಶೇರೂ ಎದ್ದ್ಬಿಟ್ಟ! ತಿನ್ನೋ ಟೈಮ್‌ನಲ್ಲಿ ಯಾವತ್ತೂ ಎದ್ದುಬಿಡ್ತಾನೆ!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ಯಪ್ಪಾ, ನನ್ ಕನ್ನಡಕ ಮತ್ತೆ ಎಲ್ಲೇ ಹೋತು?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ, ಅದನ್ನ ಮಾಂತ್ರಿಕ ಕನ್ನಡಕ ಕಳ್ಳ ತಗೊಂಡು ಹೋದ!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "ಇಲ್ಲ ಇಲ್ಲ, ನಿಜ ಹೇಳ್ತೀನಿ — ಅದು ನಿಮ್ಮ ತಲೆ ಮೇಲೈತೆ!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ಈಗಂತೂ ನಂಗೆ ನಿಜವಾಗ್ಲೂ ಹೊಟ್ಟೆ ಹಸ್ತಿದೆ!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

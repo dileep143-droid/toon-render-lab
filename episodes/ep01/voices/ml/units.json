@@ -1,0 +1,938 @@
+{
+ "lang": "ml",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ഇതാണ് സോൺപൂർ ഗ്രാമം. ഇത് മുത്തശ്ശിയുടെ നടുമുറ്റം! ഇന്ന് വൈകീട്ട് ഇവിടെ പൂജയുണ്ട്, മുത്തശ്ശി ഉണ്ടാക്കുകയാണ് തന്റെ പ്രശസ്തമായ കടലമാവ് ലഡു!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ഒന്നു, രണ്ടു, മൂന്നു... പതിനൊന്നു ലഡു! പൂജയ്ക്ക് ഇത് ധാരാളം മതിട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ആഹാ... എന്ത് നല്ല മണം! മുത്തശ്ശീ, എനിക്ക് വിശക്കുന്നു!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "നീയിപ്പൊ നാലു പൊറോട്ട കഴിച്ചതല്ലേ ഉള്ളൂ, ചോറ്റൂ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "അത് രാവിലത്തെ വിശപ്പല്ലേ. ഇത് ഇപ്പോഴത്തെ വിശപ്പാ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "ഈ ലഡു ഭഗവാനുള്ളതാട്ടാ. പൂജ കഴിഞ്ഞേ എല്ലാവർക്കും തരുള്ളൂ. അതുവരെ ആരും തൊടരുത്, കേട്ടോടാ ക്ടാവേ?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "മനസ്സിലായി മുത്തശ്ശീ! ഞാൻ തൊടില്ല!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "അയ്യോ, എന്റെ കണ്ണട എവ്ടെപ്പോയി? ഇപ്പോ ഇവിടെ ഇണ്ടായിരുന്നല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ചമ്മകീ, നീയൊന്നും പറയില്ലല്ലേ. ന്നാ ശരി, ഞാനൊന്നു കിടക്കട്ടെട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "ഉച്ചയായി. മുത്തശ്ശി ഉറങ്ങി. ഷേരു ഉറങ്ങി. പക്ഷേ ചോറ്റുവിന്റെ വയറ്... ഉറങ്ങിയില്ലേ ഉറങ്ങിയില്ല!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ശ്ശ്, വയറേ മിണ്ടാതിരിക്ക്! മുത്തശ്ശി ഉണരും!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "മുത്തശ്ശി പറഞ്ഞത് കൈവെക്കരുതെന്നല്ലേ, അപ്പോ ഞാൻ... വായ വെക്കും!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "ഉം... ഒരെണ്ണം മാത്രം. ഒരേയൊരെണ്ണം.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ഒരെണ്ണം മാത്രം\" എന്ന് പറഞ്ഞുപറഞ്ഞ് ചോറ്റു എണ്ണാൻ തന്നെ മറന്നു!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ഇത് പിന്നെ കഴിക്കാൻ. ശേഷമുള്ള വിശപ്പിന്!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "അയ്യോ ഷേരു, ഉറങ്ങിക്കോ! നീ ഒന്നും കണ്ടിട്ടില്ല കേട്ടോ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "എന്റെ ഈശ്വരാ! എന്റെ ലഡു! പ്ലേറ്റ് കാലിയാണല്ലോട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "എന്താ? പതിനൊന്നു ലഡുവും കാണാനില്ലേ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "എന്ത പറ്റി മുത്തശ്ശീ? എന്തെങ്കിലും പ്രശ്നമുണ്ടോ?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ചോറ്റൂ... നിന്റെ ചുണ്ടത്ത് ഈ മഞ്ഞ നിറത്തിൽ എന്താ?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ഇതോ? ഇത്... എന്റെ പുതിയ മീശയാ! സാറിന്റെ മീശ പോലെ!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "എനിക്ക് കണ്ണടയില്ലാതെ ഒന്നും കാണാൻ പറ്റണില്ലല്ലോട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "മുത്തശ്ശീ! ഞാൻ കണ്ടു! ഒരു... മാന്ത്രിക ലഡു കള്ളൻ വന്നതാണ്!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "മാന്ത്രിക ലഡു കള്ളനോ?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "അതേ! ജനലിലൂടെ പറന്നുവന്ന് തളികയിൽ ചാടി ഒരൊറ്റ വിഴുങ്ങലിൽ ലഡു മുഴുവൻ തിന്നു!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "ആഹാ! എന്നിട്ട് ആ കള്ളൻ കാണാൻ എങ്ങനെ ഇണ്ടായിരുന്നു?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "അവൻ... അവനെ... കാണാൻ കഴിയില്ല! മാന്ത്രികനായതുകൊണ്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "പക്ഷേ ചോറ്റൂ, ജനൽ രാവിലെയേ അടച്ചതാണല്ലോ.",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "എന്നാലവൻ അടച്ച ജനലിലൂടെയും കടക്കും! കാറ്റുപോലെ! പടപടാ!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ന്നാ അപ്പോ നീ എവ്ടെയായിരുന്നു, ചോറ്റൂ?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "ഞാനോ? ഞാൻ... ഷേരുവിന്റെ കൂടെ ഉറങ്ങുകയായിരുന്നു! അല്ലേ ഷേരു?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "കണ്ടോ? ഷേരുവും \"അതെ\" എന്ന് പറയുന്നുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "അങ്ങനെ ചോറ്റുവിന്റെ ആദ്യ അസത്യം തുടങ്ങി! പാവത്തിനറിയില്ലല്ലോ, അസത്യവും ലഡു പോലെയാണെന്ന് — ഒരെണ്ണം പറഞ്ഞാൽ വേറെയും പറയേണ്ടിവരും!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "കൂട്ടുകാരേ, സോൺപൂരിൽ ഒരു മാന്ത്രിക ലഡു കള്ളൻ നടക്കുന്നുണ്ട്. വൈകീട്ട് പൂജയാണ്. അവനെ പിടിക്കണം. വാ, പ്ലാൻ ഉണ്ടാക്കാം!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "സത്യത്തിൽ, ഞാൻ പുസ്തകത്തിൽ വായിച്ചിട്ടുണ്ട് ലഡു കള്ളന്മാർ ചൊവ്വാഴ്ച മാത്രമേ വരൂ എന്ന്.",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "പിങ്കീ, ഇന്ന് ബുധനാഴ്ചയാണല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "അപ്പോ... സത്യത്തിൽ, അവൻ ഓവർടൈം ജോലി ചെയ്യുകയാവും!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "മാന്ത്രികനോ? കണ്ണിൽ കാണില്ലേ? അപ്പോ... പ്രേതം!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "ബബ്ലൂ ഏട്ടാ, എന്റെ പുറകിൽ നിങ്ങൾക്ക് ഒളിക്കാൻ പറ്റില്ല!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "പേടിക്കണ്ട! രാജു ദ ഗ്രേറ്റ് വന്നു കഴിഞ്ഞു! ഏത് കള്ളനെയും ഈ വലയിൽ കുടുക്കും!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "ഇത്... ഇതൊരു പരീക്ഷണമായിരുന്നു! വല കൃത്യമായി വീഴുന്നുണ്ട്.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ചോറ്റൂ, നീ കള്ളനെ കണ്ടതല്ലേ. പറ, അവന് വേറെ എന്തൊക്കെ അടയാളമുണ്ട്?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "അടയാളമോ? ഉം... അവന്... നീല നിറത്തിലൊരു വാലുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "നീല വാൽ. പിന്നെ?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "പിന്നെ അവൻ ഉരുണ്ട സാധനങ്ങളേ തിന്നൂ. ലഡു, പാനിപൂരി, പന്ത്...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "പന്തോ? എന്റെ ക്രിക്കറ്റ് പന്ത്!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "തിന്നുമ്പോൾ അവൻ പാട്ടും പാടും — \"ലഡു-ലഡു, ഗപ്പു-ഗപ്പു!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "അവൻ ഉരുണ്ട സാധനങ്ങൾ കഴിക്കുമെങ്കിൽ, ഉരുണ്ട സാധനം വെച്ച് തന്നെ കുടുക്കാം! ലല്ലൻ അമ്മാവന്റെ കടയിൽ നിന്ന് ലഡു വാങ്ങി ആൽത്തറയിൽ വെച്ച് വല വിരിക്കാം!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "കലക്കൻ പ്ലാൻ! പക്ഷേ ആദ്യം എന്നെ ഈ വലയിൽ നിന്ന് പുറത്തിറക്ക്!",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "കണ്ടോ? ഒരു കളവിൽ നിന്ന് നീല വാലുണ്ടായി, വാലിൽ നിന്ന് പാട്ടുണ്ടായി. ചോറ്റുവിന്റെ കള്ളം ആൽമരത്തിനേക്കാൾ വലുതായി വളർന്നു!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "എന്റെ ഉരുണ്ടുസുന്ദര മക്കളേ! വെയിലത്ത് ഇരിക്കരുത്, കരിഞ്ഞുപോകും. വാ, പഞ്ചസാരപ്പാനിയിൽ ഒരു മുങ്ങാംകുഴിയിടാം!",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "ലല്ലൻ അമ്മാവാ, നാലു ലഡു വേണം. മാന്ത്രിക ലഡു കള്ളനെ കുടുക്കാൻ വല വിരിക്കുകയാണ്!",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "എന്താ? ലഡു കള്ളനോ? നമ്മുടെ നാട്ടിലോ?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "അയ്യോ! എന്റെ കുഞ്ഞുങ്ങളെ ആരും തൊടരുത്! ജിലേബി റാണീ, പേടിക്കണ്ട, അമ്മാവനുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "പേടിക്കണ്ട അമ്മാവാ, രാജു ദ ഗ്രേറ്റ് കൂടെയുണ്ടല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "ഇത്... ഇതും പ്ലാനിന്റെ ഭാഗമാ! കൈയിൽ മധുരമുണ്ടെങ്കിലേ കള്ളൻ വരൂ!",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "ദാ നാലു ലഡു. സ്നേഹത്തോടെ നോക്കണം കേട്ടോ. വളരെ പാവം മക്കളാ, ചീനച്ചട്ടിയിൽ നിന്ന് പുറത്തുപോലും ചാടില്ല!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ഉറപ്പായും അമ്മാവാ! കള്ളനെ പിടിച്ച ഉടനെ തിരിച്ചുകൊണ്ടുവരാം!",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "അമ്മാവാ, എനിക്ക് വിശക്കുന്നു!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "ചോറ്റൂ! ഇത് കള്ളനുള്ളതാ, നിനക്കുള്ളതല്ല!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "പ്ലാൻ ഇതാണ് — കള്ളൻ ലഡു തിന്നാൻ വരുമ്പോൾ ഞാൻ കയർ വലിക്കും, വല വീഴും, കള്ളൻ കുടുങ്ങും!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ഗുഡിയാ, പക്ഷേ കള്ളനെ കാണാൻ കഴിയില്ലല്ലോ. വല വീണാൽ അകത്ത് ആളുണ്ടെന്ന് എങ്ങനെയറിയും?",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ഉം... അത്... പ്ലാനിന്റെ ആ ഭാഗം ഞാൻ നാളെ തീരുമാനിക്കാം.",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "കേൾക്കൂ! കൊറിക്കുന്ന ശബ്ദം! കള്ളൻ വന്നു!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "പിടിച്ചേ! രാജു ദ ഗ്രേറ്റ് കള്ളനെ പിടിച്ചേ!",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "സത്യത്തിൽ... കള്ളന്റെ വാൽ നീലയല്ല, തവിട്ടുനിറമാണ്. ഇത് കുരയ്ക്കുകയും ചെയ്യുന്നു!",
+   "request": 1
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "പിങ്കീ, ഇത് കള്ളനല്ല, ഷേരുവാ!",
+   "request": 1
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "പ്രേതം! പ്രേതമേ!",
+   "request": 1
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ഡാ ക്ടാവുകളേ, ഇത് ഞാനാട്ടാ! എന്റെ കണ്ണട തിരയുകയായിരുന്നു. ആരെങ്കിലും കണ്ടോ?",
+   "request": 1
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "മക്കളേ, ഞാനും വന്നു! കള്ളൻ എന്റെ ജിലേബിയിൽ തൊട്ടാൽ ഈ അപ്പക്കുഴവി വെച്ച് പെരുമാറും!",
+   "request": 1
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "അമ്മാവാ, കള്ളനെ കണ്ടുകിട്ടിയില്ല!",
+   "request": 1
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "അവൻ... അവൻ ലല്ലൻ അമ്മാവന്റെ കടയുടെ ഭാഗത്തേക്ക് പോയിക്കാണും! നീല വാൽ അങ്ങോട്ട് പോകുന്നത് ഞാൻ കണ്ടു!",
+   "request": 1
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "അയ്യോ! എന്റെ ജിലേബികൾ ഒറ്റയ്ക്കാണല്ലോ! ഞാൻ ദാ വന്നു മക്കളേ!",
+   "request": 1
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "എനിക്ക് ഇനി രാത്രി ഉറങ്ങാൻ പറ്റില്ല! നീല വാലുള്ള പ്രേതം പാട്ടുപാടും — \"ലഡു-ലഡു, ഗപ്പു-ഗപ്പു!\"",
+   "request": 1
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "എന്റെ അരക്കെട്ട് പോയി! രാജു ദ ഗ്രേറ്റ് ഇന്ന് മൂന്നു തവണ വീണു! കള്ളൻ വലിയ അപകടകാരിയാ!",
+   "request": 1
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "പൂജയ്ക്ക് ലഡുവുമില്ല! മുത്തശ്ശിക്ക് ഭയങ്കര സങ്കടമായി. ഇത്തവണ പൂജ അപൂർണ്ണമാകുമെന്നാണ് പറഞ്ഞത്.",
+   "request": 1
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "സാരമില്ല. നാളെ രാവിലെ പുതിയ പ്ലാൻ ഉണ്ടാക്കാം. കള്ളനെ കിട്ടുന്നതുവരെ രാത്രി മുഴുവൻ ഉണർന്നിരിക്കും!",
+   "request": 1
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ചോറ്റുവിന്റെ വയറു നിറഞ്ഞിരുന്നു. പക്ഷേ മനസ്സിന് വലിയ വിഷമം തോന്നി. ലഡുവിനേക്കാൾ ഭാരമുള്ള വിഷമം!",
+   "request": 1
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "വേണ്ട ചമ്മകീ, വേണ്ട! അത് പിന്നെ കഴിക്കാനുള്ളതാ!",
+   "request": 1
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ചോറ്റൂ... ഇത് മുത്തശ്ശിയുടെ ലഡുവാണല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "അപ്പോ ആ നീല വാലുള്ള കള്ളൻ...",
+   "request": 1
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "സത്യത്തിൽ... കള്ളന് വാലല്ല, പോക്കറ്റാണുള്ളത്!",
+   "request": 1
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "അതേ! ഞാൻ തന്നെയാണ് ലഡു മുഴുവൻ തിന്നത്! ഒരു മാന്ത്രിക കള്ളനുമില്ല. നീല വാലുമില്ല, പാട്ടുമില്ല. വിശന്നപ്പോൾ എടുത്തു, പേടിയായപ്പോൾ കളവു പറഞ്ഞു... സോറി! എല്ലാവരോടും ഐ ആം ദി സോറി അളിയാ!",
+   "request": 1
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "അപ്പോ... പ്രേതമൊന്നും ഇല്ലേ?",
+   "request": 1
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "ഇല്ല ബബ്ലൂ ഏട്ടാ, പ്രേതമൊന്നുമില്ല. ഞാൻ മാത്രം.",
+   "request": 1
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "ഹമ്മോ! താങ്ക്യൂ ചോറ്റൂ! എനിക്കിനി സമാധാനമായി ഉറങ്ങാം!",
+   "request": 1
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "മുത്തശ്ശീ, ലഡു തിന്നത് ഞാനാ. എന്നിട്ട് കള്ളവും പറഞ്ഞു. എന്നോട് ക്ഷമിക്കണം!",
+   "request": 1
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "എനിക്കറിയാമായിരുന്നു, ചോറ്റൂ!",
+   "request": 1
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "അറിയാമായിരുന്നോ? പക്ഷേ മുത്തശ്ശിയുടെ കണ്ണട...",
+   "request": 1
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "കണ്ണടയില്ലെങ്കിലും മൂക്കുണ്ടായിരുന്നല്ലോടാ! നിന്റെ വായയിൽ നിന്ന് കടലമാവിന്റെ മണം വരുന്നുണ്ടായിരുന്നു. നീ സ്വയം സത്യം പറയട്ടെയെന്ന് കരുതി കാത്തിരുന്നതാട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "ഇനി ഞാൻ കള്ളം പറയേയില്ല മുത്തശ്ശീ! കള്ളം പറയുമ്പോൾ മനസ്സിന് ഭയങ്കര വിഷമമാ!",
+   "request": 1
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "വാ, നമുക്കെല്ലാവർക്കും ചേർന്ന് പുതിയ ലഡു ഉണ്ടാക്കാം. പൂജയ്ക്ക് ഇനിയും സമയമിണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "അപ്പോ ഇനി വലയും കൊണ്ട് എനിക്ക് വീഴേണ്ടി വരില്ലേ?",
+   "request": 1
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ഇല്ല രാജൂ, ഇനി കടലമാവിൽ കൈവെച്ചാൽ മാത്രം മതിട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "വാ, പുതിയ പ്ലാൻ ഉണ്ടാക്കാം! ലഡു ഉണ്ടാക്കുന്ന പ്ലാൻ! ഇത്തവണ പ്ലാനിൽ തെറ്റൊന്നും വരില്ല!",
+   "request": 1
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "സത്യത്തിൽ, ഗുഡിയാ, നിന്റെ എല്ലാ പ്ലാനിലും ഓരോ കുഴപ്പമുണ്ടാകും.",
+   "request": 1
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "എന്നാൽ ഇത്തവണ അവിടെ കടലമാവ് നിറയ്ക്കും!",
+   "request": 1
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "അങ്ങനെ സോൺപൂരിലെ ഏറ്റവും രസകരമായ ലഡു നിർമ്മാണം ആരംഭിച്ചു!",
+   "request": 1
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "സത്യത്തിൽ, ലഡു ചതുരത്തിൽ ഉണ്ടാക്കണം. എങ്കിലേ കേടുകൂടാതെ ഇരിക്കൂ.",
+   "request": 1
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "പിങ്കിക്കുട്ടീ, ലഡു ഉരുണ്ടിരിക്കുന്നതാ ഭംഗി! ഇങ്ങനെ ഉരുട്ടി ഉരുട്ടി എടുക്കണംട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "നോക്ക്, രാജു ദ ഗ്രേറ്റിന്റെ സൂപ്പർ ലഡു! ഏറ്റവും വലുത്!",
+   "request": 1
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ഇത്... ഇതൊരു പൊടി ലഡുവാ! പുതിയ ഡിസൈൻ!",
+   "request": 1
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "എന്റെ ലഡു നല്ല ഭംഗിയായി ഉരുണ്ടു വന്നിട്ടുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "അയ്യോ പ്രേതം! എന്റെ ലഡു പ്രേതം കൊണ്ടുപോയേ!",
+   "request": 1
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ബബ്ലൂ, അത് നമ്മടെ ചമ്മകിയാ!",
+   "request": 1
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "വയറേ, ഇത് പൂജയ്ക്കുള്ള ലഡുവാ! കുറച്ച് അടങ്ങിയിരിക്ക്!",
+   "request": 1
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "വാഹ് ചോറ്റൂ! നീയിന്ന് ശരിക്കും വലിയ കുട്ടിയായി!",
+   "request": 1
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "എന്റെ ജിലേബികൾക്ക് ഒരു കുഴപ്പവുമില്ല! സന്തോഷത്തിൽ പൂജയ്ക്കുള്ള ഈ ജിലേബികൾ എന്റെ വക!",
+   "request": 1
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ഇനി എല്ലാവർക്കും പ്രസാദം. ആദ്യത്തെ ലഡു... സത്യം പറഞ്ഞ നമ്മുടെ ചോറ്റൂവിന്ട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "കള്ളത്തിന്റെ ലഡു വയറ്റിൽ ഭാരമായിരുന്നു! സത്യത്തിന്റെ ലഡുവിന് നല്ല മധുരവും ലഘുത്വവുമാ!",
+   "request": 1
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "സത്യം പറയുന്നവരുടെ മനസ്സും ലഡു പോലെ മധുരമുള്ളതായിരിക്കുംട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "നോക്ക്, ഷേരു ഉണർന്നു! തിന്നുന്ന സമയത്ത് അവൻ കൃത്യമായി ഉണരും!",
+   "request": 1
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "അയ്യോ, എന്റെ കണ്ണട വീണ്ടും എവ്ടെപ്പോയി?",
+   "request": 1
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "മുത്തശ്ശീ, അത് മാന്ത്രിക കണ്ണട കള്ളൻ കൊണ്ടുപോയി!",
+   "request": 1
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "അല്ല അല്ല, സത്യം പറയാം — അത് തലയിലിരിപ്പുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ഇനി എനിക്ക് ശരിക്കും വിശക്കുന്നു!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}
