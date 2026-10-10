@@ -1,0 +1,538 @@
+{
+ "lang": "mr",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "\"लल्लनच्या मिठाईत अर्धी साखर, अर्धी लबाडी!\"",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "अरेच्चा! हे कोण बोललं?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "मी तर... मनातल्या मनात विचार करत होतो!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "काका! आज कोणतं नवीन मशीन बनवताय?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "हे आहे... \"मनातलं ओळखणारं रेडिओ\"! ज्याच्याकडे फिरवाल, त्याच्या मनातली गोष्ट ऐकू येईल!",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "पण आधी हे बघा, माझं \"बोलणारं कुकर\"! वरण कधी शिजणार, हे स्वतःच सांगतं.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "पण काका, हे बोलतं कसं?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ही ही ही! काका, तुमचं कुकर तर बोलायच्या आधीच सगळ्यांना आंघोळ घालून गेलं!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ही ही ही... याचा राग जरा जास्तच आहे. चला, खरं मशीन बघा आता!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "मनातली गोष्ट? काका, हृदय तर फक्त धक-धक करतं, बोलतं थोडीच!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "बोलतं ग बाळा. पण कोणी ऐकून घेत नाही.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "हे बघा! पहिली चाचणी — शेरू!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "मला पण लाडू पाहिजे! एक नाही, दोन!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "हा हा हा! काका, हे तर खरंच काम करतंय!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "पण लक्षात ठेवा, हे अजून पूर्ण तयार नाहीये. याला कोणीही बाहेर घेऊन जायचं नाही!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "अजिबात नाही, काका!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "फक्त थोड्या वेळासाठी...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "जत्रेत खूप मज्जा येईल!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "बघा माझी पतंग! पूर्ण गावात सगळ्यात उंच उडणार!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "खरंच? रेडिओ, जरा राजूच्या मनातलं ऐकव!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "गुढिया माझ्यापेक्षा छान पतंग उडवते... पण हे मी कधीच कबूल करणार नाही!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "हो! ऐकलं सर्वांनी?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "अरे! हे... हे तर खोटं मशीन आहे!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "प्रसादात काजू कमी पडलेत... देवा, कोणाला कळू नये म्हणजे मिळवलं!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "पंडितजी सुद्धा!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "सकाळपासून एकही फुगा विकला गेला नाही... आज घरी काय घेऊन जाणार?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "फुगेवाले काका किती उदास आहेत...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "चला, आपण आपल्या पैशांनी एकेक फुगा विकत घेऊया!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "मुलांनो, उद्या शाळेत वेळेवर या. शिस्त पाळणं खूप गरजेचं आहे.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "उद्या पण सुट्टी असती तर... दिवसभर फक्त झोपलो असतो.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "हा... हा कोणाचा आवाज आहे?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ते बघा! त्यांच्या हातात तो जादूचा डबा आहे!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "पळा!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "थांबा! ते अजून तयार नाहीये!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "शर्यत! मला शर्यत खूप आवडते!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "शेरू, आता नको!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "वाचलो!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "लल्लन काकांचा चेहरा बघितला का?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "सगळे मोठे झाले... आता कोणी गोष्ट ऐकायला येत नाही.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "आज पण मुलांसाठी लाडू बनवले होते... पण कोणी आलंच नाही.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "आजी... एकटीच बसली आहे.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "सकाळी आजीने बोलावलं होतं... मी म्हणालो, \"नंतर येतो, आजी.\"",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "आपण सगळे जत्रेत होतो... आणि आजी इथे एकटीच.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "रेडिओ अगदी खरं बोलत होता.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "काही गोष्टी रेडिओवरून नाही... जवळ बसल्यावर ऐकायला येतात.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "आजी! जत्रा आम्ही तुझ्यापाशीच घेऊन आलो!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "अरे बाप्पा! तुमी सगळे इथं? जत्रा सोडून?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "माफ कर आजी. सकाळी तू बोलावलं होतं, पण मी आलो नाही.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "अरे येड्या... तू आला, हेच लय झालं जो!",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "आजी, छानशी गोष्ट सांग ना!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "मंग ऐका... माझ्या पहिल्या दिवाळीची गोष्ट. तव्हा या गावात वीजबीज नव्हती जो...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "त्या रात्री अख्ख्या गावात फक्त दिवेच जळत होते. माझी आजी आम्हा पोराले जवळ बसवून घेई...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...आणि म्हणे — दिवा तव्हाच जळते, जेव्हा त्यात प्रेमाचं तेल असते.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "आणि हे घ्या आजी — माझी मिठाई. आज पूर्ण साखरेची!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "हा हा हा!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "पोरांनो, दिवाळी दिव्यांने नाही... आपल्या माणसांले जवळ बसवल्याने उजळते जो.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "गुरुजी, आज अभ्यास नाही — आज दिवाळी!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "अरे... माझ्यासाठी दिवा? वर्षांनंतर कोणीतरी...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "आणि उद्या सुट्टी? <short pause> रेडिओने सांगितलंय!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "हा हा हा! ठीक आहे, ठीक आहे... उद्या अर्धी सुट्टी!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "काका, सॉरी... आम्ही तुमचं मशीन न विचारता घेतलं.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "रेडिओची काळजी नव्हती रे बाळा... दिवाळीला मी सुद्धा एकटाच होतो.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "आता मुळीच नाही! चला, आजी गोष्ट सांगतेय!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "खरंच? चला चला! पण आधी... जिलेबी!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "आता तरी लाडू मिळणार?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "हा हा हा! याला तर नक्की मिळणार!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

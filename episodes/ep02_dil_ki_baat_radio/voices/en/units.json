@@ -1,0 +1,538 @@
+{
+ "lang": "en",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "In Lallan's sweets, there is half sugar and half cheating!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "Arey! Who said that just now?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "But I... I was only thinking this in my head!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "Chacha! Which new machine are you building today?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "This is... the 'Heart's Voice Radio'! Just point it at anyone, and you can hear their secret thoughts!",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "But first, look at my brand new 'Talking Cooker'! It tells you exactly when the dal is ready.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "Chacha, how does it talk like this?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> Chacha, your talking cooker gave us all a bath before saying anything!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "Hehe... its anger is a bit too much, yaar. Come on, look at the real machine!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "Heart's voice? Chacha, the heart only goes dhak-dhak, it doesn't really talk!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "It does, beta. It's just that nobody listens.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "Look! Our very first test — Sheru!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "I also want sweet laddus! Not just one, but two!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "Hahaha! Chacha, this really and truly works!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "But listen, it is not completely ready yet. So nobody should take it outside!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "Absolutely not, Chacha!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "Just for a tiny little bit...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "It will be so much fun at the fair!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "Look at my amazing kite! It will fly highest in the whole village!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "Really? Oh radio, let us hear what is inside Raju's heart!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "Gudiya flies kites much better than me... but I will never, ever admit this!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "Yes! Did you all hear?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "Arey! This... this machine is a big liar!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "The cashews are too less in the prasad... Oh my God, I hope nobody finds out!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "Even Pandit ji!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "Not even one balloon has sold since morning... what will I take back home today?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "The balloon-wala bhaiya is so sad...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "Come on, let us buy one balloon each with our own pocket money!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "Children, come to school on time tomorrow. Discipline is extremely important.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "I wish tomorrow was a holiday as well... so I could sleep all day long.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "Whose... whose voice is that coming from?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "There they are! They are holding some kind of magic box in their hand!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "Let's run!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "Stop! That machine is not fully ready yet!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "A race! I really, really love to race!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "Sheru, please not right now!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "We are safe!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "Did you see the funny look on Lallan Chacha's face?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "Everyone has grown up so much... now nobody comes to hear my stories.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "Today also I made sweet laddus for the children... but nobody came at all.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "Dadi... is sitting all by herself.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "Dadi had called me in the morning... and I just said, 'Later, Dadi.'",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "We were all busy at the fair... and Dadi was here all alone.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "The radio was absolutely right.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "Some things are not heard on a radio... but by sitting close to each other.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "Dadi! Look, we have brought the entire fair to you!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "Arey! All of you came here? Leaving the fair?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "I am sorry, Dadi. You called me in the morning and I did not come.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "Arey, my silly boy... you came, that is enough.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "Dadi, please tell us a story now!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "So listen... the story of my first Diwali. Back then, there was no electricity in our village...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "On that night, only diyas were burning in the whole village. My own grandmother would make all of us kids sit close to her...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...and she would say — a diya only burns when it is filled with the oil of love.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "And please have this, Dadi — my special sweets. Today they have full sugar in them!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "Hahaha!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "Children, Diwali is not lit up just by diyas... but by sitting together with your loved ones.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "Masterji, no notebooks today — today is Diwali!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "Arey... a diya for me? After so many years, someone...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "And a holiday tomorrow? <short pause> The radio told us so!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "Hahaha! Okay, okay... half-day holiday tomorrow!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "Chacha, we are sorry... we took your machine without asking you first.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "I was not worried about the radio, beta... on Diwali, even I was feeling so alone.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "Not anymore! Come along, Dadi is telling a story now!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "Really? Let's go, let's go! But first... ja-le-bis!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "Will I get my sweet laddu now?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "Hahaha! You will surely get one for this!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

@@ -1,0 +1,538 @@
+{
+ "lang": "kn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "ಲಲ್ಲನ್ ಪೇಡಾದಲ್ಲಿ ಅರ್ಧ ಸಕ್ಕರೆ, ಅರ್ಧ ಮೋಸ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ! ಇದ್ಯಾರು ಹೇಳಿದ್ದು?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ನಾನು... ನಾನಂತೂ ಮನಸಲ್ಲೇ ಅನ್ಕೊಳ್ತಿದ್ದೆ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಚಿಕ್ಕಪ್ಪಾ! ಇವತ್ತು ಯಾವ್ ಯಂತ್ರ ಮಾಡ್ತಿದ್ದೀರಾ?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಇದೇ... \"ಮನಸಿನ ಮಾತು ರೇಡಿಯೋ\"! ಯಾರ ಕಡೆ ತಿರುಗಿಸ್ತೀಯೋ, ಅವರ ಮನಸಿನ ಧ್ವನಿ ಕೇಳಿಸುತ್ತೆ.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಮೊದ್ಲು ನೋಡು ನನ್ನ \"ಮಾತಾಡೋ ಕುಕ್ಕರ್\"! ಬೇಳೆ ಯಾವಾಗ ಬೇಯುತ್ತೆ ಅಂತ ಹೇಳುತ್ತೆ.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಚಿಕ್ಕಪ್ಪ, ಇದು ಹೆಂಗೆ ಮಾತಾಡುತ್ತೆ?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಚಿಕ್ಕಪ್ಪ, ನಿಮ್ಮ ಕುಕ್ಕರ್ ಮಾತಾಡೋಕ್ ಮುಂಚೆನೇ ಎಲ್ಲರಿಗೂ ಸ್ನಾನ ಮಾಡ್ಸಿತು!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಹಿ ಹಿ... ಇದಕ್ಕೆ ಸಿಟ್ಟು ಸ್ವಲ್ಪ ಜಾಸ್ತಿ. ಸರಿ, ಅಸಲಿ ಯಂತ್ರ ನೋಡಿ!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಮನಸಿನ ಧ್ವನಿನಾ? ಚಿಕ್ಕಪ್ಪ, ಹೃದಯ ಲಬ್-ಡಬ್ ಅನ್ನುತ್ತೆ, ಮಾತಾಡಲ್ಲ ಅಲ್ವಾ!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಮಾತಾಡುತ್ತೆ ಪುಟ್ಟಿ. ಆದ್ರೆ ಯಾರೂ ಕೇಳಲ್ಲ ಅಷ್ಟೇ.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ನೋಡು! ಮೊದಲನೇ ಟೆಸ್ಟ್ — ಶೇರು!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "ನನಗೂ ಲಡ್ಡು ಬೇಕು! ಒಂದಲ್ಲ, ಎರಡು!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಹ ಹ ಹ! ಚಿಕ್ಕಪ್ಪ, ಇದು ನಿಜವಾಗ್ಲೂ ಕೆಲಸ ಮಾಡ್ತಿದೆ!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ಆದ್ರೆ ನೆನಪಿರಲಿ, ಇದು ಇನ್ನೂ ಪೂರ್ತಿ ರೆಡಿ ಇಲ್ಲ. ಇದನ್ನ ಯಾರೂ ಆಚೆ ತಗೊಂಡು ಹೋಗ್ಬಾರ್ದು!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಖಂಡಿತ ಇಲ್ಲ, ಚಿಕ್ಕಪ್ಪ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಬರೀ ಸ್ವಲ್ಪ ಹೊತ್ತಿಗೆ ಅಷ್ಟೇ...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಜಾತ್ರೇಲಿ ಭರ್ಜರಿ ಮಜಾ ಇರುತ್ತೆ!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ನೋಡಿ ನನ್ನ ಗಾಳಿಪಟ! ಊರಲ್ಲೇ ಎಲ್ಲಕ್ಕಿಂತ ಎತ್ತರ ಹಾರುತ್ತೆ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಹೌದಾ? ರೇಡಿಯೋ, ಸ್ವಲ್ಪ ರಾಜು ಮನಸಿನ ಮಾತು ಕೇಳಿಸು!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "ಗುಡಿಯಾ ನನಗಿಂತ ಚೆನ್ನಾಗಿ ಗಾಳಿಪಟ ಹಾರಿಸ್ತಾಳೆ... ಆದ್ರೆ ನಾನ್ಯಾವತ್ತೂ ಒಪ್ಕೊಳ್ಳಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಕೇಳಿಸ್ತಾ ಎಲ್ಲರಿಗೂ?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ! ಇದು... ಇದು ಸುಳ್ಳು ಹೇಳೋ ಮಷೀನ್!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "ಪ್ರಸಾದದಲ್ಲಿ ಗೋಡಂಬಿ ಕಮ್ಮಿ ಆಯ್ತು... ದೇವರೇ, ಯಾರಿಗೂ ಗೊತ್ತಾಗದಿದ್ರೆ ಸಾಕು!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ಪಂಡಿತ್ ಜೀ ಕೂಡನಾ!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "ಬೆಳಗ್ಗಿಂದ ಒಂದೇ ಒಂದು ಬಲೂನ್ ಮಾರಿಲ್ಲ... ಇವತ್ತು ಮನೆಗೆ ಏನು ತಗೊಂಡು ಹೋಗ್ಲಿ?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ಬಲೂನ್ ಮಾರೋ ಅಣ್ಣ ಬೇಜಾರಾಗಿದ್ದಾರೆ...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ನಾವೆಲ್ಲ ನಮ್ಮ ದುಡ್ಡಲ್ಲಿ ಒಂದೊಂದು ಬಲೂನ್ ತಗೊಳ್ಳೋಣ!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "ಮಕ್ಕಳೇ, ನಾಳೆ ಶಾಲೆಗೆ ಸರಿಯಾದ ಸಮಯಕ್ಕೆ ಬನ್ನಿ. ಶಿಸ್ತು ತುಂಬಾ ಮುಖ್ಯ.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "ನಾಳೆನೂ ರಜೆ ಇದ್ರೆ ಎಷ್ಟು ಚೆನ್ನಾಗಿರ್ತಿತ್ತು... ದಿನಪೂರ್ತಿ ಮಲಗಬಹುದಿತ್ತು.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಇದು... ಇದು ಯಾರ ಧ್ವನಿ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ಅಲ್ಲಿ ನೋಡಿ! ಅವರ ಕೈಯಲ್ಲಿ ಏನೋ ಮಂತ್ರದ ಡಬ್ಬಿ ಇದೆ!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಓಡಿ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ನಿಲ್ಲಿಸಿ! ಅದು ಇನ್ನೂ ರೆಡಿಯಾಗಿಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "ರೇಸ್! ನನಗೆ ರೇಸ್ ಅಂದ್ರೆ ತುಂಬಾ ಇಷ್ಟ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ಶೇರು, ಈಗ ಬೇಡ!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ಬಚಾವಾದ್ವಿ!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ಲಲ್ಲನ್ ಚಿಕ್ಕಪ್ಪನ ಮುಖ ನೋಡಿದ್ರಾ?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "ಎಲ್ಲರೂ ದೊಡ್ಡವರಾದ್ರು... ಇನ್ಯಾರೂ ಕಥೆ ಕೇಳೋಕೆ ಬರಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "ಇವತ್ತೂ ಮಕ್ಕಳಿಗೋಸ್ಕರ ಲಡ್ಡು ಮಾಡಿದ್ದೆ... ಆದ್ರೆ ಯಾರೂ ಬರಲೇ ಇಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ದಾಡಿ... ಒಬ್ಬರೇ ಕೂತಿದ್ದಾರೆ.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ಬೆಳಗ್ಗೆ ದಾಡಿ ಕರೆದಿದ್ರು... ನಾನು \"ಆಮೇಲೆ ಬರ್ತೀನಿ ದಾಡಿ\" ಅಂದ್ಬಿಟ್ಟೆ.",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ನಾವೆಲ್ಲ ಜಾತ್ರೇಲಿದ್ವಿ... ದಾಡಿ ಮಾತ್ರ ಇಲ್ಲಿ ಒಬ್ಬರೇ ಇದ್ರು.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ರೇಡಿಯೋ ನಿಜಾನೇ ಹೇಳಿತು.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಕೆಲವು ಮಾತು ರೇಡಿಯೋದಿಂದ ಕೇಳಲ್ಲ... ಜೊತೆ ಕೂತ್ಕೊಂಡ್ರೆ ಕೇಳಿಸುತ್ತೆ.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ದಾಡಿ! ಜಾತ್ರೆನ ನಿಮ್ಮ ಹತ್ರಾನೇ ತಂದ್ವಿ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಅರೇ! ನೀವೆಲ್ಲಾ ಇಲ್ಯಾಕ ಬಂದ್ರೀ? ಜಾತ್ರಿ ಬಿಟ್ಟು?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ಕ್ಷಮಿಸಿ ದಾಡಿ. ಬೆಳಗ್ಗೆ ನೀವು ಕರಿದ್ರೂ ನಾನು ಬರಲಿಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಅಯ್ಯೋ ಹುಚ್ಚಾ... ನೀ ಬಂದ್ಯಲ್ಲಾ, ಅಷ್ಟೇ ಸಾಕು ನಂಗ.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ದಾಡಿ, ಒಂದು ಕಥೆ ಹೇಳಿ ಅಲ್ವಾ!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಹಂಗಾದ್ರೆ ಕೇಳ್ರಿ... ನನ್ನ ಮೊದಲನೇ ದೀಪಾವಳಿ ಕಥಿ. ಅವಾಗ ಈ ಊರಾಗ ಕರೆಂಟ್ ಕೂಡ ಇರಲಿಲ್ಲ...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಆ ರಾತ್ರಿ ಇಡೀ ಊರಾಗ ಬರೀ ಹಣತೆಗಳೇ ಉರಿತಿದ್ವು. ನಮ್ಮಜ್ಜಿ ನಮ್ಮನ್ನೆಲ್ಲಾ ಹತ್ರ ಕುಂದರಿಸಿಕೊಂಡು...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...ಮತ್ತ ಹೇಳ್ತಿದ್ರು — ದೀಪ ಉರಿಯೋದು ಅದ್ರಾಗ ಪ್ರೀತಿ ಅನ್ನೋ ಎಣ್ಣಿ ಇದ್ದಾಗಷ್ಟೇ.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಮತ್ತೆ ತಗೊಳ್ಳಿ ದಾಡಿ — ನನ್ನ ಸ್ವೀಟು. ಇವತ್ತು ಪೂರ್ತಿ ಸಕ್ಕರೆ ಹಾಕಿದ್ದೀನಿ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಹ ಹ ಹ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಮಕ್ಕಳಾ, ದೀಪಾವಳಿ ಹಣತೆಯಿಂದಲ್ಲ... ನಮ್ಮವರ ಜೊತಿ ಕುಂತ್ರ ಬೆಳಕಾಗತೈತಿ.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಮಾಸ್ಟರ್‌ಜೀ, ಇವತ್ತು ಬುಕ್ಕಲ್ಲ — ಇವತ್ತು ದೀಪಾವಳಿ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಅರೇ... ನನಗೋಸ್ಕರ ದೀಪನಾ? ಎಷ್ಟೋ ವರ್ಷಗಳ ಮೇಲೆ ಯಾರೋ...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಮತ್ತೆ ನಾಳೆ ರಜಾನಾ? <short pause> ರೇಡಿಯೋ ಹೇಳಿದ್ದು!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಹ ಹ ಹ! ಸರಿ, ಸರಿ... ನಾಳೆ ಅರ್ಧ ದಿನ ರಜೆ!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ಚಿಕ್ಕಪ್ಪ, ಕ್ಷಮಿಸಿ... ನಿಮ್ಮ ಯಂತ್ರನ ಕೇಳ್ದೆ ತಗೊಂಡು ಬಂದ್ವಿ.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ರೇಡಿಯೋ ಚಿಂತೆ ಇಲ್ಲ ಮಗನೇ... ದೀಪಾವಳಿಲಿ ನಾನು ಕೂಡ ಒಬ್ಬಂಟಿಯಾಗಿದ್ದೆ.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಇನ್ಮುಂದೆ ಇಲ್ಲ! ಬನ್ನಿ, ದಾಡಿ ಕಥೆ ಹೇಳ್ತಿದ್ದಾರೆ!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಹೌದಾ? ನಡೀರಿ ನಡೀರಿ! ಆದ್ರೆ ಮೊದ್ಲು... ಜಿಲೇಬಿ!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "ಈಗಾದ್ರೂ ಲಡ್ಡು ಸಿಗುತ್ತಾ?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ಹ ಹ ಹ! ನಿನಗಂತೂ ಖಂಡಿತ ಸಿಗುತ್ತೆ!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

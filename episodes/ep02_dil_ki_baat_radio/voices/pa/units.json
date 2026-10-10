@@ -1,0 +1,538 @@
+{
+ "lang": "pa",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "\"ਲੱਲਣ ਦੀ ਮਿਠਿਆਈ 'ਚ ਅੱਧੀ ਖੰਡ ਤੇ ਅੱਧੀ ਚਲਾਕੀ!\"",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਓਏ! ਇਹ ਕਿਹਨੇ ਬੋਲਿਆ?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ਮੈਂ ਤਾਂ... ਮੈਂ ਤਾਂ ਬੱਸ ਮਨ ਵਿੱਚ ਸੋਚ ਰਿਹਾ ਸੀ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਚਾਚਾ ਜੀ! ਅੱਜ ਕਿਹੜੀ ਮਸ਼ੀਨ ਬਣਾ ਰਹੇ ਹੋ?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਇਹ ਹੈ... \"ਦਿਲ ਦੀ ਗੱਲ ਰੇਡੀਓ\"! ਜਿਹਦੇ ਵੱਲ ਘੁਮਾਓਗੇ, ਉਹਦੇ ਦਿਲ ਦੀ ਆਵਾਜ਼ ਸੁਣਾਈ ਦੇਊਗੀ।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਪਰ ਪਹਿਲਾਂ ਵੇਖੋ ਮੇਰੀ \"ਬੋਲਦੀ ਕੁੱਕਰ\"! ਇਹ ਦੱਸਦੀ ਐ ਕਿ ਦਾਲ ਕਦੋਂ ਰਿੱਝੂਗੀ।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਚਾਚਾ ਜੀ, ਇਹ ਬੋਲਦੀ ਕਿਵੇਂ ਐ?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ਖੀ ਖੀ! ਚਾਚਾ ਜੀ, ਥੋਡੀ ਕੁੱਕਰ ਤਾਂ ਬੋਲਣ ਤੋਂ ਪਹਿਲਾਂ ਹੀ ਸਾਰਿਆਂ ਨੂੰ ਨੁਹਾ ਗਈ!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਹੇ ਹੇ... ਇਹਦਾ ਗੁੱਸਾ ਥੋੜ੍ਹਾ ਤੇਜ਼ ਐ। ਚਲੋ, ਅਸਲੀ ਮਸ਼ੀਨ ਵੇਖੋ!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਦਿਲ ਦੀ ਆਵਾਜ਼? ਚਾਚਾ ਜੀ, ਦਿਲ ਤਾਂ ਧੱਕ-ਧੱਕ ਕਰਦੈ, ਗੱਲਾਂ ਥੋੜ੍ਹੀ ਕਰਦੈ!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਕਰਦਾ ਐ, ਧੀਏ। ਬੱਸ ਕੋਈ ਸੁਣਦਾ ਨਹੀਂ।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਵੇਖੋ! ਪਹਿਲਾ ਟੈਸਟ — ਸ਼ੇਰੂ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "ਮੈਨੂੰ ਵੀ ਲੱਡੂ ਚਾਹੀਦਾ! ਇੱਕ ਨਹੀਂ, ਦੋ!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਹਾ ਹਾ ਹਾ! ਚਾਚਾ ਜੀ, ਇਹ ਤਾਂ ਸੱਚੀਂ ਕੰਮ ਕਰਦਾ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਪਰ ਧਿਆਨ ਰਹੇ, ਅਜੇ ਇਹ ਪੂਰੀ ਤਰ੍ਹਾਂ ਤਿਆਰ ਨਹੀਂ ਐ। ਇਹਨੂੰ ਕੋਈ ਬਾਹਰ ਨਹੀਂ ਲੈ ਕੇ ਜਾਊਗਾ!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਬਿਲਕੁਲ ਨਹੀਂ, ਚਾਚਾ ਜੀ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਬੱਸ ਥੋੜ੍ਹੀ ਦੇਰ ਵਾਸਤੇ...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਮੇਲੇ 'ਚ ਬੜਾ ਮਜ਼ਾ ਆਊਗਾ!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਵੇਖੋ ਮੇਰੀ ਪਤੰਗ! ਪੂਰੇ ਪਿੰਡ ਵਿੱਚ ਸਭ ਤੋਂ ਉੱਚੀ ਉੱਡੂਗੀ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਅੱਛਾ? ਰੇਡੀਓ, ਜ਼ਰਾ ਰਾਜੂ ਦੇ ਦਿਲ ਦੀ ਸੁਣਾਓ!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "ਗੁੱਡੀ ਮੇਰੇ ਤੋਂ ਵਧੀਆ ਪਤੰਗ ਉਡਾਉਂਦੀ ਐ... ਪਰ ਇਹ ਮੈਂ ਕਦੇ ਨਹੀਂ ਮੰਨੂੰਗਾ!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਹਾਂ! ਸੁਣ ਲਿਆ ਸਭ ਨੇ?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਹਾਏ ਓਏ! ਇਹ... ਇਹ ਤਾਂ ਝੂਠੀ ਮਸ਼ੀਨ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "ਪ੍ਰਸ਼ਾਦ ਵਿੱਚ ਕਾਜੂ ਘੱਟ ਗਏ... ਹੇ ਰੱਬਾ, ਬੱਸ ਕਿਸੇ ਨੂੰ ਪਤਾ ਨਾ ਲੱਗੇ!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ਪੰਦਿਤ ਜੀ ਵੀ!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "ਸਵੇਰ ਤੋਂ ਇੱਕ ਵੀ ਗੁਬਾਰਾ ਨਹੀਂ ਵਿਕਿਆ... ਅੱਜ ਘਰ ਕੀ ਲੈ ਕੇ ਜਾਊਂਗਾ?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਗੁਬਾਰੇ ਵਾਲੇ ਵੀਰੇ ਉਦਾਸ ਨੇ...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਚਲੋ, ਆਪਾਂ ਸਾਰੇ ਆਪਣੇ ਪੈਸਿਆਂ ਨਾਲ ਇੱਕ-ਇੱਕ ਗੁਬਾਰਾ ਲੈਂਦੇ ਹਾਂ!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "ਬੱਚਿਓ, ਕੱਲ੍ਹ ਸਕੂਲ ਟਾਈਮ ਸਿਰ ਆਉਣਾ। ਅਨੁਸ਼ਾਸਨ ਬਹੁਤ ਜ਼ਰੂਰੀ ਐ।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "ਕਾਸ਼ ਕੱਲ੍ਹ ਵੀ ਛੁੱਟੀ ਹੁੰਦੀ... ਤੇ ਮੈਂ ਸਾਰਾ ਦਿਨ ਸੁੱਤਾ ਰਹਿੰਦਾ।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਇਹ... ਇਹ ਕਿਹਦੀ ਆਵਾਜ਼ ਐ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ਉਹ ਰਹੇ! ਉਹਨਾਂ ਦੇ ਹੱਥ ਵਿੱਚ ਕੋਈ ਜਾਦੂਈ ਡੱਬਾ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਭੱਜੋ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ਰੁਕੋ! ਉਹ ਅਜੇ ਤਿਆਰ ਨਹੀਂ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "ਦੌੜ! ਮੈਨੂੰ ਦੌੜ ਬਹੁਤ ਪਸੰਦ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ਸ਼ੇਰੂ, ਅਜੇ ਨਹੀਂ!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ਬਚ ਗਏ!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ਲੱਲਣ ਚਾਚੇ ਦਾ ਮੂੰਹ ਵੇਖਿਆ ਸੀ?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "ਸਾਰੇ ਵੱਡੇ ਹੋ ਗਏ... ਹੁਣ ਕੋਈ ਕਹਾਣੀ ਸੁਣਨ ਨਹੀਂ ਆਉਂਦਾ।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "ਅੱਜ ਵੀ ਬੱਚਿਆਂ ਲਈ ਲੱਡੂ ਬਣਾਏ ਸੀ... ਪਰ ਕੋਈ ਆਇਆ ਹੀ ਨਹੀਂ।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਬੇਬੇ... ਇਕੱਲੀ ਬੈਠੀ ਐ।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਸਵੇਰੇ ਬੇਬੇ ਨੇ ਸੱਦਿਆ ਸੀ... ਮੈਂ ਕਿਹਾ, \"ਬਾਅਦ ਵਿੱਚ, ਬੇਬੇ।\"",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਆਪਾਂ ਸਾਰੇ ਮੇਲੇ 'ਚ ਸੀ... ਤੇ ਬੇਬੇ ਐਥੇ ਇਕੱਲੀ।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਸੱਚ ਹੀ ਕਿਹਾ ਸੀ ਰੇਡੀਓ ਨੇ।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਕੁਝ ਗੱਲਾਂ ਰੇਡੀਓ ਨਾਲ ਨਹੀਂ... ਕੋਲ ਬੈਠਣ ਨਾਲ ਸੁਣਾਈ ਦਿੰਦੀਆਂ ਨੇ।",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਬੇਬੇ! ਮੇਲਾ ਅਸੀਂ ਥੋਡੇ ਕੋਲ ਲੈ ਆਏ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਹੈਂ! ਤੁਸੀਂ ਸਾਰੇ ਐਥੇ? ਮੇਲਾ ਛੱਡ ਕੇ?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਸੌਰੀ ਬੇਬੇ। ਸਵੇਰੇ ਤੁਸੀਂ ਸੱਦਿਆ ਸੀ ਤੇ ਮੈਂ ਆਇਆ ਨਹੀਂ।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਓਏ ਕਮਲਿਆ... ਤੂੰ ਆ ਗਿਆ, ਇਹੀ ਬਥੇਰਾ ਐ।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਬੇਬੇ, ਕਹਾਣੀ ਸੁਣਾਓ ਨਾ!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਫ਼ੇਰ ਸੁਣੋ... ਮੇਰੀ ਪਹਿਲੀ ਦੀਵਾਲੀ ਦੀ ਬਾਤ। ਉਦੋਂ ਪਿੰਡ 'ਚ ਬਿਜਲੀ ਵੀ ਨੀ ਹੁੰਦੀ ਸੀ...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਓਸ ਰਾਤ ਪੂਰੇ ਪਿੰਡ 'ਚ ਨਿਰੇ ਦੀਵੇ ਈ ਜਗਦੇ ਸੀ। ਮੇਰੀ ਬੇਬੇ ਸਾਨੂੰ ਸਾਰੇ ਜਵਾਕਾਂ ਨੂੰ ਕੋਲ ਬਿਠਾਉਂਦੀ...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...ਤੇ ਕਹਿੰਦੀ — ਦੀਵਾ ਉਦੋਂ ਈ ਜਗਦੈ, ਜਦੋਂ ਉਹਦੇ 'ਚ ਪਿਆਰ ਦਾ ਤੇਲ ਹੋਵੇ।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਤੇ ਇਹ ਲਓ ਬੇਬੇ — ਮੇਰੀ ਮਿਠਿਆਈ। ਅੱਜ ਪੂਰੀ ਖੰਡ ਵਾਲੀ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਹਾ ਹਾ ਹਾ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਜਵਾਕੋ, ਦੀਵਾਲੀ ਦੀਵਿਆਂ ਨਾਲ ਨੀ... ਆਪਣਿਆਂ ਕੋਲ ਬੈਠਣ ਨਾਲ ਜਗਮਗਾਉਂਦੀ ਐ।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਮਾਸਟਰ ਜੀ, ਅੱਜ ਕਾਪੀ ਨਹੀਂ — ਅੱਜ ਦੀਵਾਲੀ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਹੈਂ... ਮੇਰੇ ਲਈ ਦੀਵਾ? ਵਰ੍ਹਿਆਂ ਬਾਅਦ ਕਿਸੇ ਨੇ...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਤੇ ਕੱਲ੍ਹ ਛੁੱਟੀ? <short pause> ਰੇਡੀਓ ਨੇ ਦੱਸਿਆ ਸੀ!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਹਾ ਹਾ ਹਾ! ਠੀਕ ਐ, ਠੀਕ ਐ... ਕੱਲ੍ਹ ਅੱਧੀ ਛੁੱਟੀ!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਚਾਚਾ ਜੀ, ਸੌਰੀ... ਅਸੀਂ ਥੋਡੀ ਮਸ਼ੀਨ ਬਿਨਾਂ ਪੁੱਛੇ ਲੈ ਲਈ।",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਰੇਡੀਓ ਦੀ ਫ਼ਿਕਰ ਨਹੀਂ ਸੀ, ਪੁੱਤ... ਦੀਵਾਲੀ 'ਤੇ ਮੈਂ ਵੀ ਤਾਂ ਇਕੱਲਾ ਸੀ।",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਹੁਣ ਨਹੀਂ! ਚਲੋ, ਬੇਬੇ ਕਹਾਣੀ ਸੁਣਾ ਰਹੀ ਐ!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਸੱਚੀਂ? ਚਲੋ ਚਲੋ! ਪਰ ਪਹਿਲਾਂ... ਜਲੇਬੀ!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "ਹੁਣ ਤਾਂ ਲੱਡੂ ਮਿਲੂਗਾ?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਹਾ ਹਾ ਹਾ! ਇਹਨੂੰ ਤਾਂ ਪੱਕਾ ਮਿਲੂਗਾ!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

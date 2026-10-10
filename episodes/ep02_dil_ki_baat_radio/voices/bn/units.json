@@ -1,0 +1,538 @@
+{
+ "lang": "bn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "\"লল্লনের মিষ্টিতে অর্ধেক চিনি, আর অর্ধেক চালাকি!\"",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "আরে! এটা কে বলল?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "আমি তো… আমি তো মনে মনে ভাবছিলাম!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "চাচাজি! আজ কী নতুন মেশিন বানাচ্ছ?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "এটা হলো… \"মনের কথা রেডিও\"! যার দিকে ঘোরাবে, তার মনের কথা শুনতে পাবে।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "কিন্তু আগে দেখো আমার \"কথা বলা কুকার\"! ডাল কখন সেদ্ধ হবে, এ বলে দেবে।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "চাচা, এটা কথা বলে কী করে?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> চাচা, আপনার কুকার তো কথা বলার আগেই সবাইকে স্নান করিয়ে দিল!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "হেঁ হেঁ… এর রাগটা একটু বেশি। চলো, আসল মেশিনটা দেখো!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "মনের কথা? চাচা, মন তো ধকপক করে, কথা তো আর বলে না!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "বলে রে মা, বলে। শুধু কেউ শোনে না।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "এই দেখো! প্রথম পরীক্ষা — শেরু!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "আমারও লাড্ডু চাই! একটা নয়, দুটো!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "হা হা হা! চাচা, এটা তো সত্যিই কাজ করছে!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "কিন্তু মনে রেখো, এটা এখনো পুরোপুরি তৈরি নয়। এটাকে কেউ বাইরে নিয়ে যাবে না!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "একদমই না, চাচা!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "শুধু অল্পক্ষণের জন্য…",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "মেলায় দারুণ মজা হবে!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আমার ঘুড়িটা দেখো! পুরো গ্রামে সবার ওপরে উড়বে!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "তাই নাকি? রেডিও, একটু রাজুর মনের কথা শোনাও তো!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "গুড়িয়া আমার চেয়ে ভালো ঘুড়ি ওড়ায়… কিন্তু এটা আমি কোনোদিন মানবো না!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "হ্যাঁ! শুনলে তো সবাই?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ধুর! এটা… এটা একটা মিথ্যেবাদী মেশিন!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "প্রসাদে কাজুবাদাম কম পড়ে গেল… হে ভগবান, কেউ যেন জানতে না পারে!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "পণ্ডিত মশাইও!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "সকাল থেকে একটাও বেলুন বিক্রি হয়নি… আজ বাড়ি কী নিয়ে ফিরবো?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "বেলুনওয়ালা ভাইয়ার মনটা খারাপ…",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "চলো, আমরা সবাই নিজেদের টাকা দিয়ে একটা করে বেলুন কিনি!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "বাচ্চারা, কাল স্কুলে সময়মতো আসবে। শৃঙ্খলা বজায় রাখা খুবই জরুরি।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "ইশ, কালও যদি ছুটি থাকত… আর আমি সারাদিন ঘুমাতাম।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "এটা… এটা কার গলা?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ওই তো ওরা! ওদের হাতে একটা জাদুকরী বাক্স আছে!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "পালাও!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "দাঁড়াও! ওটা এখনো তৈরি নয়!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "রেস! আমার রেস খেলতে দারুণ লাগে!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "শেরু, এখন নয়!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "উফ, বাঁচলাম!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "লল্লন চাচার মুখটা দেখেছিলে?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "হগলে বড় হইলো… অহন কেউ কেচ্ছা হুনতে আইসে না।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "আইজও পোলাপানের লাইগা নাড়ু বানাইছিলাম… কিন্তু কেউ আইলোই না।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ঠাকুমা… একা বসে আছেন।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "সকালে ঠাকুমা ডেকেছিল… আমি বললাম, \"পরে যাব, ঠাকুমা।\"",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "আমরা সবাই মেলায় ঘুরছিলাম… আর ঠাকুমা একা।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "রেডিওটা সত্যিই বলেছিল।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "কিছু কথা রেডিওতে নয়… পাশে বসলে তবেই শোনা যায়।",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ঠাকুমা! মেলা আমরা নিয়ে এলাম তোমার কাছে!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "আরে! তোমরা হগলে এইহানে? মেলা থুইয়া?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "দুঃখিত ঠাকুমা। সকালে তুমি ডেকেছিলে আর আমি আসিনি।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আরে পাগলা… তুই আইছস, এইডাই অনেক।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ঠাকুমা, একটা গল্প শোনাও না!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "তয় হুনো… আমার প্রথম দেওয়ালির কেচ্ছা। তখন এই গেরামে বিজলিও আছিল না…",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "হেই রাইতে গোটা গেরামে খালি পিদিম জ্বলতাছিল। আমার ঠাকুমা আমাগো হগলেরের পাশে বহাইয়া…",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "…আর কইত — পিদিম তখনই জ্বলে, যখন হেইডায় ভালোবাসার তেল থাকে।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "আর এই নিন ঠাকুমা — আমার মিষ্টি। আজকে একদম পুরো চিনি দেওয়া!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "হা হা হা!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "পোলাপান, দেওয়ালি পিদিমে না… আপনজনরে পাশে লইয়া বসলে তবেই আলো হয়।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "মাস্টারমশাই, আজ খাতা নয় — আজ তো দেওয়ালি!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আরে… আমার জন্য প্রদীপ? কত বছর পর কেউ…",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "আর কালকে ছুটি? <short pause> রেডিও কিন্তু বলে দিয়েছিল!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "হা হা হা! ঠিক আছে, ঠিক আছে… কাল হাফ-ছুটি!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "চাচা, সরি… আমরা না বলে আপনার মেশিনটা নিয়েছিলাম।",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "রেডিওর চিন্তা ছিল না রে বাবু… দেওয়ালিতে আমিও তো একা ছিলাম।",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আর নয়! চলুন, ঠাকুমা গল্প শোনাচ্ছেন!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "সত্যি? চলো চলো! কিন্তু আগে… জিলিপি!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "এবার তো লাড্ডু পাবো?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "হা হা হা! ওর তো অবশ্যই মিলবে!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

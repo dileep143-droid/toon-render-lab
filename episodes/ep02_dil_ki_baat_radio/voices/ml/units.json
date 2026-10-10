@@ -1,0 +1,538 @@
+{
+ "lang": "ml",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "ലല്ലന്റെ ലഡുവിൽ പകുതി പഞ്ചസാര, പകുതി കൗശലം!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "അയ്യോ! ഇതാരാ പറഞ്ഞത്?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ഞാൻ... ഞാൻ മനസ്സിൽ വിചാരിച്ചതേയുള്ളല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "അമ്മാവാ! ഇന്ന് എന്താ പുതിയ കണ്ടുപിടിത്തം?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ഇതാണ്... \"മനസ്സറിയും റേഡിയോ\"! ആരുടെ നേരെ തിരിച്ചു വെച്ചാലും അവരുടെ മനസ്സ് കേൾക്കാം!",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "പക്ഷേ ആദ്യം ഇത് കാണൂ, സംസാരിക്കുന്ന കുക്കർ! പരിപ്പ് വെന്തോ എന്ന് ഇത് പറയും.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "അമ്മാവാ, ഇത് എങ്ങനെ സംസാരിക്കും?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ഹായ്, കൊള്ളാല്ലോ! അമ്മാവാ, ഇതിപ്പോ സംസാരിക്കുന്നതിന് മുൻപ് ഞങ്ങളെ കുളിപ്പിച്ചല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ഹി ഹി... ഇതിന് ദേഷ്യം കുറച്ച് കൂടുതലാ. പോട്ടെ, യഥാർത്ഥ യന്ത്രം കാണാം!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "മനസ്സിന്റെ ശബ്ദമോ? അമ്മാവാ, ഹൃദയം മിടിക്കുകയല്ലേ ഉള്ളൂ, സംസാരിക്കുമോ?",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "സംസാരിക്കും മോളേ. പക്ഷേ ആരും കേൾക്കാറില്ല.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ദാ നോക്കൂ! ആദ്യ പരീക്ഷണം — ഷേരു!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "എനിക്കും വേണം ലഡു! ഒന്നല്ല, രണ്ട് എണ്ണം!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ഹ ഹ ഹ! അമ്മാവാ, ഇത് ശരിക്കും നടക്കുന്നുണ്ടല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "പക്ഷേ സൂക്ഷിക്കണം, ഇത് പൂർണ്ണമായും റെഡിയായിട്ടില്ല. ആരും ഇത് പുറത്തേക്ക് കൊണ്ടുപോകരുത്!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ഒരിക്കലുമില്ല, അമ്മാവാ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "കുറച്ചു നേരത്തേക്ക് മാത്രം...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ഉത്സവപ്പറമ്പിൽ നല്ല രസമായിരിക്കും!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "എന്റെ പട്ടം കണ്ടോ! ഈ നാട്ടിൽ ഏറ്റവും ഉയരത്തിൽ ഇതേ പറക്കൂ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ആണോ? റേഡിയോ, രാജുവിന്റെ മനസ്സിലിരുപ്പ് ഒന്ന് കേൾപ്പിക്കൂ!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "ഗുഡിയ എന്നെക്കാൾ നന്നായി പട്ടം പറത്തും... പക്ഷേ ഞാൻ അത് സമ്മതിക്കില്ല!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ആഹാ! എല്ലാവരും കേട്ടല്ലോ?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "അയ്യേ! ഇത്... ഇതൊരു കള്ള യന്ത്രമാണ്!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "പ്രസാദത്തിൽ കശുവണ്ടി കുറഞ്ഞുപോയി... എന്റെ ദൈവമേ, ആരും അറിയല്ലേ!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "നമ്മടെ പൂജാരിയും!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "രാവിലെ മുതൽ ഒരു ബലൂൺ പോലും വിറ്റില്ല... ഇന്ന് വീട്ടിൽ എന്ത് കൊണ്ടുപോകും?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ബലൂൺ വിൽക്കുന്ന ചേട്ടൻ സങ്കടത്തിലാണ്...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "വാ, നമുക്കെല്ലാവർക്കും ഓരോ ബലൂൺ വീതം വാങ്ങാം!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "കുട്ടികളേ, നാളെ സ്കൂളിൽ സമയത്ത് വരണം. അച്ചടക്കം വളരെ പ്രധാനമാണ്.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "നാളെയും കൂടി അവധിയായിരുന്നെങ്കിൽ... എനിക്ക് സുഖമായി ഉറങ്ങാമായിരുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ഇത്... ഇതാരുടെ ശബ്ദമാണ്?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ദാ കിടക്കുന്നു! അവരുടെ കയ്യിൽ ഏതോ മാന്ത്രിക പെട്ടിയുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ഓടിക്കോ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "നിൽക്കൂ! അത് പൂർണ്ണമായിട്ടില്ല!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "ഓട്ടമത്സരം! എനിക്കിത് ഭയങ്കര ഇഷ്ടമാ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ഷേരു, ഇപ്പോഴല്ല!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "രക്ഷപെട്ടു!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ലല്ലൻ അമ്മാവന്റെ മുഖം കണ്ടിരുന്നോ?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "എല്ലാവരും വലുതായി... ഇപ്പോൾ ആരും കഥ കേൾക്കാൻ വരാറില്ല.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "ഇന്നും കുട്ടികൾക്കായി ലഡു ഉണ്ടാക്കിയിരുന്നു... പക്ഷേ ആരും വന്നില്ല.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "അമ്മൂമ്മ... ഒറ്റക്കിരിക്കുകയാണ്.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "രാവിലെ അമ്മൂമ്മ വിളിച്ചതാ... ഞാൻ പറഞ്ഞു, \"പിന്നെ വരാം\" എന്ന്.",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "നമ്മളെല്ലാവരും ഉത്സവപ്പറമ്പിലായിരുന്നു... അമ്മൂമ്മ ഇവിടെ ഒറ്റക്കും.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "റേഡിയോ പറഞ്ഞത് ശരിയായിരുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ചില കാര്യങ്ങൾ റേഡിയോയിലൂടെയല്ല... അടുത്തിരിക്കുമ്പോൾ മാത്രമേ കേൾക്കാൻ കഴിയൂ.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "അമ്മൂമ്മേ! ഉത്സവം ഞങ്ങൾ ഇങ്ങോട്ട് കൊണ്ടുവന്നു!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ആഹാ! നിങ്ങളെല്ലാവരും മേള കളഞ്ഞിട്ട് ഇങ്ങട് പോന്നോ ട്ടാ?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "സോറി അമ്മൂമ്മേ. രാവിലെ വിളിച്ചപ്പോൾ ഞാൻ വന്നില്ല.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "പോടാ ചെക്കാ... നീ ഇങ്ങട് വന്നല്ലോ, അതുമതിയെനിക്ക് ട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "അമ്മൂമ്മേ, ഒരു കഥ പറഞ്ഞു തരൂ!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "എന്നാ കേട്ടോ... മ്മടെ ആദ്യത്തെ ദീപാവലി കഥ. അന്നീ നാട്ടിൽ കറണ്ടൊന്നും ഇല്ലായിരുന്നു ട്ടാ...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "അന്ന് രാത്രി നാട്ടിൽ മൊത്തം മൺവിളക്കുകളേ ഇണ്ടായിരുന്നുള്ളൂ. മ്മടെ മുത്തശ്ശി മ്മളെ ഒക്കെ അടുത്തിരുത്തിയിട്ട്...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "മ്മളോട് പറയും — സ്നേഹത്തിന്റെ എണ്ണയുണ്ടെങ്കിലേ വിളക്ക് കത്തൂ എന്ന് ട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ഇതാ പിടിച്ചോളൂ അമ്മൂമ്മേ — എന്റെ മിഠായി. ഇന്ന് നല്ല അസ്സൽ മധുരമുള്ളതാ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ഹ ഹ ഹ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "മക്കളേ, ദീപാവലി വെറും വിളക്കല്ല... സ്വന്തം ആളുകളുടെ കൂടെ ഇരിക്കുമ്പോഴാണ് വെളിച്ചം ട്ടാ.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "മാഷേ, ഇന്ന് പുസ്തകമില്ല — ഇന്ന് ദീപാവലിയല്ലേ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ആഹാ... എനിക്കൊരു വിളക്കോ? വർഷങ്ങൾക്ക് ശേഷമാണ് ഒരാൾ...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "അപ്പോ നാളെ അവധിയല്ലേ? <short pause> റേഡിയോ പറഞ്ഞിട്ടുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ഹ ഹ ഹ! ശരി, ശരി... നാളെ പകുതി ദിവസം അവധി!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "അമ്മാവാ, സോറി... ചോദിക്കാതെയാണ് ഞങ്ങൾ യന്ത്രം എടുത്തത്.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "റേഡിയോയുടെ കാര്യമോർത്ത് വിഷമമില്ല മോനേ... ദീപാവലിക്ക് ഞാനും ഒറ്റയ്ക്കായിരുന്നല്ലോ.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ഇനി അങ്ങനെ ഉണ്ടാകില്ല! വരൂ, അമ്മൂമ്മ കഥ പറഞ്ഞു തുടങ്ങുകയാണ്!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ശരിക്കും? വാ പോകാം! പക്ഷേ ആദ്യം... ജിലേബി!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "ഇപ്പോഴെങ്കിലും എനിക്ക് ലഡു കിട്ടുമോ?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ഹ ഹ ഹ! ഇവന് എന്തായാലും കിട്ടും!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

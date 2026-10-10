@@ -1,0 +1,538 @@
+{
+ "lang": "te",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "లల్లన్ స్వీట్లలో సగం చక్కెర, సగం చలాకీ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "అరె! ఇది ఎవరు చెప్పారు?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "నేనైతే... మనసులో కదా అనుకున్నాను!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "బాబాయ్! ఈరోజు ఏ యంత్రం చేస్తున్నావ్?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇది... \"మనసులో మాట రేడియో\"! ఎవరి వైపు తిప్పితే, వాళ్ళ మనసులో మాట వినిపిస్తుంది.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "కానీ ముందు నా \"మాట్లాడే కుక్కర్\" చూడు! పప్పు ఎప్పుడు ఉడుకుతుందో ఇది చెప్తుంది.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "బాబాయ్, ఇది ఎలా మాట్లాడుద్ది?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "బాబాయ్, మీ కుక్కర్ మాట్లాడే ముందే అందరికీ స్నానం చేయించేసింది!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "హెహె... దీనికి కోపం కాస్త ఎక్కువలే. పోనీలే, అసలు యంత్రం చూడు!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "మనసులో మాటా? బాబాయ్, గుండె లబ్-డబ్ అంటుంది కానీ, మాట్లాడుతుందా ఏంటి!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "మాట్లాడుతుంది కన్నా. కానీ ఎవరూ వినరు అంతే.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "చూడండి! మొదటి పరీక్ష — షేరూ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "నాకు కూడా లడ్డూ కావాలి! ఒకటి కాదు, రెండు!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "హహహ! బాబాయ్, ఇది నిజంగానే పనిచేస్తోంది!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "కానీ గుర్తుంచుకోండి, ఇదింకా పూర్తిగా తయారుకాలేదు. దీన్ని ఎవరూ బయటికి తీసుకెళ్లకూడదు!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "అస్సలు తీసుకెళ్లం బాబాయ్!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "కాసేపు అలా తీసుకెళ్దాం...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "జాతరలో భలే సరదాగా ఉంటుంది!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "నా గాలిపటం చూడు! ఊరి మొత్తంలో ఇదే పైకి ఎగురుతుంది!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "అవునా? రేడియో, కాస్త రాజు మనసులో ఏముందో చెప్పు!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "గుడియా నాకంటే బాగా గాలిపటం ఎగరేస్తుంది... కానీ నేను ఒప్పుకోను!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "అదీ! అందరూ విన్నారా?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "అరె! ఇదంతా... ఇదంతా అబద్ధాల యంత్రం!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "ప్రసాదంలో జీడిపప్పులు తగ్గిపోయాయి... దేవుడా, ఎవరికీ తెలియకుండా చూడు!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "పంతులు గారు కూడానా!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "ఉదయం నుంచి ఒక్క బుడగ కూడా అమ్మలేదు... ఈరోజు ఇంటికి ఏం పట్టుకెళ్తాను?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "పాపం, బుడగలాయన చాలా బాధపడుతున్నాడు...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "పదండి, మన దగ్గరున్న డబ్బులతో ఒక్కో బుడగ కొందాం!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "పిల్లలూ, రేపు బడికి టైంకి రావాలి. క్రమశిక్షణ చాలా ముఖ్యం.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "రేపు కూడా సెలవు ఉంటే ఎంత బాగుండు... రోజంతా పడుకునేవాణ్ణి.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ఇది... ఇది ఎవరి గొంతు?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "అదిగో వాళ్లు! వాళ్ల చేతిలో ఏదో మాయా పెట్టె ఉంది!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "పారిపోదాం!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ఆగండి! అదింకా తయారుకాలేదు!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "పరుగు పందెం! నాకు పరుగులంటే చాలా ఇష్టం!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "షేరూ, ఇప్పుడు కాదు!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "హమ్మయ్యా, బతికిపోయాం!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "లల్లన్ బాబాయ్ మొహం చూశారా ఎలా పెట్టాడో?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "అందరూ పెద్దోళ్లయిపోనారు... కథ సెప్పించుకోడానికి ఎవరూ రావట్లేదు.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "ఈరోజు కూడా పిల్లల కోసం సాలా లడ్డూలు సేసేను... కానీ ఎవరూ రాలేదు.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "దాది... ఒంటరిగా కూర్చుంది.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ఉదయం దాది పిలిచింది... నేను మాత్రం \"తర్వాత వస్తా\" అన్నాను.",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "మనమంతా జాతరలో ఉంటే... దాది ఇక్కడ ఒంటరిగా ఉండిపోయింది.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "రేడియో నిజమే చెప్పింది.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "కొన్ని విషయాలు రేడియోతో కాదు... దగ్గరగా కూర్చుంటేనే తెలుస్తాయి.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "దాది! జాతరను మేమే నీ దగ్గరకు తెచ్చేశాం!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ఓలమ్మో! మీరంతా ఇక్కడే ఉన్నారేటి? జాతర విడిసేసి వచ్చేసారా?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "క్షమించు దాది. ఉదయం నువ్వు పిలిచినా నేను రాలేదు.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "అరె పిచ్చోడా... నువ్వు వచ్చేవు కదా, అది సాలులే.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "దాది, ఒక కథ చెప్పవా!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "అయితే సెప్తా వినండి... నా మొదటి దీపావళి కథ. అప్పట్లో ఈ ఊళ్లో కరెంటు కూడా లేదు...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ఆ రాత్రి ఊరంతా దీపాలే వెలిగేవి. మా దాదమ్మ మమ్మల్నందరినీ దగ్గర కూకోబెట్టుకుని...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...సెప్పేది — దీపంలో ప్రేమనే నూనె ఉంటేనే అది వెలుగుతాది.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ఇదిగోండి దాది — నా చేతి మిఠాయి. ఈరోజు పూర్తిగా పంచదారతో చేసింది!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "హహహ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "పిల్లలూ, దీపావళి అంటే దీపాలు కాదు... మనవాళ్లతో కలిసి కూకుంటేనే వెలుగుతాది.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "మాస్టారు, ఈరోజు హోంవర్క్ కాదు — ఈరోజు దీపావళి!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "అరె... నాకోసం దీపమా? చాలా ఏళ్ల తర్వాత ఎవరో...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "మరి రేపు సెలవా? <short pause> రేడియోనే చెప్పింది!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "హహహ! సరేలే, సరేలే... రేపు సగం రోజు సెలవు!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "బాబాయ్, సారీ... మేము నీ యంత్రాన్ని అడగకుండా తీసుకెళ్లాం.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "రేడియో గురించి బాధలేదు నాన్నా... పండగ పూట నేను కూడా ఒంటరిగా అయిపోయానే అని.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఇకపై అలా జరగదు! పదండి, దాది కథ చెబుతోంది!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "నిజమా? పదండి పదండి! కానీ ముందు... జిలేబీ!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "ఇప్పుడైనా లడ్డూ దొరుకుతుందా?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "హహహ! వీడికి మాత్రం ఖచ్చితంగా దొరుకుతుంది!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

@@ -1,0 +1,538 @@
+{
+ "lang": "ta",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "லல்லன் மிட்டாயில பாதி சர்க்கரை, பாதி ஏமாத்து!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "அட! இதை யாரு சொன்னா?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "நான்... நான் மனசுக்குள்ளதானே நினைச்சேன்!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "सिद्धப்பா! இன்னைக்கு என்ன மிஷின் செய்யறீங்க?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "இதுதான்... 'மனசு பேசும் ரேடியோ'! இதை யார் பக்கம் திருப்பினாலும், அவங்க மனசுல நினைக்கிற குரல் கேட்கும்.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ஆனா முதல்ல என் 'பேசும் குக்கரை' பாரு! பருப்பு எப்ப வேகும்னு இதுவே சொல்லிடும்.",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "சித்தப்பா, இது எப்படிப் பேசும்?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ஹி ஹி, சித்தப்பா! உங்க குக்கர் பேசறதுக்கு முன்னாடி எல்லாரையும் நனைச்சிடுச்சு!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ஹி ஹி... இதுக்கு கொஞ்சம் கோவம் ஜாஸ்தி. சரி, இப்ப நிஜமான மிஷினைப் பாருங்க!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "மனசோட குரலா? சித்தப்பா, மனசு லப்டப்னு துடிக்கும், பேசவா செய்யும்?",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "பேசும் செல்லம். ஆனா யாரும் கேட்கறதில்லை.",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "பாரு! முதல் டெஸ்ட் — ஷேரு!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "எனக்கும் லட்டு வேணும்! ஒண்ணு இல்ல, ரெண்டு!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ஹா ஹா ஹா! சித்தப்பா, இது நிஜமாவே வேலை செய்யுது!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ஆனா ஞாபகம் இருக்கட்டும், இது இன்னும் முழுசா ரெடியாகல. இதை யாரும் வெளிய எடுத்துட்டு போகக்கூடாது!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "மாட்டோம் சித்தப்பா!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "கொஞ்ச நேரத்துக்கு மட்டும்...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "திருவிழால செம்ம ஜாலியா இருக்கும்!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "என் பட்டத்தைப் பாருங்க! ஊர்லயே இதுதான் ரொம்ப உயரமா பறக்கும்!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "அப்படியா? ரேடியோ, ராஜுவோட மனசைக் கொஞ்சம் கேளு!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "குடியா என்னைவிட சூப்பரா பட்டம் விடுவா... ஆனா நான் அதை ஒத்துக்கவே மாட்டேன்!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "கேட்டதா எல்லாரும்?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "அய்யய்யோ! இது... இது பொய் சொல்ற மிஷின்!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "பிரசாதத்துல முந்திரி கம்மியாயிடுச்சு... சாமி, யாருக்கும் தெரிஞ்சிடக் கூடாது!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "பூசாரியுமா!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "காலையில இருந்து ஒரு பலூன் கூட விற்கல... இன்னைக்கு வீட்டுக்கு என்ன கொண்டு போவேன்?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "பலூன் விக்கிற அண்ணன் சோகமா இருக்காரு...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "வாங்க, நம்ம காசுல ஆளுக்கு ஒரு பலூன் வாங்கலாம்!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "மாணவர்களே, நாளைக்கு பள்ளிக்கு நேரத்தோடு வரணும். ஒழுக்கம் ரொம்ப முக்கியம்.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "நாளைக்கும் லீவா இருந்தா நல்லா இருக்கும்... நாள் முழுக்க தூங்கலாம்.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "இது... இது யாருடைய குரல்?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "அதோ அங்க! அவங்க கையில ஏதோ மந்திரப் பெட்டி இருக்கு!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ஓடுங்க!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "நில்லுங்க! அது இன்னும் முழுசா ரெடியாகல!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "ஓட்டப் பந்தயம்! எனக்கு ஓடறதுன்னா ரொம்பப் பிடிக்கும்!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ஷேரு, இப்ப வேண்டாம்!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "அப்பாடா, தப்பிச்சோம்!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "லல்லன் மாமாவோட முகத்தைப் பார்த்தீங்களா?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "எல்லாரும் பெருசாயிட்டாய்ங்க... இப்ப கதை கேட்க யாரும் இங்கிட்டு வர்றதில்ல.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "இன்னைக்கும் புள்ளைகளுக்காக லட்டு செஞ்சேன்... ஆனா ஒருத்தனும் இங்கிட்டு வரல.",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "அப்பத்தா... தனியா இருக்காங்க.",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "காலையில அப்பத்தா கூப்பிட்டாங்க... நான் அப்புறமா வர்றேன்னு சொல்லிட்டேன்.",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "நாம எல்லாரும் திருவிழாவுல இருந்தோம்... ஆனா அப்பத்தா இங்க தனியா.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ரேடியோ சொன்னது உண்மைதான்.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "சில விஷயங்கள் ரேடியோவுல கேட்காது... பக்கத்துல உட்கார்ந்தாத்தான் புரியும்.",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "அப்பத்தா! நாங்க திருவிழாவை உங்ககிட்டயே கொண்டு வந்துட்டோம்!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "அடியாத்தி! எல்லாரும் இங்கிட்டு வந்துட்டீங்களா? திருவிழாவை விட்டுட்டா?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "மன்னிச்சிடுங்க அப்பத்தா. காலையில நீங்க கூப்பிட்டும் நான் வரல.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "அட டுபுக்கு... நீ வந்துட்டல்ல, அதுவே போதும்டா.",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "அப்பத்தா, ஒரு கதை சொல்லுங்கப்பா!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "அப்ப கேளுங்க... என்னோட முதல் தீபாவளி கதை. அப்ப இந்த ஊர்ல கரண்ட்டே கிடையாது...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "அன்னைக்கு ராத்திரி ஊர் முழுக்க வெறும் அகல் விளக்குதான் எரியும். என் அப்பத்தா எங்களையெல்லாம் பக்கத்துல உட்கார வச்சு...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...சொல்லுவாங்க — விளக்கு எரியணும்னா, அதுல அன்பான எண்ணெய் ஊத்தணும்னு.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "இந்தாங்க அப்பத்தா — என்னோட மிட்டாய். இன்னைக்கு முழுசா சர்க்கரை போட்டது!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ஹா ஹா ஹா!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "புள்ளைகளா, தீபாவளினா விளக்கு மட்டும் இல்ல... நம்ம சொந்தங்களோடு ஒண்ணா கொண்டாடுறதுதான்.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "மாஸ்டர், இன்னைக்கு நோட்டுப் புத்தகம் இல்ல — இன்னைக்கு தீபாவளி!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "அடடா... எனக்காக ஒரு விளக்கா? ரொம்ப வருஷத்துக்கு அப்புறம் யாரோ...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "நாளைக்கு லீவா? <short pause> ரேடியோ சொல்லிடுச்சே!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ஹா ஹா ஹா! சரி, சரி... நாளைக்கு அரை நாள் லீவு!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "சித்தப்பா, மன்னிச்சிருங்க... நாங்க உங்க மிஷினை கேட்காம எடுத்துட்டோம்.",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ரேடியோ பத்தி கவலை இல்லை கண்ணா... தீபாவளிக்கு நானும் தனியாதானே இருந்தேன்.",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "இனிமே இல்லை! வாங்க, அப்பத்தா கதை சொல்லப் போறாங்க!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "நிஜமாவா? போலாம் போலாம்! ஆனா முதல்ல... ஜிலேபி!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "இப்பவாவது லட்டு கிடைக்குமா?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ஹா ஹா ஹா! இவனுக்கு கண்டிப்பா கிடைக்கும்!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}

@@ -1,0 +1,538 @@
+{
+ "lang": "or",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Lallan",
+   "emotion": "shouting",
+   "radio": true,
+   "text": "ଲଲନର ମିଠାରେ ଅଧା ଚିନି, ଅଧା ଚାଲାକି!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Lallan",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ଆରେ! ଏଇଟା କିଏ କହିଲା?",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Lallan",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ମୁଁ ତ... ମୁଁ ତ ଖାଲି ମନେ ମନେ ଭାବୁଥିଲି!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଦାଦା! ଆଜି କେଉଁ ମେସିନ୍ ତିଆରି କରୁଛ?",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଏଇଟା ହେଉଛି... \"ମନ କଥା କହିବା ରେଡିଓ\"! ଯାହା ଆଡ଼କୁ ବୁଲାଇବ, ତା' ମନ କଥା ଶୁଭିବ।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "କିନ୍ତୁ ଆଗେ ଦେଖ ଏଇ \"କୁହୁକ କୁକର\"! ଏ କହିଦେବ ଡାଲି କେତେବେଳେ ସିଝିବ।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Chhotu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ଦାଦା, ଏ କଥା କୁହେ କେମିତି?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ଦାଦା, ତୁମ କୁକର କହିବା ପୂର୍ବରୁ ସମସ୍ତଙ୍କୁ ଗାଧୋଇ ଦେଲା!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ହି ହି... ଏହାର ରାଗ ଟିକେ ଅଧିକ। ଚାଲ, ଅସଲି ମେସିନ୍ ଦେଖିବା!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Gudiya",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ମନର କଥା? ଦାଦା, ମନ ତ ଧକଧକ ହୁଏ, କଥା କ'ଣ କୁହେ କି!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "କୁହେ ଲୋ ମା'। କିନ୍ତୁ କେହି ଶୁଣନ୍ତି ନାହିଁ।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଦେଖ! ପ୍ରଥମ ପରୀକ୍ଷା — ଶେରୁ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Sheru",
+   "emotion": "mischievous",
+   "radio": true,
+   "text": "ମୋତେ ବି ଲଡ଼ୁ ଦରକାର! ଗୋଟେ ନୁହେଁ, ଦୁଇ!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ହା ହା ହା! ଦାଦା, ଏଇଟା ତ ସତରେ କାମ କରୁଛି!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "serious",
+   "radio": false,
+   "text": "କିନ୍ତୁ ମନେ ରଖ, ଏଇଟା ଏବେ ଯାଏଁ ପୂରା ପ୍ରସ୍ତୁତ ନାହିଁ। ବାହାରକୁ କେହି ନେବନି!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ଜମା ବି ନୁହେଁ, ଦାଦା!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ଖାଲି ଅଳ୍ପ ସମୟ ପାଇଁ...",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chhotu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ମେଳାରେ ଭାରି ମଜା ହେବ!",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Raju",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଦେଖ ମୋ ଗୁଡ଼ି! ସାରା ଗାଁରେ ସବୁଠୁ ଉପରକୁ ଉଡ଼ିବ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ହଁ କି? ରେଡିଓ, ଟିକେ ରାଜୁର ମନ କଥା ଶୁଣାଅ!",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": true,
+   "text": "ଗୁଡ଼ିଆ ମୋଠୁ ଭଲ ଗୁଡ଼ି ଉଡ଼ାଏ... କିନ୍ତୁ ମୁଁ ଏହା କେବେ ମାନିବିନି!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Gudiya",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଶୁଣିଲ ତ ସଭିଏଁ?",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ଆରେ! ଏ... ଏଇଟା ଗୋଟେ ମିଛ ମେସିନ୍!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Pandit",
+   "emotion": "worried",
+   "radio": true,
+   "text": "ପ୍ରସାଦରେ କାଜୁ କମିଗଲା... ହେ ଭଗବାନ, କେହି ଯେମିତି ଜାଣି ନ ପାରନ୍ତି!",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ପଣ୍ଡିତ ନନା ବି!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Lallan",
+   "emotion": "Balloon-wala's heart, tired",
+   "radio": true,
+   "text": "ସକାଳୁ ଗୋଟିଏ ବି ବେଲୁନ୍ ବିକ୍ରି ହେଲାନି... ଆଜି ଘରକୁ କ'ଣ ନେବି?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ବେଲୁନ୍‌ବାଲା ଭାଇ ଉଦାସ ଅଛନ୍ତି...",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ଚାଲ, ଆମେ ନିଜ ପଇସାରେ ଗୋଟେ ଲେଖାଏଁ ବେଲୁନ୍ କିଣିବା!",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Masterji",
+   "emotion": "neutral",
+   "radio": false,
+   "text": "ପିଲାମାନେ, କାଲି ସ୍କୁଲ୍ ଠିକ୍ ସମୟରେ ଆସିବ। ଶୃଙ୍ଖଳା ବହୁତ ଜରୁରୀ।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Masterji",
+   "emotion": "nostalgic",
+   "radio": true,
+   "text": "କାଶ୍ କାଲି ବି ଛୁଟି ହୋଇଥାନ୍ତା... ଆଉ ମୁଁ ସାରା ଦିନ ଶୋଇଥାନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Masterji",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ଏଇଟା... ଏଇଟା କାହାର ସ୍ୱର?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Lallan",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ସେଇଠି ଅଛନ୍ତି! ସେମାନଙ୍କ ହାତରେ କିଛି ଯାଦୁ ବାକ୍ସ ଅଛି!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Gudiya",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ଦୌଡ଼!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ରୁହ! ସେଇଟା ଏବେ ଯାଏଁ ପ୍ରସ୍ତୁତ ନାହିଁ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Sheru",
+   "emotion": "excited",
+   "radio": true,
+   "text": "ଦୌଡ଼! ମୋତେ ଦୌଡ଼ିବାକୁ ଭାରି ଭଲ ଲାଗେ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Chhotu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ଶେରୁ, ଏବେ ନୁହେଁ!",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Chhotu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ରକ୍ଷା ପାଇଲୁ!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ଲଲନ ଦାଦାଙ୍କ ମୁହଁ ଦେଖିଥିଲ?",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Dadi",
+   "emotion": "lonely",
+   "radio": true,
+   "text": "ସଭିଏଁ ବଡ଼ ହେଲେଣି... କେହି କାହାଣୀ ଶୁଣିବାକୁ ଆସୁନାହାନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Dadi",
+   "emotion": "sad",
+   "radio": true,
+   "text": "ଆଜି ବି ପିଲାଙ୍କ ପାଇଁ ଲଡ଼ୁ ତିଆରି କରିଥିଲି... କିନ୍ତୁ କେହି ଆସିଲେନି।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Gudiya",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ଜେଜେମା... ଏକୁଟିଆ ବସିଛନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ସକାଳେ ଜେଜେମା ଡାକିଥିଲେ... ମୁଁ କହିଲି, \"ପରେ ଯିବି, ଜେଜେମା।\"",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Lallan",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ଆମେ ସମସ୍ତେ ମେଳାରେ ଥିଲୁ... ଆଉ ଜେଜେମା ଏଠି ଏକୁଟିଆ।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ରେଡିଓ ସତ କଥା କହିଥିଲା।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "loving",
+   "radio": false,
+   "text": "କିଛି କଥା ରେଡିଓରୁ ନୁହେଁ... ପାଖରେ ବସିଲେ ହିଁ ଶୁଭିଥାଏ।",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ଜେଜେମା! ମେଳାକୁ ତୁମ ପାଖକୁ ନେଇଆସିଲୁ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ଆରେ! ତୁମେ ସଭେ ଇନେ? ମେଲା ଛାଡ଼ି କରି?",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ଦୁଃଖିତ ଜେଜେମା। ସକାଳେ ତୁମେ ଡାକିଥିଲ ଆଉ ମୁଁ ଆସିଲିନି।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଆରେ ବାୟା... ତୁଇଁ ଆସିଲୁ, ଏତକି ବହୁତ୍।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଜେଜେମା, କାହାଣୀ ଶୁଣାଅ ନା!",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ହେଲେ ଶୁନ୍... ମୋର୍ ପହେଲି ଦିହାର୍ କାହାନୀ। ସେତେବେଲେ୍ ଇ ଗାଁନେ ବିଜୁଲି ବି ନାଇଁଥିଲା...",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Dadi",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ସେ ରାତିର୍ ସାରା ଗାଁନେ ଖାଲି ଦିଆ ଜଲୁଥିଲା। ମୋର୍ ବୁଢ଼ୀମା ଆମକୁ ପାଖେ ବସଉଥିଲେ...",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "...ଆରୁ କହୁଥିଲେ - ଦିଆ ସେଭ୍‌ଲେ୍ ଜଲେ, ଯେଭ୍‌ଲେ୍ ସେଥିର୍ ସ୍ନେହର୍ ତେଲ୍ ଥିବା।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ଆଉ ଏଇଟା ନିଅନ୍ତୁ ଜେଜେମା — ମୋ ମିଠା। ଆଜି ପୂରା ଚିନି ଦିଆ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Chhotu",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ହା ହା ହା!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ବାବୁରେ, ଦିହାର୍ ଖାଲି ଦିଆନେ ନାଇଁ... ନିଜର୍ ଲୋକର୍ ସାଙ୍ଗେ ବସଲେ ଜଲ୍‌ସି।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Gudiya",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ମାଷ୍ଟ୍ରେ, ଆଜି ଖାତା ନୁହେଁ — ଆଜି ଦୀପାବଳି!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Masterji",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଆରେ... ମୋ ପାଇଁ ଦୀପ? ବହୁତ ବର୍ଷ ପରେ କିଏ...",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ଆଉ କାଲି ଛୁଟି? <short pause> ରେଡିଓ କହିଥିଲା!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Masterji",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ହା ହା ହା! ହଉ ହଉ... କାଲି ଅଧା ଦିନ ଛୁଟି!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Chhotu",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ଦାଦା, ଦୁଃଖିତ... ଆମେ ତୁମ ମେସିନ୍ ନ ପଚାରି ନେଇଗଲୁ।",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ରେଡିଓ କଥା ଚିନ୍ତା ନଥିଲା ପୁଅ... ଦୀପାବଳିରେ ମୁଁ ବି ତ ଏକୁଟିଆ ଥିଲି।",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଆଉ ନୁହେଁ! ଚାଲନ୍ତୁ, ଜେଜେମା କାହାଣୀ କହୁଛନ୍ତି!",
+   "request": 1
+  },
+  {
+   "id": 64,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ସତେ? ଚାଲ ଚାଲ! କିନ୍ତୁ ଆଗେ... ଜିଲାପି!",
+   "request": 1
+  },
+  {
+   "id": 65,
+   "speaker": "Sheru",
+   "emotion": "pleading",
+   "radio": true,
+   "text": "ଏବେ ତ ଲଡ଼ୁ ମିଳିବ?",
+   "request": 1
+  },
+  {
+   "id": 66,
+   "speaker": "Jugaadu Chacha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ହା ହା ହା! ୟାକୁ ତ ନିଶ୍ଚୟ ମିଳିବ!",
+   "request": 1
+  }
+ ],
+ "groups": 1
+}
