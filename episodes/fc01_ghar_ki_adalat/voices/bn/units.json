@@ -1,0 +1,946 @@
+{
+ "lang": "bn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "আমার আচারের বয়ামটা গেল কোথায়? ত্রিশ বছর ধরে তো ওই তাকটাতেই রাখা ছিল!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "মাঝি, আমি ওটাতে হাতও দিইনি। সত্যি দিব্যি বলছি!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "হ্যাঁ হ্যাঁ, বয়ামের ডানা গজিয়েছে তো! ওমা, রাতে উড়ে বুঝি তীর্থ করতে গেল!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "হ্যালো ফলোয়ার্স! লাইভ দেখুন, শাশুড়ি-বউমার মহাযুদ্ধ, এপিসোড এক!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> নেহা, ফোন বন্ধ কর্! পুরা পাড়ার লোক দেখে লিবে রে!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ভাইয়া, পুরো পাড়া দেখছে না। <short pause> মোটে তিনজন লোক দেখছে।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "কিন্তু আমার সিসিটিভি সব দেখছে! সব রেকর্ড হচ্ছে!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "মহেশ, তুই বল তো। তোর মা ঠিক, না তোর বউ ঠিক?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "মা... মুই... <laugh> আজকের আবহাওয়াটা কেমন খাসা, না?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ব্যস! অর্ডার! অর্ডার!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "রোজ রোজের এই ঝগড়া অনেক হয়েছে। আজ এই বাড়িতে আদালত বসবে!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "এই স্টিলের থালাটা আমার হাতুড়ি। এইটা দাদুর চশমা। আর এই সোফাটা, সাক্ষীর কাঠগড়া!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "দাদু মন্দিরে গেছেন। <short pause> ওনার চশমাটা আদালত বাজেয়াপ্ত করেছে।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> বাহ্ রে জজ সাহেবা! আইজ আর সিরিয়াল টিভিতে না, ঘরের মইধ্যেই চলবো!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আর আমি আদালতের সিসিটিভি ইনচার্জ! আমার ক্যামেরার নজর কেউ এড়াতে পারবে না।",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "এই ক্যামেরায় লেন্সের জায়গায় বোতলের ছিপি লাগানো আছে!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ছিপি নয়, এটা জুম লেন্স!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "বাবা, তুমি কার দিকে? মাম্মার দিকে, না ঠাকুমার দিকে?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "মুই? মুই তো সুইজারল্যান্ড! একেবার মাঝখানে, পুরা নিউট্রাল!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "তাহলে নিউট্রাল মশাই, কাঠগড়া থেকে সরুন। এবার কেস শুরু হচ্ছে।",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "মামলা নম্বর এক। কমলা দেবী বনাম সুনীতা। অভিযোগ, ত্রিশ বছর ধরে আগলে রাখা আচারের বয়াম গায়েব করা!",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ওটা শুধু বয়াম ছিল না, জজ সাহেবা। <short pause> ওর মধ্যে এই বাড়ির আসল স্বাদ ছিল।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আর আমি নির্দোষ, জজ সাহেবা। প্রমাণ থাকলে প্রমাণ দেখান!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "বেশ। আগে অভিযোগকারী বলবেন। ঠাকুমা, বলুন কাল রাতে কী হয়েছিল।",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "কাল রাতে রান্নাঘরে ছিলাম। তখনই এ এল, আর আমার বয়ামের দিকে এমন করে তাকাল, ঠিক যেন সিরিয়ালের খলনায়িকা!",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> এই পুরনো বয়াম... এটাকে তো আমি ফেলে দেব!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "অবজেকশন! <gasp> ওমা, আমি ওভাবে কবে হাসি? আর রান্নাঘরে বাজ আবার কে ফেলে?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> অবজেকশন মঞ্জুর। ঠাকুমা, বাজটাজ ছাড়ুন, সত্যিটা বলুন।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> আচ্ছা, বাজ পড়েনি মানছি। তবে এ বলেছিল, এই বয়ামটা বদলে ফেলো।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আমি বলেছিলাম এতে ফাটল ধরেছে, নিচে তেল চুইয়ে পড়ছে। সে তো অন্য কথা!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "আর আমিও তো বলেছিলাম, এই বয়াম এ বাড়িতে তোমার আগে এসেছে। সেটাও তো অন্য কথা!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> দু’জনের কথাই যদি আলাদা, তবে ঝগড়াটা এক কেন?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "পরবর্তী সাক্ষী, নেহা পিসি! কাঠগড়ায় আসুন।",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "এসে গেছি! বন্ধুরা, এবার তোমাদের নেহা সাক্ষ্য দেবে। লাইক করতে থাকো!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "কাল রাত দশটায় আমি এমন কিছু দেখেছি... <short pause> যা কোনো সিরিয়ালেও ঘটে না।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "বউদি চুপিচুপি একটা বড় বাক্স নিয়ে এল। এদিক দেখল, ওদিক দেখল, আর আলমারিতে লুকিয়ে ফেলল!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আর এই যে প্রমাণ! সেই বাক্সটা, যেটা আলমারি থেকে উদ্ধার হয়েছে।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ওমা, নতুন বয়াম? অবিকল আমারটার মতো দেখতে!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> তার মানে আসল সরিয়ে নকল রাখা হলো! এ তো সিনেমার মতো কাণ্ড!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "মাম্মা, এই বয়ামটা কোথা থেকে এল?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> হ্যাঁ, আমিই আনিয়েছিলাম। অনলাইনে। পুরনোটাতে ফাটল দেখে।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "কিন্তু পুরনোটা তো আমি ফেলিনি, জজ সাহেবা। ভেবেছিলাম চুপিচুপি আচারটা ঢেলে দেব, মাঝি টেরও পাবেন না।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> টেরও পাব না? <short pause> ত্রিশ বছরের স্মৃতি এখন অনলাইনে কিনতে পাওয়া যায়?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "বন্ধুরা, কমেন্টে ঝটপট জানাও, বউদি দোষী নাকি নির্দোষ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "পরবর্তী সাক্ষী, বাবা! পালাবার চেষ্টা একদম কোরো না।",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> মুই তো একটু জল খাইতে যাউচিলাম।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "কাল রাতে তুমি কী দেখেছ?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "মুই দেখলাম যে এ ঘরের সব্বাই একে অপরে খুব ভালোবাসে।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "মা সুনীতার তারিফ করছিল, সুনীতা মায়ের। আর মুই মাঝে হিরোর মতো দাঁড়ায়ে থিলাম।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ভাইয়া, কাল রাত ন’টা থেকেই তো তুমি নাক ডেকে ঘুমাচ্ছিলে!",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "আর নায়কবাবু তো কাল রাতে নিজের চা-টুকু নিজে বানায়নি।",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ওরে, নাক ডাকাও তো শান্তির প্রতীক গো! মুই কারুর দিকে নাই!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> এ সাক্ষী বেকার। যান আপনি, সুইজারল্যান্ড মশাই।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "জজ দিদি! আসল প্রমাণ তো আমার সিসিটিভিতে আছে! রাত দুটোর রেকর্ডিং!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> তুই রাত দুটোয় জেগে ছিলিস?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> বাথরুম পেয়েছিল। তবে আমার ক্যামেরা সবসময় তৈরি থাকে!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> জজ সাহেবা, সাক্ষীর প্রস্রাবের কথাও রেকর্ডে লিখে রাখুন!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "চারদিক অন্ধকার। তখন এল একটা ভূত! সাদা কাপড়, ধীর পায়ে... ঠক্, ঠক্, ঠক্!",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ভূতটা বয়াম তুলে গায়েব হয়ে গেল! আমি তো ভয়ে লেপের তলায় ঢুকে গেলাম!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ভূত? <gasp> বাড়িতে ভূত? বন্ধুরা, এটা তো পুরো ভাইরাল হয়ে যাবে!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "দাঁড়াও। ঠক্, ঠক্, ঠক্? ভূতের হাতে লাঠি ছিল?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> আইজ পাঙ্খাটা কেমন আস্তে ঘুরতাছে না...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> আম্মাজি... আপনি?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "বড় ঠাকুমা, আপনি প্রবীণ নাগরিক। আপনি নিজের চেয়ারে বসেই সাক্ষ্য দিন।",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "হ রে মাইয়া, বয়ামখান আমিই নিছিলাম। <short pause> ওর ফাটলডা তো রোজ বাড়তাছিল।",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ভাবলাম, কোনোদিন যদি কমলার হাতেই ভাইঙ্গা যায়? তাই উঠানে তুলসীতলায় লুকাইয়া রাখছি।",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "তাহলে আপনি আমায় বললেন না কেন, আম্মাজি? <short pause> আমি সকাল থেকে সুনীতার ওপর চেঁচিয়ে মরছি!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ডরাইয়া গেসিলাম রে কমলা। <short pause> এই বয়সেও একটা বয়ামরে এত ডর লাগে!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "প্রমাণ আদালতে পেশ করা হোক!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আমি নিয়ে আসছি, জজ সাহেবা।",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> ত্রিশ বছর আগে, যেদিন আম্মাজি আমায় রান্নাঘরের দায়িত্ব দিলেন, এই বয়ামটাই আমার হাতে দিয়েছিলেন।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "আইজ থেইকা এই বয়াম তর। এইডা এ বাড়ির ইজ্জত। ভাঙলে মনে করবি সংসার ভাঙলো।",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "দশ বছর এ বাড়িতে অতিথির মতো কাটিয়েছিলাম। <sigh> সেদিন প্রথম মনে হলো, আমিও এই পরিবারের একজন।",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ঠাকুমা, ত্রিশ বছর আগেও কি তুমি অবিকল এরকমই দেখতে ছিলে?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> গোলু, স্মৃতিতে সবাই আজকের চেহারাতেই ধরা দেয় রে।",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ত্রিশ বছর ধরে একে বাচ্চার মতো আগলে রেখেছি। এটার সঙ্গেই তো এ বাড়ির আপনত্বটা পেয়েছি।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "মাঝি... <short pause> আমার সত্যি জানা ছিল না। আমি তো কেবল একটা বয়াম বদলাতে চেয়েছিলাম।",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "না রে কমলা। এহন পুরা সত্যডা শুইনা নে।",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ওই বয়ামটা আসল না।",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> মানে? কী বলছেন আম্মাজি?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ষাইট বছর আগে আমিও নতুন বউ আছিলাম। <sigh> আমার শাশুড়ির আসল বয়ামডা হাত থেইকা পইড়া ভাইঙ্গা গেসিল।",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "আমি তো ডরে কাইপা উঠসিলাম। হেই দুপুরেই বাজারে গেলাম, অবিকল একরকম বয়াম কিইনা আচার ভইরা তাকে তুইলা রাখলাম।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> আর আমার শাশুড়ি শেষ পর্যন্ত কিসুই টের পায় নাই!",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "তাহলে যেটাকে ত্রিশ বছর ধরে পুজো করে আসছি... <short pause> ওটা বাজারের সস্তা বয়াম?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> তলায় তো লেখা আছে, খুরজা বাজার, দুই টাকা!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> দুই টাকার বয়াম নিয়ে তিন প্রজন্মের যুদ্ধ!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> তার মানে মুই ছোটবেলা থিক্যা বাজারের বয়ামের আচার খাচ্ছি?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> আমি কখনো শাশুড়িরে জিগাই নাই একটা বয়ামের লাইগা এত রাগ ক্যান। <short pause> খালি হেই ডরটাই তরে ধরাইয়া দিছিলাম।",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "আর আমিও কোনোদিন আপনাকে জিজ্ঞেস করিনি যে আপনি নিজে কখনো এ আচার খান না কেন।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ক্যাননা প্রতি লোকমায় নিজের চুরির কথা মনে পইড়া যাইতো!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "আদালত রায় শোনাচ্ছে। ঠাকুমা দোষী। মাম্মাও দোষী। দু’জনেই একই অপরাধ করেছেন।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> দু’জনেই? কী অপরাধ, জজ সাহেবা?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আপনারা একে অপরকে কখনোই \"কেন\" জিজ্ঞেস করেননি।",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ঠাকুমা জিজ্ঞেস করেননি মাম্মা কেন বয়ামটার পেছনে লেগেছে। মাম্মাও জিজ্ঞেস করেনি ঠাকুমার কাছে বয়ামটা কেন এত জরুরি।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আর বড় ঠাকুমা ষাট বছর চুপ করে ছিলেন। শাস্তি সব্বাই পাবে!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> যাক বাবা, মুই তো বাঁইচে গেনু।",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "বাবা, চুপ থাকাও একটা অপরাধ। আচারের সব ক’টা আম তুমি কাটবে।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> পুরা দশ কিলো?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আর ঠাকুমা ও মাম্মা মিলে নতুন বয়ামে নতুন আচার বানাবে। আর দিনে একবার অন্তত একজন আরেকজনকে জিজ্ঞেস করবে, \"কেন?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "সুনীতা, তুই নতুন বয়াম কেন আনিয়েছিলি রে?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "কারণ আপনি ওই বয়ামটাকে খুব ভালোবাসেন, মাঝি। আমি চাইনি ওটা আপনার হাতে ভেঙে যাক।",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "আর আপনি? ওটা আপনার এত প্রিয় কেন ছিল?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "কারণ ওই বয়ামটাই যে আমায় এ বাড়ির একজন করে তুলেছিল।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আজ থেকে নতুন বয়াম আমাদের দু’জনের। আর ভেঙে গেলেও নতুন আনব, ঘর ভাঙবে না।",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ষাইট বছর বাদে আইজ পরানডা জুড়াইল।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আদালত মুলতুবি!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "সর্ষের তেল আগে গরম করবে, তারপর ঠান্ডা। তাড়াহুড়ো একদম করবে না কিন্তু।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "কেন, মাঝি?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> বাহ্! আজকের প্রথম \"কেন\"! কারণ বেশি গরম তেলে মশলা পুড়ে যায়।",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "নুন একটু বেশি কইরা দিস। <short pause> আমার শাশুড়িও বেশি দিতো।",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> আম্মাজি, এবার আপনার শাশুড়ির সব কথাতেই আগে জিজ্ঞেস করব, কেন?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আর আইজ মুইও পয়লাবার গোটে পক্ষ বাছলম। আচারের পক্ষ!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "বন্ধুরা, শাশুড়ি-বউমার মহাযুদ্ধ, এপিসোড দুই! আচার মহামিলন!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আর সিসিটিভিতে সব রেকর্ড হচ্ছে!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> এইবার কিন্তু আমি ভাঙি নাই! আমার হাত তো এইখানে!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ওটা... সিসিটিভি তো বন্ধ ছিল।",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "আদালত আবার শুরু!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

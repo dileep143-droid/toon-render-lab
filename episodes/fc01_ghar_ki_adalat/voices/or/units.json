@@ -1,0 +1,946 @@
+{
+ "lang": "or",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ମୋ ଆଚାର ବୟମ କୁଆଡ଼େ ଗଲା ବା? ତିରିଶ ବର୍ଷ ହେଲା ସେଇ ଥାକରେ ଥୁଆ ହେଇଥିଲା!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ବୋଉ, ମୁଁ ସେଥିରେ ହାତ ବି ମାରିନି। ସତ କହୁଛି, ଧର୍ମ ଛୁଇଁ କହୁଛି!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ହଁ ହଁ, ବୟମର ଡେଣା ଉଠିଥିବ ନା କିଅଣ! ରାତିରେ ଉଡ଼ିକି ତୀର୍ଥ କରିବାକୁ ପଳେଇଲା!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ହାଲୋ ଫଲୋଅର୍ସ! ଲାଇଭ୍ ଦେଖନ୍ତୁ, ଶାଶୁ-ବୋହୂ ମହାଯୁଦ୍ଧ, ଅଧ୍ୟାୟ ଏକ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ନେହା, ଫୋନ୍ ବନ୍ଦ କର! ପୂରା ସାହି ପଡ଼ିଶା ଦେଖିନେବେ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ଭାଇ, ପୂରା ସାହି ଦେଖୁନାହାନ୍ତି। <short pause> ମାତ୍ର ତିନି ଜଣ ଲୋକ ଦେଖୁଛନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ହେଲେ ମୋ ସିସିଟିଭି ସବୁ ଦେଖୁଛି! ସବୁ ରେକର୍ଡ ହେଉଛି!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ମହେଶ, ତୁ କହ ବା। ତୋ ବୋଉ ଠିକ୍ କହୁଛି ନା ତୋ ସ୍ତ୍ରୀ?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ବୋଉ... ମୁଁ... <laugh> ଆଜି ପାଗଟା କେତେ ବଢ଼ିଆ ହେଇଛି ନା?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ବସ୍! ଅର୍ଡ଼ର! ଅର୍ଡ଼ର!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ରୋଜ୍ ରୋଜ୍ କଳିଝଗଡ଼ା ବହୁତ ହେଲାଣି। ଆଜି ଏଇ ଘରେ ଅଦାଲତ ବସିବ!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଏଇ ଷ୍ଟିଲ୍ ଥାଳି ମୋ ହାତୁଡ଼ି। ଏଇଟା ଜେଜେବାପାଙ୍କ ଚଷମା। ଆଉ ଏଇ ସୋଫା, ସାକ୍ଷୀ କାଠଗଡ଼ା!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ଜେଜେବାପା ମନ୍ଦିର ଯାଇଛନ୍ତି। <short pause> ତାଙ୍କ ଚଷମା ଅଦାଲତ ଜବତ କରିନେଇଛି।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ବାଃ ରେ ଜଜ୍ ସାହେବା! ଆଜି ସିରିଏଲ୍ ଟିଭିନେ ନାଇଁ, ଘରେ ହିଁ ଚାଲ୍‌ବା।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଆଉ ମୁଁ ଅଦାଲତର ସିସିଟିଭି ଇନଚାର୍ଜ! ମୋ କ୍ୟାମେରାରୁ କେହି ବଞ୍ଚିପାରିବେନି।",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ଏଇ କ୍ୟାମେରାରେ ଲେନ୍ସ ବଦଳରେ ବୋତଲ ଠିପି ଲାଗିଛି।",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ଠିପି ନୁହେଁ, ଜୁମ୍ ଲେନ୍ସ ସେଇଟା!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ବାପା, ତମେ କାହା ପଟେ? ବୋଉ ପଟେ ନା ଜେଜେମା ପଟେ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ମୁଁ? ମୁଁ ସ୍ୱିଜରଲ୍ୟାଣ୍ଡ! ପୂରା ମଝିରେ, ଏକଦମ୍ ନିରପେକ୍ଷ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ତାହେଲେ ନିରପେକ୍ଷ ବାବୁ, ସାକ୍ଷୀ କାଠଗଡ଼ାରୁ ହଟନ୍ତୁ। କେସ୍ ଆରମ୍ଭ ହେଉଛି।",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ମକଦ୍ଦମା ନମ୍ବର ଏକ। କମଳା ଦେବୀ ବନାମ ସୁନୀତା। ଅପରାଧ, ତିରିଶ ବର୍ଷର ଆଚାର ବୟମ ଗାଏବ କରିବା।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ସେଇଟା ଖାଲି ବୟମ ନଥିଲା ବା, ଜଜ୍ ସାହେବା। <short pause> ସେଥିରେ ଏ ଘରର ସୁଆଦ ଥିଲା।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ଆଉ ମୁଁ ନିର୍ଦ୍ଦୋଷ, ଜଜ୍ ସାହେବା। ପ୍ରମାଣ ଅଛି ଯଦି ପ୍ରମାଣ ଦେଖାନ୍ତୁ।",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଠିକ୍ ଅଛି। ଆଗ ଅଭିଯୋଗକାରିଣୀ କହିବେ। ଜେଜେମା, କୁହନ୍ତୁ କାଲି ରାତିରେ କ’ଣ ହେଲା।",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "କାଲି ରାତିରେ ମୁଁ ରୋଷେଇଘରେ ଥିଲି। ଏତିକିବେଳେ ୟେ ଆସିଲା, ଆଉ ମୋ ବୟମକୁ ଏମିତି ଅନେଇଲା, ଯେମିତି ସିରିଏଲର ଖଳନାୟିକା!",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ଏଇ ପୁରୁଣା ବୟମଟା... ୟାକୁ ତ ମୁଁ ଫୋପାଡ଼ି ଦେବି!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ଅବଜେକ୍ସନ! <gasp> ମୁଁ ଏମିତି କେବେ ହସେ? ଆଉ ରୋଷେଇଘରେ ବିଜୁଳି କିଏ ଚମକାଏ?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ଅବଜେକ୍ସନ ମଞ୍ଜୁର। ଜେଜେମା, ବିଜୁଳି ଛାଡ଼ନ୍ତୁ, ସତ କଥା କୁହନ୍ତୁ।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ଆଚ୍ଛା ବା, ବିଜୁଳି ଚମକି ନଥିଲା। ହେଲେ ୟେ କହିଲା, ଏ ବୟମ ବଦଳେଇ ଦିଅ।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ମୁଁ କହିଥିଲି ସେଥିରେ ଫାଟ ଅଛି, ତଳୁ ତେଲ ବୋହୁଛି। ସେ କଥା ତ ଅଲଗା!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ଆଉ ମୁଁ କହିଥିଲି, ଏ ବୟମ ତୋ ଆସିବା ପୂର୍ବରୁ ଏ ଘରକୁ ଆସିଥିଲା। ସେ କଥା ବି ଅଲଗା!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ଦୁହିଁଙ୍କ କଥା ଅଲଗା ଅଲଗା, ତେବେ ଝଗଡ଼ା ଗୋଟାଏ କାହିଁକି?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ପରବର୍ତ୍ତୀ ସାକ୍ଷୀ, ନେହା ପିଉସୀ! କାଠଗଡ଼ାକୁ ଆସ।",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଆସିଗଲି! ସାଙ୍ଗମାନେ, ଏବେ ତମ ନେହା ସାକ୍ଷୀ ଦେବ। ଲାଇକ୍ କରୁଥାନ୍ତୁ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "କାଲି ରାତି ଦଶଟାରେ ମୁଁ ଏମିତି କିଛି ଦେଖିଲି... <short pause> ଯାହା କୌଣସି ସିରିଏଲରେ ବି ହୁଏନି।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ଭାଉଜ ଚୁପ୍‌ଚାପ୍ ଗୋଟେ ବଡ଼ ଡବା ଧରି ଆସିଲେ। ଏପଟ ସେପଟ ଚାହିଁଲେ, ଆଉ ଆଲମାରିରେ ଲୁଚେଇ ଦେଲେ!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଆଉ ଏଇ ରହିଲା ପ୍ରମାଣ! ସେଇ ଡବା, ଯୋଉଟା ଆଲମାରିରୁ ଜବତ ହେଲା।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ନୂଆ ବୟମ? ପୂରା ମୋ ବୟମ ଭଳିଆ ଦିଶୁଛି ନା!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ମାନେ ଅସଲି ଜାଗାରେ ନକଲି ଥୋଇଦେଲେ! ୟେ ତ ସିନେମା ଭଳିଆ ଖେଳ!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ବୋଉ, ଏ ବୟମ କୋଉଠୁ ଆସିଲା?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ହଁ, ମୁଁ ମଗେଇଥିଲି। ଅନଲାଇନ୍‌ରୁ। ପୁରୁଣା ବୟମର ଫାଟ ଦେଖିକି।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ହେଲେ ପୁରୁଣାଟା ମୁଁ ଫିଙ୍ଗିନି, ଜଜ୍ ସାହେବା। ଭାବିଥିଲି ଚୁପ୍‌କିନା ଆଚାର ବଦଳେଇ ଦେବି, ବୋଉ ଜାଣି ବି ପାରିବେନି।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ଜାଣି ବି ପାରିବିନି? <short pause> ତିରିଶ ବର୍ଷର ସ୍ମୃତି ଏବେ ଅନଲାଇନରେ ମିଳୁଛି କିଅଣ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ସାଙ୍ଗମାନେ, କମେଣ୍ଟରେ କୁହନ୍ତୁ, ଭାଉଜ ଦୋଷୀ ନା ନୁହନ୍ତି!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ପରବର୍ତ୍ତୀ ସାକ୍ଷୀ, ବାପା! ଖସି ପଳେଇବାକୁ ଚେଷ୍ଟା କରନ୍ତୁନି।",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ମୁଁ ତ ଖାଲି ପାଣି ଟିକେ ପିଇବାକୁ ଯାଉଥିଲି।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "କାଲି ରାତିରେ ତମେ କ’ଣ ଦେଖିଲ?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ମୁଁ ଦେଖିଲି ଏ ଘରେ ସମସ୍ତେ ପରସ୍ପରକୁ ବହୁତ ଭଲ ପାଆନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ବୋଉ ସୁନୀତାର ପ୍ରଶଂସା କରୁଥିଲା, ସୁନୀତା ବୋଉର। ଆଉ ମୁଁ ମଝିରେ ହିରୋ ଭଳି ଠିଆ ହେଇଥିଲି।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ଭାଇ, କାଲି ରାତି ନଅଟାରୁ ତ ତମେ ଘୋଡ଼ା ଶୋଉଥିଲ, ଘୁଙ୍ଗୁଡ଼ି ମାରୁଥିଲ!",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ଆଉ ହିରୋ ବାବୁ କାଲି ରାତିରେ ନିଜ ପାଇଁ ଚାହା ଟୋପେ ବି ବନେଇ ନାହାନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ଘୁଙ୍ଗୁଡ଼ି ବି ତ ଶାନ୍ତିର ବାର୍ତ୍ତା! ମୁଁ କାହା ପଟେ ବି ନାହିଁ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> ସାକ୍ଷୀ ବେକାର। ଯାଅ, ସ୍ୱିଜରଲ୍ୟାଣ୍ଡ ବାବୁ।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଜଜ୍ ଦିଦି! ଅସଲି ପ୍ରମାଣ ତ ମୋ ସିସିଟିଭିରେ ଅଛି! ରାତି ଦୁଇଟାର ରେକର୍ଡିଂ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ତୁ ରାତି ଦୁଇଟାରେ ଉଠିଥିଲୁ?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ପରିସ୍ରା ଲାଗିଥିଲା। ହେଲେ ମୋ କ୍ୟାମେରା ସବୁବେଳେ ରେଡି ଥାଏ!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ଜଜ୍ ସାହେବା, ସାକ୍ଷୀର ପରିସ୍ରା କଥା ବି ରେକର୍ଡରେ ଲେଖିନିଅନ୍ତୁ!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ଅନ୍ଧାର ଥିଲା। ତା’ପରେ ଗୋଟେ ଭୂତ ଆସିଲା! ଧଳା ଲୁଗା, ଧୀରେ ଧୀରେ ପାଦ, ଠକ୍, ଠକ୍, ଠକ୍!",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ଭୂତ ବୟମ ଉଠେଇ ନେଲା ଆଉ ଉଭାନ! ମୁଁ ଡରିକି କନ୍ଥା ଭିତରେ ପଶିଗଲି!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ଭୂତ? <gasp> ଘରେ ଭୂତ? ସାଙ୍ଗମାନେ, ଏଇଟା ତ ଭାଇରାଲ୍ ହେଇଯିବ!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ରୁହ। ଠକ୍, ଠକ୍, ଠକ୍? ଭୂତ ପାଖରେ ବାଡ଼ି ଥିଲା କି?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ଆଜ୍ ପଙ୍ଖା କେତେ ଧୀରେ ଚାଲୁଛେ ନା...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ଜେଜେମା... ଆପଣ?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ବଡ଼ ଜେଜେମା, ତମେ ବରିଷ୍ଠ ନାଗରିକ। ତମେ ନିଜ ଚୌକିରେ ବସି ହିଁ ସାକ୍ଷୀ ଦିଅ।",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ହଁ ନାନୀ, ବୟମ୍ ମୁଇଁ ଉଠେଇଥିଲି। <short pause> ତାର୍ ଫାଟ୍ ରୋଜ୍ ବଢ଼ୁଥିଲା।",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ଭାବ୍‌ଲି, କେନ୍‌ଦିନେ କମଲା ହାତେ ଫାଟିଗଲେ? ସେଥିରଲାଗି ଅଗଣାନେ ତୁଲସୀ ପଛେ ଲୁଚେଇ ଦେଲି।",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ତା’ହେଲେ ମତେ କହିଲନି କିଅଣ ପାଇଁ, ବୋଉ? <short pause> ମୁଁ ସକାଳୁ ସୁନୀତା ଉପରେ ପାଟି କରି ମରୁଛି!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ଡରିଗଲି, କମଲା। <short pause> ଇ ବୟସେ ବି ଗୁଟେ ବୟମ୍ ଲାଗି ଡର୍ ଲାଗୁଛେ।",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ପ୍ରମାଣ ଅଦାଲତରେ ଦାଖଲ କରାଯାଉ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ମୁଁ ନେଇ ଆସୁଛି, ଜଜ୍ ସାହେବା।",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> ତିରିଶ ବର୍ଷ ତଳେ, ଯୋଉଦିନ ବୋଉ ମତେ ରୋଷେଇ ଘର ସମର୍ପିଲେ, ଏ ବୟମ ମୋ ହାତରେ ଟେକି ଦେଇଥିଲେ।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ଆଜ୍‌ରୁ ଇ ବୟମ୍ ତୋର୍। ଇଟା ଇ ଘରର୍ ଇଜ୍ଜତ୍। ଭାଙ୍ଗ୍‌ଲେ, ଭାବ୍‌ବୁ ଘର୍ ଭାଙ୍ଗ୍‌ଲା।",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ଦଶ ବର୍ଷ ମୁଁ ଏ ଘରେ ପର ନୋକ ଭଳି ରହିଥିଲି। <sigh> ସେଦିନ ପ୍ରଥମ ଥର ନାଗିଲା, ମୁଁ ଏ ଘରର ବୋଲି।",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ଜେଜେମା, ତିରିଶ ବର୍ଷ ତଳେ ବି ତମେ ପୂରା ଏମିତି ହିଁ ଦିଶୁଥିଲ କି?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ଗୋଲୁ, ମନେ ପକେଇଲା ବେଳେ ସମସ୍ତେ ଆଜିର ଚେହେରାରେ ହିଁ ଆସନ୍ତି।",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ତିରିଶ ବର୍ଷ ୟାକୁ ଛୁଆ ଭଳି ଜଗି ରଖିଥିଲି। ୟାରି ସାଙ୍ଗେ ତ ମତେ ଆପଣାର ଭାବ ମିଳିଥିଲା।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ବୋଉ... <short pause> ମତେ ଜଣା ନଥିଲା। ମୁଁ ତ ଖାଲି ଗୋଟେ ବୟମ ବଦଳାଉଥିଲି।",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ନାଇଁ, କମଲା। ଏବେ ପୂରା ସତ୍ କଥା ଶୁନ୍।",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ହେ ବୟମ୍ ଅସ୍‌ଲି ନୁହେଁ।",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> କିଅଣ କହୁଛନ୍ତି, ବୋଉ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ଷାଠିଏ ବରଷ୍ ଆଘେ ମୁଇଁ ବି ନୂଆ ବହୁ ଥିଲି। <sigh> ମୋର୍ ଶାଶୁର୍ ଅସ୍‌ଲି ବୟମ୍ ମୋର୍ ହାତୁ ଖସି ଭାଙ୍ଗିଗଲା।",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ମୁଇଁ ଡରେ ଥରିଗଲି। ସେଇ ଦିପହରେ ବଜାର୍ ଗଲି, ଏକା ଲେଖା ବୟମ୍ କିନ୍‌ଲି, ଆଚାର୍ ଭରି ଥାକେ ଥୁଇଦେଲି।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ଆର୍ ମୋର୍ ଶାଶୁକେ ଶେଷ୍ ତକ୍ ଜନା ହିଁ ନାଇଁ ପଡ଼୍‌ଲା।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ତା’ହେଲେ ଯାହାକୁ ମୁଁ ତିରିଶ ବର୍ଷ ଧରି ପୂଜୁଥିଲି... <short pause> ସେଇଟା ବଜାରୁ କିଣା ବୟମ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ତଳେ ଲେଖା ଅଛି, ଖୁର୍ଜା ବଜାର, ଦୁଇ ଟଙ୍କା!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ଦୁଇ ଟଙ୍କାର ବୟମ ପାଇଁ ତିନି ପିଢ଼ିର କଳି!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ମାନେ ମୁଁ ପିଲାଦିନୁ ବଜାରିଆ ବୟମର ଆଚାର ଖାଉଛି?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ମୁଇଁ କେଭେ ମୋର୍ ଶାଶୁକେ ନାଇଁ ପଚାର୍‌ଲି ଗୁଟେ ବୟମ୍ ଲାଗି ଏତେ ରାଗ୍ କାଏଁ। <short pause> ବାସ୍ ହେ ଡର୍ ତୋତେ ଧରେଇ ଦେଲି।",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ଆଉ ମୁଁ ବି ଆପଣଙ୍କୁ କେବେ ପଚାରିନି ଯେ ଆପଣ ନିଜେ ଏ ଆଚାର କାହିଁକି ଗେମ୍ଫନ୍ତିନି!",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> କାଏଁକିନା ହର୍ ଗୁଣ୍ଡାନେ ନିଜର୍ ଚୋରି ମନ୍ ପଡ଼ୁଥିଲା!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ଅଦାଲତ ଫଇସଲା ଶୁଣାଉଛି। ଜେଜେମା ଦୋଷୀ। ବୋଉ ବି ଦୋଷୀ। ଦୁହେଁ ଗୋଟିଏ ଅପରାଧ କରିଛନ୍ତି।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ଦୁହେଁ? କୋଉ ଅପରାଧ, ଜଜ୍ ସାହେବା?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ତମେ ଦୁହେଁ କେବେ ପରସ୍ପରକୁ \"କାହିଁକି\" ବୋଲି ପଚାରିଲନି।",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଜେଜେମା ପଚାରିଲେନି ବୋଉ ବୟମ ପଛରେ କାହିଁକି ପଡ଼ିଛି। ବୋଉ ପଚାରିଲାନି ଜେଜେମାଙ୍କ ପାଇଁ ସେ ବୟମ ଏତେ ଜରୁରୀ କାହିଁକି।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ଆଉ ବଡ଼ ଜେଜେମା ଷାଠିଏ ବର୍ଷ ଚୁପ୍ ରହିଲେ। ଦଣ୍ଡ ସମସ୍ତଙ୍କୁ ମିଳିବ!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ହାଶ, ମୁଁ ତ ବଞ୍ଚିଗଲି।",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ବାପା, ଚୁପ୍ ରହିବା ବି ଅପରାଧ। ଆଚାର ପାଇଁ ସବୁ ଆମ୍ବ ତମେ କାଟିବ।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ପୂରା ଦଶ କିଲୋ?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଆଉ ଜେଜେମା ଆଉ ବୋଉ ମିଶିକି ନୂଆ ଆଚାର ପକେଇବେ, ନୂଆ ବୟମରେ। ରୋଜ୍ ଥରେ ପରସ୍ପରକୁ ପଚାରିବେ, \"କାହିଁକି?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ସୁନୀତା, ତୁ ନୂଆ ବୟମ କିଅଣ ପାଇଁ ମଗେଇଥିଲୁ ବା?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "କାହିଁକିନା ଆପଣଙ୍କୁ ସେ ବୟମ ବହୁତ ଭଲ ଲାଗେ, ବୋଉ। ମୁଁ ଚାହୁଁନଥିଲି ସେଇଟା ଆପଣଙ୍କ ହାତରେ ଭାଙ୍ଗିଯାଉ।",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ଆଉ ଆପଣ? ଆପଣଙ୍କୁ ସେଇଟା ଏତେ ଭଲ କାହିଁକି ଲାଗୁଥିଲା?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "କାହିଁକିନା ସେଇଟା ମତେ ଏ ଘରର ନୋକ କରିଥିଲା।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଆଜିଠୁଁ ନୂଆ ବୟମ ଆମ ଦୁହିଁଙ୍କର। ଆଉ ଭାଙ୍ଗିଗଲେ ବି ନୂଆ ଆଣିଦବା। ଘର ଭାଙ୍ଗିବନି।",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ଷାଠିଏ ବରଷ୍ ପରେ ଆଜ୍ ମନ୍ ହାଲ୍‌କା ହେଲା।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଅଦାଲତ ମୁଲତବୀ!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ସୋରିଷ ତେଲ ଆଗ ଗରମ କରିବୁ, ତା’ପରେ ଥଣ୍ଡା। ତରତର ହବୁନି।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "କାହିଁକି, ବୋଉ?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ବାଃ! ଆଜିର ପ୍ରଥମ \"କିଅଣ ପାଇଁ\"! କାହିଁକିନା ଗରମ ତେଲରେ ମସଲା ପୋଡ଼ିଯିବ।",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ନୁନ୍ ଟିକେ ବେଶୀ ପକାବୁ। <short pause> ମୋର୍ ଶାଶୁ ବି ବେଶୀ ପକଉଥିଲେ।",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ବୋଉ, ଏବେ ତମ ଶାଶୁଙ୍କ ସବୁ କଥାରେ ଆଗ ପଚାରିବି, କିଅଣ ପାଇଁ?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଆଉ ଆଜି ମୁଁ ବି ପ୍ରଥମ ଥର ଗୋଟେ ପକ୍ଷ ନେଇଛି। ଆଚାର ପକ୍ଷ!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ସାଙ୍ଗମାନେ, ଶାଶୁ-ବୋହୂ ମହାଯୁଦ୍ଧ, ଅଧ୍ୟାୟ ଦୁଇ! ଆଚାର ମହାମିଳନ!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଆଉ ସିସିଟିଭିରେ ସବୁ ରେକର୍ଡ ହେଉଛି!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ଇଥର୍ ମୁଇଁ ନାଇଁ ଭାଙ୍ଗି! ମୋର୍ ହାତ୍ ତ ଇନେ ଅଛେ!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ସେଇଟା... ସିସିଟିଭି ତ ଏବେ ବନ୍ଦ ଥିଲା।",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ଅଦାଲତ ପୁଣି ଆରମ୍ଭ!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

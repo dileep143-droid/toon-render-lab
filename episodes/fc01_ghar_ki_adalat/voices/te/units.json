@@ -1,0 +1,946 @@
+{
+ "lang": "te",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "నా పచ్చడి జాడీ ఏమయిపోయిందండీ? ముప్పై ఏళ్ల నుంచీ అదే గూట్లో ఉండేదండీ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "అత్తయ్యా, నేను దాన్ని ముట్టుకోనైనా లేదు. నిజంగా ఒట్టేసి చెబుతున్నా!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "అవునవునండీ, జాడీకి రెక్కలొచ్చాయి మరి. రాత్రికి రాత్రే ఎగిరి తీర్థయాత్రలకెళ్ళిపోయింది!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "హలో ఫాలోవర్స్! లైవ్ చూసేయండి, అత్తాకోడళ్ల మహా యుద్ధం, ఎపిసోడ్ వన్!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> నేహా, ఫోన్ బంద్ జేయ్! గల్లీ మొత్తం జూస్తది గదా!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "భయ్యా, గల్లీ మొత్తం నక్కో. <short pause> సిర్ఫ్ ముగ్గురే లైవ్ చూస్తున్నరు!",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "కానీ నా సీసీటీవీ మొత్తం చూస్తోంది! అంతా రికార్డ్ అయిపోతోంది!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "మహేషూ, నువ్వే చెప్పు. మీ అమ్మ కరెక్టా, నీ పెళ్ళాం కరెక్టా?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "అమ్మా... నేను... <laugh> ఈరోజు వాతావరణం మస్తుగుంది గదా?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ఇంక చాలు! ఆర్డర్! ఆర్డర్!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "రోజూ ఈ గొడవలు పడటం ఆగాలి. ఇవాళ మన ఇంట్లోనే కోర్టు నడుస్తుంది!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఈ స్టీలు పళ్ళెమే నా సుత్తి. ఇవి తాతగారి కళ్లద్దాలు. ఈ సోఫాయే బోను!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "తాతగారు గుడికెళ్లారు. <short pause> ఆయన కళ్లద్దాలని కోర్టు జప్తు చేసుకుంది.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> భలేవే జడ్జిగారూ! ఈయాల సీరియల్ టీవీలో కాదు, ఇంట్లోనే నడుత్తున్నాది!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇంక నేను కోర్టు సీసీటీవీ ఇన్‌ఛార్జ్‌ని! నా కెమెరా కంటి నుంచి ఎవరూ తప్పించుకోలేరు!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ఈ కెమెరాకి లెన్స్ బదులు బాటిల్ మూత పెట్టినావు కదా మియాఁ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "మూత కాదది, జూమ్ లెన్స్ అది!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "నాన్నా, మీరు ఎవరి వైపు? మమ్మీ వైపా, దాదీ వైపా?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "నేనా? నేను స్విట్జర్లాండ్‌ని! నడుమ ఉంటా, పూరా న్యూట్రల్!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "అయితే న్యూట్రల్ గారూ, బోనులోంచి పక్కకి జరగండి. కేసు మొదలవుతోంది.",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "కేసు నంబర్ ఒకటి. కమలా దేవి వర్సెస్ సునీత. నేరం, ముప్పై ఏళ్లుగా దాచుకున్న పచ్చడి జాడీని మాయం చేయడం.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "అది ఉత్త జాడీ మాత్రమే కాదండీ జడ్జిగారూ. <short pause> అందులో మా ఇంటి రుచులన్నీ ఉన్నాయండీ.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "నేను ఏ తప్పూ చేయలేదండీ జడ్జిగారూ. సాక్ష్యం ఉంటే చూపించమనండి.",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "సరే. ముందు ఫిర్యాదు చేసిన వాళ్ళు మాట్లాడాలి. నానమ్మ గారూ, నిన్న రాత్రి ఏం జరిగిందో చెప్పండి.",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "నిన్న రాత్రి నేను వంటింట్లో ఉన్నానండీ. అప్పుడే ఇది వచ్చి, సీరియల్ విలన్‌లాగా నా జాడీని అలా చూసిందండీ.",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ఈ పాత జాడీ... దీన్ని పారేస్తేనే పీడా పోతుంది!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "అబ్జెక్షన్! <gasp> నేను అలా ఎప్పుడు నవ్వాను? అయినా వంటింట్లో ఉరుములెందుకు ఉరుముతాయి?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> అబ్జెక్షన్ ఆమోదించబడింది. నానమ్మా, ఉరుములు పక్కన పెట్టి నిజం చెప్పండి.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> సరేలెండి, ఉరుములు రాలేదు. కానీ ఇది జాడీ మార్చేద్దాం అందండీ.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "జాడీ పగిలి నూనె కారుతోందని చెప్పాను. ఆ సంగతి వేరు కదా!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "నేనేమో, ఈ జాడీ నీకంటే ముందే మా ఇంట్లోకి వచ్చిందన్నాను. అదీ వేరేనండీ.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ఇద్దరి మాటలూ వేరైనప్పుడు, గొడవ ఒక్కటే ఎందుకు?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "తర్వాతి సాక్షి, నేహా అత్తయ్య! బోనులోకి రండి.",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "వచ్చేసినా! ఫ్రెండ్స్, ఇప్పుడు మీ నేహా సాక్ష్యం ఇస్తది. లైక్ కొడుతూనే ఉండండి!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "కల్ రాత్ పదింటికి నేను ఒక సీన్ చూసినా... <short pause> అసలు ఏ సీరియల్లో కూడా కనిపించదు.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "వదిన గప్చుప్‌గా ఒక పెద్ద డబ్బా తెచ్చింది. ఇటు అటు చూసి, అల్మారాలో దాచేసింది!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇదిగోండి సాక్ష్యం! అదే డబ్బా, అల్మారాలోంచి రికవరీ చేశాం!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> కొత్త జాడీయా? అచ్చం నా జాడీలాగే ఉందేంటండీ!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> అంటే అసలు దాన్ని తీసేసి నకిలీది పెట్టారా! ఇది సినిమాల్లో జరిగే స్కెచ్చే!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "మమ్మీ, ఈ జాడీ ఎక్కడి నుంచి వచ్చింది?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> అవును, నేనే తెప్పించాను. ఆన్‌లైన్‌లో. పాతదానికి బీటలు వారడం చూసి.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "కానీ పాతదాన్ని నేను పారేయలేదండీ జడ్జిగారూ. అత్తయ్యకి తెలీకుండా పచ్చడి మార్చేద్దామనుకున్నా, అంతే.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> నాకే తెలీకుండా పోతుందా? <short pause> ముప్పై ఏళ్ల జ్ఞాపకాలు కూడా ఆన్‌లైన్‌లో దొరుకుతాయా ఏవండీ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ఫ్రెండ్స్, కామెంట్స్ చేసి చెప్పండి, వదిన దోషా కాదా అని!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "తర్వాతి సాక్షి, నాన్న! పారిపోవాలని చూడకండి.",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> నేను ఊరికే నీళ్లు తాగుదామని పోతున్నా బిడ్డా.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "నిన్న రాత్రి మీరు ఏం చూశారు?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ఈ ఇంట్లో అందరూ ఒకరినొకరు మస్తు ప్రేమిస్తున్నారని జూసినా.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "అమ్మ సునీతని పొగుడుతోంది, సునీత అమ్మని. నేనేమో నడుమ హీరోలాగా నిలబడ్డా.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "భయ్యా, కల్ రాత్ తొమ్మిది నుంచే గుర్రుపెట్టి పండుకున్నవ్ గదా!",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "మరి మన హీరోగారేమో రాత్రి తనకి తానే టీ కూడా పెట్టుకోలేదండీ.",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> గుర్రంటే శాంతి సందేశం బిడ్డా! నేను ఎవరి వైపూ లేను!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> ఈ సాక్షి వేస్ట్. వెళ్ళండి, స్విట్జర్లాండ్ గారూ.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "జడ్జి అక్కా! అసలైన సాక్ష్యం నా సీసీటీవీలోనే ఉంది! రాత్రి రెండు గంటల రికార్డింగ్!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> నువ్వు రాత్రి రెండు గంటలకి మేల్కొనే ఉన్నావా?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ఉచ్చ పోయడానికి లేచాను. కానీ నా కెమెరా ఎప్పుడూ రెడీగా ఉంటుంది!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> జడ్జిగారూ, సాక్షి గారి సుసూ కూడా రికార్డులో రాసేసుకోండి!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "చీకటిగా ఉంది. అప్పుడొచ్చింది ఒక దెయ్యం! తెల్ల బట్టలు, నెమ్మదిగా అడుగులు, టక్, టక్, టక్!",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ఆ దెయ్యం జాడీ ఎత్తుకెళ్లి మాయం! నేను భయంతో దుప్పటిలోకి దూరిపోయా!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "భూతం? <gasp> ఇంట్లో భూతమా? ఫ్రెండ్స్, ఇది పక్కా వైరల్ అయిపోతది!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ఆగు. టక్, టక్, టక్? దెయ్యం చేతిలో కర్ర ఉందా?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ఈయాల పంకా ఎంత మెల్లగా తిరుగుతున్నాదో కదా...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> అమ్మాజీ... మీరా?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ముత్తవ్వా, మీరు సీనియర్ సిటిజన్. మీ కుర్చీలో కూర్చునే సాక్ష్యం చెప్పండి.",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ఔనమ్మా, జాడీ నేనే తీసేను. <short pause> దానికి బీటలు రోజురోజుకీ పెరిగిపోతున్నాయేటి మరి.",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ఎప్పుడైనా కమల సేతిలోనే పగిలిపోద్దేమోనని, దొడ్లో తులసి కోట ఎనకాల దాసేసేను.",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "మరి నాతో ఆ మాట చెప్పొచ్చు కదండీ అమ్మాజీ? <short pause> పొద్దుట్నుంచీ సునీత మీద అరిచి చస్తున్నానండీ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "భయం వేసిందే కమలా. <short pause> ఈ వయసులోనూ ఆ జాడీ అంటే దడేటి నాకు.",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ఆ సాక్ష్యాన్ని కోర్టులో ప్రవేశపెట్టండి!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "నేను తెస్తానండీ జడ్జిగారూ.",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> ముప్పై ఏళ్ల కిందట, అమ్మాజీ నాకు వంటిల్లు అప్పగించిన రోజే ఈ జాడీ నా చేతికిచ్చారండీ.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ఇయ్యాల్టి నుంచి ఈ జాడీ నీదే. ఇది మన ఇంటి పరువు. పగిలిందా, ఇల్లు కూలిపోయినట్టే.",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "పదేళ్లు ఈ ఇంట్లో నేను చుట్టంలాగే ఉన్నానండీ. <sigh> ఆ రోజే మొదటిసారి ఇది నా ఇల్లు అనిపించిందండీ.",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "నానమ్మా, ముప్పై ఏళ్ల క్రితం కూడా మీరు అచ్చం ఇలాగే ఉండేవారా?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> గోలూ, జ్ఞాపకాల్లో అందరూ ఇప్పట్లాగే కనిపిస్తారు భాయ్.",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ముప్పై ఏళ్లు దీన్ని బిడ్డలా కాపాడుకున్నానండీ. దీనితోనే కదండీ నాకు నా అన్న భావన దొరికింది.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "అత్తయ్యా... <short pause> నాకు తెలీదు. నేనేదో జాడీ మార్చాలనుకున్నానంతే.",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "కాదే కమలా. అసలు నిజం ఇప్పుడైనా ఇను.",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ఆ జాడీ అసలైనది కాదే.",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> అంటే ఏంటండీ అమ్మాజీ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "అరవై ఏళ్ల కిందట నేనూ కొత్త కోడల్నేనే. <sigh> మా అత్తగారి అసలు జాడీ నా సేతిలోంచి జారి ముక్కలైపోనాది.",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "వొణుకు పుట్టేసింది. అదే మధ్యాహ్నం బజారుకెళ్లి, అచ్చం అలంటి జాడీయే కొని, పచ్చడి నింపి గూట్లో పెట్టేసేను.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ఆఖరి దాకా మా అత్తగారికి తెలీనే లేదు కదా!",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "అంటే ముప్పై ఏళ్లుగా నేను పూజిస్తున్నది... <short pause> బజారులో కొన్న జాడీయా అండీ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> అడుగున రాసి ఉంది, ఖుర్జా బజార్, రెండు రూపాయలు!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> రెండు రూపాయల జాడీ కోసం మూడు తరాల పంచాయితీ!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> అంటే చిన్నప్పట్నుంచీ నేను బజారు జాడీ పచ్చడే తింటున్నానా?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ఓ జాడీ కోసం ఇంత కోపం ఎందుకని నేనెప్పుడూ మా అత్తగారిని అడగలేదు. <short pause> అదే భయాన్ని నీ సేతిలో పెట్టేసేను.",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "మీరెందుకు ఈ పచ్చడి ఎప్పుడూ తినరని నేనూ మిమ్మల్ని ఎప్పుడూ అడగలేదండీ.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ఎందుకంటే ప్రతి ముద్దకీ నా దొంగతనమే గుర్తొచ్చేదేటి మరి!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "కోర్టు తీర్పు చెబుతోంది. నానమ్మ దోషే. మమ్మీ కూడా దోషే. ఇద్దరూ ఒకే నేరం చేశారు.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ఇద్దరమా? ఏం నేరమండీ జడ్జిగారూ?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "మీరు ఒకరినొకరు ఎప్పుడూ \"ఎందుకు\" అని అడగలేదు.",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "మమ్మీ ఆ జాడీని ఎందుకు మార్చాలనుకుందో నానమ్మ అడగలేదు. నానమ్మకి ఆ జాడీ ఎందుకు అంత ముఖ్యమో మమ్మీ అడగలేదు.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ఇక ముత్తవ్వ అరవై ఏళ్లు మౌనంగా ఉండిపోయింది. శిక్ష అందరికీ పడుతుంది!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> హమ్మయ్య, నేను బతికిపోయిన.",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "నాన్నా, నోరు మూసుకుని ఉండటం కూడా నేరమే. పచ్చడికి మామిడికాయలన్నీ మీరే తరగాలి.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> పూరా పది కిలోలా?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇంక నానమ్మ, మమ్మీ కలిసి కొత్త జాడీలో కొత్త పచ్చడి పెట్టాలి. రోజూ ఒకరినొకరు \"ఎందుకు?\" అని అడగాలి.",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "సునీతా, నువ్వు కొత్త జాడీ ఎందుకు తెప్పించావమ్మా?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఎందుకంటే మీకు ఆ జాడీ అంటే ప్రాణం అత్తయ్యా. అది మీ చేతుల్లో పగిలిపోవడం నాకు ఇష్టం లేదు.",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "మరి మీరో? మీకది ఎందుకు అంత ఇష్టం?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ఎందుకంటే, అదే నన్ను ఈ ఇంటి మనిషిని చేసిందమ్మా.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ఇవాల్టి నుంచి కొత్త జాడీ మన ఇద్దరిదీనండీ. ఒకవేళ పగిలినా, ఇంకోటి తెచ్చుకుందాం. ఇల్లు పగలదు కదా.",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> అరవై ఏళ్లకి ఇయ్యాల మనసు తేలికైపోనాది.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "కోర్టు బర్తరఫ్!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ఆవనూనె ముందు కాచి, తర్వాత చల్లార్చాలండోయ్. తొందరపడకూడదు.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ఎందుకని, అత్తయ్యా?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ఆహా! ఇవాల్టి మొదటి \"ఎందుకు\"! వేడి నూనెలో మసాలా మాడిపోతుందమ్మా.",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ఉప్పు కాస్త ఎక్కువ ఏసేయ్. <short pause> మా అత్తగారు కూడా ఎక్కువే ఏసేవారు.",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> అమ్మాజీ, ఇకపై మీ అత్తగారి మాటలన్నిటికీ ముందు అడుగుతాను, ఎందుకని?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "నేను గూడ మొదటిసారి ఒక సైడ్ తీసుకున్న. పచ్చడి సైడ్!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ఫ్రెండ్స్, అత్తాకోడళ్ల యుద్ధం, ఎపిసోడ్ టు! పచ్చడి మహా మిలన్!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ఇంక సీసీటీవీలో అంతా రికార్డ్ అయిపోతోంది!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ఈసారి నేను పగల్గొట్టలేదు బాబూ! నా సేతులు ఇక్కడే ఉన్నాయే!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> అదీ... సీసీటీవీ ఇంకా ఆన్ చేయలేదులేండి.",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "కోర్టు మళ్లీ మొదలు!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

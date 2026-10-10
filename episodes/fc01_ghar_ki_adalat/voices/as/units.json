@@ -1,0 +1,946 @@
+{
+ "lang": "as",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "মোৰ আচাৰৰ বৈয়ামটো ক'ত গ'ল? ত্ৰিশ বছৰ ধৰি সেইটো থাকতেই আছিল!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "আইদেউ, মই হাতো দিয়া নাই তাত। সঁচাকৈ শপত খাইছোঁ!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "হ'ব হ'ব, বৈয়ামটোৰ ডেউকা গজিছিল চাগে! ৰাতি উৰি তীৰ্থযাত্ৰালৈ গুচি গ'ল!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "হেল্ল' ফ'ল'ৱাৰ্ছ! লাইভ চাওক, শাহু-বোৱাৰীৰ মহাৰণ, খণ্ড এক!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "নেহা, ফোন বন্ধ কৰ! গোটেই চুবুৰীটোৱে দেখিব এতিয়া!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "দাদা, গোটেই চুবুৰীয়ে চোৱা নাই। মাত্ৰ তিনিজন মানুহে চাই আছে।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "কিন্তু মোৰ চিচিটিভিয়ে সকলো দেখিছে! সকলো ৰেকৰ্ড হৈ আছে!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "মহেশ, তই কচোন। তোৰ মায়ে সঁচা কৈছে নে ঘৈণীয়েৰে?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "মা... মই... আজি বতৰটো কিমান যে ধুনীয়া, নহয়নে?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "হ'ল আৰু! অৰ্ডাৰ! অৰ্ডাৰ!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "নিতৌ এইখন কাজিয়া আৰু নচলিব। আজি এই ঘৰতে আদালত বহিব!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "এই ষ্টিলৰ কাঁহীখন মোৰ হাতুৰী। এইটো ককাৰ চশমা। আৰু এই চ'ফাখন সাক্ষীৰ কাঠগড়া!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ককা মন্দিৰলৈ গৈছে। তেওঁৰ চশমা আদালতে জব্দ কৰি লৈছে।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "বাহ্ ৰে জজ বাইদেউ! আজি ছিৰিয়েল টিভিত নহয়, ঘৰতেই চলিবাক।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আৰু মই আদালতৰ চিচিটিভি ইনচাৰ্জ! মোৰ কেমেৰাৰপৰা কোনেও সাৰিব নোৱাৰে।",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "এই কেমেৰাত লেন্সৰ সলনি বটলৰ সাফৰ লগোৱা আছে।",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "সাফৰ নহয় সেইটো, জুম লেন্সহে হয়!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "দেউতা, আপুনি কাৰ ফালে? মাৰ ফালে নে আইতাৰ ফালে?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "মই? মই চুইজাৰলেণ্ড! একেবাৰে মাজত, সম্পূৰ্ণ নিৰপেক্ষ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "তেন্তে নিৰপেক্ষ ডাঙৰীয়া, কাঠগড়াৰপৰা আঁতৰি যাওক। বিচাৰ আৰম্ভ হ'ল।",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "গোচৰ নম্বৰ এক। কমলা দেৱী বনাম সুনীতা। অপৰাধ, ত্ৰিশ বছৰীয়া পুৰণি আচাৰৰ বৈয়াম নোহোৱা কৰা।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "সেইটো কেৱল বৈয়াম নাছিল, জজ আইটি। তাত এই ঘৰখনৰ সোৱাদ আছিল।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আৰু মই নিৰ্দোষী, জজ বাইদেউ। প্ৰমাণ থাকিলে প্ৰমাণ দেখুৱাওক।",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ঠিক আছে। প্ৰথমে অভিযোগকাৰীয়ে কওক। আইতা, কওক কালি ৰাতি কি হৈছিল।",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "কালি ৰাতি মই পাকঘৰত আছিলোঁ। তেতিয়াই এইগৰাকী আহিল, আৰু বৈয়ামটোলৈ এনেকৈ চালে, যেন ছিৰিয়েলৰ খলনায়িকাহে।",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "এই পুৰণি বৈয়ামটো... ইয়াক দেখোন মই দলিয়াই পেলাম!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "আপত্তি আছে! মই এনেকৈ কেতিয়া হাঁহোঁ? আৰু পাকঘৰত বিজুলী কোনে ঢেৰেকায়?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "আপত্তি মঞ্জুৰ। আইতা, বিজুলী বাদ দিয়ক, সঁচা কথা কওক।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "বাৰু, বিজুলী মৰা নাছিল। কিন্তু ই কৈছিল, এই বৈয়ামটো সলাই দিয়া বুলি।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "মই কৈছিলোঁ তাত ফাঁট মেলিছে, তলৰপৰা তেল ওলাইছে। সেইটো বেলেগ কথা!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "আৰু মই কৈছিলোঁ, এই বৈয়াম তোমাতকৈ আগতে এই ঘৰলৈ আহিছিল। সেইটোও বেলেগ কথা।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "দুয়োৰে কথা যেতিয়া বেলেগ বেলেগ, তেন্তে কাজিয়াখন একেটা কথাতে কিয়?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "পৰৱৰ্তী সাক্ষী, নেহা পেহী! কাঠগড়ালৈ আহক।",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "আহি গ'লোঁ! বন্ধুসকল, এতিয়া আপোনালোকৰ নেহাই সাক্ষ্য দিব। লাইক কৰি থাকক!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "কালি ৰাতি দহ বজাত মই এনে এটা বস্তু দেখিলোঁ... যিটো কোনো ছিৰিয়েলতো দেখা নাযায়।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "বৌৱে মনে মনে এটা ডাঙৰ বাকচ লৈ আহিল। ইফালে চালে, সিফালে চালে, আৰু আলমাৰিত লুকুৱাই থ'লে!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আৰু এইয়া প্ৰমাণ! সেই বাকচটো, যিটো আলমাৰিৰপৰা উদ্ধাৰ কৰা হৈছে।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "নতুন বৈয়াম? ঠিক মোৰটোৰ দৰেই দেখোন!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "মানে আচলটোৰ সলনি নকলটো থৈ দিলে! এইটো দেখোন চিনেমাৰ কাহিনী হৈ গ'ল!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "মা, এই বৈয়ামটো ক'ৰপৰা আহিল?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "হয়, ময়েই অনাইছিলোঁ। অনলাইনত। পুৰণিটোৰ ফাঁটটো দেখিহে।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "কিন্তু পুৰণিটো মই পেলোৱা নাই, জজ বাইদেউ। ভাবিছিলোঁ মনে মনে আচাৰখিনি সলাই দিম, মায়ে গমেই নাপাব।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "গমেই নাপাব? ত্ৰিশ বছৰৰ স্মৃতি এতিয়া অনলাইনত কিনিবলৈ পোৱা যায়নে?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "বন্ধুসকল, কমেণ্টত জনাওকচোন, বৌ দোষী হয়নে নহয়!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "পৰৱৰ্তী সাক্ষী, দেউতা! পলাই যাবলৈ চেষ্টা নকৰিব।",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "মই দেখোন পানী এগিলাচ খাবলৈহে গৈ আছিলোঁ।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "কালি ৰাতি আপুনি কি দেখিছিল?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "মই দেখিলোঁ যে এই ঘৰৰ সকলোৱে এজনে আনজনক বৰ ভাল পায়।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "মায়ে সুনীতাৰ প্ৰশংসা কৰিছিল, সুনীতাই মাৰ। আৰু মই মাজত নায়কৰ দৰে থিয় হৈ আছিলোঁ।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "দাদা, কালি ৰাতি দেখোন আপুনি ন বজাৰপৰাই ঘোৰঘোৰাই নাক টানি আছিল।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "আৰু নায়ক ডাঙৰীয়াই কালি ৰাতি নিজৰ বাবে চাহ একাপো বনাই লোৱা নাছিল।",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ঘোৰঘোৰোৱাটোও দেখোন শান্তিৰেই সংকেত! মই কাৰো ফালে নাই দেই!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "সাক্ষী একেবাৰে কামৰ নহয়। যাওকগৈ, চুইজাৰলেণ্ড ডাঙৰীয়া।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "জজ বাইদেউ! আচল প্ৰমাণটো মোৰ চিচিটিভিত আছে! ৰাতি দুই বজাৰ ৰেকৰ্ডিং!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "তই ৰাতি দুই বজাত সাৰ পাই আছিলি?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "পেচাব লাগিছিল। কিন্তু মোৰ কেমেৰা সদায় সাজু থাকে!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "জজ বাইদেউ, সাক্ষীৰ পেচাবৰ কথাও ৰেকৰ্ডত তুলি থওক!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ঘিটমিটীয়া আন্ধাৰ আছিল। তাৰ পাছত ওলাল এটা ভূত! বগা কাপোৰ, লাহে লাহে খোজ, ঠক, ঠক, ঠক!",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ভূতে বৈয়ামটো তুলি ল'লে আৰু গায়েব! মই ভয়ত লেপৰ তলত সোমাই পৰিলোঁ!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ভূত? ঘৰত ভূত ওলাল? বন্ধুসকল, এই ভিডিঅ' ভাইৰেল হৈ যাব!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ৰ'বা। ঠক, ঠক, ঠক? ভূতৰ হাতত লাঠি আছিল নেকি?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "আজি পাংখাটো কিমান লেহেমীয়া ঘূৰি আছে, নহয়নে...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "আইতা... আপুনি?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "বৰআইতা, আপুনি জ্যেষ্ঠ নাগৰিক। আপুনি নিজৰ চকীৰপৰাই সাক্ষ্য দিয়ক।",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "অ' মাজনী, বৈয়ামটো ময়েই তুলি লৈছিলোঁ। সিটোৰ ফাঁট নিতৌ ডাঙৰ হৈ গেলাক।",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ভাবিলাং, কিবানি এদিন কমলাৰ হাততেই ভাঙি যায় যদি? সেইবাবে চোতালত তুলসীৰ পাছফালে লুকাই থৈ দিলোঁ।",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "তেন্তে মোক নক'লে কিয়, আইতা? মই ৰাতিপুৱাৰপৰা সুনীতাৰ ওপৰত চিঞৰি মৰিছোঁ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ভয়েই লাগিলাক, কমলা। এই বয়সতো এটা বৈয়ামকলৈ ভয় লাগে।",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "প্ৰমাণ আদালতত দাখিল কৰা হওক!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "মই লৈ আহিছোঁ, জজ বাইদেউ।",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ত্ৰিশ বছৰ আগতে, যিদিনা আইতাই মোক পাকঘৰ চমজাই দিছিল, এই বৈয়ামটো মোৰ হাতত তুলি দিছিল।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "আজিৰপৰা এই বৈয়ামটো তোৰ। এইটো এই ঘৰৰ মান-সন্মান। ভাঙিলাক যদি, ঘৰেই ভাঙিলাক।",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "দহ বছৰ মই এই ঘৰত আলহীৰ দৰে আছিলোঁ। সেইদিনাহে প্ৰথম লাগিল, মই এই ঘৰৰ মানুহ।",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "আইতা, ত্ৰিশ বছৰ আগতেও আপোনাক দেখিবলৈ ঠিক এনেকুৱাই আছিল নেকি?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "গোলু, স্মৃতিৰ কথাত সকলোকে আজিৰ মুখখনৰ দৰেই দেখা যায়।",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ত্ৰিশ বছৰ ধৰি ইয়াক সন্তানৰ দৰে সযতনে ৰাখিলোঁ। ইয়াৰ লগতেই দেখোন ঘৰখন আপোন হৈছিল।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "আইদেউ... মই গম পোৱা নাছিলোঁ। মই দেখোন কেৱল এটা বৈয়ামহে সলাব খুজিছিলোঁ।",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "নহয় কমলা, এতিয়া হসা কথা শুন।",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "সিটো বৈয়াম আচল নহয়।",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "মানে কি ক'ব খুজিছে, আইতা?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ষাঠি বছৰ আগত ময়ো নতুন বোৱাৰী আছিলোঁ। মোৰ শাহুৰ আচল বৈয়াম মোৰ হাতৰপৰা পৰি ভাঙি গেলাক।",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "মই ভয়ত কঁপি উঠিলোঁ। সেই দুপৰীয়াই বজাৰত গেলাং, একেবাৰে তেনেকুৱা বৈয়াম কিনি আনিলোঁ, আচাৰ ভৰাই থাককত থৈ দিলোঁ।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "আৰু মোৰ শাহুৱে শেষলৈকে গমেই নাপালাক।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "তেন্তে যাক মই ত্ৰিশ বছৰ ধৰি পূজা কৰি আছিলোঁ... সেইটো বজাৰৰ বৈয়ামহে আছিল?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "তলত লিখা আছে, খুৰ্জা বজাৰ, দুটকা!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "দুটকীয়া বৈয়ামটোক লৈ তিনিটা পুৰুষৰ কাজিয়া!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "মানে মই সৰুৰেপৰা বজাৰুৱা আচাৰ খাই ডাঙৰ হৈছোঁ?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "মই কেতিয়াও মোৰ শাহুক নুসুধিলোঁ যে এটা বৈয়ামকলৈ ইমান খং কিয়। মাথোঁ সেইটো ভয় তোৰ হাতত তুলি দিলোঁ।",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "আৰু মইয়ো আপোনাক কেতিয়াও নুসুধিলোঁ যে আপুনি এই আচাৰ নিজে কিয় নাখায়।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "কিয়নো প্ৰতিটো গ্ৰাহতে নিজৰ চুৰিৰ কথা মনত পৰি গেলাক!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "আদালতে ৰায়দান কৰিছে। আইতা দোষী। মাও দোষী। দুয়োগৰাকীয়ে একেটা অপৰাধেই কৰিছে।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "দুয়ো? কি অপৰাধ, জজ বাইদেউ?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আপোনালোকে এজনে আনজনক কেতিয়াও \"কিয়\" বুলি নুসুধিলে।",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আইতাই নুসুধিলে মা বৈয়ামটোৰ পাছত কিয় লাগিছে। মায়ে নুসুধিলে যে আইতাৰ বাবে সেই বৈয়ামটো ইমান প্ৰয়োজনীয় কিয়।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "আৰু বৰআইতা ষাঠি বছৰ ধৰি মনে মনে থাকিল। শাস্তি সকলোৱে পাব!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ৰক্ষা, মই দেখোন বাচি গ'লোঁ।",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "দেউতা, নীৰৱে থকাটোও অপৰাধ। আচাৰৰ আটাইবোৰ আম আপুনি কাটিব লাগিব।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "গোটেই দহ কিলো আম?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আৰু আইতা আৰু মায়ে মিলি নতুন বৈয়ামত নতুন আচাৰ বনাব। নিতৌ এবাৰ এজনে আনজনক সুধিব, \"কিয়?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "সুনীতা, তই নতুন বৈয়াম কিয় অনাইছিলি?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "কাৰণ আপুনি সেই বৈয়ামটোক বৰ ভাল পায়, আইদেউ। মই বিচৰা নাছিলোঁ যে সেইটো আপোনাৰ হাতত ভাঙি যাওক।",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "আৰু আপোনাৰ? আপোনাৰ বাবে সেইটো ইমান প্ৰিয় কিয় আছিল?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "কিয়নো সেইটোৱেই মোক এইখন ঘৰৰ আপোন মানুহ কৰি তুলিছিল।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আজিৰপৰা নতুন বৈয়ামটো আমাৰ দুয়োৰে। আৰু ভাঙি গ'লেও নতুন আনি ল'ম। ঘৰখন নাভাঙে।",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ষাঠি বছৰৰ পাছত আজি মনটো পাতল লাগিলাক।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আদালত ভংগ কৰা হ'ল!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "সৰিয়হৰ তেলখিনি প্ৰথমে গৰম কৰিবি, তাৰ পাছত জুৰাব দিবি। খৰখেদা নকৰিবি।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "কিয়, আইদেউ?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "বাহ্! আজিৰ প্ৰথমটো \"কিয়\"! কিয়নো গৰম তেলত মছলা পুৰি যায়।",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "নুন অলপ বেছিকৈ দিবি। মোৰ শাহুৱেও সৰহকৈ দিছিলাক।",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "আইতা, এতিয়া আপোনাৰ শাহুৰ প্ৰতিটো কথাতেই প্ৰথমে সুধিম, কিয়?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আৰু আজি ময়ো প্ৰথমবাৰৰ বাবে এটা পক্ষ বাছি লৈছোঁ। আচাৰৰ পক্ষ!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "বন্ধুসকল, শাহু-বোৱাৰীৰ মহাৰণ, খণ্ড দুই! আচাৰ মহামিলন!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "আৰু চিচিটিভিত সকলো ৰেকৰ্ড হৈ আছে!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "এইবাৰ মই ভঙা নাই দেই! মোৰ হাত দেখোন ইয়াতেই আছে!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "সেইটো... চিচিটিভি এতিয়া বন্ধহে আছিল।",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "আদালত আকৌ আৰম্ভ হ'ল!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

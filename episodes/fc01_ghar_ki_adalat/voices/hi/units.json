@@ -1,0 +1,946 @@
+{
+ "lang": "hi",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "मेरी अचार की बरनी कहाँ गई? तीस साल से उसी ताक पर रखी थी!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "माँजी, मैंने उसे हाथ भी नहीं लगाया। सच्ची कसम!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "हाँ हाँ, बरनी को पंख लग गए होंगे। रात को उड़ के तीर्थ यात्रा पर चली गई।",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "हैलो फ़ॉलोअर्स! लाइव देखिए, सास-बहू महायुद्ध, एपिसोड वन!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> नेहा, फ़ोन बंद कर! पूरा मोहल्ला देख लेगा!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "भैया, पूरा मोहल्ला नहीं देख रहा। <short pause> सिर्फ़ तीन लोग देख रहे हैं।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "पर मेरा सीसीटीवी सब देख रहा है! सब रिकॉर्ड हो रहा है!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "महेश, तू बता। तेरी माँ सही है या तेरी बीवी?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "माँ... मैं... <laugh> आज मौसम कितना अच्छा है ना?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "बस! ऑर्डर! ऑर्डर!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "रोज़-रोज़ का झगड़ा बहुत हो गया। आज इस घर में अदालत लगेगी!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ये स्टील की थाली मेरा हथौड़ा है। ये दादाजी का चश्मा। और ये सोफ़ा, गवाह का कटघरा!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "दादाजी मंदिर गए हैं। <short pause> उनका चश्मा अदालत ने ज़ब्त कर लिया है।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> वाह री जज साहिबा! आज सीरियल टीवी पे नहीं, घर में ही चलेगा।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "और मैं अदालत का सीसीटीवी इंचार्ज! मेरे कैमरे से कोई नहीं बच सकता।",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "इस कैमरे में लेंस की जगह बोतल का ढक्कन लगा है।",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ढक्कन नहीं है, ज़ूम लेंस है!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "पापा, आप किसकी तरफ़ हैं? मम्मी की या दादी की?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "मैं? मैं स्विट्ज़रलैंड हूँ! बिल्कुल बीच में, पूरा न्यूट्रल!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "तो न्यूट्रल जी, गवाह के कटघरे से हटिए। केस शुरू होता है।",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "मुक़दमा नंबर एक। कमला देवी बनाम सुनीता। जुर्म, तीस साल से सँभाली हुई अचार की बरनी ग़ायब करना।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "वो सिर्फ़ बरनी नहीं थी, जज साहिबा। <short pause> उसमें इस घर का स्वाद था।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "और मैं बेक़सूर हूँ, जज साहिबा। सबूत है तो सबूत लाइए।",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ठीक है। पहले शिकायत करने वाली बोलेंगी। दादी, बताइए कल रात क्या हुआ।",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "कल रात मैं रसोई में थी। तभी ये आई, और मेरी बरनी को ऐसे घूरा, जैसे सीरियल की खलनायिका।",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ये पुरानी बरनी... इसे तो मैं फेंक दूँगी!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ऑब्जेक्शन! <gasp> मैं ऐसे कब हँसती हूँ? और रसोई में बिजली कौन कड़काता है?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ऑब्जेक्शन मंज़ूर। दादी, बिजली हटाइए, सच बताइए।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> अच्छा, बिजली नहीं कड़की थी। पर इसने कहा था, ये बरनी बदल दो।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "मैंने कहा था इसमें दरार है, नीचे से तेल रिस रहा है। वो बात अलग है!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "और मैंने कहा था, ये बरनी इस घर में तुमसे पहले आई थी। वो बात भी अलग है।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> दोनों की बात अलग-अलग है, तो झगड़ा एक क्यों है?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "अगली गवाह, नेहा बुआ! कटघरे में आइए।",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "आ गई! दोस्तों, अब आपकी नेहा गवाही देगी। लाइक करते रहिए!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "कल रात दस बजे मैंने कुछ ऐसा देखा... <short pause> जो किसी सीरियल में भी नहीं होता।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "भाभी चुपके से एक बड़ा डिब्बा लेकर आईं। इधर देखा, उधर देखा, और अलमारी में छिपा दिया!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "और ये रहा सबूत! वही डिब्बा, जो अलमारी से बरामद हुआ।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> नई बरनी? बिल्कुल मेरी जैसी!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> मतलब असली की जगह नकली रख दी! ये तो फ़िल्मों वाला खेल है!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "मम्मी, ये बरनी कहाँ से आई?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> हाँ, मैंने मँगवाई थी। ऑनलाइन। पुरानी वाली की दरार देखकर।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "पर पुरानी मैंने नहीं फेंकी, जज साहिबा। सोचा था चुपके से अचार बदल दूँगी, माँजी को पता भी नहीं चलेगा।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> पता भी नहीं चलेगा? <short pause> तीस साल की यादें अब ऑनलाइन मिलती हैं?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "दोस्तों, कमेंट में बताइए, भाभी दोषी हैं या नहीं!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "अगले गवाह, पापा! भागने की कोशिश मत कीजिए।",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> मैं तो बस पानी पीने जा रहा था।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "कल रात आपने क्या देखा?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "मैंने देखा कि इस घर में सब एक-दूसरे से बहुत प्यार करते हैं।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "माँ सुनीता की तारीफ़ कर रही थीं, सुनीता माँ की। और मैं बीच में हीरो की तरह खड़ा था।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "भैया, कल रात तो आप नौ बजे से खर्राटे ले रहे थे।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "और हीरो जी ने कल रात अपने लिए चाय तक नहीं बनाई।",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> खर्राटे भी तो शांति का संदेश हैं! मैं किसी की तरफ़ नहीं हूँ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> गवाह बेकार है। जाइए, स्विट्ज़रलैंड जी।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "जज दीदी! असली सबूत तो मेरे सीसीटीवी में है! रात दो बजे की रिकॉर्डिंग!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> तू रात को दो बजे जाग रहा था?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> सू-सू आई थी। पर मेरा कैमरा हमेशा तैयार रहता है!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> जज साहिबा, गवाह की सू-सू भी रिकॉर्ड में लिख लीजिए!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "अँधेरा था। फिर आया एक भूत! सफ़ेद कपड़े, धीरे-धीरे क़दम, ठक, ठक, ठक!",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> भूत ने बरनी उठाई और ग़ायब! मैं डर के रज़ाई में घुस गया!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "भूत? <gasp> घर में भूत? दोस्तों, ये तो वायरल हो जाएगा!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "रुको। ठक, ठक, ठक? भूत के पास छड़ी थी?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> आज पंखा कितना धीरे चल रहा है ना...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> अम्माजी... आप?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "बड़ी दादी, आप सीनियर सिटीज़न हैं। आप अपनी कुर्सी से ही गवाही दीजिए।",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "हाँ बिटिया, बरनी मैंने उठाई थी। <short pause> उसकी दरार रोज़ बढ़ रही थी।",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "सोचा, किसी दिन कमला के हाथ में ही फट गई तो? इसलिए आँगन में तुलसी के पीछे छिपा दी।",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "तो आपने मुझसे कहा क्यों नहीं, अम्माजी? <short pause> मैं सुबह से सुनीता पर चिल्ला रही हूँ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "डर गई थी, कमला। <short pause> इस उम्र में भी एक बरनी से डर लगता है।",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "सबूत अदालत में पेश किया जाए!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "मैं लाती हूँ, जज साहिबा।",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> तीस साल पहले, जिस दिन अम्माजी ने मुझे रसोई सौंपी, ये बरनी मेरे हाथ में दी थी।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "आज से ये बरनी तेरी। ये इस घर की इज़्ज़त है। टूटी, तो समझ घर टूटा।",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "दस साल मैं इस घर में मेहमान जैसी रही थी। <sigh> उस दिन पहली बार लगा, मैं इस घर की हूँ।",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "दादी, तीस साल पहले भी आप बिल्कुल ऐसी ही दिखती थीं?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> गोलू, याद में सब लोग आज वाले चेहरे में ही आते हैं।",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "तीस साल इसे बच्चे की तरह सँभाला। इसी के साथ तो मुझे अपनापन मिला था।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "माँजी... <short pause> मुझे नहीं पता था। मैं तो बस एक बरनी बदल रही थी।",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "नहीं, कमला। अब पूरा सच सुन ले।",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> वो बरनी असली नहीं है।",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> क्या मतलब, अम्माजी?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "साठ साल पहले मैं भी नई बहू थी। <sigh> मेरी सास की असली बरनी मेरे हाथ से गिरी और टूट गई।",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "मैं डर से काँप गई। उसी दोपहर बाज़ार गई, हूबहू वैसी बरनी ख़रीदी, अचार भरा, और ताक पर रख दी।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> और मेरी सास को आख़िर तक पता ही नहीं चला।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "तो जिसे मैं तीस साल से पूज रही थी... <short pause> वो बाज़ार की बरनी है?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> नीचे लिखा है, खुर्जा बाज़ार, दो रुपये!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> दो रुपये की बरनी पर तीन पीढ़ियों का झगड़ा!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> मतलब मैं बचपन से बाज़ार वाला अचार खा रहा हूँ?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> मैंने कभी अपनी सास से नहीं पूछा कि एक बरनी पर इतना ग़ुस्सा क्यों। <short pause> बस वही डर तुझे थमा दिया।",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "और मैंने कभी आपसे नहीं पूछा कि आप ये अचार ख़ुद कभी खाती क्यों नहीं।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> क्योंकि हर कौर में अपनी चोरी याद आती थी!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "अदालत फ़ैसला सुनाती है। दादी दोषी हैं। मम्मी भी दोषी हैं। दोनों ने एक ही जुर्म किया है।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> दोनों? कौन-सा जुर्म, जज साहिबा?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "आपने एक-दूसरे से कभी \"क्यों\" नहीं पूछा।",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "दादी ने नहीं पूछा कि मम्मी बरनी के पीछे क्यों पड़ी हैं। मम्मी ने नहीं पूछा कि दादी के लिए वो बरनी इतनी ज़रूरी क्यों है।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "और बड़ी दादी साठ साल चुप रहीं। सज़ा सबको मिलेगी!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> शुक्र है, मैं तो बच गया।",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "पापा, चुप रहना भी जुर्म है। अचार के सारे आम आप काटेंगे।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> पूरे दस किलो?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "और दादी और मम्मी मिलकर नया अचार डालेंगी, नई बरनी में। रोज़ एक बार एक-दूसरे से पूछेंगी, \"क्यों?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "सुनीता, तूने नई बरनी क्यों मँगवाई थी?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "क्योंकि आपको उस बरनी से प्यार है, माँजी। मैं नहीं चाहती थी कि वो आपके हाथ में टूटे।",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "और आप? आपको वो इतनी प्यारी क्यों थी?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "क्योंकि उसने मुझे इस घर का बनाया था।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "आज से नई बरनी हम दोनों की। और टूट भी गई, तो नई ले आएँगे। घर नहीं टूटेगा।",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> साठ साल बाद आज मन हल्का हुआ।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "अदालत बर्ख़ास्त!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "सरसों का तेल पहले गरम करना, फिर ठंडा। जल्दी मत करना।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "क्यों, माँजी?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> वाह! आज का पहला \"क्यों\"! क्योंकि गरम तेल में मसाला जल जाता है।",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "नमक थोड़ा ज़्यादा डालना। <short pause> मेरी सास भी ज़्यादा डालती थीं।",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> अम्माजी, अब आपकी सास की हर बात पर पहले पूछूँगी, क्यों?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "और आज मैंने भी पहली बार एक साइड चुनी है। अचार की साइड!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "दोस्तों, सास-बहू महायुद्ध, एपिसोड टू! अचार महामिलन!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "और सीसीटीवी में सब रिकॉर्ड हो रहा है!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> इस बार मैंने नहीं तोड़ी! मेरे हाथ तो यहाँ हैं!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> वो... सीसीटीवी अभी बंद था।",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "अदालत फिर से शुरू!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

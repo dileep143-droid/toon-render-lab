@@ -1,0 +1,877 @@
+[
+ {
+  "id": 0,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "shouting",
+  "hi": "मेरी अचार की बरनी कहाँ गई? तीस साल से उसी ताक पर रखी थी!"
+ },
+ {
+  "id": 1,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "pleading",
+  "hi": "माँजी, मैंने उसे हाथ भी नहीं लगाया। सच्ची कसम!"
+ },
+ {
+  "id": 2,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sarcastic",
+  "hi": "हाँ हाँ, बरनी को पंख लग गए होंगे। रात को उड़ के तीर्थ यात्रा पर चली गई।"
+ },
+ {
+  "id": 3,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "excited",
+  "hi": "हैलो फ़ॉलोअर्स! लाइव देखिए, सास-बहू महायुद्ध, एपिसोड वन!"
+ },
+ {
+  "id": 4,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "comic_panic",
+  "hi": "<gasp> नेहा, फ़ोन बंद कर! पूरा मोहल्ला देख लेगा!"
+ },
+ {
+  "id": 5,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "mischievous",
+  "hi": "भैया, पूरा मोहल्ला नहीं देख रहा। <short pause> सिर्फ़ तीन लोग देख रहे हैं।"
+ },
+ {
+  "id": 6,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "proud",
+  "hi": "पर मेरा सीसीटीवी सब देख रहा है! सब रिकॉर्ड हो रहा है!"
+ },
+ {
+  "id": 7,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "angry",
+  "hi": "महेश, तू बता। तेरी माँ सही है या तेरी बीवी?"
+ },
+ {
+  "id": 8,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "embarrassed",
+  "hi": "माँ... मैं... <laugh> आज मौसम कितना अच्छा है ना?"
+ },
+ {
+  "id": 9,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "shouting",
+  "hi": "बस! ऑर्डर! ऑर्डर!"
+ },
+ {
+  "id": 10,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "determined",
+  "hi": "रोज़-रोज़ का झगड़ा बहुत हो गया। आज इस घर में अदालत लगेगी!"
+ },
+ {
+  "id": 11,
+  "kind": "card",
+  "speaker": "TITLE",
+  "emotion": "",
+  "hi": "Ghar Ki Adalat — The Family Court"
+ },
+ {
+  "id": 12,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "proud",
+  "hi": "ये स्टील की थाली मेरा हथौड़ा है। ये दादाजी का चश्मा। और ये सोफ़ा, गवाह का कटघरा!"
+ },
+ {
+  "id": 13,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "mischievous",
+  "hi": "दादाजी मंदिर गए हैं। <short pause> उनका चश्मा अदालत ने ज़ब्त कर लिया है।"
+ },
+ {
+  "id": 14,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "giggly",
+  "hi": "<laugh> वाह री जज साहिबा! आज सीरियल टीवी पे नहीं, घर में ही चलेगा।"
+ },
+ {
+  "id": 15,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "proud",
+  "hi": "और मैं अदालत का सीसीटीवी इंचार्ज! मेरे कैमरे से कोई नहीं बच सकता।"
+ },
+ {
+  "id": 16,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "sarcastic",
+  "hi": "इस कैमरे में लेंस की जगह बोतल का ढक्कन लगा है।"
+ },
+ {
+  "id": 17,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "angry",
+  "hi": "ढक्कन नहीं है, ज़ूम लेंस है!"
+ },
+ {
+  "id": 18,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "curious",
+  "hi": "पापा, आप किसकी तरफ़ हैं? मम्मी की या दादी की?"
+ },
+ {
+  "id": 19,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "panicked",
+  "hi": "मैं? मैं स्विट्ज़रलैंड हूँ! बिल्कुल बीच में, पूरा न्यूट्रल!"
+ },
+ {
+  "id": 20,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "stern_warning",
+  "hi": "तो न्यूट्रल जी, गवाह के कटघरे से हटिए। केस शुरू होता है।"
+ },
+ {
+  "id": 21,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "serious",
+  "hi": "मुक़दमा नंबर एक। कमला देवी बनाम सुनीता। जुर्म, तीस साल से सँभाली हुई अचार की बरनी ग़ायब करना।"
+ },
+ {
+  "id": 22,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sad",
+  "hi": "वो सिर्फ़ बरनी नहीं थी, जज साहिबा। <short pause> उसमें इस घर का स्वाद था।"
+ },
+ {
+  "id": 23,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "determined",
+  "hi": "और मैं बेक़सूर हूँ, जज साहिबा। सबूत है तो सबूत लाइए।"
+ },
+ {
+  "id": 24,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "proud",
+  "hi": "ठीक है। पहले शिकायत करने वाली बोलेंगी। दादी, बताइए कल रात क्या हुआ।"
+ },
+ {
+  "id": 25,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "serious",
+  "hi": "कल रात मैं रसोई में थी। तभी ये आई, और मेरी बरनी को ऐसे घूरा, जैसे सीरियल की खलनायिका।"
+ },
+ {
+  "id": 26,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Kamla's version"
+ },
+ {
+  "id": 27,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "laughing",
+  "hi": "<laugh> ये पुरानी बरनी... इसे तो मैं फेंक दूँगी!"
+ },
+ {
+  "id": 28,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "shocked",
+  "hi": "ऑब्जेक्शन! <gasp> मैं ऐसे कब हँसती हूँ? और रसोई में बिजली कौन कड़काता है?"
+ },
+ {
+  "id": 29,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "giggly",
+  "hi": "<laugh> ऑब्जेक्शन मंज़ूर। दादी, बिजली हटाइए, सच बताइए।"
+ },
+ {
+  "id": 30,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "embarrassed",
+  "hi": "<laugh> अच्छा, बिजली नहीं कड़की थी। पर इसने कहा था, ये बरनी बदल दो।"
+ },
+ {
+  "id": 31,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "determined",
+  "hi": "मैंने कहा था इसमें दरार है, नीचे से तेल रिस रहा है। वो बात अलग है!"
+ },
+ {
+  "id": 32,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sarcastic",
+  "hi": "और मैंने कहा था, ये बरनी इस घर में तुमसे पहले आई थी। वो बात भी अलग है।"
+ },
+ {
+  "id": 33,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "giggly",
+  "hi": "<laugh> दोनों की बात अलग-अलग है, तो झगड़ा एक क्यों है?"
+ },
+ {
+  "id": 34,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "serious",
+  "hi": "अगली गवाह, नेहा बुआ! कटघरे में आइए।"
+ },
+ {
+  "id": 35,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "excited",
+  "hi": "आ गई! दोस्तों, अब आपकी नेहा गवाही देगी। लाइक करते रहिए!"
+ },
+ {
+  "id": 36,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "mischievous",
+  "hi": "कल रात दस बजे मैंने कुछ ऐसा देखा... <short pause> जो किसी सीरियल में भी नहीं होता।"
+ },
+ {
+  "id": 37,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Neha's version"
+ },
+ {
+  "id": 38,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "scared_whisper",
+  "hi": "भाभी चुपके से एक बड़ा डिब्बा लेकर आईं। इधर देखा, उधर देखा, और अलमारी में छिपा दिया!"
+ },
+ {
+  "id": 39,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "proud",
+  "hi": "और ये रहा सबूत! वही डिब्बा, जो अलमारी से बरामद हुआ।"
+ },
+ {
+  "id": 40,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "shocked",
+  "hi": "<gasp> नई बरनी? बिल्कुल मेरी जैसी!"
+ },
+ {
+  "id": 41,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "comic_panic",
+  "hi": "<gasp> मतलब असली की जगह नकली रख दी! ये तो फ़िल्मों वाला खेल है!"
+ },
+ {
+  "id": 42,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "curious",
+  "hi": "मम्मी, ये बरनी कहाँ से आई?"
+ },
+ {
+  "id": 43,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "guilty",
+  "hi": "<short pause> हाँ, मैंने मँगवाई थी। ऑनलाइन। पुरानी वाली की दरार देखकर।"
+ },
+ {
+  "id": 44,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "pleading",
+  "hi": "पर पुरानी मैंने नहीं फेंकी, जज साहिबा। सोचा था चुपके से अचार बदल दूँगी, माँजी को पता भी नहीं चलेगा।"
+ },
+ {
+  "id": 45,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sad",
+  "hi": "<sigh> पता भी नहीं चलेगा? <short pause> तीस साल की यादें अब ऑनलाइन मिलती हैं?"
+ },
+ {
+  "id": 46,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "excited",
+  "hi": "दोस्तों, कमेंट में बताइए, भाभी दोषी हैं या नहीं!"
+ },
+ {
+  "id": 47,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "stern_warning",
+  "hi": "अगले गवाह, पापा! भागने की कोशिश मत कीजिए।"
+ },
+ {
+  "id": 48,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "embarrassed",
+  "hi": "<laugh> मैं तो बस पानी पीने जा रहा था।"
+ },
+ {
+  "id": 49,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "curious",
+  "hi": "कल रात आपने क्या देखा?"
+ },
+ {
+  "id": 50,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "happy",
+  "hi": "मैंने देखा कि इस घर में सब एक-दूसरे से बहुत प्यार करते हैं।"
+ },
+ {
+  "id": 51,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Mahesh's version"
+ },
+ {
+  "id": 52,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "proud",
+  "hi": "माँ सुनीता की तारीफ़ कर रही थीं, सुनीता माँ की। और मैं बीच में हीरो की तरह खड़ा था।"
+ },
+ {
+  "id": 53,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "sarcastic",
+  "hi": "भैया, कल रात तो आप नौ बजे से खर्राटे ले रहे थे।"
+ },
+ {
+  "id": 54,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sarcastic",
+  "hi": "और हीरो जी ने कल रात अपने लिए चाय तक नहीं बनाई।"
+ },
+ {
+  "id": 55,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "comic_panic",
+  "hi": "<gasp> खर्राटे भी तो शांति का संदेश हैं! मैं किसी की तरफ़ नहीं हूँ!"
+ },
+ {
+  "id": 56,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "tired",
+  "hi": "<sigh> गवाह बेकार है। जाइए, स्विट्ज़रलैंड जी।"
+ },
+ {
+  "id": 57,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "excited",
+  "hi": "जज दीदी! असली सबूत तो मेरे सीसीटीवी में है! रात दो बजे की रिकॉर्डिंग!"
+ },
+ {
+  "id": 58,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "surprised",
+  "hi": "<gasp> तू रात को दो बजे जाग रहा था?"
+ },
+ {
+  "id": 59,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "embarrassed",
+  "hi": "<laugh> सू-सू आई थी। पर मेरा कैमरा हमेशा तैयार रहता है!"
+ },
+ {
+  "id": 60,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "giggly",
+  "hi": "<laugh> जज साहिबा, गवाह की सू-सू भी रिकॉर्ड में लिख लीजिए!"
+ },
+ {
+  "id": 61,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Golu's CCTV"
+ },
+ {
+  "id": 62,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "scared_whisper",
+  "hi": "अँधेरा था। फिर आया एक भूत! सफ़ेद कपड़े, धीरे-धीरे क़दम, ठक, ठक, ठक!"
+ },
+ {
+  "id": 63,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "comic_panic",
+  "hi": "<gasp> भूत ने बरनी उठाई और ग़ायब! मैं डर के रज़ाई में घुस गया!"
+ },
+ {
+  "id": 64,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "shocked",
+  "hi": "भूत? <gasp> घर में भूत? दोस्तों, ये तो वायरल हो जाएगा!"
+ },
+ {
+  "id": 65,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "curious",
+  "hi": "रुको। ठक, ठक, ठक? भूत के पास छड़ी थी?"
+ },
+ {
+  "id": 66,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "embarrassed",
+  "hi": "<laugh> आज पंखा कितना धीरे चल रहा है ना..."
+ },
+ {
+  "id": 67,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "surprised",
+  "hi": "<gasp> अम्माजी... आप?"
+ },
+ {
+  "id": 68,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "serious",
+  "hi": "बड़ी दादी, आप सीनियर सिटीज़न हैं। आप अपनी कुर्सी से ही गवाही दीजिए।"
+ },
+ {
+  "id": 69,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "guilty",
+  "hi": "हाँ बिटिया, बरनी मैंने उठाई थी। <short pause> उसकी दरार रोज़ बढ़ रही थी।"
+ },
+ {
+  "id": 70,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "sad",
+  "hi": "सोचा, किसी दिन कमला के हाथ में ही फट गई तो? इसलिए आँगन में तुलसी के पीछे छिपा दी।"
+ },
+ {
+  "id": 71,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "shocked",
+  "hi": "तो आपने मुझसे कहा क्यों नहीं, अम्माजी? <short pause> मैं सुबह से सुनीता पर चिल्ला रही हूँ!"
+ },
+ {
+  "id": 72,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "guilty",
+  "hi": "डर गई थी, कमला। <short pause> इस उम्र में भी एक बरनी से डर लगता है।"
+ },
+ {
+  "id": 73,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "determined",
+  "hi": "सबूत अदालत में पेश किया जाए!"
+ },
+ {
+  "id": 74,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "determined",
+  "hi": "मैं लाती हूँ, जज साहिबा।"
+ },
+ {
+  "id": 75,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "nostalgic",
+  "hi": "<sigh> तीस साल पहले, जिस दिन अम्माजी ने मुझे रसोई सौंपी, ये बरनी मेरे हाथ में दी थी।"
+ },
+ {
+  "id": 76,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Thirty years ago"
+ },
+ {
+  "id": 77,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "stern_warning",
+  "hi": "आज से ये बरनी तेरी। ये इस घर की इज़्ज़त है। टूटी, तो समझ घर टूटा।"
+ },
+ {
+  "id": 78,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "nostalgic",
+  "hi": "दस साल मैं इस घर में मेहमान जैसी रही थी। <sigh> उस दिन पहली बार लगा, मैं इस घर की हूँ।"
+ },
+ {
+  "id": 79,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "curious",
+  "hi": "दादी, तीस साल पहले भी आप बिल्कुल ऐसी ही दिखती थीं?"
+ },
+ {
+  "id": 80,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "giggly",
+  "hi": "<laugh> गोलू, याद में सब लोग आज वाले चेहरे में ही आते हैं।"
+ },
+ {
+  "id": 81,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "crying",
+  "hi": "तीस साल इसे बच्चे की तरह सँभाला। इसी के साथ तो मुझे अपनापन मिला था।"
+ },
+ {
+  "id": 82,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "sad",
+  "hi": "माँजी... <short pause> मुझे नहीं पता था। मैं तो बस एक बरनी बदल रही थी।"
+ },
+ {
+  "id": 83,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "serious",
+  "hi": "नहीं, कमला। अब पूरा सच सुन ले।"
+ },
+ {
+  "id": 84,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "guilty",
+  "hi": "<short pause> वो बरनी असली नहीं है।"
+ },
+ {
+  "id": 85,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "shocked",
+  "hi": "<gasp> क्या मतलब, अम्माजी?"
+ },
+ {
+  "id": 86,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "nostalgic",
+  "hi": "साठ साल पहले मैं भी नई बहू थी। <sigh> मेरी सास की असली बरनी मेरे हाथ से गिरी और टूट गई।"
+ },
+ {
+  "id": 87,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Sixty years ago"
+ },
+ {
+  "id": 88,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "scared_whisper",
+  "hi": "मैं डर से काँप गई। उसी दोपहर बाज़ार गई, हूबहू वैसी बरनी ख़रीदी, अचार भरा, और ताक पर रख दी।"
+ },
+ {
+  "id": 89,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "giggly",
+  "hi": "<laugh> और मेरी सास को आख़िर तक पता ही नहीं चला।"
+ },
+ {
+  "id": 90,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "shocked",
+  "hi": "तो जिसे मैं तीस साल से पूज रही थी... <short pause> वो बाज़ार की बरनी है?"
+ },
+ {
+  "id": 91,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "surprised",
+  "hi": "<gasp> नीचे लिखा है, खुर्जा बाज़ार, दो रुपये!"
+ },
+ {
+  "id": 92,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "laughing",
+  "hi": "<laugh> दो रुपये की बरनी पर तीन पीढ़ियों का झगड़ा!"
+ },
+ {
+  "id": 93,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "shocked",
+  "hi": "<gasp> मतलब मैं बचपन से बाज़ार वाला अचार खा रहा हूँ?"
+ },
+ {
+  "id": 94,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "sad",
+  "hi": "<sigh> मैंने कभी अपनी सास से नहीं पूछा कि एक बरनी पर इतना ग़ुस्सा क्यों। <short pause> बस वही डर तुझे थमा दिया।"
+ },
+ {
+  "id": 95,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "sad",
+  "hi": "और मैंने कभी आपसे नहीं पूछा कि आप ये अचार ख़ुद कभी खाती क्यों नहीं।"
+ },
+ {
+  "id": 96,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "giggly",
+  "hi": "<laugh> क्योंकि हर कौर में अपनी चोरी याद आती थी!"
+ },
+ {
+  "id": 97,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "serious",
+  "hi": "अदालत फ़ैसला सुनाती है। दादी दोषी हैं। मम्मी भी दोषी हैं। दोनों ने एक ही जुर्म किया है।"
+ },
+ {
+  "id": 98,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "surprised",
+  "hi": "<gasp> दोनों? कौन-सा जुर्म, जज साहिबा?"
+ },
+ {
+  "id": 99,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "loving",
+  "hi": "आपने एक-दूसरे से कभी \"क्यों\" नहीं पूछा।"
+ },
+ {
+  "id": 100,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "loving",
+  "hi": "दादी ने नहीं पूछा कि मम्मी बरनी के पीछे क्यों पड़ी हैं। मम्मी ने नहीं पूछा कि दादी के लिए वो बरनी इतनी ज़रूरी क्यों है।"
+ },
+ {
+  "id": 101,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "determined",
+  "hi": "और बड़ी दादी साठ साल चुप रहीं। सज़ा सबको मिलेगी!"
+ },
+ {
+  "id": 102,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "relieved",
+  "hi": "<sigh> शुक्र है, मैं तो बच गया।"
+ },
+ {
+  "id": 103,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "stern_warning",
+  "hi": "पापा, चुप रहना भी जुर्म है। अचार के सारे आम आप काटेंगे।"
+ },
+ {
+  "id": 104,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "comic_panic",
+  "hi": "<gasp> पूरे दस किलो?"
+ },
+ {
+  "id": 105,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "proud",
+  "hi": "और दादी और मम्मी मिलकर नया अचार डालेंगी, नई बरनी में। रोज़ एक बार एक-दूसरे से पूछेंगी, \"क्यों?\""
+ },
+ {
+  "id": 106,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "loving",
+  "hi": "सुनीता, तूने नई बरनी क्यों मँगवाई थी?"
+ },
+ {
+  "id": 107,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "loving",
+  "hi": "क्योंकि आपको उस बरनी से प्यार है, माँजी। मैं नहीं चाहती थी कि वो आपके हाथ में टूटे।"
+ },
+ {
+  "id": 108,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "curious",
+  "hi": "और आप? आपको वो इतनी प्यारी क्यों थी?"
+ },
+ {
+  "id": 109,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "nostalgic",
+  "hi": "क्योंकि उसने मुझे इस घर का बनाया था।"
+ },
+ {
+  "id": 110,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "loving",
+  "hi": "आज से नई बरनी हम दोनों की। और टूट भी गई, तो नई ले आएँगे। घर नहीं टूटेगा।"
+ },
+ {
+  "id": 111,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "relieved",
+  "hi": "<sigh> साठ साल बाद आज मन हल्का हुआ।"
+ },
+ {
+  "id": 112,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "proud",
+  "hi": "अदालत बर्ख़ास्त!"
+ },
+ {
+  "id": 113,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "happy",
+  "hi": "सरसों का तेल पहले गरम करना, फिर ठंडा। जल्दी मत करना।"
+ },
+ {
+  "id": 114,
+  "kind": "line",
+  "speaker": "SUNITA",
+  "emotion": "curious",
+  "hi": "क्यों, माँजी?"
+ },
+ {
+  "id": 115,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "giggly",
+  "hi": "<laugh> वाह! आज का पहला \"क्यों\"! क्योंकि गरम तेल में मसाला जल जाता है।"
+ },
+ {
+  "id": 116,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "mischievous",
+  "hi": "नमक थोड़ा ज़्यादा डालना। <short pause> मेरी सास भी ज़्यादा डालती थीं।"
+ },
+ {
+  "id": 117,
+  "kind": "line",
+  "speaker": "KAMLA",
+  "emotion": "giggly",
+  "hi": "<laugh> अम्माजी, अब आपकी सास की हर बात पर पहले पूछूँगी, क्यों?"
+ },
+ {
+  "id": 118,
+  "kind": "line",
+  "speaker": "MAHESH",
+  "emotion": "proud",
+  "hi": "और आज मैंने भी पहली बार एक साइड चुनी है। अचार की साइड!"
+ },
+ {
+  "id": 119,
+  "kind": "line",
+  "speaker": "NEHA",
+  "emotion": "excited",
+  "hi": "दोस्तों, सास-बहू महायुद्ध, एपिसोड टू! अचार महामिलन!"
+ },
+ {
+  "id": 120,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "proud",
+  "hi": "और सीसीटीवी में सब रिकॉर्ड हो रहा है!"
+ },
+ {
+  "id": 121,
+  "kind": "line",
+  "speaker": "AMMAJI",
+  "emotion": "comic_panic",
+  "hi": "<gasp> इस बार मैंने नहीं तोड़ी! मेरे हाथ तो यहाँ हैं!"
+ },
+ {
+  "id": 122,
+  "kind": "line",
+  "speaker": "GOLU",
+  "emotion": "embarrassed",
+  "hi": "<laugh> वो... सीसीटीवी अभी बंद था।"
+ },
+ {
+  "id": 123,
+  "kind": "line",
+  "speaker": "CHINKI",
+  "emotion": "shouting",
+  "hi": "अदालत फिर से शुरू!"
+ },
+ {
+  "id": 124,
+  "kind": "card",
+  "speaker": "CARD",
+  "emotion": "",
+  "hi": "Before you blame, ask \"why\"."
+ }
+]

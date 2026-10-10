@@ -1,0 +1,946 @@
+{
+ "lang": "kn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ನನ್ನ ಉಪ್ಪಿನಕಾಯಿ ಭರಣಿ ಎಲ್ಲಿ ಹೋಯ್ತು ಕಣ್ರೀ? ಮೂವತ್ತು ವರ್ಷದಿಂದ ಅದೇ ಗೂಡಲ್ಲೇ ಇತ್ತು!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ಅತ್ತೆಮ್ಮಾ, ನಾನು ಅದನ್ನ ಮುಟ್ಟೇ ಇಲ್ಲ. ದೇವರಾಣೆ ನಿಜ!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ಹೌದು ಹೌದು, ಭರಣಿಗೆ ರೆಕ್ಕೆ ಬಂದಿರಬೇಕು. ರಾತ್ರಿ ಹಾರಿಕೊಂಡು ತೀರ್ಥಯಾತ್ರೆಗೆ ಹೊರಟೋಯ್ತು!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಹಲೋ ಫಾಲೋವರ್ಸ್! ಲೈವ್ ನೋಡಿ ಮಗಾ, ಅತ್ತೆ-ಸೊಸೆ ಮಹಾಯುದ್ಧ, ಎಪಿಸೋಡ್ ಒನ್!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ನೇಹಾ, ಫೋನ್ ಬಂದ್ ಮಾಡು! ಪೂರ್ತಿ ಗಲ್ಲಿ ಮಂದಿ ನೋಡ್ತಾರೆ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಅಣ್ಣಾ, ಪೂರ್ತಿ ಗಲ್ಲಿ ನೋಡ್ತಿಲ್ಲ ಗುರು. <short pause> ಬರೀ ಮೂರೇ ಜನ ನೋಡ್ತಿದ್ದಾರೆ.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಆದ್ರೆ ನನ್ ಸಿಸಿಟಿವಿ ಎಲ್ಲ ನೋಡ್ತಿದೆ! ಎಲ್ಲ ರೆಕಾರ್ಡ್ ಆಗ್ತಿದೆ!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ಮಹೇಶಾ, ನೀನೇ ಹೇಳು. ನಿನ್ನ ತಾಯಿ ಸರಿಯೋ, ನಿನ್ನ ಹೆಂಡತಿ ಸರಿಯೋ?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ಅವ್ವಾ... ನಾನು... <laugh> ಇವತ್ತು ವೆದರ್ ಎಷ್ಟು ಮಸ್ತ್ ಐತಿ ಅಲ್ವಾ?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ಸಾಕು! ಆರ್ಡರ್! ಆರ್ಡರ್!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ದಿನಾಲೂ ಜಗಳ ಆಡಿದ್ದು ಸಾಕಾಯ್ತು. ಇವತ್ತು ಈ ಮನೇಲಿ ನ್ಯಾಯಪಂಚಾಯ್ತಿ ಕೂರುತ್ತೆ!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಈ ಸ್ಟೀಲ್ ತಟ್ಟೆ ನನ್ನ ಸುತ್ತಿಗೆ. ಇದು ತಾತನ ಕನ್ನಡಕ. ಈ ಸೋಫಾ ಸಾಕ್ಷಿ ಬೋನು!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ತಾತ ದೇವಸ್ಥಾನಕ್ಕೆ ಹೋಗಿದ್ದಾರೆ. <short pause> ಅವರ ಕನ್ನಡಕನ ಕೋರ್ಟ್ ಜಪ್ತಿ ಮಾಡಿದೆ.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ವಾಹ್ ರೀ ನ್ಯಾಯಾಧೀಶರೆ! ಇವತ್ತು ಸೀರಿಯಲ್ ಟೀವ್ಯಾಗಲ್ಲ, ಮನ್ಯಾಗೇ ನಡೀತೈತಿ.",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಮತ್ತೆ ನಾನು ಕೋರ್ಟಿನ ಸಿಸಿಟಿವಿ ಇಂಚಾರ್ಜ್! ನನ್ ಕ್ಯಾಮೆರಾದಿಂದ ಯಾರೂ ತಪ್ಪಿಸಿಕೊಳ್ಳೋಕೆ ಆಗಲ್ಲ.",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ಈ ಕ್ಯಾಮೆರಾದಲ್ಲಿ ಲೆನ್ಸ್ ಬದ್ಲು ಬಾಟಲ್ ಮುಚ್ಚಳ ಹಾಕಿದ್ದೀಯ ಮಗಾ.",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ಮುಚ್ಚಳ ಅಲ್ಲ ಅದು, ಝೂಮ್ ಲೆನ್ಸ್!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಅಪ್ಪಾ, ನೀವು ಯಾರ ಕಡೆ? ಅಮ್ಮನ ಕಡೆನಾ ಅಜ್ಜಿ ಕಡೆನಾ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ನಾನಾ? ನಾನು ಸ್ವಿಟ್ಜರ್ಲೆಂಡ್ ಇದ್ದಂಗೆ! ನಡು ನಡುವೆ, ಪೂರ್ತಿ ನ್ಯೂಟ್ರಲ್!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ಹಾಗಾದ್ರೆ ನ್ಯೂಟ್ರಲ್ ಸಾಹೇಬ್ರೇ, ಸಾಕ್ಷಿ ಬೋನಿಂದ ಪಕ್ಕಕ್ಕೆ ಸರಿಯಿರಿ. ಕೇಸ್ ಶುರುವಾಗ್ತಿದೆ.",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ದಾವೆ ನಂಬರ್ ಒಂದು. ಕಮಲಾ ದೇವಿ ವರ್ಸಸ್ ಸುನೀತಾ. ಅಪರಾಧ, ಮೂವತ್ತು ವರ್ಷದಿಂದ ಕಾಪಾಡಿದ ಉಪ್ಪಿನಕಾಯಿ ಭರಣಿ ಕಣ್ಮರೆ ಮಾಡಿದ್ದು.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ಅದು ಬರೀ ಭರಣಿ ಆಗಿರ್ಲಿಲ್ಲ ಜಡ್ಜ್ ಅವರೇ. <short pause> ಅದ್ರಲ್ಲಿ ಈ ಮನೆ ರುಚಿ ಇತ್ತು ಕಣ್ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ನಾನು ನಿರಪರಾಧಿ ಜಡ್ಜ್ ಅವರೇ. ಸಾಕ್ಷಿ ಇದ್ರೆ ಸಾಕ್ಷಿ ತೋರ್ಸಿ.",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಸರಿ. ಮೊದ್ಲು ದೂರು ಕೊಟ್ಟವರು ಮಾತಾಡ್ಲಿ. ಅಜ್ಜಿ, ನಿನ್ನೆ ರಾತ್ರಿ ಏನಾಯ್ತು ಹೇಳಿ.",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ನಿನ್ನೆ ರಾತ್ರಿ ನಾನ್ ಅಡುಗೆಮನೇಲಿದ್ದೆ. ಇವಳು ಬಂದು ಭರಣಿನ ಸೀರಿಯಲ್ ವಿಲನ್ ತರ ದುರುಗುಟ್ಟಿ ನೋಡಿದ್ಲು ಕಣ್ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ಈ ಹಳೇ ಭರಣಿ... ಇದನ್ನಂತೂ ನಾನು ಬಿಸಾಕಿಬಿಡ್ತೀನಿ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಅಬ್ಜೆಕ್ಷನ್! <gasp> ನಾನೆಲ್ಲಿ ಈ ತರ ನಕ್ಕೆ? ಅಡುಗೆಮನೇಲಿ ಮಿಂಚು ಯಾರು ಹಾರಿಸ್ತಾರೆ?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಅಬ್ಜೆಕ್ಷನ್ ಮಾನ್ಯ ಮಾಡಲಾಗಿದೆ. ಅಜ್ಜಿ, ಮಿಂಚು ಬಿಟ್ಟು ನಿಜ ಹೇಳಿ.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ಸರಿ, ಮಿಂಚೇನೂ ಬರ್ಲಿಲ್ಲ. ಆದ್ರೆ ಇವಳು ಭರಣಿ ಬದಲಾಯಿಸಿ ಅಂದಿದ್ಲು ಕಣ್ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ಅದ್ರಲ್ಲಿ ಬಿರುಕು ಬಿಟ್ಟಿದೆ, ಎಣ್ಣೆ ಸೋರ್ತಿದೆ ಅಂದೆ ಅಷ್ಟೇ. ಆ ಮಾತು ಬೇರೆ!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ನಾನು ಹೇಳ್ದೆ, ಈ ಭರಣಿ ಈ ಮನೆಗೆ ನಿಂಗಿಂತ ಮುಂಚೆ ಬಂದಿದ್ದು ಅಂತ. ಆ ಮಾತೂ ಬೇರೆ ಕಣ್ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಇಬ್ಬರ ಮಾತೂ ಬೇರೆ ಬೇರೆ ಆದ್ರೆ, ಜಗಳ ಒಂದೇ ಯಾಕೆ?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ಮುಂದಿನ ಸಾಕ್ಷಿ, ನೇಹಾ ಅತ್ತೆ! ಬೋನಿಗೆ ಬನ್ನಿ.",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಬಂದೆ ಮಗಾ! ಫ್ರೆಂಡ್ಸ್, ಇವಾಗ ನಿಮ್ಮ ನೇಹಾ ಸಾಕ್ಷಿ ಹೇಳ್ತಾಳೆ. ಲೈಕ್ ಮಾಡ್ತಾ ಇರಿ ಗುರು!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ನಿನ್ನೆ ರಾತ್ರಿ ಹತ್ತು ಗಂಟೆಗೆ ನಾನೊಂದು ಸೀನ್ ನೋಡ್ದೆ... <short pause> ಯಾವ ಸೀರಿಯಲ್‌ನಲ್ಲೂ ಇರಲ್ಲ ಗುರು!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಅತ್ತಿಗೆ ಮೆಲ್ಲಗೆ ಒಂದು ದೊಡ್ಡ ಡಬ್ಬಿ ತಂದ್ರು. ಆಚೆ ಈಚೆ ನೋಡಿ, ಕಬೋರ್ಡ್ ಒಳಗೆ ಬಚ್ಚಿಟ್ರು!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಇಗೋ ಸಾಕ್ಷಿ! ಕಬೋರ್ಡ್‌ನಿಂದ ಸಿಕ್ಕಿರೋ ಅದೇ ಡಬ್ಬಿ ಗುರು!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ಹೊಸ ಭರಣಿನಾ? ಅಚ್ಚುಕಟ್ಟಾಗಿ ನಂದೇ ಥರಾ ಇದೆ!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ಅಂದ್ರೆ ಅಸಲಿ ಬದ್ಲು ನಕಲಿ ಇಟ್ರಾ! ಇದು ಫುಲ್ ಸಿನಿಮಾ ತರ ಇದೆ!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಅಮ್ಮಾ, ಈ ಭರಣಿ ಎಲ್ಲಿಂದ ಬಂತು?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ಹೌದು, ನಾನೇ ತರಿಸಿದ್ದು. ಆನ್‌ಲೈನ್‌ಲ್ಲಿ. ಹಳೇದ್ರಲ್ಲಿ ಬಿರುಕು ನೋಡಿ.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ಆದ್ರೆ ಹಳೇದನ್ನ ನಾನ್ ಎಸಿಲಿಲ್ಲ ಜಡ್ಜ್ ಅವರೇ. ಮೆಲ್ಲಗೆ ಉಪ್ಪಿನಕಾಯಿ ಶಿಫ್ಟ್ ಮಾಡಿದ್ರೆ ಅತ್ತೆಮ್ಮಂಗೆ ಗೊತ್ತಾಗಲ್ಲ ಅಂದ್ಕೊಂಡೆ.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ಗೊತ್ತಾಗೋದಿಲ್ವಾ? <short pause> ಮೂವತ್ತು ವರ್ಷದ ನೆನಪು ಇವಾಗ ಆನ್‌ಲೈನ್‌ಲ್ಲಿ ಸಿಗುತ್ತಾ ಕಣ್ರೀ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಫ್ರೆಂಡ್ಸ್, ಕಮೆಂಟ್ ಮಾಡಿ ಹೇಳಿ, ಅತ್ತಿಗೆ ತಪ್ಪಿತಸ್ಥಳಾ ಇಲ್ವಾ ಅಂತ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ಮುಂದಿನ ಸಾಕ್ಷಿ, ಅಪ್ಪಾ! ಓಡಿಹೋಗೋಕೆ ನೋಡಬೇಡಿ.",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ನಾನ್ ಸುಮ್ನೆ ನೀರು ಕುಡಿಯಾಕೆ ಹೊಂಟಿದ್ದೆ ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ನಿನ್ನೆ ರಾತ್ರಿ ನೀವು ಏನನ್ನು ನೋಡಿದ್ರಿ?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಈ ಮನ್ಯಾಗ ಎಲ್ಲರೂ ಒಬ್ಬರನ್ನೊಬ್ಬರು ಭಾಳ ಪ್ರೀತಿ ಮಾಡ್ತಾರೆ ಅಂತ ನೋಡಿದೆ.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಅವ್ವಾ ಸುನೀತಾನ ಹೊಗಳಾಕತ್ತಿದ್ಲು, ಸುನೀತಾ ಅವ್ವಾನ. ನಾನ್ ನಡು ನಡುವೆ ಹೀರೋ ಥರಾ ನಿಂತಿದ್ದೆ.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ಅಣ್ಣಾ, ನಿನ್ನೆ ರಾತ್ರಿ ಒಂಬತ್ತು ಗಂಟೆಯಿಂದ ನೀವು ಗೊರಕೆ ಹೊಡೀತಿದ್ರಿ ಮಗಾ.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ಮತ್ತೆ ಹೀರೋ ಸಾಹೇಬ್ರು ನಿನ್ನೆ ತಮಗೆ ತಾವೇ ಚಹಾ ಕೂಡ ಮಾಡ್ಕೊಳ್ಳಿಲ್ಲ ಕಣ್ರೀ.",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ಗೊರಕೆ ಅಂದ್ರೆ ಶಾಂತಿ ಸಂದೇಶ ಭೀ ಹೌದು! ನಾನ್ ಯಾರ ಕಡೇನೂ ಇಲ್ಲ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> ಈ ಸಾಕ್ಷಿ ವೇಸ್ಟ್. ಹೋಗಿ, ಸ್ವಿಟ್ಜರ್ಲೆಂಡ್ ಸಾಹೇಬ್ರೇ.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಜಡ್ಜ್ ಅಕ್ಕಾ! ಅಸಲಿ ಸಾಕ್ಷಿ ನನ್ ಸಿಸಿಟಿವಿಯಲ್ಲಿದೆ! ರಾತ್ರಿ ಎರಡು ಗಂಟೆಯ ರೆಕಾರ್ಡಿಂಗ್!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ನೀನು ರಾತ್ರಿ ಎರಡು ಗಂಟೆಗೆ ಎದ್ದಿದ್ದ್ಯಾ?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ಉಚ್ಚೆ ಬಂದಿತ್ತು. ಆದ್ರೆ ನನ್ ಕ್ಯಾಮೆರಾ ಯಾವಾಗ್ಲೂ ರೆಡಿ ಇರುತ್ತೆ!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಜಡ್ಜ್ ಮೇಡಂ, ಸಾಕ್ಷಿದು ಉಚ್ಚೆ ಕಥೆನೂ ರೆಕಾರ್ಡ್‌ನಲ್ಲಿ ಬರೆದುಕೊಳ್ಳಿ!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ಕತ್ತಲಿತ್ತು. ಆಮೇಲೆ ಒಂದು ದೆವ್ವ ಬಂತು! ಬಿಳಿ ಬಟ್ಟೆ, ನಿಧಾನ ಹೆಜ್ಜೆ, ಠಕ್, ಠಕ್, ಠಕ್!",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ದೆವ್ವ ಭರಣಿ ಎತ್ಕೊಂಡು ಮಾಯವಾಯ್ತು! ನಾನು ಹೆದರಿ ರಗ್ ಒಳಗೆ ಸೇರಿಕೊಂಡೆ!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ದೆವ್ವನಾ? <gasp> ಮನೇಲಿ ದೆವ್ವ! ಫ್ರೆಂಡ್ಸ್, ಇದು ಸಕ್ಕತ್ ವೈರಲ್ ಆಗುತ್ತೆ ಮಗಾ!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ನಿಲ್ಲು. ಠಕ್, ಠಕ್, ಠಕ್ ಅಂದ್ರೆ? ದೆವ್ವದ ಕೈಲಿ ಕೋಲಿತ್ತಾ?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ಇವತ್ತು ಫ್ಯಾನು ಭಾಳ ಸಾವಕಾಶ ತಿರಗಾಕತ್ತೈತಿ ಅಲ್ರೀ...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ಅಮ್ಮಾಜೀ... ನೀವಾ?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ದೊಡ್ಡಜ್ಜಿ, ನೀವು ಸೀನಿಯರ್ ಸಿಟಿಜನ್. ನೀವು ನಿಮ್ಮ ಕುರ್ಚಿಯಲ್ಲೇ ಕೂತು ಸಾಕ್ಷಿ ಹೇಳಿ.",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ಹೌದು ಮಗಳೇ, ಭರಣಿ ನಾನೇ ಎತ್ತಿದ್ದು. <short pause> ಅದ್ರಾಗ ಬಿರುಕು ದಿನಾ ದೊಡ್ಡದಾಗಾಕತ್ತಿತ್ತು.",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ಯಾವತ್ತಾದ್ರೂ ಕಮಲಾ ಕೈಯಾಗೇ ಒಡೆದುಹೋದ್ರ? ಅದಕ್ಕ ಅಂಗಳದಾಗ ತುಳಸಿ ಗಿಡದ ಹಿಂದ ಬಚ್ಚಿಟ್ಟೆ.",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಹಾಗಾದ್ರೆ ನಂಗೆ ಯಾಕೆ ಹೇಳಿಲ್ಲ ಅಮ್ಮಾಜೀ? <short pause> ಬೆಳಗ್ಗಿಂದ ನಾನು ಸುನೀತಾ ಮೇಲೆ ಬೊಬ್ಬೆ ಹೊಡೀತಿದ್ದೀನಿ ಕಣ್ರೀ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ಅಂಜಿಕೆ ಆತು ಕಮಲಾ. <short pause> ಈ ವಯಸ್ಸಿನಾಗೂ ಒಂದು ಭರಣಿ ಕಂಡು ಹೆದರಿಕೆಯಾಗತೈತಿ.",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ಸಾಕ್ಷಿಯನ್ನ ಕೋರ್ಟ್‌ಗೆ ಹಾಜರುಪಡಿಸಬೇಕು!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ನಾನೇ ತರ್ತೀನಿ ಜಡ್ಜ್ ಅವರೇ.",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> ಮೂವತ್ತು ವರ್ಷದ ಹಿಂದೆ ಅಮ್ಮಾಜಿ ಅಡುಗೆಮನೆ ವಹಿಸಿಕೊಟ್ಟ ದಿನ, ಈ ಭರಣಿನ ನನ್ ಕೈಗಿಟ್ಟಿದ್ರು ಕಣ್ರೀ.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ಇವತ್ತಿಂದ ಈ ಭರಣಿ ನಿಂದು. ಇದು ಈ ಮನಿ ಗೌರವ. ಒಡೀತಂದ್ರ, ಮನಿ ಒಡೀತು ಅಂತ ತಿಳಕೋ.",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಹತ್ತು ವರ್ಷ ಈ ಮನೇಲಿ ನೆಂಟರ ತರ ಇದ್ದೆ. <sigh> ಅಂದೇ ಮೊದ್ಲ ಸಲ ಅನಿಸಿದ್ದು, ನಾನು ಈ ಮನೇಯವಳು ಅಂತ.",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ, ಮೂವತ್ತು ವರ್ಷದ ಹಿಂದೆಯೂ ನೀವು ಸೇಮ್ ಹೀಗೇ ಕಾಣ್ತಿದ್ರಾ?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಗೋಲು, ನೆನಪಲ್ಲಿ ಎಲ್ಲರೂ ಇವತ್ತಿನ ಮುಖದಲ್ಲೇ ಬರ್ತಾರೆ ಮಗಾ.",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ಮೂವತ್ತು ವರ್ಷ ಮಗು ತರ ಕಾಪಾಡಿದೆ ಕಣ್ರೀ. ಇದ್ರ ಜೊತೆನೇ ನಂಗೆ ಒಲವು ಸಿಕ್ಕಿದ್ದು.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ಅತ್ತೆಮ್ಮಾ... <short pause> ನಂಗೆ ಗೊತ್ತಿರಲಿಲ್ಲ. ನಾನಂತೂ ಬರೀ ಒಂದು ಭರಣಿ ಬದ್ಲಾಯಿಸ್ತಿದ್ದೆ.",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ಇಲ್ಲ ಕಮಲಾ. ಇವಾಗ ಪೂರ್ತಿ ಸತ್ಯ ಕೇಳು.",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ಆ ಭರಣಿ ಅಸಲಿ ಅಲ್ಲವೇ ಅಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ಅಂದ್ರೆ ಏನರ್ಥ ಅಮ್ಮಾಜೀ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಅರವತ್ತು ವರ್ಷದ ಹಿಂದ ನಾನೂ ಹೊಸ ಸೊಸಿ ಇದ್ದೆ. <sigh> ನನ್ ಅತ್ತಿಯ ಅಸಲಿ ಭರಣಿ ನನ್ ಕೈಯಿಂದ ಬಿದ್ದು ಒಡೆದುಹೋಯ್ತು.",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ನಡುಗಿ ಹೋದೆ. ಅದೇ ಮಧ್ಯಾಹ್ನ ಬಜಾರಿಗೆ ಹೋಗಿ, ಸೇಮ್ ಅದೇ ತರ ಭರಣಿ ತಂದು, ಉಪ್ಪಿನಕಾಯಿ ತುಂಬಿ ಗೂಡಾಗ ಇಟ್ಟೆ.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ನನ್ ಅತ್ತಿಗೆ ಕೊನೆತನಕ ಗೊತ್ತೇ ಆಗಲಿಲ್ಲ ನೋಡ್ರಿ.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ಹಾಗಾದ್ರೆ ಮೂವತ್ತು ವರ್ಷದಿಂದ ಪೂಜಿಸ್ತಿದ್ದದ್ದು... <short pause> ಬಜಾರಿನ ಭರಣಿನಾ ಕಣ್ರೀ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ಕೆಳಗಡೆ ಬರೆದಿದೆ, ಖುರ್ಜಾ ಬಜಾರ್, ಎರಡು ರೂಪಾಯಿ!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ಎರಡು ರೂಪಾಯಿ ಭರಣಿಗೆ ಮೂರು ತಲೆಮಾರಿನ ಜಗಳ ಗುರು!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ಅಂದ್ರ ನಾನ್ ಸಣ್ಣವನಿದ್ದಾಗಿಂದ ಬಜಾರ್ ಉಪ್ಪಿನಕಾಯಿ ತಿಂತಿದ್ದೀನಾ?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ಒಂದು ಭರಣಿ ಮ್ಯಾಲ ಯಾಕ ಇಷ್ಟ್ ಸಿಟ್ಟು ಅಂತ ನನ್ ಅತ್ತಿಗೆ ನಾನೆಂದೂ ಕೇಳಲಿಲ್ಲ. <short pause> ಅದೇ ಹೆದರಿಕಿ ನಿನಗೆ ಕೊಟ್ಟುಬಿಟ್ಟೆ.",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ಮತ್ತೆ ನೀವು ಈ ಉಪ್ಪಿನಕಾಯಿನ ಯಾಕೆ ತಿನ್ನಲ್ಲ ಅಂತ ನಾನೂ ಯಾವತ್ತೂ ಕೇಳ್ಲೇ ಇಲ್ಲ ಕಣ್ರೀ.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಯಾಕಂದ್ರ ಒಂದೊಂದು ತುತ್ತಿನಾಗೂ ನನ್ ಕಳ್ಳತನ ನೆನಪಾಗತಿತ್ತು!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ಕೋರ್ಟ್ ತೀರ್ಪು ಕೊಡ್ತಿದೆ. ಅಜ್ಜಿನೂ ತಪ್ಪಿತಸ್ಥರು, ಅಮ್ಮಾನೂ ತಪ್ಪಿತಸ್ಥರು. ಇಬ್ಬರೂ ಒಂದೇ ತಪ್ಪು ಮಾಡಿದ್ದೀರಿ.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ಇಬ್ಬರೂನಾ? ಯಾವ ತಪ್ಪು ಜಡ್ಜ್ ಅವರೇ?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ನೀವು ಒಬ್ರನ್ನೊಬ್ರು ಯಾವತ್ತೂ \"ಯಾಕೆ\" ಅಂತ ಕೇಳಲೇ ಇಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಅಮ್ಮ ಭರಣಿ ಹಿಂದೆ ಯಾಕೆ ಬಿದ್ದಿದ್ದಾರೆ ಅಂತ ಅಜ್ಜಿ ಕೇಳಲಿಲ್ಲ. ಅಜ್ಜಿಗೆ ಆ ಭರಣಿ ಯಾಕಿಷ್ಟು ಮುಖ್ಯ ಅಂತ ಅಮ್ಮ ಕೇಳಲಿಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ದೊಡ್ಡಜ್ಜಿ ಅರವತ್ತು ವರ್ಷ ಬಾಯಿ ಮುಚ್ಚಿಕೊಂಡಿದ್ರು. ಶಿಕ್ಷೆ ಎಲ್ಲರಿಗೂ ಸಿಗುತ್ತೆ!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ದೇವ್ರೇ ದೊಡ್ಡವನು, ನಾನ್ ಅಂತೂ ಬಚಾವಾದೆ.",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ಅಪ್ಪಾ, ಸುಮ್ಮನಿರೋದು ಕೂಡ ಅಪರಾಧ. ಉಪ್ಪಿನಕಾಯಿಗೆ ಮಾವಿನಕಾಯಿ ಎಲ್ಲಾ ನೀವೇ ಹೆಚ್ಚಬೇಕು.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ಪೂರ್ತಿ ಹತ್ತು ಕಿಲೋನಾ?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಅಜ್ಜಿ ಮತ್ತೆ ಅಮ್ಮ ಇಬ್ಬರೂ ಸೇರಿ ಹೊಸ ಭರಣೀಲಿ ಹೊಸ ಉಪ್ಪಿನಕಾಯಿ ಹಾಕ್ತಾರೆ. ದಿನಕ್ಕೊಂದು ಸಲ ಒಬ್ಬರಿಗೊಬ್ಬರು \"ಯಾಕೆ?\" ಅಂತ ಕೇಳ್ತಾರೆ.",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಸುನೀತಾ, ನೀನು ಹೊಸ ಭರಣಿ ಯಾಕೆ ತರಿಸಿದೆ ಕಣೇ?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಯಾಕಂದ್ರೆ ನಿಮ್ಗೆ ಆ ಭರಣಿ ಅಂದ್ರೆ ಪ್ರಾಣ ಅತ್ತೆಮ್ಮಾ. ಅದು ನಿಮ್ಮ ಕೈಲೇ ಒಡೆದುಹೋಗೋದು ನಂಗಿಷ್ಟವಿರ್ಲಿಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಮತ್ತೆ ನೀವು? ನಿಮ್ಗೆ ಅದು ಯಾಕಿಷ್ಟು ಇಷ್ಟವಾಗಿತ್ತು?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ಯಾಕಂದ್ರೆ ಅದು ನನ್ನನ್ನ ಈ ಮನೇಯವಳನ್ನಾಗಿ ಮಾಡಿತ್ತು ಕಣೇ.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ಇವತ್ತಿಂದ ಹೊಸ ಭರಣಿ ನಾವಿಬ್ರದ್ದು. ಒಡೆದ್ರೂ ಹೊಸ್ದು ತರ್ತೀವಿ ಕಣೇ, ಮನೆ ಒಡೆಯಲ್ಲ.",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ಅರವತ್ತು ವರ್ಷದ ಮ್ಯಾಲ ಇವತ್ತು ಜೀವ ಹಗುರ ಆತು ನೋಡ್ರಿ.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಕೋರ್ಟ್ ವಜಾ!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ಸಾಸಿವೆ ಎಣ್ಣೆ ಮೊದ್ಲು ಕಾಯಿಸಿ ಆಮೇಲೆ ಆರಿಸ್ಬೇಕು, ಧಾವಂತ ಮಾಡ್ಬೇಡ ಕಣೇ.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ಯಾಕೆ ಅತ್ತೆಮ್ಮಾ?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ವಾಹ್! ಇವತ್ತಿನ ಮೊದಲನೇ \"ಯಾಕೆ\"! ಕಾದ ಎಣ್ಣೇಲಿ ಮಸಾಲೆ ಸೀದುಹೋಗುತ್ತೆ ಕಣೇ.",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ಉಪ್ಪು ಸ್ವಲ್ಪ ಜಾಸ್ತಿ ಹಾಕ್ರಿ. <short pause> ನನ್ ಅತ್ತಿನೂ ಜಾಸ್ತಿ ಹಾಕ್ತಿದ್ಲು.",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ಅಮ್ಮಾಜೀ, ಇನ್ಮುಂದೆ ನಿಮ್ಮತ್ತೆ ಮಾತಿಗೆಲ್ಲ ಮೊದ್ಲು ಕೇಳ್ತೀನಿ, ಯಾಕೆ ಅಂತ!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಇವತ್ತು ನಾನೂ ಮೊದಲನೇ ಸಲ ಒಂದು ಸೈಡ್ ತಗೊಂಡೆ. ಉಪ್ಪಿನಕಾಯಿ ಸೈಡು!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ಫ್ರೆಂಡ್ಸ್, ಅತ್ತೆ-ಸೊಸೆ ಮಹಾಯುದ್ಧ, ಎಪಿಸೋಡ್ ಟೂ! ಉಪ್ಪಿನಕಾಯಿ ಮಹಾಮಿಲನ ಗುರು!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ಮತ್ತೆ ಸಿಸಿಟಿವಿಯಲ್ಲಿ ಎಲ್ಲ ರೆಕಾರ್ಡ್ ಆಗ್ತಿದೆ!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ಈ ಸಲ ನಾನ್ ಒಡೀಲಿಲ್ಲಪಾ! ನನ್ ಕೈ ಇಲ್ಲೇ ಅದಾವು!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ಅದು... ಸಿಸಿಟಿವಿ ಆಫ್ ಆಗಿತ್ತು.",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ಕೋರ್ಟ್ ಮತ್ತೆ ಶುರು!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

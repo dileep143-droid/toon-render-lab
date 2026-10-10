@@ -1,0 +1,1257 @@
+{
+ "lang": "ml",
+ "name": "Malayalam",
+ "model": "gemini-3.8-flash",
+ "rows": [
+  {
+   "id": 0,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "shouting",
+   "hi": "मेरी अचार की बरनी कहाँ गई? तीस साल से उसी ताक पर रखी थी!",
+   "text": "എന്റെ അച്ചാർ ഭരണി എങ്ങോട്ട് പോയി? മുപ്പത് കൊല്ലമായിട്ട് ആ തട്ടിൽ ഇരുന്നതാ കർത്താവേ!",
+   "back_en": "Where did my pickle jar go? Lord, it was sitting on that shelf for thirty years!",
+   "len_ratio": 1.48
+  },
+  {
+   "id": 1,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "pleading",
+   "hi": "माँजी, मैंने उसे हाथ भी नहीं लगाया। सच्ची कसम!",
+   "text": "അമ്മേ, ഞാൻ അത് തൊട്ടിട്ട് പോലുമില്ല. സത്യമായിട്ടും!",
+   "back_en": "Mother, I haven't even touched it. Truly!",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 2,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sarcastic",
+   "hi": "हाँ हाँ, बरनी को पंख लग गए होंगे। रात को उड़ के तीर्थ यात्रा पर चली गई।",
+   "text": "പിന്നെ, ഭരണിക്ക് ചിറക് മുളച്ചു കാണും! രാത്രി പറന്ന് തീർത്ഥയാത്രയ്ക്ക് പോയതാവും, അല്യോ!",
+   "back_en": "Then wings must have sprouted on the jar! It must have flown off on a pilgrimage at night, right!",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 3,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "excited",
+   "hi": "हैलो फ़ॉलोअर्स! लाइव देखिए, सास-बहू महायुद्ध, एपिसोड वन!",
+   "text": "ഹലോ ഫോളോവേഴ്‌സ്! ലൈവായിട്ട് കാണൂ, അമ്മായിയമ്മ-മരുമകൾ പോര്, എപ്പിസോഡ് വൺ!",
+   "back_en": "Hello followers! Watch live, mother-in-law vs daughter-in-law feud, Episode One!",
+   "len_ratio": 1.29
+  },
+  {
+   "id": 4,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "comic_panic",
+   "hi": "<gasp> नेहा, फ़ोन बंद कर! पूरा मोहल्ला देख लेगा!",
+   "text": "<gasp> നേഹാ, ഫോൺ ഓഫ് ആക്കീൻ! നാട്ടുകാര് മൊത്തം കാണും!",
+   "back_en": "<gasp> Neha, turn off the phone! The whole town will see!",
+   "len_ratio": 1.1
+  },
+  {
+   "id": 5,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "mischievous",
+   "hi": "भैया, पूरा मोहल्ला नहीं देख रहा। <short pause> सिर्फ़ तीन लोग देख रहे हैं।",
+   "text": "ഏട്ടാ, നാട്ടുകാര് മൊത്തമൊന്നുമല്ല. വെറും മൂന്ന് പേര് മാത്രമാ കാണുന്നത്.",
+   "back_en": "Brother, not the whole town at all. Only three people are watching.",
+   "len_ratio": 0.96
+  },
+  {
+   "id": 6,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "proud",
+   "hi": "पर मेरा सीसीटीवी सब देख रहा है! सब रिकॉर्ड हो रहा है!",
+   "text": "പക്ഷേ എന്റെ സിസിടിവി എല്ലാം കാണുന്നുണ്ട്! എല്ലാം റെക്കോർഡ് ആവുന്നുണ്ട്!",
+   "back_en": "But my CCTV sees everything! Everything is being recorded!",
+   "len_ratio": 1.34
+  },
+  {
+   "id": 7,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "angry",
+   "hi": "महेश, तू बता। तेरी माँ सही है या तेरी बीवी?",
+   "text": "മഹേഷേ, നീ പറ. നിന്റെ അമ്മയാണോ അതോ നിന്റെ കെട്ടിയോളാണോ ശരി?",
+   "back_en": "Mahesh, you tell us. Is your mother right or is your wife right?",
+   "len_ratio": 1.35
+  },
+  {
+   "id": 8,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "embarrassed",
+   "hi": "माँ... मैं... <laugh> आज मौसम कितना अच्छा है ना?",
+   "text": "അമ്മേ... ഞമ്മള്... <laugh> ഇന്നത്തെ കാലാവസ്ഥ കൊള്ളാലോ, അല്ലേ?",
+   "back_en": "Mother... I... <laugh> Today's weather is quite nice, isn't it?",
+   "len_ratio": 1.27
+  },
+  {
+   "id": 9,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "shouting",
+   "hi": "बस! ऑर्डर! ऑर्डर!",
+   "text": "മതി! ഓർഡർ! ഓർഡർ!",
+   "back_en": "Enough! Order! Order!",
+   "len_ratio": 0.94
+  },
+  {
+   "id": 10,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "determined",
+   "hi": "रोज़-रोज़ का झगड़ा बहुत हो गया। आज इस घर में अदालत लगेगी!",
+   "text": "ഈ ദിവസേനയുള്ള വഴക്ക് മതിയായി. ഇന്ന് ഈ വീട്ടിൽ കോടതി കൂടും!",
+   "back_en": "Enough of this daily quarrel. Today, court will convene in this house!",
+   "len_ratio": 1.02
+  },
+  {
+   "id": 11,
+   "kind": "card",
+   "speaker": "TITLE",
+   "emotion": "",
+   "hi": "Ghar Ki Adalat — The Family Court",
+   "text": "വീട്ടിലെ കോടതി",
+   "back_en": "The Court at Home",
+   "len_ratio": 0.42
+  },
+  {
+   "id": 12,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "proud",
+   "hi": "ये स्टील की थाली मेरा हथौड़ा है। ये दादाजी का चश्मा। और ये सोफ़ा, गवाह का कटघरा!",
+   "text": "ഈ സ്റ്റീൽ തളിക എന്റെ ചുറ്റിക. ഇത് മുത്തശ്ശന്റെ കണ്ണട. ഈ സോഫ, സാക്ഷിക്കൂട്!",
+   "back_en": "This steel plate is my gavel. This is grandfather's glasses. This sofa, the witness box!",
+   "len_ratio": 0.93
+  },
+  {
+   "id": 13,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "mischievous",
+   "hi": "दादाजी मंदिर गए हैं। <short pause> उनका चश्मा अदालत ने ज़ब्त कर लिया है।",
+   "text": "മുത്തശ്ശൻ അമ്പലത്തിൽ പോയിരിക്കുവാ. പുള്ളിയുടെ കണ്ണട കോടതി കണ്ടുകെട്ടി!",
+   "back_en": "Grandfather has gone to the temple. The court has confiscated his glasses!",
+   "len_ratio": 0.97
+  },
+  {
+   "id": 14,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "giggly",
+   "hi": "<laugh> वाह री जज साहिबा! आज सीरियल टीवी पे नहीं, घर में ही चलेगा।",
+   "text": "<laugh> അടിപൊളി ജഡ്ജിയമ്മ! ഇന്ന് സീരിയൽ ടിവിയിലല്ല, മ്മടെ വീട്ടിലാ ട്ടാ!",
+   "back_en": "<laugh> Awesome Judge Madam! Today the serial is not on TV, it's in our house, you see!",
+   "len_ratio": 1.09
+  },
+  {
+   "id": 15,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "proud",
+   "hi": "और मैं अदालत का सीसीटीवी इंचार्ज! मेरे कैमरे से कोई नहीं बच सकता।",
+   "text": "ഞാൻ കോടതിയിലെ സിസിടിവി ഓഫീസർ! എന്റെ ക്യാമറയിൽ നിന്ന് ആരും രക്ഷപ്പെടില്ല!",
+   "back_en": "I am the court's CCTV officer! No one will escape my camera!",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 16,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "sarcastic",
+   "hi": "इस कैमरे में लेंस की जगह बोतल का ढक्कन लगा है।",
+   "text": "ഈ ക്യാമറയിൽ ലെൻസിന് പകരം കുപ്പിയുടെ അടപ്പാണല്ലോ വെച്ചിരിക്കുന്നത്!",
+   "back_en": "In this camera, instead of a lens, a bottle cap has been placed!",
+   "len_ratio": 1.43
+  },
+  {
+   "id": 17,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "angry",
+   "hi": "ढक्कन नहीं है, ज़ूम लेंस है!",
+   "text": "അടപ്പൊന്നുമല്ല, സൂം ലെൻസാണ്!",
+   "back_en": "It's not a cap, it's a zoom lens!",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 18,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "curious",
+   "hi": "पापा, आप किसकी तरफ़ हैं? मम्मी की या दादी की?",
+   "text": "അച്ഛാ, അച്ഛൻ ആരുടെ ഭാഗത്താ? അമ്മയുടെയോ മുത്തശ്ശിയുടെയോ?",
+   "back_en": "Father, whose side are you on? Mother's or grandmother's?",
+   "len_ratio": 1.22
+  },
+  {
+   "id": 19,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "panicked",
+   "hi": "मैं? मैं स्विट्ज़रलैंड हूँ! बिल्कुल बीच में, पूरा न्यूट्रल!",
+   "text": "ഞമ്മളോ? ഞമ്മള് സ്വിറ്റ്‌സർലൻഡാണ്! കറക്റ്റ് നടുക്ക്, ഫുൾ ന്യൂട്രൽ!",
+   "back_en": "Me? I am Switzerland! Right in the middle, totally neutral!",
+   "len_ratio": 1.1
+  },
+  {
+   "id": 20,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "stern_warning",
+   "hi": "तो न्यूट्रल जी, गवाह के कटघरे से हटिए। केस शुरू होता है।",
+   "text": "എന്നാൽ മിസ്റ്റർ ന്യൂട്രൽ, കൂട്ടിൽ നിന്ന് മാറ്. കേസ് തുടങ്ങുന്നു.",
+   "back_en": "Then Mr. Neutral, step aside from the witness box. The case begins.",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 21,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "serious",
+   "hi": "मुक़दमा नंबर एक। कमला देवी बनाम सुनीता। जुर्म, तीस साल से सँभाली हुई अचार की बरनी ग़ायब करना।",
+   "text": "കേസ് നമ്പർ ഒന്ന്. കമലാ ദേവി വേഴ്സസ് സുനിത. കുറ്റം, മുപ്പത് കൊല്ലം സൂക്ഷിച്ച അച്ചാർ ഭരണി മുക്കൽ.",
+   "back_en": "Case number one. Kamala Devi versus Sunitha. The crime: making away with a pickle jar preserved for thirty years.",
+   "len_ratio": 1.02
+  },
+  {
+   "id": 22,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sad",
+   "hi": "वो सिर्फ़ बरनी नहीं थी, जज साहिबा। <short pause> उसमें इस घर का स्वाद था।",
+   "text": "അത് വെറുമൊരു ഭരണി മാത്രമല്ലായിരുന്നു, ജഡ്ജിക്കൊച്ചേ. അതിൽ ഈ വീടിന്റെ രുചിയുണ്ടായിരുന്നു.",
+   "back_en": "That was not just a jar, little judge. The flavor of this home was in it.",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 23,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "determined",
+   "hi": "और मैं बेक़सूर हूँ, जज साहिबा। सबूत है तो सबूत लाइए।",
+   "text": "ഞാൻ നിരപരാധിയാണ് ജഡ്ജി. തെളിവുണ്ടെങ്കിൽ തെളിവ് ഹാജരാക്ക്.",
+   "back_en": "I am innocent, Judge. If you have evidence, present the evidence.",
+   "len_ratio": 1.1
+  },
+  {
+   "id": 24,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "proud",
+   "hi": "ठीक है। पहले शिकायत करने वाली बोलेंगी। दादी, बताइए कल रात क्या हुआ।",
+   "text": "ശരി. ആദ്യം പരാതിക്കാരി പറയട്ടെ. അമ്മാമ്മേ, ഇന്നലെ രാത്രി എന്താ ഉണ്ടായതെന്ന് പറയൂ.",
+   "back_en": "Alright. First let the complainant speak. Ammamma, tell what happened last night.",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 25,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "serious",
+   "hi": "कल रात मैं रसोई में थी। तभी ये आई, और मेरी बरनी को ऐसे घूरा, जैसे सीरियल की खलनायिका।",
+   "text": "ഇന്നലെ രാത്രി ഞാൻ അടുക്കളയിലായിരുന്നു. അപ്പഴാ ഇവള് വന്ന്, സീരിയലിലെ വില്ലത്തിയെപ്പോലെ ഭരണിയെ നോക്കുന്നത്.",
+   "back_en": "Last night I was in the kitchen. That's when she came and looked at the jar like a serial villainess.",
+   "len_ratio": 1.24
+  },
+  {
+   "id": 26,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Kamla's version",
+   "text": "കമലയുടെ കഥ",
+   "back_en": "Kamala's Story",
+   "len_ratio": 0.67
+  },
+  {
+   "id": 27,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "laughing",
+   "hi": "<laugh> ये पुरानी बरनी... इसे तो मैं फेंक दूँगी!",
+   "text": "<laugh> ഈ പഴയ ഭരണി... ഇതിനെ ഞാൻ വേസ്റ്റ് ബോക്സിൽ എറിയും!",
+   "back_en": "<laugh> This old jar... I will throw this into the waste bin!",
+   "len_ratio": 1.17
+  },
+  {
+   "id": 28,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "shocked",
+   "hi": "ऑब्जेक्शन! <gasp> मैं ऐसे कब हँसती हूँ? और रसोई में बिजली कौन कड़काता है?",
+   "text": "ഒബ്ജക്ഷൻ! <gasp> ഞാൻ എപ്പഴാ ഇങ്ങനെ ചിരിച്ചത്? അടുക്കളയിൽ ഇടിമിന്നൽ ഒക്കെ എവിടുന്നാ?",
+   "back_en": "Objection! <gasp> When did I ever laugh like that? And where did thunder and lightning come from in the kitchen?",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 29,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "giggly",
+   "hi": "<laugh> ऑब्जेक्शन मंज़ूर। दादी, बिजली हटाइए, सच बताइए।",
+   "text": "<laugh> ഒബ്ജക്ഷൻ സ്വീകരിച്ചു. അമ്മാമ്മേ, മിന്നൽ മാറ്റിയിട്ട് സത്യം പറയൂ.",
+   "back_en": "<laugh> Objection sustained. Ammamma, leave out the lightning and speak the truth.",
+   "len_ratio": 1.33
+  },
+  {
+   "id": 30,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "embarrassed",
+   "hi": "<laugh> अच्छा, बिजली नहीं कड़की थी। पर इसने कहा था, ये बरनी बदल दो।",
+   "text": "<laugh> ആ, മിന്നലൊന്നും ഉണ്ടായില്ല. പക്ഷേ ഇവള് പറഞ്ഞു, ഈ ഭരണി മാറ്റണമെന്ന്.",
+   "back_en": "<laugh> Well, there was no lightning. But she did say that this jar must be changed.",
+   "len_ratio": 1.12
+  },
+  {
+   "id": 31,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "determined",
+   "hi": "मैंने कहा था इसमें दरार है, नीचे से तेल रिस रहा है। वो बात अलग है!",
+   "text": "അതിൽ വിള്ളലുണ്ട്, അടിയിലൂടെ എണ്ണ ഒലിക്കുന്നുണ്ടെന്നാ ഞാൻ പറഞ്ഞത്! അത് വേറെ കാര്യം!",
+   "back_en": "I only said that it has a crack and oil is leaking from the bottom! That is a different matter!",
+   "len_ratio": 1.24
+  },
+  {
+   "id": 32,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sarcastic",
+   "hi": "और मैंने कहा था, ये बरनी इस घर में तुमसे पहले आई थी। वो बात भी अलग है।",
+   "text": "ഈ വീട്ടിലേക്ക് നീ വരുന്നതിന് മുൻപേ ആ ഭരണി വന്നതാന്നാ ഞാൻ പറഞ്ഞത്. അതും വേറെ കാര്യം.",
+   "back_en": "I said that jar came to this house before you did. That is also a different matter.",
+   "len_ratio": 1.19
+  },
+  {
+   "id": 33,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "giggly",
+   "hi": "<laugh> दोनों की बात अलग-अलग है, तो झगड़ा एक क्यों है?",
+   "text": "<laugh> രണ്ടാളും പറയുന്നത് വേറെ വേറെയാണെങ്കിൽ, പിന്നെ വഴക്ക് ഒന്നാവുന്നത് എന്തിനാ?",
+   "back_en": "<laugh> If what both of you are saying is completely different, then why does the quarrel become one?",
+   "len_ratio": 1.52
+  },
+  {
+   "id": 34,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "serious",
+   "hi": "अगली गवाह, नेहा बुआ! कटघरे में आइए।",
+   "text": "അടുത്ത സാക്ഷി, നേഹ അമ്മായി! കൂട്ടിലേക്ക് വരൂ.",
+   "back_en": "Next witness, Neha Aunty! Come to the box.",
+   "len_ratio": 1.29
+  },
+  {
+   "id": 35,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "excited",
+   "hi": "आ गई! दोस्तों, अब आपकी नेहा गवाही देगी। लाइक करते रहिए!",
+   "text": "ദാ വന്നു! ചങ്ങാതിമാരേ, ഇതാ നിങ്ങളുടെ നേഹ സാക്ഷി പറയുന്നു. ലൈക്ക് അടിക്കാൻ മറക്കല്ലേ!",
+   "back_en": "Here I come! Friends, here is your Neha testifying. Don't forget to hit like!",
+   "len_ratio": 1.53
+  },
+  {
+   "id": 36,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "mischievous",
+   "hi": "कल रात दस बजे मैंने कुछ ऐसा देखा... <short pause> जो किसी सीरियल में भी नहीं होता।",
+   "text": "ഇന്നലെ രാത്രി പത്ത് മണിക്ക് ഞാൻ കണ്ട കാഴ്ച... ഒരു സീരിയലിലും കാണാത്തതാ!",
+   "back_en": "What I saw last night at ten o'clock... is something not seen in any serial!",
+   "len_ratio": 0.87
+  },
+  {
+   "id": 37,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Neha's version",
+   "text": "നേഹയുടെ കഥ",
+   "back_en": "Neha's Story",
+   "len_ratio": 0.71
+  },
+  {
+   "id": 38,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "scared_whisper",
+   "hi": "भाभी चुपके से एक बड़ा डिब्बा लेकर आईं। इधर देखा, उधर देखा, और अलमारी में छिपा दिया!",
+   "text": "നാത്തൂൻ ആരും കാണാതെ വലിയൊരു പെട്ടി കൊണ്ടുവന്നു. അങ്ങോട്ടും ഇങ്ങോട്ടും നോക്കി, അലമാരയിൽ ഒളിപ്പിച്ചു!",
+   "back_en": "Sister-in-law brought a big box without anyone seeing. She looked this way and that, and hid it in the cupboard!",
+   "len_ratio": 1.19
+  },
+  {
+   "id": 39,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "proud",
+   "hi": "और ये रहा सबूत! वही डिब्बा, जो अलमारी से बरामद हुआ।",
+   "text": "ദാ ഇതാണ് തെളിവ്! അലമാരയിൽ നിന്ന് പിടിച്ചെടുത്ത അതേ പെട്ടി!",
+   "back_en": "Here, this is the evidence! The very box seized from the cupboard!",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 40,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "shocked",
+   "hi": "<gasp> नई बरनी? बिल्कुल मेरी जैसी!",
+   "text": "<gasp> പുതിയ ഭരണിയോ? അച്ചട്ടായിട്ട് എന്റെ ഭരണിയെപ്പോലെ തന്നെയുണ്ടല്ലോ!",
+   "back_en": "<gasp> A new jar? It looks exactly like my jar!",
+   "len_ratio": 2.06
+  },
+  {
+   "id": 41,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "comic_panic",
+   "hi": "<gasp> मतलब असली की जगह नकली रख दी! ये तो फ़िल्मों वाला खेल है!",
+   "text": "<gasp> ഒറിജിനലിന് പകരം ഡ്യൂപ്ലിക്കേറ്റ് വെച്ചു! സിനിമയിലെ കളിയാണല്ലോ!",
+   "back_en": "<gasp> Replaced the original with a duplicate! Just like a plot in movies!",
+   "len_ratio": 1.1
+  },
+  {
+   "id": 42,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "curious",
+   "hi": "मम्मी, ये बरनी कहाँ से आई?",
+   "text": "അമ്മേ, ഈ ഭരണി എവിടുന്നാ വന്നത്?",
+   "back_en": "Mother, where did this jar come from?",
+   "len_ratio": 1.19
+  },
+  {
+   "id": 43,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "guilty",
+   "hi": "<short pause> हाँ, मैंने मँगवाई थी। ऑनलाइन। पुरानी वाली की दरार देखकर।",
+   "text": "ഉം... ഞാൻ ഓർഡർ ചെയ്തതാ. ഓൺലൈനിൽ. പഴയതിലെ വിള്ളൽ കണ്ടിട്ട്.",
+   "back_en": "Um... I ordered it. Online. After seeing the crack in the old one.",
+   "len_ratio": 0.83
+  },
+  {
+   "id": 44,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "pleading",
+   "hi": "पर पुरानी मैंने नहीं फेंकी, जज साहिबा। सोचा था चुपके से अचार बदल दूँगी, माँजी को पता भी नहीं चलेगा।",
+   "text": "പക്ഷേ പഴയത് ഞാൻ കളഞ്ഞില്ല ജഡ്ജി. അമ്മായിയമ്മ അറിയാതെ അച്ചാർ മാറ്റാമെന്നാ കരുതിയത്.",
+   "back_en": "But I didn't throw away the old one, Judge. I only thought of transferring the pickle without mother-in-law knowing.",
+   "len_ratio": 0.83
+  },
+  {
+   "id": 45,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sad",
+   "hi": "<sigh> पता भी नहीं चलेगा? <short pause> तीस साल की यादें अब ऑनलाइन मिलती हैं?",
+   "text": "<sigh> അറിയാതെ മാറ്റാമെന്നോ? മുപ്പത് കൊല്ലത്തെ ഓർമ്മകൾ ഇപ്പോൾ ഓൺലൈനിൽ കിട്ടുമോ കൊച്ചേ?",
+   "back_en": "<sigh> Transfer it without knowing? Can thirty years of memories be bought online now, child?",
+   "len_ratio": 1.12
+  },
+  {
+   "id": 46,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "excited",
+   "hi": "दोस्तों, कमेंट में बताइए, भाभी दोषी हैं या नहीं!",
+   "text": "ഫ്രണ്ട്സ്, കമന്റിൽ പറയൂ, നാത്തൂൻ കുറ്റക്കാരിയാണോ അല്ലയോ എന്ന്!",
+   "back_en": "Friends, tell in the comments, is sister-in-law guilty or not!",
+   "len_ratio": 1.29
+  },
+  {
+   "id": 47,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "stern_warning",
+   "hi": "अगले गवाह, पापा! भागने की कोशिश मत कीजिए।",
+   "text": "അടുത്ത സാക്ഷി, അച്ഛൻ! ഓടാൻ നോക്കണ്ട കേട്ടോ.",
+   "back_en": "Next witness, Father! Don't try to run away, okay.",
+   "len_ratio": 1.05
+  },
+  {
+   "id": 48,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "embarrassed",
+   "hi": "<laugh> मैं तो बस पानी पीने जा रहा था।",
+   "text": "<laugh> ഞമ്മള് വെറുതെ വെള്ളം കുടിക്കാൻ പോയതാണേ.",
+   "back_en": "<laugh> I just went to drink some water.",
+   "len_ratio": 1.24
+  },
+  {
+   "id": 49,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "curious",
+   "hi": "कल रात आपने क्या देखा?",
+   "text": "ഇന്നലെ രാത്രി അച്ഛൻ എന്താ കണ്ടത്?",
+   "back_en": "What did Father see last night?",
+   "len_ratio": 1.5
+  },
+  {
+   "id": 50,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "happy",
+   "hi": "मैंने देखा कि इस घर में सब एक-दूसरे से बहुत प्यार करते हैं।",
+   "text": "ഈ വീട്ടിലുള്ളോരെല്ലാം തമ്മിൽ ഭയങ്കര സ്നേഹത്തിലാണെന്നാ ഞമ്മള് കണ്ടത്.",
+   "back_en": "What I saw was that everyone in this house is deeply affectionate with each other.",
+   "len_ratio": 1.15
+  },
+  {
+   "id": 51,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Mahesh's version",
+   "text": "മഹേഷിന്റെ കഥ",
+   "back_en": "Mahesh's Story",
+   "len_ratio": 0.75
+  },
+  {
+   "id": 52,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "proud",
+   "hi": "माँ सुनीता की तारीफ़ कर रही थीं, सुनीता माँ की। और मैं बीच में हीरो की तरह खड़ा था।",
+   "text": "അമ്മ സുനിതയെ പുകഴ്ത്തുന്നു, സുനിത അമ്മയെയും. ഞമ്മള് നടുക്ക് ഹീറോയെപ്പോലെ നിക്കുന്നു.",
+   "back_en": "Mother praises Sunitha, Sunitha praises Mother. And I stand in the middle like a hero.",
+   "len_ratio": 1.01
+  },
+  {
+   "id": 53,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "sarcastic",
+   "hi": "भैया, कल रात तो आप नौ बजे से खर्राटे ले रहे थे।",
+   "text": "ഏട്ടാ, ഇന്നലെ രാത്രി ഒൻപത് മണി മുതൽ ഏട്ടൻ കൂർക്കം വലിച്ചുറങ്ങുവായിരുന്നു.",
+   "back_en": "Brother, last night from nine o'clock onward you were snoring away in your sleep.",
+   "len_ratio": 1.55
+  },
+  {
+   "id": 54,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sarcastic",
+   "hi": "और हीरो जी ने कल रात अपने लिए चाय तक नहीं बनाई।",
+   "text": "പിന്നെ, വലിയൊരു ഹീറോ! ഇന്നലെ രാത്രി ചായ പോലും സ്വയം ഉണ്ടാക്കിയില്ല!",
+   "back_en": "Right, what a big hero! Last night he didn't even make tea for himself!",
+   "len_ratio": 1.43
+  },
+  {
+   "id": 55,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "comic_panic",
+   "hi": "<gasp> खर्राटे भी तो शांति का संदेश हैं! मैं किसी की तरफ़ नहीं हूँ!",
+   "text": "<gasp> കൂർക്കം വലിയും സമാധാനത്തിന്റെ സന്ദേശമല്ലേ! ഞമ്മള് ആരുടെയും കൂടെയല്ലേ!",
+   "back_en": "<gasp> Isn't snoring a message of peace too! I'm not taking anyone's side!",
+   "len_ratio": 1.13
+  },
+  {
+   "id": 56,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "tired",
+   "hi": "<sigh> गवाह बेकार है। जाइए, स्विट्ज़रलैंड जी।",
+   "text": "<sigh> സാക്ഷി ഒന്നിനും കൊള്ളില്ല. പൊക്കോ, മിസ്റ്റർ സ്വിറ്റ്‌സർലൻഡ്.",
+   "back_en": "<sigh> The witness is good for nothing. You may leave, Mr. Switzerland.",
+   "len_ratio": 1.49
+  },
+  {
+   "id": 57,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "excited",
+   "hi": "जज दीदी! असली सबूत तो मेरे सीसीटीवी में है! रात दो बजे की रिकॉर्डिंग!",
+   "text": "ജഡ്ജി ചേച്ചീ! ഒറിജിനൽ തെളിവ് എന്റെ സിസിടിവിയിലുണ്ട്! രാത്രി രണ്ട് മണിയുടെ റെക്കോർഡിംഗ്!",
+   "back_en": "Judge Chechi! The original proof is in my CCTV! The recording from two o'clock at night!",
+   "len_ratio": 1.26
+  },
+  {
+   "id": 58,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "surprised",
+   "hi": "<gasp> तू रात को दो बजे जाग रहा था?",
+   "text": "<gasp> നീ രാത്രി രണ്ട് മണിക്ക് ഉണർന്നിരിക്കുയായിരുന്നോ?",
+   "back_en": "<gasp> Were you awake at two in the morning?",
+   "len_ratio": 1.57
+  },
+  {
+   "id": 59,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "embarrassed",
+   "hi": "<laugh> सू-सू आई थी। पर मेरा कैमरा हमेशा तैयार रहता है!",
+   "text": "<laugh> മൂത്രം ഒഴിക്കാൻ തോന്നിയതാ. പക്ഷേ എന്റെ ക്യാമറ എപ്പോഴും റെഡിയാണ്!",
+   "back_en": "<laugh> I felt like peeing. But my camera is always ready!",
+   "len_ratio": 1.31
+  },
+  {
+   "id": 60,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "giggly",
+   "hi": "<laugh> जज साहिबा, गवाह की सू-सू भी रिकॉर्ड में लिख लीजिए!",
+   "text": "<laugh> ജഡ്ജിയമ്മേ, സാക്ഷിയുടെ മൂത്രമൊഴിക്കലും കേസിൽ എഴുതി വെച്ചോളൂ!",
+   "back_en": "<laugh> Judge Madam, write down the witness's peeing into the case record as well!",
+   "len_ratio": 1.17
+  },
+  {
+   "id": 61,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Golu's CCTV",
+   "text": "ഗോലുവിന്റെ സിസിടിവി",
+   "back_en": "Golu's CCTV",
+   "len_ratio": 1.73
+  },
+  {
+   "id": 62,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "scared_whisper",
+   "hi": "अँधेरा था। फिर आया एक भूत! सफ़ेद कपड़े, धीरे-धीरे क़दम, ठक, ठक, ठक!",
+   "text": "ഫുൾ ഇരുട്ട്. അപ്പൊ ദാ വരുന്നു ഒരു പ്രേതം! വെള്ളത്തുണി, പതിയെപ്പതിയെ... തക്ക്, തക്ക്, തക്ക്!",
+   "back_en": "Total darkness. Then, here comes a ghost! White cloth, slowly, slowly... thud, thud, thud!",
+   "len_ratio": 1.36
+  },
+  {
+   "id": 63,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "comic_panic",
+   "hi": "<gasp> भूत ने बरनी उठाई और ग़ायब! मैं डर के रज़ाई में घुस गया!",
+   "text": "<gasp> പ്രേതം ഭരണിയുമെടുത്ത് മുങ്ങി! ഞാൻ പേടിച്ച് പുതപ്പിനടിയിൽ കയറി!",
+   "back_en": "<gasp> The ghost vanished taking the jar! I got scared and hid under the blanket!",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 64,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "shocked",
+   "hi": "भूत? <gasp> घर में भूत? दोस्तों, ये तो वायरल हो जाएगा!",
+   "text": "പ്രേതമോ? വീട്ടിൽ പ്രേതമോ? ഗയ്സ്, ഇത് വൈറലാവും!",
+   "back_en": "A ghost? A ghost in the house? Guys, this is going to go viral!",
+   "len_ratio": 0.85
+  },
+  {
+   "id": 65,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "curious",
+   "hi": "रुको। ठक, ठक, ठक? भूत के पास छड़ी थी?",
+   "text": "നിൽക്ക്. തക്ക്, തക്ക്, തക്ക്? പ്രേതത്തിന്റെ കയ്യിൽ വടിയുണ്ടായിരുന്നോ?",
+   "back_en": "Wait. Thud, thud, thud? Did the ghost have a cane in hand?",
+   "len_ratio": 1.86
+  },
+  {
+   "id": 66,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "embarrassed",
+   "hi": "<laugh> आज पंखा कितना धीरे चल रहा है ना...",
+   "text": "<laugh> ഫാൻ എന്തൂട്ടാ ഇന്ന് ഇത്ര പതുക്കെ കറങ്ങണേ...",
+   "back_en": "<laugh> Why on earth is the fan spinning so slowly today...",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 67,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "surprised",
+   "hi": "<gasp> अम्माजी... आप?",
+   "text": "<gasp> അമ്മാമ്മയോ... അമ്മാമ്മയായിരുന്നോ?",
+   "back_en": "<gasp> Ammamma... was it Ammamma?",
+   "len_ratio": 1.9
+  },
+  {
+   "id": 68,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "serious",
+   "hi": "बड़ी दादी, आप सीनियर सिटीज़न हैं। आप अपनी कुर्सी से ही गवाही दीजिए।",
+   "text": "വല്യമ്മാമ്മേ, മുതിർന്ന പൗരയായത് കൊണ്ട് അവിടിരുന്ന് തന്നെ മൊഴി നൽകാം.",
+   "back_en": "Great-grandmother, since you are a senior citizen, you may give testimony sitting right there.",
+   "len_ratio": 1.01
+  },
+  {
+   "id": 69,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "guilty",
+   "hi": "हाँ बिटिया, बरनी मैंने उठाई थी। <short pause> उसकी दरार रोज़ बढ़ रही थी।",
+   "text": "ആ മോളേ, ഭരണിയെടുത്തത് ഞാനാ ട്ടാ. അതിന്റെ വിള്ളല് ദിവസവും കൂടിക്കൂടി വരുവായിരുന്നു.",
+   "back_en": "Yes dear, I took the jar, you know. Its crack was growing bigger by the day.",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 70,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "sad",
+   "hi": "सोचा, किसी दिन कमला के हाथ में ही फट गई तो? इसलिए आँगन में तुलसी के पीछे छिपा दी।",
+   "text": "എന്നായാലും കമലയുടെ കയ്യിലിരുന്ന് പൊട്ടിയാലോന്ന് വിചാരിച്ചു. അതാ മുറ്റത്തെ തുളസിയുടെ ബാക്കിൽ ഒളിപ്പിച്ചത്.",
+   "back_en": "I worried what if it broke while in Kamala's hands. That's why I hid it behind the tulsi plant in the courtyard.",
+   "len_ratio": 1.3
+  },
+  {
+   "id": 71,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "shocked",
+   "hi": "तो आपने मुझसे कहा क्यों नहीं, अम्माजी? <short pause> मैं सुबह से सुनीता पर चिल्ला रही हूँ!",
+   "text": "എന്നിട്ട് എന്നോട് എന്നാ പറയാഞ്ഞേ അമ്മാമ്മേ? ഞാൻ രാവിലെ തൊട്ട് സുനിതയോട് ഒച്ചയിടുവായിരുന്നു!",
+   "back_en": "Then why didn't you tell me, Ammamma? I've been shouting at Sunitha since morning!",
+   "len_ratio": 1.01
+  },
+  {
+   "id": 72,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "guilty",
+   "hi": "डर गई थी, कमला। <short pause> इस उम्र में भी एक बरनी से डर लगता है।",
+   "text": "പേടിച്ചിട്ടാ കമലേ. ഈ പ്രായത്തിലും ഒരു ഭരണീനെ പേടിയാ ട്ടാ.",
+   "back_en": "Out of fear, Kamala. Even at this age, I'm scared of a jar, you see.",
+   "len_ratio": 0.85
+  },
+  {
+   "id": 73,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "determined",
+   "hi": "सबूत अदालत में पेश किया जाए!",
+   "text": "തെളിവ് കോടതിയിൽ ഹാജരാക്കൂ!",
+   "back_en": "Present the evidence in court!",
+   "len_ratio": 0.93
+  },
+  {
+   "id": 74,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "determined",
+   "hi": "मैं लाती हूँ, जज साहिबा।",
+   "text": "ഞാൻ എടുത്തിട്ട് വരാം, ജഡ്ജി.",
+   "back_en": "I will go bring it, Judge.",
+   "len_ratio": 1.17
+  },
+  {
+   "id": 75,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "nostalgic",
+   "hi": "<sigh> तीस साल पहले, जिस दिन अम्माजी ने मुझे रसोई सौंपी, ये बरनी मेरे हाथ में दी थी।",
+   "text": "<sigh> മുപ്പത് കൊല്ലം മുമ്പ്, അമ്മാമ്മ ഈ അടുക്കള എന്റെ കയ്യിൽ തന്നപ്പോളാ ഈ ഭരണി തന്നത്.",
+   "back_en": "<sigh> Thirty years ago, when Ammamma entrusted this kitchen to me, she gave me this jar.",
+   "len_ratio": 1.04
+  },
+  {
+   "id": 76,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Thirty years ago",
+   "text": "മുപ്പത് വർഷം മുമ്പ്",
+   "back_en": "Thirty years ago",
+   "len_ratio": 1.19
+  },
+  {
+   "id": 77,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "stern_warning",
+   "hi": "आज से ये बरनी तेरी। ये इस घर की इज़्ज़त है। टूटी, तो समझ घर टूटा।",
+   "text": "ഇന്ന് തൊട്ട് ഈ ഭരണി നിനക്ക്. ഇതാണ് മ്മടെ വീടിന്റെ അന്തസ്സ് ട്ടാ. ഇത് പൊട്ടിയാൽ കുടുംബം പൊട്ടി.",
+   "back_en": "From today, this jar is yours. This is our family's pride, remember. If this breaks, the family breaks.",
+   "len_ratio": 1.45
+  },
+  {
+   "id": 78,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "nostalgic",
+   "hi": "दस साल मैं इस घर में मेहमान जैसी रही थी। <sigh> उस दिन पहली बार लगा, मैं इस घर की हूँ।",
+   "text": "പത്ത് കൊല്ലം ഈ വീട്ടിൽ ഞാൻ അതിഥിയെപ്പോലെയാ കഴിഞ്ഞത്. അന്നാണ് തോന്നിയത്, ഞാനും ഈ വീട്ടുകാരിയാണെന്ന്.",
+   "back_en": "For ten years I lived in this house like a guest. Only that day did I feel that I too belonged to this family.",
+   "len_ratio": 1.15
+  },
+  {
+   "id": 79,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "curious",
+   "hi": "दादी, तीस साल पहले भी आप बिल्कुल ऐसी ही दिखती थीं?",
+   "text": "മുത്തശ്ശി, മുപ്പത് കൊല്ലം മുമ്പും ഇതേപോലെ തന്നെയായിരുന്നോ കാണാൻ?",
+   "back_en": "Grandmother, did you look just like this thirty years ago too?",
+   "len_ratio": 1.28
+  },
+  {
+   "id": 80,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "giggly",
+   "hi": "<laugh> गोलू, याद में सब लोग आज वाले चेहरे में ही आते हैं।",
+   "text": "<laugh> ഗോലൂ, ഓർമ്മകളിൽ എല്ലാവരും ഇന്നത്തെ മുഖത്തോടെയാ വരുന്നത്.",
+   "back_en": "<laugh> Golu, in memories everyone appears with today's face.",
+   "len_ratio": 1.1
+  },
+  {
+   "id": 81,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "crying",
+   "hi": "तीस साल इसे बच्चे की तरह सँभाला। इसी के साथ तो मुझे अपनापन मिला था।",
+   "text": "മുപ്പത് കൊല്ലം കൊച്ചിനെപ്പോലെ നോക്കിയതാ. ഇതിലൂടെയല്ലേ എനിക്കൊരു സ്വന്തം എന്നൊരു വില കിട്ടിയത്.",
+   "back_en": "I looked after it like a child for thirty years. Wasn't it through this that I gained the worth of belonging?",
+   "len_ratio": 1.4
+  },
+  {
+   "id": 82,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "sad",
+   "hi": "माँजी... <short pause> मुझे नहीं पता था। मैं तो बस एक बरनी बदल रही थी।",
+   "text": "അമ്മേ... എനിക്കറിയില്ലായിരുന്നു. ഞാൻ വെറുമൊരു ഭരണി മാറ്റാൻ നോക്കിയതാ.",
+   "back_en": "Mother... I didn't know. I only tried to replace a mere jar.",
+   "len_ratio": 0.99
+  },
+  {
+   "id": 83,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "serious",
+   "hi": "नहीं, कमला। अब पूरा सच सुन ले।",
+   "text": "അല്ല കമലേ, ഇനി നീ മുഴുവൻ സത്യവും കേട്ടോ.",
+   "back_en": "No, Kamala, now you listen to the whole truth.",
+   "len_ratio": 1.33
+  },
+  {
+   "id": 84,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "guilty",
+   "hi": "<short pause> वो बरनी असली नहीं है।",
+   "text": "ആ ഭരണി ഒറിജിനൽ അല്ല ട്ടാ.",
+   "back_en": "That jar is not the original, you know.",
+   "len_ratio": 0.71
+  },
+  {
+   "id": 85,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "shocked",
+   "hi": "<gasp> क्या मतलब, अम्माजी?",
+   "text": "<gasp> എന്നാ ഉദ്ദേശിച്ചത് അമ്മാമ്മേ?",
+   "back_en": "<gasp> What did you mean, Ammamma?",
+   "len_ratio": 1.38
+  },
+  {
+   "id": 86,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "nostalgic",
+   "hi": "साठ साल पहले मैं भी नई बहू थी। <sigh> मेरी सास की असली बरनी मेरे हाथ से गिरी और टूट गई।",
+   "text": "അറുപത് കൊല്ലം മുമ്പ് ഞാനും പുതിയ മരുമകളായിരുന്നു. എന്റെ അമ്മായിയമ്മേടെ ഒറിജിനൽ ഭരണി എന്റെ കയ്യിൽ നിന്ന് വീണ് പൊട്ടി.",
+   "back_en": "Sixty years ago, I too was a new daughter-in-law. My mother-in-law's original jar slipped from my hand and broke.",
+   "len_ratio": 1.33
+  },
+  {
+   "id": 87,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Sixty years ago",
+   "text": "അറുപത് വർഷം മുമ്പ്",
+   "back_en": "Sixty years ago",
+   "len_ratio": 1.2
+  },
+  {
+   "id": 88,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "scared_whisper",
+   "hi": "मैं डर से काँप गई। उसी दोपहर बाज़ार गई, हूबहू वैसी बरनी ख़रीदी, अचार भरा, और ताक पर रख दी।",
+   "text": "ഞാൻ പേടിച്ച് വിറച്ചുപോയി. അന്ന് ഉച്ചയ്ക്ക് അങ്ങാടീന്ന് അച്ചട്ടായിട്ട് അതേപോലത്തെ വേറൊരെണ്ണം വാങ്ങി, അച്ചാറിട്ട് തട്ടിൽ വെച്ചു.",
+   "back_en": "I trembled in fear. That afternoon I bought another one just like it from the market, put pickle in it, and placed it on the shelf.",
+   "len_ratio": 1.4
+  },
+  {
+   "id": 89,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "giggly",
+   "hi": "<laugh> और मेरी सास को आख़िर तक पता ही नहीं चला।",
+   "text": "<laugh> ഒടുക്കം വരെ എന്റെ അമ്മായിയമ്മ അതറിഞ്ഞതേയില്ല ട്ടാ!",
+   "back_en": "<laugh> Till the very end, my mother-in-law never found out, you know!",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 90,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "shocked",
+   "hi": "तो जिसे मैं तीस साल से पूज रही थी... <short pause> वो बाज़ार की बरनी है?",
+   "text": "അപ്പോ ഞാൻ മുപ്പത് കൊല്ലം പൂജിച്ചു നടന്നത്... അങ്ങാടീന്ന് വാങ്ങിയ ഭരണിയാണോ?",
+   "back_en": "So what I worshiped and carried around for thirty years... was a jar bought from the market?",
+   "len_ratio": 1.03
+  },
+  {
+   "id": 91,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "surprised",
+   "hi": "<gasp> नीचे लिखा है, खुर्जा बाज़ार, दो रुपये!",
+   "text": "<gasp> അടിയിൽ എഴുതിയിട്ടുണ്ട്, ഖുർജ ചന്ത, രണ്ട് രൂപ!",
+   "back_en": "<gasp> It's written at the bottom: Khurja market, two rupees!",
+   "len_ratio": 1.16
+  },
+  {
+   "id": 92,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "laughing",
+   "hi": "<laugh> दो रुपये की बरनी पर तीन पीढ़ियों का झगड़ा!",
+   "text": "<laugh> രണ്ട് രൂപയുടെ ഭരണിക്കാണോ മൂന്ന് തലമുറ വഴക്കിട്ടത്!",
+   "back_en": "<laugh> Was it over a two-rupee jar that three generations fought!",
+   "len_ratio": 1.16
+  },
+  {
+   "id": 93,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "shocked",
+   "hi": "<gasp> मतलब मैं बचपन से बाज़ार वाला अचार खा रहा हूँ?",
+   "text": "<gasp> അപ്പോ ചെറുപ്പം തൊട്ട് ഞമ്മള് തിന്നത് അങ്ങാടീത്തെ അച്ചാറായിരുന്നോ?",
+   "back_en": "<gasp> So what I've been eating since childhood was market pickle?",
+   "len_ratio": 1.38
+  },
+  {
+   "id": 94,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "sad",
+   "hi": "<sigh> मैंने कभी अपनी सास से नहीं पूछा कि एक बरनी पर इतना ग़ुस्सा क्यों। <short pause> बस वही डर तुझे थमा दिया।",
+   "text": "<sigh> ഒരു ഭരണിയുടെ പേരിൽ എന്തിനാ ഇത്ര ദേഷ്യമെന്ന് ഞാനെന്റെ അമ്മായിയമ്മയോട് ചോദിച്ചില്ല. അതേ പേടി നിന്റെ കയ്യിലും തന്നു.",
+   "back_en": "<sigh> I never asked my mother-in-law why there was so much anger over a jar. I passed that same fear on to you.",
+   "len_ratio": 1.08
+  },
+  {
+   "id": 95,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "sad",
+   "hi": "और मैंने कभी आपसे नहीं पूछा कि आप ये अचार ख़ुद कभी खाती क्यों नहीं।",
+   "text": "അമ്മാമ്മ എന്ത് കൊണ്ടാ ഈ അച്ചാർ കഴിക്കാത്തതെന്ന് ഞാനും ചോദിച്ചില്ലല്ലോ.",
+   "back_en": "Nor did I ask why Ammamma never ate this pickle.",
+   "len_ratio": 1.04
+  },
+  {
+   "id": 96,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "giggly",
+   "hi": "<laugh> क्योंकि हर कौर में अपनी चोरी याद आती थी!",
+   "text": "<laugh> ഓരോ ഉരുള കഴിക്കുമ്പോഴും എന്റെ കള്ളത്തരം ഓർമ്മ വരുമായിരുന്നു ട്ടാ!",
+   "back_en": "<laugh> With every morsel I ate, my deceit would come to mind, you know!",
+   "len_ratio": 1.52
+  },
+  {
+   "id": 97,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "serious",
+   "hi": "अदालत फ़ैसला सुनाती है। दादी दोषी हैं। मम्मी भी दोषी हैं। दोनों ने एक ही जुर्म किया है।",
+   "text": "കോടതി വിധി പ്രസ്താവിക്കുന്നു. മുത്തശ്ശിയും കുറ്റക്കാരിയാണ്, അമ്മയും കുറ്റക്കാരിയാണ്. രണ്ടുപേരും ഒരേ തെറ്റാ ചെയ്തത്.",
+   "back_en": "The court delivers its verdict. Grandmother is guilty, and Mother is guilty. Both committed the same mistake.",
+   "len_ratio": 1.32
+  },
+  {
+   "id": 98,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "surprised",
+   "hi": "<gasp> दोनों? कौन-सा जुर्म, जज साहिबा?",
+   "text": "<gasp> രണ്ടുപേരുമോ? എന്ത് തെറ്റ്, ജഡ്ജി?",
+   "back_en": "<gasp> Both of us? What mistake, Judge?",
+   "len_ratio": 1.05
+  },
+  {
+   "id": 99,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "loving",
+   "hi": "आपने एक-दूसरे से कभी \"क्यों\" नहीं पूछा।",
+   "text": "നിങ്ങൾ അങ്ങോട്ടുമിങ്ങോട്ടും ഒരിക്കലും 'എന്തുകൊണ്ട്' എന്ന് ചോദിച്ചില്ല.",
+   "back_en": "You never asked each other 'why'.",
+   "len_ratio": 1.79
+  },
+  {
+   "id": 100,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "loving",
+   "hi": "दादी ने नहीं पूछा कि मम्मी बरनी के पीछे क्यों पड़ी हैं। मम्मी ने नहीं पूछा कि दादी के लिए वो बरनी इतनी ज़रूरी क्यों है।",
+   "text": "അമ്മ എന്തിനാ ഭരണി മാറ്റാൻ നോക്കിയതെന്ന് മുത്തശ്ശി ചോദിച്ചില്ല. മുത്തശ്ശിക്ക് അത് എന്തുകൊണ്ട് ഇത്ര പ്രിയപ്പെട്ടതായെന്ന് അമ്മയും ചോദിച്ചില്ല.",
+   "back_en": "Grandmother didn't ask why Mother tried to replace the jar. Nor did Mother ask why it was so precious to Grandmother.",
+   "len_ratio": 1.17
+  },
+  {
+   "id": 101,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "determined",
+   "hi": "और बड़ी दादी साठ साल चुप रहीं। सज़ा सबको मिलेगी!",
+   "text": "വല്യമ്മാമ്മ അറുപത് കൊല്ലം മിണ്ടാതിരുന്നു. ശിക്ഷ എല്ലാവർക്കും കിട്ടും!",
+   "back_en": "Great-grandmother stayed silent for sixty years. Everyone will receive punishment!",
+   "len_ratio": 1.44
+  },
+  {
+   "id": 102,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "relieved",
+   "hi": "<sigh> शुक्र है, मैं तो बच गया।",
+   "text": "<sigh> ഭാഗ്യം, ഞമ്മള് രക്ഷപ്പെട്ടു.",
+   "back_en": "<sigh> Luckily, I escaped.",
+   "len_ratio": 1.13
+  },
+  {
+   "id": 103,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "stern_warning",
+   "hi": "पापा, चुप रहना भी जुर्म है। अचार के सारे आम आप काटेंगे।",
+   "text": "അച്ഛാ, മിണ്ടാതിരിക്കുന്നതും കുറ്റമാണ്. അച്ചാറിനുള്ള മാങ്ങ മുഴുവൻ അച്ഛൻ അരിയണം.",
+   "back_en": "Father, staying silent is also a crime. Father must chop all the mangoes for the pickle.",
+   "len_ratio": 1.42
+  },
+  {
+   "id": 104,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "comic_panic",
+   "hi": "<gasp> पूरे दस किलो?",
+   "text": "<gasp> മുഴുവൻ പത്ത് കിലോയോ?",
+   "back_en": "<gasp> The whole ten kilos?",
+   "len_ratio": 1.35
+  },
+  {
+   "id": 105,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "proud",
+   "hi": "और दादी और मम्मी मिलकर नया अचार डालेंगी, नई बरनी में। रोज़ एक बार एक-दूसरे से पूछेंगी, \"क्यों?\"",
+   "text": "മുത്തശ്ശിയും അമ്മയും കൂടെ പുതിയ ഭരണിയിൽ അച്ചാറിടും. ദിവസവും പരസ്പരം ചോദിക്കണം, 'എന്തുകൊണ്ട്' എന്ന്.",
+   "back_en": "Grandmother and Mother together will put pickle into the new jar. Every day, you must ask each other, 'why'.",
+   "len_ratio": 1.04
+  },
+  {
+   "id": 106,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "loving",
+   "hi": "सुनीता, तूने नई बरनी क्यों मँगवाई थी?",
+   "text": "സുനിതേ, നീ എന്തിനാ പുതിയ ഭരണി വാങ്ങിച്ചത്?",
+   "back_en": "Sunitha, why did you buy a new jar?",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 107,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "loving",
+   "hi": "क्योंकि आपको उस बरनी से प्यार है, माँजी। मैं नहीं चाहती थी कि वो आपके हाथ में टूटे।",
+   "text": "അമ്മയ്ക്ക് അത് അത്രയ്ക്ക് ഇഷ്ടമല്ലേ. അമ്മയുടെ കയ്യിലിരുന്ന് പൊട്ടരുതെന്ന് വിചാരിച്ചാ.",
+   "back_en": "Mother loves it so much, doesn't she? I thought it shouldn't break while in Mother's hands.",
+   "len_ratio": 1.02
+  },
+  {
+   "id": 108,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "curious",
+   "hi": "और आप? आपको वो इतनी प्यारी क्यों थी?",
+   "text": "അല്ല അമ്മേ, അമ്മയ്ക്ക് അത് എന്തുകൊണ്ടാ ഇത്രയും പ്രിയപ്പെട്ടതായത്?",
+   "back_en": "No Mother, why did it become so dear to you?",
+   "len_ratio": 1.81
+  },
+  {
+   "id": 109,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "nostalgic",
+   "hi": "क्योंकि उसने मुझे इस घर का बनाया था।",
+   "text": "അതാണെന്നെ ഈ വീട്ടുകാരിയാക്കിയത്, കൊച്ചേ.",
+   "back_en": "That is what made me a part of this family, child.",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 110,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "loving",
+   "hi": "आज से नई बरनी हम दोनों की। और टूट भी गई, तो नई ले आएँगे। घर नहीं टूटेगा।",
+   "text": "ഇന്ന് തൊട്ട് ഈ പുതിയ ഭരണി നമ്മൾ രണ്ടുപേരുടെയും. പൊട്ടിയാലും വേറെ വാങ്ങാം, കുടുംബം പൊട്ടില്ല.",
+   "back_en": "From today, this new jar belongs to both of us. Even if it breaks, we can buy another; the family won't break.",
+   "len_ratio": 1.28
+  },
+  {
+   "id": 111,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "relieved",
+   "hi": "<sigh> साठ साल बाद आज मन हल्का हुआ।",
+   "text": "<sigh> അറുപത് കൊല്ലത്തിന് ശേഷം ഇന്നാണ് മനസ്സിന് ഒരു സമാധാനം കിട്ടിയത് ട്ടാ.",
+   "back_en": "<sigh> Only today, after sixty years, did I find peace of mind, you see.",
+   "len_ratio": 2.14
+  },
+  {
+   "id": 112,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "proud",
+   "hi": "अदालत बर्ख़ास्त!",
+   "text": "കോടതി പിരിഞ്ഞു!",
+   "back_en": "Court is adjourned!",
+   "len_ratio": 0.94
+  },
+  {
+   "id": 113,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "happy",
+   "hi": "सरसों का तेल पहले गरम करना, फिर ठंडा। जल्दी मत करना।",
+   "text": "കടുക് എണ്ണ ആദ്യം ചൂടാക്കണം, പിന്നെ തണുപ്പിക്കണം. തിടുക്കം കൂട്ടരുത് കൊച്ചേ.",
+   "back_en": "Mustard oil must first be heated, then cooled. Don't rush, child.",
+   "len_ratio": 1.44
+  },
+  {
+   "id": 114,
+   "kind": "line",
+   "speaker": "SUNITA",
+   "emotion": "curious",
+   "hi": "क्यों, माँजी?",
+   "text": "എന്തുകൊണ്ട് അമ്മേ?",
+   "back_en": "Why, Mother?",
+   "len_ratio": 1.38
+  },
+  {
+   "id": 115,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "giggly",
+   "hi": "<laugh> वाह! आज का पहला \"क्यों\"! क्योंकि गरम तेल में मसाला जल जाता है।",
+   "text": "<laugh> ആഹാ! ഇന്നത്തെ ആദ്യത്തെ 'എന്തുകൊണ്ട്'! ചൂട് എണ്ണയിലിട്ടാൽ മസാല കരിഞ്ഞുപോകും.",
+   "back_en": "<laugh> Aha! Today's first 'why'! If added to hot oil, the spices will burn.",
+   "len_ratio": 1.19
+  },
+  {
+   "id": 116,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "mischievous",
+   "hi": "नमक थोड़ा ज़्यादा डालना। <short pause> मेरी सास भी ज़्यादा डालती थीं।",
+   "text": "ഉപ്പ് ഇത്തിരി കൂടുതൽ ഇട്ടോ ട്ടാ. എന്റെ അമ്മായിയമ്മയും കൂടുതൽ ഇടുമായിരുന്നു.",
+   "back_en": "Add a little extra salt, okay. My mother-in-law used to add extra too.",
+   "len_ratio": 1.09
+  },
+  {
+   "id": 117,
+   "kind": "line",
+   "speaker": "KAMLA",
+   "emotion": "giggly",
+   "hi": "<laugh> अम्माजी, अब आपकी सास की हर बात पर पहले पूछूँगी, क्यों?",
+   "text": "<laugh> അമ്മാമ്മേ, ഇനി അമ്മാമ്മേടെ അമ്മായിയമ്മ പറയുന്നതിലൊക്കെ ആദ്യം ഞാൻ ചോദിക്കും, എന്നതാ കാര്യം എന്ന്!",
+   "back_en": "<laugh> Ammamma, from now on, for everything your mother-in-law said, I will first ask, what is the reason behind it!",
+   "len_ratio": 1.68
+  },
+  {
+   "id": 118,
+   "kind": "line",
+   "speaker": "MAHESH",
+   "emotion": "proud",
+   "hi": "और आज मैंने भी पहली बार एक साइड चुनी है। अचार की साइड!",
+   "text": "ഇന്നാണ് ഞമ്മളും ആദ്യമായിട്ട് ഒരു പക്ഷം പിടിച്ചത്. അച്ചാറിന്റെ പക്ഷം!",
+   "back_en": "Today is the first time I too took a side. The pickle's side!",
+   "len_ratio": 1.26
+  },
+  {
+   "id": 119,
+   "kind": "line",
+   "speaker": "NEHA",
+   "emotion": "excited",
+   "hi": "दोस्तों, सास-बहू महायुद्ध, एपिसोड टू! अचार महामिलन!",
+   "text": "ഫ്രണ്ട്സ്, അമ്മായിയമ്മ-മരുമകൾ പോര്, എപ്പിസോഡ് ടു! അച്ചാർ മഹാസംഗമം!",
+   "back_en": "Friends, mother-in-law vs daughter-in-law feud, Episode Two! The Great Pickle Reunion!",
+   "len_ratio": 1.29
+  },
+  {
+   "id": 120,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "proud",
+   "hi": "और सीसीटीवी में सब रिकॉर्ड हो रहा है!",
+   "text": "സിസിടിവിയിൽ എല്ലാം റെക്കോർഡ് ആവുന്നുണ്ട്!",
+   "back_en": "Everything is being recorded on CCTV!",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 121,
+   "kind": "line",
+   "speaker": "AMMAJI",
+   "emotion": "comic_panic",
+   "hi": "<gasp> इस बार मैंने नहीं तोड़ी! मेरे हाथ तो यहाँ हैं!",
+   "text": "<gasp> ഇത്തവണ ഞാൻ പൊട്ടിച്ചതല്ല ട്ടാ! എന്റെ കൈകൾ ദാ ഇവിടെയുണ്ട്!",
+   "back_en": "<gasp> This time I didn't break it, okay! See, my hands are right here!",
+   "len_ratio": 1.21
+  },
+  {
+   "id": 122,
+   "kind": "line",
+   "speaker": "GOLU",
+   "emotion": "embarrassed",
+   "hi": "<laugh> वो... सीसीटीवी अभी बंद था।",
+   "text": "<laugh> അത്... സിസിടിവി ഓഫ് ആയിരുന്നു.",
+   "back_en": "<laugh> That... the CCTV was off.",
+   "len_ratio": 1.12
+  },
+  {
+   "id": 123,
+   "kind": "line",
+   "speaker": "CHINKI",
+   "emotion": "shouting",
+   "hi": "अदालत फिर से शुरू!",
+   "text": "കോടതി വീണ്ടും തുടങ്ങുന്നു!",
+   "back_en": "Court convenes again!",
+   "len_ratio": 1.44
+  },
+  {
+   "id": 124,
+   "kind": "card",
+   "speaker": "CARD",
+   "emotion": "",
+   "hi": "Before you blame, ask \"why\".",
+   "text": "കുറ്റപ്പെടുത്തുന്നതിന് മുമ്പ്, 'എന്തുകൊണ്ട്' എന്ന് ചോദിക്കൂ.",
+   "back_en": "Before blaming, ask 'why'.",
+   "len_ratio": 2.14
+  }
+ ]
+}

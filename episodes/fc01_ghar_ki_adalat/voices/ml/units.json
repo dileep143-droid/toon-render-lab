@@ -1,0 +1,946 @@
+{
+ "lang": "ml",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "എന്റെ അച്ചാർ ഭരണി എങ്ങോട്ട് പോയി? മുപ്പത് കൊല്ലമായിട്ട് ആ തട്ടിൽ ഇരുന്നതാ കർത്താവേ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "അമ്മേ, ഞാൻ അത് തൊട്ടിട്ട് പോലുമില്ല. സത്യമായിട്ടും!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "പിന്നെ, ഭരണിക്ക് ചിറക് മുളച്ചു കാണും! രാത്രി പറന്ന് തീർത്ഥയാത്രയ്ക്ക് പോയതാവും, അല്യോ!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ഹലോ ഫോളോവേഴ്‌സ്! ലൈവായിട്ട് കാണൂ, അമ്മായിയമ്മ-മരുമകൾ പോര്, എപ്പിസോഡ് വൺ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> നേഹാ, ഫോൺ ഓഫ് ആക്കീൻ! നാട്ടുകാര് മൊത്തം കാണും!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ഏട്ടാ, നാട്ടുകാര് മൊത്തമൊന്നുമല്ല. വെറും മൂന്ന് പേര് മാത്രമാ കാണുന്നത്.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "പക്ഷേ എന്റെ സിസിടിവി എല്ലാം കാണുന്നുണ്ട്! എല്ലാം റെക്കോർഡ് ആവുന്നുണ്ട്!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "മഹേഷേ, നീ പറ. നിന്റെ അമ്മയാണോ അതോ നിന്റെ കെട്ടിയോളാണോ ശരി?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "അമ്മേ... ഞമ്മള്... <laugh> ഇന്നത്തെ കാലാവസ്ഥ കൊള്ളാലോ, അല്ലേ?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "മതി! ഓർഡർ! ഓർഡർ!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ഈ ദിവസേനയുള്ള വഴക്ക് മതിയായി. ഇന്ന് ഈ വീട്ടിൽ കോടതി കൂടും!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ഈ സ്റ്റീൽ തളിക എന്റെ ചുറ്റിക. ഇത് മുത്തശ്ശന്റെ കണ്ണട. ഈ സോഫ, സാക്ഷിക്കൂട്!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "മുത്തശ്ശൻ അമ്പലത്തിൽ പോയിരിക്കുവാ. പുള്ളിയുടെ കണ്ണട കോടതി കണ്ടുകെട്ടി!",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> അടിപൊളി ജഡ്ജിയമ്മ! ഇന്ന് സീരിയൽ ടിവിയിലല്ല, മ്മടെ വീട്ടിലാ ട്ടാ!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ഞാൻ കോടതിയിലെ സിസിടിവി ഓഫീസർ! എന്റെ ക്യാമറയിൽ നിന്ന് ആരും രക്ഷപ്പെടില്ല!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ഈ ക്യാമറയിൽ ലെൻസിന് പകരം കുപ്പിയുടെ അടപ്പാണല്ലോ വെച്ചിരിക്കുന്നത്!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "അടപ്പൊന്നുമല്ല, സൂം ലെൻസാണ്!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "അച്ഛാ, അച്ഛൻ ആരുടെ ഭാഗത്താ? അമ്മയുടെയോ മുത്തശ്ശിയുടെയോ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ഞമ്മളോ? ഞമ്മള് സ്വിറ്റ്‌സർലൻഡാണ്! കറക്റ്റ് നടുക്ക്, ഫുൾ ന്യൂട്രൽ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "എന്നാൽ മിസ്റ്റർ ന്യൂട്രൽ, കൂട്ടിൽ നിന്ന് മാറ്. കേസ് തുടങ്ങുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "കേസ് നമ്പർ ഒന്ന്. കമലാ ദേവി വേഴ്സസ് സുനിത. കുറ്റം, മുപ്പത് കൊല്ലം സൂക്ഷിച്ച അച്ചാർ ഭരണി മുക്കൽ.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "അത് വെറുമൊരു ഭരണി മാത്രമല്ലായിരുന്നു, ജഡ്ജിക്കൊച്ചേ. അതിൽ ഈ വീടിന്റെ രുചിയുണ്ടായിരുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ഞാൻ നിരപരാധിയാണ് ജഡ്ജി. തെളിവുണ്ടെങ്കിൽ തെളിവ് ഹാജരാക്ക്.",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ശരി. ആദ്യം പരാതിക്കാരി പറയട്ടെ. അമ്മാമ്മേ, ഇന്നലെ രാത്രി എന്താ ഉണ്ടായതെന്ന് പറയൂ.",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ഇന്നലെ രാത്രി ഞാൻ അടുക്കളയിലായിരുന്നു. അപ്പഴാ ഇവള് വന്ന്, സീരിയലിലെ വില്ലത്തിയെപ്പോലെ ഭരണിയെ നോക്കുന്നത്.",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ഈ പഴയ ഭരണി... ഇതിനെ ഞാൻ വേസ്റ്റ് ബോക്സിൽ എറിയും!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ഒബ്ജക്ഷൻ! <gasp> ഞാൻ എപ്പഴാ ഇങ്ങനെ ചിരിച്ചത്? അടുക്കളയിൽ ഇടിമിന്നൽ ഒക്കെ എവിടുന്നാ?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ഒബ്ജക്ഷൻ സ്വീകരിച്ചു. അമ്മാമ്മേ, മിന്നൽ മാറ്റിയിട്ട് സത്യം പറയൂ.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ആ, മിന്നലൊന്നും ഉണ്ടായില്ല. പക്ഷേ ഇവള് പറഞ്ഞു, ഈ ഭരണി മാറ്റണമെന്ന്.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "അതിൽ വിള്ളലുണ്ട്, അടിയിലൂടെ എണ്ണ ഒലിക്കുന്നുണ്ടെന്നാ ഞാൻ പറഞ്ഞത്! അത് വേറെ കാര്യം!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ഈ വീട്ടിലേക്ക് നീ വരുന്നതിന് മുൻപേ ആ ഭരണി വന്നതാന്നാ ഞാൻ പറഞ്ഞത്. അതും വേറെ കാര്യം.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> രണ്ടാളും പറയുന്നത് വേറെ വേറെയാണെങ്കിൽ, പിന്നെ വഴക്ക് ഒന്നാവുന്നത് എന്തിനാ?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "അടുത്ത സാക്ഷി, നേഹ അമ്മായി! കൂട്ടിലേക്ക് വരൂ.",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ദാ വന്നു! ചങ്ങാതിമാരേ, ഇതാ നിങ്ങളുടെ നേഹ സാക്ഷി പറയുന്നു. ലൈക്ക് അടിക്കാൻ മറക്കല്ലേ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ഇന്നലെ രാത്രി പത്ത് മണിക്ക് ഞാൻ കണ്ട കാഴ്ച... ഒരു സീരിയലിലും കാണാത്തതാ!",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "നാത്തൂൻ ആരും കാണാതെ വലിയൊരു പെട്ടി കൊണ്ടുവന്നു. അങ്ങോട്ടും ഇങ്ങോട്ടും നോക്കി, അലമാരയിൽ ഒളിപ്പിച്ചു!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ദാ ഇതാണ് തെളിവ്! അലമാരയിൽ നിന്ന് പിടിച്ചെടുത്ത അതേ പെട്ടി!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> പുതിയ ഭരണിയോ? അച്ചട്ടായിട്ട് എന്റെ ഭരണിയെപ്പോലെ തന്നെയുണ്ടല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ഒറിജിനലിന് പകരം ഡ്യൂപ്ലിക്കേറ്റ് വെച്ചു! സിനിമയിലെ കളിയാണല്ലോ!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "അമ്മേ, ഈ ഭരണി എവിടുന്നാ വന്നത്?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ഉം... ഞാൻ ഓർഡർ ചെയ്തതാ. ഓൺലൈനിൽ. പഴയതിലെ വിള്ളൽ കണ്ടിട്ട്.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "പക്ഷേ പഴയത് ഞാൻ കളഞ്ഞില്ല ജഡ്ജി. അമ്മായിയമ്മ അറിയാതെ അച്ചാർ മാറ്റാമെന്നാ കരുതിയത്.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> അറിയാതെ മാറ്റാമെന്നോ? മുപ്പത് കൊല്ലത്തെ ഓർമ്മകൾ ഇപ്പോൾ ഓൺലൈനിൽ കിട്ടുമോ കൊച്ചേ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ഫ്രണ്ട്സ്, കമന്റിൽ പറയൂ, നാത്തൂൻ കുറ്റക്കാരിയാണോ അല്ലയോ എന്ന്!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "അടുത്ത സാക്ഷി, അച്ഛൻ! ഓടാൻ നോക്കണ്ട കേട്ടോ.",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ഞമ്മള് വെറുതെ വെള്ളം കുടിക്കാൻ പോയതാണേ.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ഇന്നലെ രാത്രി അച്ഛൻ എന്താ കണ്ടത്?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ഈ വീട്ടിലുള്ളോരെല്ലാം തമ്മിൽ ഭയങ്കര സ്നേഹത്തിലാണെന്നാ ഞമ്മള് കണ്ടത്.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "അമ്മ സുനിതയെ പുകഴ്ത്തുന്നു, സുനിത അമ്മയെയും. ഞമ്മള് നടുക്ക് ഹീറോയെപ്പോലെ നിക്കുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ഏട്ടാ, ഇന്നലെ രാത്രി ഒൻപത് മണി മുതൽ ഏട്ടൻ കൂർക്കം വലിച്ചുറങ്ങുവായിരുന്നു.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "പിന്നെ, വലിയൊരു ഹീറോ! ഇന്നലെ രാത്രി ചായ പോലും സ്വയം ഉണ്ടാക്കിയില്ല!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> കൂർക്കം വലിയും സമാധാനത്തിന്റെ സന്ദേശമല്ലേ! ഞമ്മള് ആരുടെയും കൂടെയല്ലേ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> സാക്ഷി ഒന്നിനും കൊള്ളില്ല. പൊക്കോ, മിസ്റ്റർ സ്വിറ്റ്‌സർലൻഡ്.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ജഡ്ജി ചേച്ചീ! ഒറിജിനൽ തെളിവ് എന്റെ സിസിടിവിയിലുണ്ട്! രാത്രി രണ്ട് മണിയുടെ റെക്കോർഡിംഗ്!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> നീ രാത്രി രണ്ട് മണിക്ക് ഉണർന്നിരിക്കുയായിരുന്നോ?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> മൂത്രം ഒഴിക്കാൻ തോന്നിയതാ. പക്ഷേ എന്റെ ക്യാമറ എപ്പോഴും റെഡിയാണ്!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ജഡ്ജിയമ്മേ, സാക്ഷിയുടെ മൂത്രമൊഴിക്കലും കേസിൽ എഴുതി വെച്ചോളൂ!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ഫുൾ ഇരുട്ട്. അപ്പൊ ദാ വരുന്നു ഒരു പ്രേതം! വെള്ളത്തുണി, പതിയെപ്പതിയെ... തക്ക്, തക്ക്, തക്ക്!",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> പ്രേതം ഭരണിയുമെടുത്ത് മുങ്ങി! ഞാൻ പേടിച്ച് പുതപ്പിനടിയിൽ കയറി!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "പ്രേതമോ? വീട്ടിൽ പ്രേതമോ? ഗയ്സ്, ഇത് വൈറലാവും!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "നിൽക്ക്. തക്ക്, തക്ക്, തക്ക്? പ്രേതത്തിന്റെ കയ്യിൽ വടിയുണ്ടായിരുന്നോ?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ഫാൻ എന്തൂട്ടാ ഇന്ന് ഇത്ര പതുക്കെ കറങ്ങണേ...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> അമ്മാമ്മയോ... അമ്മാമ്മയായിരുന്നോ?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "വല്യമ്മാമ്മേ, മുതിർന്ന പൗരയായത് കൊണ്ട് അവിടിരുന്ന് തന്നെ മൊഴി നൽകാം.",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ആ മോളേ, ഭരണിയെടുത്തത് ഞാനാ ട്ടാ. അതിന്റെ വിള്ളല് ദിവസവും കൂടിക്കൂടി വരുവായിരുന്നു.",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "എന്നായാലും കമലയുടെ കയ്യിലിരുന്ന് പൊട്ടിയാലോന്ന് വിചാരിച്ചു. അതാ മുറ്റത്തെ തുളസിയുടെ ബാക്കിൽ ഒളിപ്പിച്ചത്.",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "എന്നിട്ട് എന്നോട് എന്നാ പറയാഞ്ഞേ അമ്മാമ്മേ? ഞാൻ രാവിലെ തൊട്ട് സുനിതയോട് ഒച്ചയിടുവായിരുന്നു!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "പേടിച്ചിട്ടാ കമലേ. ഈ പ്രായത്തിലും ഒരു ഭരണീനെ പേടിയാ ട്ടാ.",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "തെളിവ് കോടതിയിൽ ഹാജരാക്കൂ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ഞാൻ എടുത്തിട്ട് വരാം, ജഡ്ജി.",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> മുപ്പത് കൊല്ലം മുമ്പ്, അമ്മാമ്മ ഈ അടുക്കള എന്റെ കയ്യിൽ തന്നപ്പോളാ ഈ ഭരണി തന്നത്.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ഇന്ന് തൊട്ട് ഈ ഭരണി നിനക്ക്. ഇതാണ് മ്മടെ വീടിന്റെ അന്തസ്സ് ട്ടാ. ഇത് പൊട്ടിയാൽ കുടുംബം പൊട്ടി.",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "പത്ത് കൊല്ലം ഈ വീട്ടിൽ ഞാൻ അതിഥിയെപ്പോലെയാ കഴിഞ്ഞത്. അന്നാണ് തോന്നിയത്, ഞാനും ഈ വീട്ടുകാരിയാണെന്ന്.",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "മുത്തശ്ശി, മുപ്പത് കൊല്ലം മുമ്പും ഇതേപോലെ തന്നെയായിരുന്നോ കാണാൻ?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ഗോലൂ, ഓർമ്മകളിൽ എല്ലാവരും ഇന്നത്തെ മുഖത്തോടെയാ വരുന്നത്.",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "മുപ്പത് കൊല്ലം കൊച്ചിനെപ്പോലെ നോക്കിയതാ. ഇതിലൂടെയല്ലേ എനിക്കൊരു സ്വന്തം എന്നൊരു വില കിട്ടിയത്.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "അമ്മേ... എനിക്കറിയില്ലായിരുന്നു. ഞാൻ വെറുമൊരു ഭരണി മാറ്റാൻ നോക്കിയതാ.",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "അല്ല കമലേ, ഇനി നീ മുഴുവൻ സത്യവും കേട്ടോ.",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ആ ഭരണി ഒറിജിനൽ അല്ല ട്ടാ.",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> എന്നാ ഉദ്ദേശിച്ചത് അമ്മാമ്മേ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "അറുപത് കൊല്ലം മുമ്പ് ഞാനും പുതിയ മരുമകളായിരുന്നു. എന്റെ അമ്മായിയമ്മേടെ ഒറിജിനൽ ഭരണി എന്റെ കയ്യിൽ നിന്ന് വീണ് പൊട്ടി.",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ഞാൻ പേടിച്ച് വിറച്ചുപോയി. അന്ന് ഉച്ചയ്ക്ക് അങ്ങാടീന്ന് അച്ചട്ടായിട്ട് അതേപോലത്തെ വേറൊരെണ്ണം വാങ്ങി, അച്ചാറിട്ട് തട്ടിൽ വെച്ചു.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ഒടുക്കം വരെ എന്റെ അമ്മായിയമ്മ അതറിഞ്ഞതേയില്ല ട്ടാ!",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "അപ്പോ ഞാൻ മുപ്പത് കൊല്ലം പൂജിച്ചു നടന്നത്... അങ്ങാടീന്ന് വാങ്ങിയ ഭരണിയാണോ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> അടിയിൽ എഴുതിയിട്ടുണ്ട്, ഖുർജ ചന്ത, രണ്ട് രൂപ!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> രണ്ട് രൂപയുടെ ഭരണിക്കാണോ മൂന്ന് തലമുറ വഴക്കിട്ടത്!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> അപ്പോ ചെറുപ്പം തൊട്ട് ഞമ്മള് തിന്നത് അങ്ങാടീത്തെ അച്ചാറായിരുന്നോ?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ഒരു ഭരണിയുടെ പേരിൽ എന്തിനാ ഇത്ര ദേഷ്യമെന്ന് ഞാനെന്റെ അമ്മായിയമ്മയോട് ചോദിച്ചില്ല. അതേ പേടി നിന്റെ കയ്യിലും തന്നു.",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "അമ്മാമ്മ എന്ത് കൊണ്ടാ ഈ അച്ചാർ കഴിക്കാത്തതെന്ന് ഞാനും ചോദിച്ചില്ലല്ലോ.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ഓരോ ഉരുള കഴിക്കുമ്പോഴും എന്റെ കള്ളത്തരം ഓർമ്മ വരുമായിരുന്നു ട്ടാ!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "കോടതി വിധി പ്രസ്താവിക്കുന്നു. മുത്തശ്ശിയും കുറ്റക്കാരിയാണ്, അമ്മയും കുറ്റക്കാരിയാണ്. രണ്ടുപേരും ഒരേ തെറ്റാ ചെയ്തത്.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> രണ്ടുപേരുമോ? എന്ത് തെറ്റ്, ജഡ്ജി?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "നിങ്ങൾ അങ്ങോട്ടുമിങ്ങോട്ടും ഒരിക്കലും 'എന്തുകൊണ്ട്' എന്ന് ചോദിച്ചില്ല.",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "അമ്മ എന്തിനാ ഭരണി മാറ്റാൻ നോക്കിയതെന്ന് മുത്തശ്ശി ചോദിച്ചില്ല. മുത്തശ്ശിക്ക് അത് എന്തുകൊണ്ട് ഇത്ര പ്രിയപ്പെട്ടതായെന്ന് അമ്മയും ചോദിച്ചില്ല.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "വല്യമ്മാമ്മ അറുപത് കൊല്ലം മിണ്ടാതിരുന്നു. ശിക്ഷ എല്ലാവർക്കും കിട്ടും!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ഭാഗ്യം, ഞമ്മള് രക്ഷപ്പെട്ടു.",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "അച്ഛാ, മിണ്ടാതിരിക്കുന്നതും കുറ്റമാണ്. അച്ചാറിനുള്ള മാങ്ങ മുഴുവൻ അച്ഛൻ അരിയണം.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> മുഴുവൻ പത്ത് കിലോയോ?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "മുത്തശ്ശിയും അമ്മയും കൂടെ പുതിയ ഭരണിയിൽ അച്ചാറിടും. ദിവസവും പരസ്പരം ചോദിക്കണം, 'എന്തുകൊണ്ട്' എന്ന്.",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "സുനിതേ, നീ എന്തിനാ പുതിയ ഭരണി വാങ്ങിച്ചത്?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "അമ്മയ്ക്ക് അത് അത്രയ്ക്ക് ഇഷ്ടമല്ലേ. അമ്മയുടെ കയ്യിലിരുന്ന് പൊട്ടരുതെന്ന് വിചാരിച്ചാ.",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "അല്ല അമ്മേ, അമ്മയ്ക്ക് അത് എന്തുകൊണ്ടാ ഇത്രയും പ്രിയപ്പെട്ടതായത്?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "അതാണെന്നെ ഈ വീട്ടുകാരിയാക്കിയത്, കൊച്ചേ.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ഇന്ന് തൊട്ട് ഈ പുതിയ ഭരണി നമ്മൾ രണ്ടുപേരുടെയും. പൊട്ടിയാലും വേറെ വാങ്ങാം, കുടുംബം പൊട്ടില്ല.",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> അറുപത് കൊല്ലത്തിന് ശേഷം ഇന്നാണ് മനസ്സിന് ഒരു സമാധാനം കിട്ടിയത് ട്ടാ.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "കോടതി പിരിഞ്ഞു!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "കടുക് എണ്ണ ആദ്യം ചൂടാക്കണം, പിന്നെ തണുപ്പിക്കണം. തിടുക്കം കൂട്ടരുത് കൊച്ചേ.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "എന്തുകൊണ്ട് അമ്മേ?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ആഹാ! ഇന്നത്തെ ആദ്യത്തെ 'എന്തുകൊണ്ട്'! ചൂട് എണ്ണയിലിട്ടാൽ മസാല കരിഞ്ഞുപോകും.",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ഉപ്പ് ഇത്തിരി കൂടുതൽ ഇട്ടോ ട്ടാ. എന്റെ അമ്മായിയമ്മയും കൂടുതൽ ഇടുമായിരുന്നു.",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> അമ്മാമ്മേ, ഇനി അമ്മാമ്മേടെ അമ്മായിയമ്മ പറയുന്നതിലൊക്കെ ആദ്യം ഞാൻ ചോദിക്കും, എന്നതാ കാര്യം എന്ന്!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ഇന്നാണ് ഞമ്മളും ആദ്യമായിട്ട് ഒരു പക്ഷം പിടിച്ചത്. അച്ചാറിന്റെ പക്ഷം!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ഫ്രണ്ട്സ്, അമ്മായിയമ്മ-മരുമകൾ പോര്, എപ്പിസോഡ് ടു! അച്ചാർ മഹാസംഗമം!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "സിസിടിവിയിൽ എല്ലാം റെക്കോർഡ് ആവുന്നുണ്ട്!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ഇത്തവണ ഞാൻ പൊട്ടിച്ചതല്ല ട്ടാ! എന്റെ കൈകൾ ദാ ഇവിടെയുണ്ട്!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> അത്... സിസിടിവി ഓഫ് ആയിരുന്നു.",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "കോടതി വീണ്ടും തുടങ്ങുന്നു!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

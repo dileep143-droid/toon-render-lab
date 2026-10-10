@@ -1,0 +1,946 @@
+{
+ "lang": "pa",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ਮੇਰੀ ਅਚਾਰ ਆਲੀ ਬਰਨੀ ਕਿੱਥੇ ਗਈ? ਤੀਹ ਸਾਲਾਂ ਤੋਂ ਓਸੇ ਤਾਂਕ 'ਤੇ ਪਈ ਸੀਗੀ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ਮਾਂ ਜੀ, ਮੈਂ ਤਾਂ ਓਹਨੂੰ ਹੱਥ ਵੀ ਨੀ ਲਾਇਆ। ਸੱਚੀਂ ਸੌਂਹ ਰੱਬ ਦੀ!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ਆਹੋ ਆਹੋ, ਬਰਨੀ ਨੂੰ ਖੰਭ ਲੱਗ ਗਏ ਹੋਣੇ ਆਂ! ਰਾਤੀਂ ਉੱਡ ਕੇ ਤੀਰਥ ਜਾਤਰਾ 'ਤੇ ਚਲੀ ਗਈ!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਹੈਲੋ ਫ਼ਾਲੋਅਰਜ਼! ਲਾਈਵ ਵੇਖੋ, ਸੱਸ-ਨੂੰਹ ਮਹਾਂਯੁੱਧ, ਐਪੀਸੋਡ ਇੱਕ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਨਿਹਾ, ਫ਼ੋਨ ਬੰਦ ਕਰ ਛੇਤੀ! ਸਾਰਾ ਮੁਹੱਲਾ ਵੇਖ ਲਏਗਾ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਵੀਰੇ, ਸਾਰਾ ਮੁਹੱਲਾ ਨੀ ਵੇਖ ਰਿਹਾ। <short pause> ਸਿਰਫ਼ ਤਿੰਨ ਜਣੇ ਈ ਵੇਖਦੇ ਪਏ ਨੇ।",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਪਰ ਮੇਰਾ ਸੀਸੀਟੀਵੀ ਸਭ ਵੇਖ ਰਿਹਾ ਏ! ਸਭ ਰਿਕਾਰਡ ਹੋਈ ਜਾਂਦਾ ਏ!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ਮਹੇਸ਼, ਤੂੰ ਦੱਸ ਹੁਣ। ਤੇਰੀ ਮਾਂ ਸੱਚੀ ਆ ਕਿ ਤੇਰੀ ਵਹੁਟੀ?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਬੀਜੀ... ਮੈਂ... <laugh> ਅੱਜ ਮੌਸਮ ਕਿੱਡਾ ਸੋਹਣਾ ਏ ਨਾ?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ਬੱਸ! ਆਰਡਰ! ਆਰਡਰ!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਰੋਜ਼-ਰੋਜ਼ ਦਾ ਝਗੜਾ ਬੜਾ ਹੋ ਗਿਆ। ਅੱਜ ਏਸ ਘਰ 'ਚ ਅਦਾਲਤ ਲੱਗੇਗੀ!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਇਹ ਸਟੀਲ ਦੀ ਥਾਲੀ ਮੇਰਾ ਹਥੌੜਾ ਏ। ਇਹ ਦਾਦਾ ਜੀ ਦੀ ਐਨਕ। ਤੇ ਇਹ ਸੋਫ਼ਾ, ਗਵਾਹਾਂ ਦਾ ਕਟਹਿਰਾ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਦਾਦਾ ਜੀ ਮੰਦਰ ਗਏ ਨੇ। <short pause> ਓਹਨਾਂ ਦੀ ਐਨਕ ਅਦਾਲਤ ਨੇ ਜ਼ਬਤ ਕਰ ਲਈ ਏ।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਵਾਹ ਨੀ ਜੱਜ ਸਾਹਿਬਾ! ਅੱਜ ਨਾਟਕ ਟੀਵੀ 'ਤੇ ਨਹੀਂ, ਘਰੇ ਈ ਚੱਲੂਗਾ।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਤੇ ਮੈਂ ਅਦਾਲਤ ਦਾ ਸੀਸੀਟੀਵੀ ਇੰਚਾਰਜ! ਮੇਰੇ ਕੈਮਰੇ ਤੋਂ ਕੋਈ ਨੀ ਬਚ ਸਕਦਾ।",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ਏਸ ਕੈਮਰੇ 'ਚ ਲੈਂਜ਼ ਦੀ ਥਾਂ ਬੋਤਲ ਦਾ ਢੱਕਣ ਲੱਗਿਆ ਹੋਇਆ ਏ।",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ਢੱਕਣ ਨੀ ਹੈਗਾ, ਜ਼ੂਮ ਲੈਂਜ਼ ਏ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਪਾਪਾ, ਤੁਸੀਂ ਕਿੱਧਰ ਵੱਲ ਓ? ਮੰਮੀ ਵੱਲ ਕਿ ਦਾਦੀ ਵੱਲ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "ਮੈਂ? ਮੈਂ ਤਾਂ ਸਵਿਟਜ਼ਰਲੈਂਡ ਆਂ! ਬਿਲਕੁਲ ਵਿਚਕਾਰ, ਪੂਰਾ ਨਿਊਟਰਲ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ਤਾਂ ਨਿਊਟਰਲ ਜੀ, ਗਵਾਹੀ ਦੇ ਕਟਹਿਰੇ ਤੋਂ ਪਾਸੇ ਹੋਵੋ। ਕੇਸ ਸ਼ੁਰੂ ਹੁੰਦਾ ਏ।",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਮੁਕੱਦਮਾ ਨੰਬਰ ਇੱਕ। ਕਮਲਾ ਦੇਵੀ ਬਨਾਮ ਸੁਨੀਤਾ। ਜ਼ੁਰਮ, ਤੀਹ ਸਾਲਾਂ ਤੋਂ ਸਾਂਭੀ ਹੋਈ ਅਚਾਰ ਦੀ ਬਰਨੀ ਗ਼ਾਇਬ ਕਰਨਾ।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਓਹ ਸਿਰਫ਼ ਬਰਨੀ ਨਹੀਂ ਸੀਗੀ, ਜੱਜ ਸਾਹਿਬਾ। <short pause> ਓਹਦੇ 'ਚ ਇਸ ਘਰ ਦਾ ਸੁਆਦ ਸੀਗਾ।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਤੇ ਮੈਂ ਬੇਕਸੂਰ ਆਂ, ਜੱਜ ਸਾਹਿਬਾ। ਜੇ ਸਬੂਤ ਹੈਗਾ ਤਾਂ ਪੇਸ਼ ਕਰੋ।",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਠੀਕ ਏ। ਪਹਿਲਾਂ ਸ਼ਿਕਾਇਤਕਰਤਾ ਬੋਲਣਗੇ। ਦਾਦੀ, ਦੱਸੋ ਕੱਲ੍ਹ ਰਾਤੀਂ ਕੀ ਹੋਇਆ।",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਕੱਲ੍ਹ ਰਾਤੀਂ ਮੈਂ ਰਸੋਈ 'ਚ ਸੀਗੀ। ਤਦੇ ਇਹ ਆਈ, ਤੇ ਮੇਰੀ ਬਰਨੀ ਨੂੰ ਐਦਾਂ ਘੂਰਿਆ, ਜਿੱਦਾਂ ਨਾਟਕਾਂ ਆਲੀ ਵਿਲਨ ਹੋਵੇ!",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ਇਹ ਪੁਰਾਣੀ ਬਰਨੀ... ਇਹਨੂੰ ਤਾਂ ਮੈਂ ਸੁੱਟ ਦਊਂਗੀ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਔਬਜੈਕਸ਼ਨ! <gasp> ਮੈਂ ਐਦਾਂ ਕਦੋਂ ਹੱਸਦੀ ਆਂ? ਤੇ ਰਸੋਈ 'ਚ ਬਿਜਲੀ ਕਿਹੜਾ ਖੜਕਾਉਂਦਾ ਏ?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਔਬਜੈਕਸ਼ਨ ਮਨਜ਼ੂਰ। ਦਾਦੀ, ਬਿਜਲੀ ਛੱਡੋ, ਸੱਚ ਦੱਸੋ।",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ਚੰਗਾ, ਬਿਜਲੀ ਨੀ ਸੀ ਗੜਕੀ। ਪਰ ਇਹਨੇ ਕਿਹਾ ਸੀਗਾ, ਇਹ ਬਰਨੀ ਬਦਲ ਦਿਓ।",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਮੈਂ ਤਾਂ ਕਿਹਾ ਸੀ ਇਹਦੇ 'ਚ ਤਰੇੜ ਏ, ਥੱਲਿਓਂ ਤੇਲ ਚੋਂਦਾ ਪਿਆ ਏ। ਓਹ ਗੱਲ ਵੱਖਰੀ ਏ!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ਤੇ ਮੈਂ ਕਿਹਾ ਸੀਗਾ, ਇਹ ਬਰਨੀ ਏਸ ਘਰ 'ਚ ਤੇਰੇ ਤੋਂ ਪਹਿਲਾਂ ਆਈ ਸੀਗੀ। ਓਹ ਗੱਲ ਵੀ ਵੱਖਰੀ ਆ।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਦੋਵਾਂ ਦੀ ਗੱਲ ਵੱਖਰੀ-ਵੱਖਰੀ ਏ, ਤਾਂ ਰੌਲ਼ਾ ਇੱਕ ਕਿਉਂ ਏ?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਅਗਲੀ ਗਵਾਹ, ਨੇਹਾ ਭੂਆ! ਕਟਹਿਰੇ 'ਚ ਆਓ।",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਆ ਗਈ! ਦੋਸਤੋ, ਹੁਣ ਤੁਹਾਡੀ ਨੇਹਾ ਗਵਾਹੀ ਦਊਗੀ। ਲਾਈਕ ਠੋਕਦੇ ਰਹੋ!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਕੱਲ੍ਹ ਰਾਤ ਦਸ ਵਜੇ ਮੈਂ ਕੁਝ ਐਸਾ ਵੇਖਿਆ... <short pause> ਜੋ ਕਿਸੇ ਨਾਟਕ 'ਚ ਵੀ ਨੀ ਹੁੰਦਾ।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਭਾਬੀ ਚੋਰੀ-ਛਿਪੇ ਇੱਕ ਬੜਾ ਡੱਬਾ ਲੈ ਕੇ ਆਏ। ਏਧਰ ਵੇਖਿਆ, ਓਧਰ ਵੇਖਿਆ, ਤੇ ਅਲਮਾਰੀ 'ਚ ਲੁਕੋ ਦਿੱਤਾ!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਤੇ ਇਹ ਰਿਹਾ ਸਬੂਤ! ਓਹੀਓ ਡੱਬਾ, ਜੋ ਅਲਮਾਰੀ 'ਚੋਂ ਬਰਾਮਦ ਹੋਇਆ ਏ।",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ਨਵੀਂ ਬਰਨੀ? ਬਿਲਕੁਲ ਮੇਰੇ ਆਲੀ ਵਰਗੀ!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਮਤਲਬ ਅਸਲੀ ਦੀ ਥਾਂ ਨਕਲੀ ਰੱਖ 'ਤੀ! ਇਹ ਤਾਂ ਫ਼ਿਲਮੀ ਚੱਕਰ ਹੋ ਗਿਆ!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਮੰਮੀ, ਇਹ ਬਰਨੀ ਕਿੱਥੋਂ ਆਈ?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ਹਾਂ, ਮੈਂ ਮੰਗਵਾਈ ਸੀ। ਆਨਲਾਈਨ। ਪੁਰਾਣੀ ਵਾਲੀ ਦੀ ਤਰੇੜ ਵੇਖ ਕੇ।",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ਪਰ ਪੁਰਾਣੀ ਮੈਂ ਨੀ ਸੁੱਟੀ, ਜੱਜ ਸਾਹਿਬਾ। ਸੋਚਿਆ ਸੀ ਚੋਰੀ-ਛਿਪੇ ਅਚਾਰ ਬਦਲ ਦਊਂਗੀ, ਮਾਂ ਜੀ ਨੂੰ ਪਤਾ ਵੀ ਨੀ ਲੱਗਣਾ।",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ਪਤਾ ਵੀ ਨੀ ਲੱਗਣਾ? <short pause> ਤੀਹ ਸਾਲਾਂ ਦੀਆਂ ਯਾਦਾਂ ਹੁਣ ਆਨਲਾਈਨ ਮਿਲਦੀਆਂ ਆ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਦੋਸਤੋ, ਕੁਮੈਂਟਾਂ 'ਚ ਦੱਸੋ, ਭਾਬੀ ਦੋਸ਼ੀ ਨੇ ਕਿ ਨਹੀਂ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ਅਗਲੇ ਗਵਾਹ, ਪਾਪਾ! ਭੱਜਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਨਾ ਕਰਿਓ।",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ਮੈਂ ਤਾਂ ਬਸ ਪਾਣੀ ਪੀਣ ਜਾ ਰਿਹਾ ਸਾਂ।",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਕੱਲ੍ਹ ਰਾਤੀਂ ਤੁਸੀਂ ਕੀ ਵੇਖਿਆ?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਮੈਂ ਵੇਖਿਆ ਕਿ ਏਸ ਘਰ 'ਚ ਸਾਰੇ ਇੱਕ-ਦੂਜੇ ਨੂੰ ਬੜਾ ਪਿਆਰ ਕਰਦੇ ਨੇ।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਬੀਜੀ ਸੁਨੀਤਾ ਦੀ ਤਾਰੀਫ਼ ਕਰਦੇ ਪਏ ਸਨ, ਸੁਨੀਤਾ ਬੀਜੀ ਦੀ। ਤੇ ਮੈਂ ਵਿਚਕਾਰ ਹੀਰੋ ਵਾਂਗ ਖਲੋਤਾ ਸਾਂ।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ਵੀਰੇ, ਕੱਲ੍ਹ ਰਾਤੀਂ ਤਾਂ ਤੁਸੀਂ ਨੌਂ ਵਜੇ ਤੋਂ ਘੁਰਾੜੇ ਮਾਰਦੇ ਪਏ ਸੀ।",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ਤੇ ਹੀਰੋ ਜੀ ਨੇ ਕੱਲ੍ਹ ਰਾਤੀਂ ਆਪਣੇ ਲਈ ਚਾਹ ਵੀ ਨੀ ਬਣਾਈ ਸੀਗੀ।",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਘੁਰਾੜੇ ਵੀ ਤਾਂ ਸ਼ਾਂਤੀ ਦਾ ਸੁਨੇਹਾ ਹੁੰਦੇ ਨੇ! ਮੈਂ ਕਿਸੇ ਵੱਲ ਨਹੀਂ ਆਂ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> ਗਵਾਹ ਬੇਕਾਰ ਏ। ਜਾਓ, ਸਵਿਟਜ਼ਰਲੈਂਡ ਜੀ।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਜੱਜ ਦੀਦੀ! ਅਸਲੀ ਸਬੂਤ ਤਾਂ ਮੇਰੇ ਸੀਸੀਟੀਵੀ 'ਚ ਏ! ਰਾਤ ਦੋ ਵਜੇ ਦੀ ਰਿਕਾਰਡਿੰਗ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ਤੂੰ ਰਾਤੀਂ ਦੋ ਵਜੇ ਜਾਗ ਰਿਹਾ ਸੀ?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ਸੂ-ਸੂ ਆਈ ਸੀ। ਪਰ ਮੇਰਾ ਕੈਮਰਾ ਹਮੇਸ਼ਾ ਤਿਆਰ ਰਹਿੰਦਾ ਏ!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਜੱਜ ਸਾਹਿਬਾ, ਗਵਾਹ ਦੀ ਸੂ-ਸੂ ਵੀ ਰਿਕਾਰਡ 'ਚ ਲਿਖ ਲਓ!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਹਨ੍ਹੇਰਾ ਸੀਗਾ। ਫ਼ੇਰ ਆਇਆ ਇੱਕ ਭੂਤ! ਚਿੱਟੇ ਕੱਪੜੇ, ਹੌਲੀ-ਹੌਲੀ ਪੈਰ, ਠੱਕ, ਠੱਕ, ਠੱਕ!",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਭੂਤ ਨੇ ਬਰਨੀ ਚੁੱਕੀ ਤੇ ਗ਼ਾਇਬ! ਮੈਂ ਡਰ ਕੇ ਰਜ਼ਾਈ 'ਚ ਵੜ ਗਿਆ!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਭੂਤ? <gasp> ਘਰ 'ਚ ਭੂਤ? ਦੋਸਤੋ, ਇਹ ਤਾਂ ਵਾਇਰਲ ਹੋ ਜੂਗਾ!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਖਲੋਵੋ। ਠੱਕ, ਠੱਕ, ਠੱਕ? ਭੂਤ ਕੋਲ ਸੋਟੀ ਸੀਗੀ?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ਅੱਜ ਪੱਖਾ ਕਿਮੇਂ ਮੱਠਾ ਜਿਹਾ ਚੱਲੀ ਜਾਂਦੈ ਨਾ...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ਅੰਮਾ ਜੀ... ਤੁਸੀਂ?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਵੱਡੀ ਦਾਦੀ, ਤੁਸੀਂ ਸੀਨੀਅਰ ਸਿਟੀਜ਼ਨ ਓ। ਤੁਸੀਂ ਆਪਣੀ ਕੁਰਸੀ ਤੋਂ ਈ ਗਵਾਹੀ ਦਿਓ।",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਹਾਂ ਧੀਏ, ਬਰਨੀ ਮੈਂ ਈ ਚੱਕੀ ਸੀ। <short pause> ਓਹਦੀ ਤਰੇੜ ਰੋਜ਼ ਵਧੀ ਜਾਂਦੀ ਸੀ।",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਸੋਚਿਆ, ਕਿਤੇ ਕਮਲਾ ਦੇ ਹੱਥ 'ਚ ਈ ਟੁੱਟ ਜੇ ਤਾਂ? ਐਸ ਕਰਕੇ ਵਿਹੜੇ 'ਚ ਤੁਲਸੀ ਦੇ ਉਹਲੇ ਲੁਕੋ 'ਤੀ।",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਤਾਂ ਤੁਸੀਂ ਮੈਨੂੰ ਦੱਸਿਆ ਕਿਉਂ ਨਹੀਂ, ਅੰਮਾ ਜੀ? <short pause> ਮੈਂ ਸਵੇਰ ਦੀ ਸੁਨੀਤਾ 'ਤੇ ਚੀਕਦੀ ਪਈ ਆਂ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ਡਰ ਗਈ ਸੀ ਮੈਂ, ਕਮਲਾ। <short pause> ਐਸ ਉਮਰੇ ਵੀ ਇੱਕ ਬਰਨੀ ਤੋਂ ਡਰੀ ਜਾਨੀ ਆਂ।",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਸਬੂਤ ਅਦਾਲਤ 'ਚ ਪੇਸ਼ ਕੀਤਾ ਜਾਵੇ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਮੈਂ ਲੈ ਕੇ ਆਉਂਦੀ ਆਂ, ਜੱਜ ਸਾਹਿਬਾ।",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> ਤੀਹ ਸਾਲ ਪਹਿਲਾਂ, ਜਿੱਦਾਂ ਅੰਮਾ ਜੀ ਨੇ ਮੈਨੂੰ ਰਸੋਈ ਸੌਂਪੀ ਸੀ, ਇਹ ਬਰਨੀ ਮੇਰੇ ਹੱਥ ਫੜਾਈ ਸੀਗੀ।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ਅੱਜ ਤੋਂ ਇਹ ਬਰਨੀ ਤੇਰੀ ਹੋਈ। ਇਹ ਐਸ ਘਰ ਦੀ ਇੱਜ਼ਤ ਆ। ਟੁੱਟੀ, ਤਾਂ ਸਮਝ ਲੈ ਘਰ ਟੁੱਟਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਦਸ ਸਾਲ ਮੈਂ ਏਸ ਘਰ 'ਚ ਪ੍ਰਾਹੁਣੀ ਵਾਂਗ ਰਹੀ ਸੀਗੀ। <sigh> ਓਸ ਦਿਨ ਪਹਿਲੀ ਵਾਰ ਲੱਗਿਆ, ਮੈਂ ਇਸ ਘਰ ਦੀ ਆਂ।",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਦਾਦੀ, ਤੀਹ ਸਾਲ ਪਹਿਲਾਂ ਵੀ ਤੁਸੀਂ ਬਿਲਕੁਲ ਐਦਾਂ ਦੇ ਈ ਲੱਗਦੇ ਸੀ?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਗੋਲੂ, ਯਾਦਾਂ 'ਚ ਸਾਰੇ ਅੱਜ ਵਾਲੇ ਚਿਹਰੇ 'ਚ ਈ ਦਿਸਦੇ ਹੁੰਦੇ ਨੇ।",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ਤੀਹ ਸਾਲ ਇਹਨੂੰ ਨਿਆਣਿਆਂ ਵਾਂਗ ਸਾਂਭਿਆ। ਇਹਦੇ ਨਾਲ ਈ ਤਾਂ ਮੈਨੂੰ ਆਪਣਾਪਣ ਮਿਲਿਆ ਸੀਗਾ।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਮਾਂ ਜੀ... <short pause> ਮੈਨੂੰ ਨੀ ਸੀ ਪਤਾ। ਮੈਂ ਤਾਂ ਬਸ ਇੱਕ ਬਰਨੀ ਬਦਲਦੀ ਪਈ ਸੀ।",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਨਾ ਕਮਲਾ, ਹੁਣ ਪੂਰਾ ਸੱਚ ਸੁਣ ਲੈ ਤੂੰ।",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ਓਹ ਬਰਨੀ ਅਸਲੀ ਨੀ ਹੈਗੀ।",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ਕੀ ਮਤਲਬ, ਅੰਮਾ ਜੀ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਸੱਠ ਸਾਲ ਪਹਿਲਾਂ ਮੈਂ ਵੀ ਨਵੀਂ ਨੂੰਹ ਸੀ। <sigh> ਮੇਰੀ ਸੱਸ ਆਲੀ ਅਸਲੀ ਬਰਨੀ ਮੈਥੋਂ ਡਿੱਗ ਕੇ ਭੱਜ ਗਈ ਸੀ।",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਮੈਂ ਡਰਦੀ ਕੰਬ ਗਈ। ਓਸੇ ਦੁਪਹਿਰੇ ਬਜ਼ਾਰ ਗਈ, ਉੱਕਾ ਓਹੋ ਜਿਹੀ ਬਰਨੀ ਲਿਆਈ, ਅਚਾਰ ਭਰ ਕੇ ਤਾਂਕ 'ਤੇ ਧਰ ਦਿੱਤੀ।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਤੇ ਮੇਰੀ ਸੱਸ ਨੂੰ ਅਖ਼ੀਰ ਤੀਕ ਪਤਾ ਈ ਨਾ ਲੱਗਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਤਾਂ ਜਿਹਨੂੰ ਮੈਂ ਤੀਹ ਸਾਲਾਂ ਤੋਂ ਪੂਜਦੀ ਪਈ ਸੀਗੀ... <short pause> ਓਹ ਬਜ਼ਾਰ ਆਲੀ ਬਰਨੀ ਆ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ਥੱਲੇ ਲਿਖਿਆ ਏ, ਖੁਰਜਾ ਬਜ਼ਾਰ, ਦੋ ਰੁਪਏ!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ਦੋ ਰੁਪਏ ਦੀ ਬਰਨੀ ਪਿੱਛੇ ਤਿੰਨਾਂ ਪੀੜ੍ਹੀਆਂ ਦਾ ਕਲੇਸ਼!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> ਮਤਲਬ ਮੈਂ ਨਿੱਕੇ ਹੁੰਦੇ ਤੋਂ ਬਜ਼ਾਰ ਵਾਲਾ ਈ ਅਚਾਰ ਖਾਂਦਾ ਰਿਹਾ ਵਾਂ?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ਮੈਂ ਕਦੇ ਆਪਣੀ ਸੱਸ ਨੂੰ ਪੁੱਛਿਆ ਈ ਨੀ ਕਿ ਇੱਕ ਬਰਨੀ ਪਿੱਛੇ ਐਡਾ ਗੁੱਸਾ ਕਾਹਦਾ। <short pause> ਬਸ ਓਹੀ ਡਰ ਤੈਨੂੰ ਫੜਾ ਦਿੱਤਾ।",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ਤੇ ਮੈਂ ਕਦੇ ਥੋਨੂੰ ਪੁੱਛਿਆ ਈ ਨੀ ਕਿ ਤੁਸੀਂ ਇਹ ਅਚਾਰ ਆਪ ਕਦੇ ਕਿਉਂ ਨੀ ਖਾਂਦੇ ਸੀਗੇ।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਕਿਉਂਕਿ ਹਰੇਕ ਬੁਰਕੀ 'ਤੇ ਆਪਣੀ ਚੋਰੀ ਚੇਤੇ ਆਈ ਜਾਂਦੀ ਸੀ!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਅਦਾਲਤ ਫ਼ੈਸਲਾ ਸੁਣਾਉਂਦੀ ਏ। ਦਾਦੀ ਦੋਸ਼ੀ ਨੇ। ਮੰਮੀ ਵੀ ਦੋਸ਼ੀ ਨੇ। ਦੋਵਾਂ ਨੇ ਇੱਕੋ ਜ਼ੁਰਮ ਕੀਤਾ ਏ।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ਦੋਵੇਂ? ਕਿਹੜਾ ਜ਼ੁਰਮ, ਜੱਜ ਸਾਹਿਬਾ?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਤੁਸੀਂ ਇੱਕ-ਦੂਜੇ ਨੂੰ ਕਦੇ \"ਕਿਉਂ\" ਨੀ ਪੁੱਛਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਦਾਦੀ ਨੇ ਨੀ ਪੁੱਛਿਆ ਕਿ ਮੰਮੀ ਬਰਨੀ ਦੇ ਪਿੱਛੇ ਕਿਉਂ ਪਈ ਏ। ਮੰਮੀ ਨੇ ਨੀ ਪੁੱਛਿਆ ਕਿ ਦਾਦੀ ਲਈ ਓਹ ਬਰਨੀ ਐਨੀ ਜ਼ਰੂਰੀ ਕਿਉਂ ਏ।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਤੇ ਵੱਡੀ ਦਾਦੀ ਸੱਠ ਸਾਲ ਚੁੱਪ ਰਹੇ। ਸਜ਼ਾ ਸਾਰਿਆਂ ਨੂੰ ਮਿਲੇਗੀ!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ਸ਼ੁਕਰ ਏ, ਮੈਂ ਤਾਂ ਬਚ ਗਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "ਪਾਪਾ, ਚੁੱਪ ਰਹਿਣਾ ਵੀ ਜ਼ੁਰਮ ਏ। ਅਚਾਰ ਦੇ ਸਾਰੇ ਅੰਬ ਤੁਸੀਂ ਕੱਟੋਗੇ।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਪੂਰੇ ਦਸ ਕਿੱਲੋ?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਤੇ ਦਾਦੀ ਤੇ ਮੰਮੀ ਰਲ਼ ਕੇ ਨਵਾਂ ਅਚਾਰ ਪਾਉਣਗੀਆਂ, ਨਵੀਂ ਬਰਨੀ 'ਚ। ਰੋਜ਼ ਇੱਕ ਵਾਰ ਇੱਕ-ਦੂਜੀ ਨੂੰ ਪੁੱਛਣਗੀਆਂ, \"ਕਿਉਂ?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਸੁਨੀਤਾ, ਤੂੰ ਨਵੀਂ ਬਰਨੀ ਕਿਉਂ ਮੰਗਵਾਈ ਸੀਗੀ?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਕਿਉਂਕਿ ਤੁਹਾਨੂੰ ਓਸ ਬਰਨੀ ਨਾਲ ਪਿਆਰ ਏ, ਮਾਂ ਜੀ। ਮੈਂ ਨੀ ਚਾਹੁੰਦੀ ਸੀ ਕਿ ਓਹ ਤੁਹਾਡੇ ਹੱਥੋਂ ਟੁੱਟੇ।",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਤੇ ਤੁਸੀਂ? ਤੁਹਾਨੂੰ ਓਹ ਐਨੀ ਪਿਆਰੀ ਕਿਉਂ ਸੀ?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਕਿਉਂਕਿ ਓਹਨੇ ਮੈਨੂੰ ਏਸ ਘਰ ਦੀ ਬਣਾਇਆ ਸੀਗਾ।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਅੱਜ ਤੋਂ ਨਵੀਂ ਬਰਨੀ ਸਾਡੀ ਦੋਵਾਂ ਦੀ ਆ। ਤੇ ਜੇ ਟੁੱਟ ਵੀ ਗਈ, ਤਾਂ ਨਵੀਂ ਲੈ ਆਵਾਂਗੇ। ਘਰ ਨੀ ਟੁੱਟੂਗਾ।",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> ਸੱਠਾਂ ਸਾਲਾਂ ਮਗਰੋਂ ਅੱਜ ਮਨ ਹੌਲ਼ਾ ਹੋਇਆ ਬਈ।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਅਦਾਲਤ ਬਰਖ਼ਾਸਤ!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਸਰ੍ਹੋਂ ਦਾ ਤੇਲ ਪਹਿਲਾਂ ਕਾੜ੍ਹਨਾ, ਫ਼ੇਰ ਠੰਢਾ ਕਰਨਾ। ਕਾਹਲ਼ੀ ਨਾ ਕਰੀਂ।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ਕਿਉਂ, ਮਾਂ ਜੀ?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਵਾਹ! ਅੱਜ ਦਾ ਪਹਿਲਾ \"ਕਿਉਂ\"! ਕਿਉਂਕਿ ਤੱਤੇ ਤੇਲ 'ਚ ਮਸਾਲਾ ਸੜ ਜਾਂਦਾ ਆ।",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਲੂਣ ਮਾੜਾ ਜਿਹਾ ਵੱਧ ਪਾਈਂ। <short pause> ਮੇਰੀ ਸੱਸ ਵੀ ਬਾਹਲ਼ਾ ਪਾਉਂਦੀ ਹੁੰਦੀ ਸੀ।",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ਅੰਮਾ ਜੀ, ਹੁਣ ਤੁਹਾਡੀ ਸੱਸ ਦੀ ਹਰੇਕ ਗੱਲ 'ਤੇ ਪਹਿਲਾਂ ਪੁੱਛੂੰਗੀ, ਕਿਉਂ?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਤੇ ਅੱਜ ਮੈਂ ਵੀ ਪਹਿਲੀ ਵਾਰੀ ਇੱਕ ਪਾਸਾ ਚੁਣਿਆ ਏ। ਅਚਾਰ ਵਾਲਾ ਪਾਸਾ!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਦੋਸਤੋ, ਸੱਸ-ਨੂੰਹ ਮਹਾਂਯੁੱਧ, ਐਪੀਸੋਡ ਦੋ! ਅਚਾਰ ਮਹਾਂਮਿਲਣ!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਤੇ ਸੀਸੀਟੀਵੀ 'ਚ ਸਭ ਰਿਕਾਰਡ ਹੋ ਰਿਹਾ ਏ!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> ਐਤਕੀਂ ਮੈਂ ਨੀ ਭੰਨੀ! ਮੇਰੇ ਹੱਥ ਤਾਂ ਐਥੇ ਈ ਨੇ!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ਓਹ... ਸੀਸੀਟੀਵੀ ਹਾਲੇ ਬੰਦ ਸੀਗਾ।",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "ਅਦਾਲਤ ਫ਼ੇਰ ਤੋਂ ਸ਼ੁਰੂ!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

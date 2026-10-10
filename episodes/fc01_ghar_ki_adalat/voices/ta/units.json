@@ -1,0 +1,946 @@
+{
+ "lang": "ta",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "என்ற ஊறுகாய் ஜாடி எங்கே போச்சு? முப்பது வருஷமா அந்த பரண்லதானே வெச்சுண்டு இருந்தேன்!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "அத்தை, நான் அதை தொடவே இல்ல. சத்தியமா சொல்றேன்!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ஆமாமா, ஜாடிக்கு றெக்க மொளச்சு, ராத்திரில பறந்துண்டு தீர்த்த யாத்திரைக்கு போயிருக்கும்.",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ஹலோ ஃபாலோயர்ஸ்! லைவ் பாருங்க, மாமியார்-மருமகள் மகா யுத்தம், எபிசோட் ஒண்ணு!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> நேகா கண்ணு, போன ஆஃப் பண்ணுங்க! ஊரே பாத்துறப்போகுதுங்க!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "அண்ணா, ஊரெல்லாம் பாக்கல. <short pause> வெறும் மூணே பேருதான் பாக்குறாய்ங்க.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ஆனா என் சிசிடிவி எல்லாம் பாக்குது! எல்லாமே ரெக்கார்ட் ஆகுது!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "மகேஷா, நீயே சொல்லு. உன்ற அம்மா சொல்றது சரியா இல்ல உன்ற ஆம்படையாளா?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "அம்மா... நானு... <laugh> இன்னைக்கு கிளைமேட் எம்புட்டு நல்லாருக்குதுங்க, இல்ல?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "போதும்! ஆர்டர்! ஆர்டர்!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "தினமும் இந்த சண்டை தாங்க முடியல. இன்னைக்கு இந்த வீட்ல கோர்ட் நடக்கும்!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "இந்த தட்டுதான் என் சுத்தியல். இது தாத்தாவோட கண்ணாடி. இந்த சோபா, சாட்சிக் கூண்டு!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "தாத்தா கோயிலுக்குப் போயிருக்காரு. <short pause> அவர் கண்ணாடியை கோர்ட் பறிமுதல் பண்ணிடுச்சு.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ஆஹாஹா ஜட்ஜ் அம்மணி! இன்னைக்கு சீரியல் டிவில இல்ல, இங்கிட்டு நம்ம வீட்டுலயே ஓடும்!",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "நான்தான் கோர்ட்டோட சிசிடிவி ஆபீசர்! என் கேமராவுல இருந்து யாரும் தப்ப முடியாது.",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "இந்த கேமரால லென்ஸுக்கு பதிலா பாட்டில் மூடி மாட்டிருக்கான் பாரு.",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "மூடி இல்ல, ஜூம் லென்ஸ் அது!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "அப்பா, நீங்க யார் பக்கம்? அம்மா பக்கமா இல்ல பாட்டி பக்கமா?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "நானுங்களா? நான் சுவிட்சர்லாந்துங்க! நடுவுல நிப்பேன், ரொம்ப நியூட்ரலுங்க!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "அப்ப மிஸ்டர் நியூட்ரல், கூண்ட விட்டு தள்ளுங்க. கேஸ் ஆரம்பமாகுது.",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "வழக்கு எண் ஒண்ணு. கமலா தேவி எதிர் சுனிதா. குற்றம், முப்பது வருஷ ஊறுகாய் ஜாடியை காணாம ஆக்குனது.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "அது வெறும் ஜாடி இல்ல, ஜட்ஜ் அவர்களே. <short pause> அதுல இந்த ஆத்தோட ருசியே இருந்தது.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "நான் நிரபராதி, ஜட்ஜ் மேடம். ஆதாரம் இருந்தா முன்னாடி காட்டுங்க.",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "சரி. முதல்ல புகார் கொடுத்தவங்க பேசட்டும். பாட்டி, நேத்து ராத்திரி என்ன நடந்ததுன்னு சொல்லுங்க.",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "நேத்து ராத்திரி நான் மடிசமையல்ல இருந்தேன். அப்போ இவ வந்து, வில்லி மாதிரி ஜாடிய மொறைச்சு பாத்தா.",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> இந்த பழைய ஜாடி... தூக்கி கடாசிடுவேன்!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "அப்ஜெக்ஷன்! <gasp> நான் எப்போ இப்படி சிரிச்சேன்? சமையல்கட்டுல மின்னல் இடி எல்லாம் யார் விட்டது?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> அப்ஜெக்ஷன் ஏத்துக்கிறேன். பாட்டி, இடி மின்னலை விட்டுட்டு உண்மையை சொல்லுங்க.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> சரி, இடி இடிக்கலதான். ஆனா இவதான் சொன்னா, இந்த ஜாடிய மாத்திடலாம்னு.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "அதுல விரிசல் இருக்கு, எண்ணெய் ஒழுகுதுன்னுதான் சொன்னேன். அது வேற விஷயம்!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "நான் சொன்னேன், இந்த ஆத்துக்கு உனக்கு முன்னாடி வந்தது இந்த ஜாடின்னு. அதுவும் வேற விஷயம்.",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ரெண்டு பேர் பேச்சும் வேற வேறன்னா, சண்டை மட்டும் ஒண்ணா இருக்குதே?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "அடுத்த சாட்சி, நேகா அத்தை! கூண்டுக்கு வாங்க.",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "வந்தாச்சு! மச்சிங்களா, இப்போ உங்க நேகா சாட்சி சொல்றேன். லைக் போடுங்கப்பா!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "நேத்து ராத்திரி பத்து மணிக்கு ஒண்ணு பாத்தேன்... <short pause> எந்த சீரியல்லயும் காட்ட மாட்டாங்க.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "அண்ணி நைஸா ஒரு பெரிய டப்பா தூக்கிட்டு வந்தாங்க. இங்கிட்டு அங்கிட்டு பாத்துட்டு பீரோல ஒழிச்சாங்க!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "இதோ ஆதாரம்! அந்த பீரோல இருந்து எடுத்த அதே டப்பா.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> புது ஜாடியா? அச்சு அசல் என்னோடது மாதிரியே!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> அப்போ ஒரிஜினலுக்கு பதிலா டூப்ளிகேட்டா! இது சினிமா சீன் மாதிரில்ல இருக்கு!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "அம்மா, இந்த ஜாடி எங்கிருந்து வந்துச்சு?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> ஆமா, நான்தான் ஆன்லைன்ல ஆர்டர் போட்டேன். பழசுல விரிசல் இருந்ததால.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "ஆனா பழசை நான் தூக்கி போடல மேடம். அத்தைக்கு தெரியாம ஊறுகாய மாத்திடலாம்னு பாத்தேன்.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> தெரியாம போயிடுமா? <short pause> முப்பது வருஷ நெனப்புங்கல்லாம் இப்போ ஆன்லைன்ல கிடைக்குமோ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "மச்சிங்களா, கமெண்ட்ல சொல்லுங்க, அண்ணி பண்ணது தப்பா இல்லையான்னு!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "அடுத்த சாட்சி, அப்பா! எஸ்கேப் ஆக பார்க்காதீங்க.",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> நானு சும்மா தண்ணி குடிக்க போனேனுங்க.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "நேத்து ராத்திரி நீங்க என்ன பாத்தீங்க?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "நம்ம ஊட்ல எல்லாரும் ஒருத்தர் மேல ஒருத்தர் ரொம்ப பாசமா இருக்குறத பாத்தேனுங்க.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "அம்மா சுனிதாவ பாராட்டுனாங்க, சுனிதா அம்மாவ. நடுவுல நான் ஹீரோவாட்டோம் நின்னுட்டிருந்தேனுங்க.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "அண்ணா, நேத்து ராத்திரி ஒன்பது மணிக்கே நீங்க குறட்டை விட்டு தள்ளுனீங்க.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "இந்த ஹீரோ நேத்து ராத்திரி தனக்கு ஒரு கப் காபி கூட போட்டுக்கல.",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> குறட்டை கூட சமாதான தூதுதானுங்க! நான் யார் பக்கமும் இல்லீங்க!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "<sigh> வேஸ்ட் சாட்சி. போங்க மிஸ்டர் சுவிட்சர்லாந்து.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ஜட்ஜ் அக்கா! நெஜமான ஆதாரம் என் சிசிடிவில இருக்கு! ராத்திரி ரெண்டு மணி ரெக்கார்டிங்!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> நீ ராத்திரி ரெண்டு மணிக்கு முழிச்சிட்டிருந்தியா?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> ஒண்ணுக்கு வந்துச்சு. ஆனா என் கேமரா எப்பவும் ரெடியா இருக்கும்!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ஜட்ஜ் மேடம், சாட்சியோட ஒண்ணுக்கையும் கேஸ் டைரில நோட் பண்ணிக்கங்க!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ஒரே இருட்டு. அப்போ ஒரு பேய் வந்துச்சு! வெள்ளை புடவை, மெதுவா நடந்து, டக், டக், டக்!",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> பேய் ஜாடிய எடுத்துட்டு மாயம்! எனக்கு பயமாயி போர்வைய இழுத்து மூடிட்டேன்!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "பேயா? <gasp> நம்ம வீட்டுல பேயா? மச்சிங்களா, இது செம வைரல் ஆகுமே!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "இரு. டக், டக், டக்கா? பேய் கையில தடி இருந்துச்சா?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> என்னமோ இன்னைக்கு காத்தாடி ரொம்ப மெதுவா சுத்துதுல்ல...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> பாட்டி... நீங்களா?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "பெரிய பாட்டி, நீங்க சீனியர் சிட்டிசன். உங்க நாற்காலில உக்காந்தே சாட்சி சொல்லுங்க.",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ஆமா ஆத்தா, ஜாடிய நான்தான் எடுத்தேன். <short pause> அதுல விரிசல் நாளுக்கு நாள் பெரிசா போச்சு.",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "எப்பவாச்சும் கமலா கையிலயே பொலந்துருச்சுன்னா என்ன பண்றது? அதான் கொல்லையில துளசி மாடத்துக்கு பின்னால ஒளிச்சு வெச்சேன்.",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "அதை என்கிட்ட சொல்லியிருக்கக் கூடாதா, அத்தை? <short pause> நான் காலைல இருந்து சுனிதா மேல கத்திண்டு இருக்கேன்!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "பயந்துட்டேன் கமலா. <short pause> இந்த வயசுலயும் இந்த ஜாடிய நெனச்சு பயமா சோலியா போச்சு.",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ஆதாரத்தை கோர்ட்டுல கொண்டு வந்து வைங்க!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "இதோ எடுத்துட்டு வரேன், ஜட்ஜ் மேடம்.",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "<sigh> முப்பது வருஷத்துக்கு முன்னாடி, அத்தை சமையல்கட்டை ஒப்படைச்சப்போ, இந்த ஜாடியைத்தான் கையில கொடுத்தா.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "இன்னைலேந்து இந்த ஜாடி உனக்குத்தான். இது இந்த ஊட்டு மானம். உடைஞ்சா, வீடே போச்சுன்னு நெனச்சுக்க.",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "பத்து வருஷமா இந்த ஆத்துல விருந்தாளி மாதிரி இருந்தேன். <sigh> அன்னைக்குதான் முதல் தடவையா தோணித்து, நானும் இந்த ஆத்துக்காரிதான்னு.",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "பாட்டி, முப்பது வருஷத்துக்கு முன்னாடியும் நீங்க இதே மாதிரிதான் இருந்தீங்களா?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> கோலு, ஃபிளாஷ்பேக்ல எல்லாருக்கும் இன்னைக்கு மூஞ்சிதானே தெரியும்.",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "முப்பது வருஷமா குழந்தையாட்டம் பாத்துண்டேன். இதோடதான் எனக்கும் சொந்தம் கிடைச்சது.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "அத்தை... <short pause> எனக்கு இது தெரியாது. நான் சும்மா ஒரு ஜாடியை மாத்ததான் நெனச்சேன்.",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "இல்ல கமலா. இப்போ முழு நெசத்தையும் கேளு.",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "<short pause> அந்த ஜாடி ஒரிஜினலே கெடையாது.",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> என்ன சொல்றேள், அத்தை?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "அறுபது வருஷத்துக்கு முன்னாடி நானும் புது மருமக. <sigh> எங்க மாமியார் கொடுத்த ஒரிஜினல் ஜாடி கை நழுவி உடைஞ்சு போச்சு.",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "அப்படியே நடுங்கிப் போயிட்டேன். மத்தியானமே கடைவீதிக்குப் போய், அச்சு அசல் அதே மாதிரி ஜாடி வாங்கி, ஊறுகாய் போட்டு, பரண்ல வெச்சுட்டேன்.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> எங்க மாமியாருக்கு கடைசி வரைக்கும் இது தெரியவே இல்ல.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "அப்போ முப்பது வருஷமா நான் கும்பிட்டுண்டு இருந்தது... <short pause> சந்தைல வாங்கின ஜாடியா?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> அடியில எழுதியிருக்கு, குர்ஜா சந்தை, ரெண்டு ரூபாய்!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "<laugh> ரெண்டு ரூபாய் ஜாடிக்காக மூணு தலைமுறையா பஞ்சாயத்து!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "<gasp> அப்போ நான் சின்ன வயசுல இருந்தே கடை ஊறுகாயத்தான் சாப்பிட்டேனுங்களா?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "<sigh> ஒரு ஜாடிக்காக எதுக்கு இம்புட்டு கோபம்னு எங்க மாமியார்கிட்ட நானும் கேக்கல. <short pause> அதே பயத்தை உன் தலையில கட்டிட்டேன்.",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "நானும் உங்ககிட்ட கேக்கல, நீங்க ஏன் இந்த ஊறுகாயை தொட்டுக் கூட பாக்கறதில்லைன்னு.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ஏன்னா ஒரு ஒரு வாய் சோத்துலயும் என் திருட்டு வேலைதான் கண்ணு முன்னாடி வந்து நிக்கும்!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "கோர்ட் தீர்ப்பு சொல்லுது. பாட்டி மேலயும் தப்பு. அம்மா மேலயும் தப்பு. ரெண்டு பேரும் ஒரே குற்றம்தான் பண்ணிருக்கீங்க.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "<gasp> ரெண்டு பேருமா? என்ன குற்றம், ஜட்ஜ் மேடம்?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "நீங்க ஒருத்தரை ஒருத்தர் என்னைக்குமே \"ஏன்\"-னு கேக்கல.",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "அம்மா ஏன் ஜாடிய மாத்த நெனச்சாங்கன்னு பாட்டி கேக்கல. பாட்டிக்கு அந்த ஜாடி ஏன் இவ்வளவு முக்கியம்னு அம்மா கேக்கல.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "பெரிய பாட்டி அறுபது வருஷமா வாய மூடிட்டு இருந்தாங்க. தண்டனை எல்லாருக்கும்தான்!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> நல்லவேளை சாமி, நான் தப்பிச்சேனுங்க.",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "அப்பா, அமைதியா இருந்ததும் தப்புதான். ஊறுகாய்க்கு எல்லா மாங்காயையும் நீங்கதான் நறுக்கணும்.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> முழுசா பத்து கிலோவுங்களா?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "பாட்டியும் அம்மாவும் சேர்ந்து புது ஜாடில புது ஊறுகாய் போடுவாங்க. தினமும் ஒரு தடவை ஒருத்தரை ஒருத்தர் கேக்கணும், \"ஏன்?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "சுனிதா, நீ ஏன் புது ஜாடி வாங்கினே?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ஏன்னா உங்களுக்கு அந்த ஜாடி மேல அவ்வளவு பாசம் அத்தை. அது உங்க கையாலயே உடையக்கூடாதுன்னு நெனச்சேன்.",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "நீங்க சொல்லுங்க? உங்களுக்கு அது ஏன் அவ்வளவு பிடிச்சிருந்தது?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ஏன்னா அதுதான் என்னை இந்த ஆத்து மனுஷியா மாத்தித்து.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "இன்னைலேந்து புது ஜாடி நம்ம ரெண்டு பேருக்கும் பொது. உடைந்தாலும் புதுசு வாங்கிக்கலாம். வீடு உடையாது.",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "<sigh> அறுபது வருஷம் கழிச்சு இன்னைக்குதான் மனசு லேசாயிருச்சு.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "நீதிமன்றம் ஒத்திவைக்கப்படுகிறது!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "கடுகு எண்ணெயை முதல்ல சூடு பண்ணி அப்புறம் ஆறவைக்கணும். அவசரப்படாதே.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ஏன், அத்தை?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> ஆஹா! இன்னைக்கான முதல் \"ஏன்\"! சூடான எண்ணெயில மசாலா கருகிடும்.",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "உப்பு கொஞ்சம் தூக்கலா போடு. <short pause> எங்க மாமியாரும் தூக்கலாத்தான் போடுவாங்க.",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "<laugh> அத்தை, இனிமே உங்க மாமியார் சொன்ன ஒவ்வொண்ணுக்கும் முதல்ல கேப்பேன், ஏன்?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "இன்னைக்கு நானும் மொத முறையா ஒரு பக்கம் சேர்ந்துட்டேனுங்க. ஊறுகாய் பக்கமுங்க!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "மச்சிங்களா, மாமியார்-மருமகள் யுத்தம், எபிசோட் ரெண்டு! ஊறுகாய் மகா சங்கமம்!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "சிசிடிவில எல்லாமே ரெக்கார்ட் ஆகுது!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "<gasp> இந்த வாட்டி நான் உடைக்கலப்பா! என் கை இங்கிட்டுதானே இருக்கு!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "<laugh> அது... சிசிடிவி இப்போ ஆஃப்ல இருந்துச்சு.",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "கோர்ட் மறுபடியும் ஆரம்பம்!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

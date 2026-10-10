@@ -1,0 +1,946 @@
+{
+ "lang": "gu",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Kamla",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "અલા મારી અથાણાની બરણી ક્યાં ગઈ? ત્રીસ વરસથી એ જ ગોખલામાં પડી તી!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "બા, મેં એને હાથ પણ નથી લગાડ્યો. સાચા સમ ખાવ છું!",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "હા ભાઈ હા, બરણીને પાંખો ફૂટી હશે! રાતોરાત ઊડીને જાત્રા કરવા ગઈ હશે!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "હેલો ફોલોઅર્સ! લાઈવ જુઓ, સાસુ-વહુ મહાયુદ્ધ, એપિસોડ એક!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "નેહા, ફોન બંધ કર ને બાપુ! આખો મોહલ્લો જોશે ઈ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ભાઈ, આખો મોહલ્લો નથી જોતો. ખાલી ત્રણ જ જણા જુએ છે.",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "પણ મારો સીસીટીવી બધું જુએ છે! બધું રેકોર્ડ થાય છે!",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Kamla",
+   "emotion": "angry",
+   "radio": false,
+   "text": "મહેશિયા, તું કે'ની. તારી મા હાચી કે તારી બૈરી હાચી?",
+   "request": 1
+  },
+  {
+   "id": 8,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "માડી... હું... આજ હવામાન કેવું મજાનું સે, કાં?",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "બસ! ઓર્ડર! ઓર્ડર!",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "રોજ-રોજની કચકચ બહુ થઈ ગઈ. આજે આ ઘરમાં અદાલત ભરાશે!",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "આ સ્ટીલની થાળી મારો હથોડો છે. આ દાદાજીના ચશ્મા. ને આ સોફો, સાક્ષીનો પાંજરો!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chinki",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "દાદાજી મંદિરે ગયા છે. એમનાં ચશ્મા કોર્ટે જપ્ત કરી લીધા છે.",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "વાહ રે જજ સાહેબા! આજ સિરિયલ ટીવીમાં નહિ, ઘરમાં જ હાલશે.",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "અને હું કોર્ટનો સીસીટીવી ઈન્ચાર્જ! મારા કેમેરાથી કોઈ નહિ બચી શકે.",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "આ કેમેરામાં લેન્સની જગ્યાએ બોટલનું ઢાંકણું ફિટ કર્યું છે.",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Golu",
+   "emotion": "angry",
+   "radio": false,
+   "text": "ઢાંકણું નથી, ઝૂમ લેન્સ છે આ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "પપ્પા, તમે કોના પક્ષમાં છો? મમ્મીના કે દાદીના?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Mahesh",
+   "emotion": "panicked",
+   "radio": false,
+   "text": "હું? હું તો સ્વિટ્ઝર્લેન્ડ સું! છેક વચમાં, સાવ ન્યૂટ્રલ બાપુ!",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "તો ન્યૂટ્રલજી, પાંજરામાંથી હટો. કેસ શરૂ થાય છે.",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "કેસ નંબર એક. કમલા દેવી વિરુદ્ધ સુનિતા. ગુનો, ત્રીસ વરસ જૂની અથાણાની બરણી ગાયબ કરવી.",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "એ ખાલી બરણી નહોતી, જજ સાહેબા. એમાં આ આખા ઘરનો સ્વાદ હતો.",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ને હું સાવ નિર્દોષ છું, જજ સાહેબા. પુરાવો હોય તો પુરાવો લાવો.",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "બરાબર. પહેલાં ફરિયાદી બોલશે. દાદી, કહો કાલે રાત્રે શું થયું.",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Kamla",
+   "emotion": "serious",
+   "radio": false,
+   "text": "કાલ રાતે હું રસોડામાં તી. ત્યારે આ આવી, ને બરણીને એમ તાકી, જાણે સિરિયલની ડાકણ!",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Sunita",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "આ જૂની બરણી... આને તો હું પધરાવી દઈશ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Sunita",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ઓબ્જેક્શન! હું આવી રીતે ક્યારે હસું છું? ને રસોડામાં વીજળી કોણ કડકાવે છે?",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chinki",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ઓબ્જેક્શન મંજૂર. દાદી, વીજળી હટાવો, સાચું કહો.",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Kamla",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "હારુ, વીજળી નહોતી થઈ. પણ એણે કીધેલું કે આ બરણી બદલી નાખો.",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "મેં કીધું'તું કે આમાં તિરાડ છે, નીચેથી તેલ ગળે છે. એ વાત આખી જુદી છે!",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ને મેં કીધું'તું, આ બરણી આ ઘરમાં તારા કરતાં પે'લા આવી તી. એ વાત બી જુદી છ!",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Golu",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "બેયની વાત જુદી-જુદી છે, તો ઝઘડો એક કેમ છે?",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "આગલા ગવાહ, નેહા ફોઈ! પાંજરામાં આવો.",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "આવી ગઈ! દોસ્તો, હવે તમારી નેહા જુબાની આપશે. લાઈક કરતા રહેજો!",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Neha",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "કાલે રાત્રે દસ વાગ્યે મેં કંઈક એવું જોયું... જે કોઈ સિરિયલમાં પણ ન બને.",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Neha",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ભાભી છાનામાના એક મોટો ડબ્બો લાવ્યાં. આમ જોયું, તેમ જોયું, ને કબાટમાં છુપાવી દીધો!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Neha",
+   "emotion": "proud",
+   "radio": false,
+   "text": "અને આ રહ્યો પુરાવો! એ જ ડબ્બો, જે કબાટમાંથી મળી આવ્યો.",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "નવી બરણી? સાવ મારી બરણી જેવી જ!",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "મતલબ અસલીની જગ્યાએ નકલી મૂકી દીધી! આ તો પિક્ચર જેવો ખેલ છે!",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "મમ્મી, આ બરણી ક્યાંથી આવી?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Sunita",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "હા, મેં મંગાવી હતી. ઓનલાઇન. પેલી જૂનીની તિરાડ જોઈને.",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Sunita",
+   "emotion": "pleading",
+   "radio": false,
+   "text": "પણ જૂની મેં નથી ફેંકી, જજ સાહેબા. વિચાર્યું કે છાનામાના અથાણું બદલી દઈશ, બાને ખબર પણ નહીં પડે.",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ખબર બી નહિ પડે? ત્રીસ વરસની યાદો હવે ઓનલાઈન મળે છ કાંઈ?",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "દોસ્તો, કમેન્ટમાં જણાવો, ભાભી ગુનેગાર છે કે નહીં!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "આગલા ગવાહ, પપ્પા! ભાગવાની કોશિશ ન કરતા.",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Mahesh",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "હું તો ખાલી પાણી પીવા જાતો'તો બાપુ.",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "કાલે રાત્રે તમે શું જોયું?",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Mahesh",
+   "emotion": "happy",
+   "radio": false,
+   "text": "મેં જોયું કે આ ઘરમાં હંધાય એકબીજાને બવ વાલ કરે સે.",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "મા સુનિતાના વખાણ કરતી'તી, સુનિતા માના. ને હું વચમાં હીરોની ઘોડે ઊભો'તો.",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Neha",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ભાઈ, કાલ રાત્રે તો તમે નવ વાગ્યાથી નસકોરાં બોલાવતા હતા.",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Kamla",
+   "emotion": "sarcastic",
+   "radio": false,
+   "text": "ને હીરો સાહેબે કાલ રાતે પોતાના હારુ ચા બી નહોતી બનાવી.",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "નસકોરાં ઈ તો શાંતિનો સંદેશો સે! હું કોઈની બાજુ નથી બાપુ!",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Chinki",
+   "emotion": "tired",
+   "radio": false,
+   "text": "ગવાહ નકામો છે. જાઓ, સ્વિટ્ઝર્લેન્ડજી.",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Golu",
+   "emotion": "excited",
+   "radio": false,
+   "text": "જજ દીદી! સાચો પુરાવો તો મારા સીસીટીવીમાં છે! રાતના બે વાગ્યાનું રેકોર્ડિંગ!",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "તું રાત્રે બે વાગ્યે જાગતો હતો?",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "સૂ-સૂ લાગી તી. પણ મારો કેમેરો હંમેશાં તૈયાર જ હોય છે!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "જજ સાહેબા, ગવાહની સૂ-સૂ પણ સરકારી ચોપડે નોંધી લેજો!",
+   "request": 1
+  },
+  {
+   "id": 62,
+   "speaker": "Golu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "અંધારું હતું. પછી આવ્યું એક ભૂત! સફેદ કપડાં, ધીમા-ધીમા ડગલાં, ઠક, ઠક, ઠક!",
+   "request": 1
+  },
+  {
+   "id": 63,
+   "speaker": "Golu",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "ભૂતે બરણી ઉપાડી ને ગાયબ! હું તો બીને ગોદડામાં ભરાઈ ગયો!",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Neha",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ભૂત? ઘરમાં ભૂત? દોસ્તો, આ વિડીયો તો વાયરલ થઈ જશે!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Chinki",
+   "emotion": "curious",
+   "radio": false,
+   "text": "ઊભા રહો. ઠક, ઠક, ઠક? ભૂત પાસે લાકડી હતી?",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Ammaji",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "આજ પંખો કેવો ધીમો હાલે સે, નઈ...",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "અરે બાપ રે... બાપુજી... તમે?",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "મોટાં દાદી, તમે સિનિયર સિટીઝન છો. તમે ખુરશી પર બેસીને જ જુબાની આપો.",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "હા ગગી, બરણી મેં ઉપાડી'તી. એની તિરાડ રોજ વધતી જાતી'તી.",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "વિચાર્યું, ક્યાંક કમલાના હાથમાં જ ફૂટી જાય તો? એટલે ઓશરીમાં તુલસી ક્યારે સંતાડી દીધી.",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "તો તમે મને કેમ ના કીધું, બા? હું હવારની સુનિતા પર બરાડા પાડું છ!",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "બી ગઈ'તી, કમલા. આ ઉંમરેય એક બરણીથી બીક લાગે સે.",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "પુરાવો અદાલતમાં રજૂ કરવામાં આવે!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Sunita",
+   "emotion": "determined",
+   "radio": false,
+   "text": "હું લાવું છું, જજ સાહેબા.",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ત્રીસ વરસ પે'લા, બાએ મને રસોડું સોંપ્યું, ત્યારે આ બરણી મારા હાથમાં મૂકેલી.",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Ammaji",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "આજથી આ બરણી તારી. ઈ ઘરની આબરૂ સે. તૂટી, તો સમજી લેજે ઘર તૂટ્યું.",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "દસ વરસ હું આ ઘરમાં પાહુણી જેવી રહી તી. એ દા'ડે પે'લી વાર લાગ્યું કે હું આ ઘરની છ.",
+   "request": 2
+  },
+  {
+   "id": 79,
+   "speaker": "Golu",
+   "emotion": "curious",
+   "radio": false,
+   "text": "દાદી, ત્રીસ વરસ પહેલાં પણ તમે સાવ આવાં જ દેખાતાં હતાં?",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Neha",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ગોલુ, યાદોમાં બધા આજના મોઢા સાથે જ દેખાય.",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Kamla",
+   "emotion": "crying",
+   "radio": false,
+   "text": "ત્રીસ વરસ આને છોકરાની જેમ હાચવી. આની સાથે જ તો મને મારું પોતાનું ઘર મળેલું.",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Sunita",
+   "emotion": "sad",
+   "radio": false,
+   "text": "બા... મને ખબર નહોતી. હું તો ખાલી એક બરણી બદલતી હતી.",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Ammaji",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ના કમલા. હવે આખું હાસું સાંભળી લે.",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Ammaji",
+   "emotion": "guilty",
+   "radio": false,
+   "text": "ઈ બરણી અસલી નથી.",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "હું કહો છો, બા?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Ammaji",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "સાઠ વરસ પે'લા હુંય નવી વહુ હતી. મારી સાસુની અસલી બરણી મારા હાથેથી પડીને ફૂટી ગયેલી.",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Ammaji",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "હું તો થરથર ધ્રૂજી ગઈ. ઈ જ બપોરે બજારે ગઈ, એવી ને એવી બરણી લાવી, અથાણું ભરીને ગોખલે મેલી દીધી.",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ને મારી સાસુને મરતાં લગી ખબરેય ના પડી.",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Kamla",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "તો જેને હું ત્રીસ વરસથી પૂજતી તી... ઈ બજારની બરણી છ?",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Chinki",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "નીચે લખ્યું છે, ખુરજા બજાર, બે રૂપિયા!",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Neha",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "બે રૂપિયાની બરણી પાછળ ત્રણ પેઢીનો ડખો!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Mahesh",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "મતલબ હું નાનપણથી બજારવાળું અથાણું ખાઉં સું?",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Ammaji",
+   "emotion": "sad",
+   "radio": false,
+   "text": "મેં મારી સાસુને ક્યારેય નો પૂછ્યું કે એક બરણી હારુ આટલો ક્રોધ કાં. ઈ જ બીક મેં તને પકડાવી દીધી.",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Kamla",
+   "emotion": "sad",
+   "radio": false,
+   "text": "ને મેં તમને ક્યારેય નો પૂછ્યું કે તમે પોતે આ અથાણું કેમ નથી ખાતાં.",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Ammaji",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "કારણ કે હરેક કોળિયે મારી ચોરી યાદ આવતી'તી!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Chinki",
+   "emotion": "serious",
+   "radio": false,
+   "text": "અદાલત ચુકાદો આપે છે. દાદી દોષી છે. મમ્મી પણ દોષી છે. બંનેએ એક જ ગુનો કર્યો છે.",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Sunita",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "બંને? કયો ગુનો, જજ સાહેબા?",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "તમે એકબીજાને ક્યારેય \"કેમ\" નથી પૂછ્યું.",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Chinki",
+   "emotion": "loving",
+   "radio": false,
+   "text": "દાદીએ ન પૂછ્યું કે મમ્મી બરણી પાછળ કેમ પડી છે. મમ્મીએ ન પૂછ્યું કે દાદી માટે એ બરણી આટલી ખાસ કેમ છે.",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Chinki",
+   "emotion": "determined",
+   "radio": false,
+   "text": "અને મોટાં દાદી સાઠ વરસ ચૂપ રહ્યાં. સજા બધાને મળશે!",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Mahesh",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "હાશ બાપુ, હું તો બચી ગ્યો.",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Chinki",
+   "emotion": "stern_warning",
+   "radio": false,
+   "text": "પપ્પા, ચૂપ રહેવું એ પણ ગુનો છે. અથાણાની બધી કેરીઓ તમે કાપશો.",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Mahesh",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "આખી દસ કિલો?",
+   "request": 2
+  },
+  {
+   "id": 105,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "અને દાદી ને મમ્મી સાથે મળીને નવું અથાણું આથશે, નવી બરણીમાં. રોજ એક વાર એકબીજાને પૂછશે, \"કેમ?\"",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "સુનિતા, તેં નવી બરણી કેમ મંગાવેલી?",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Sunita",
+   "emotion": "loving",
+   "radio": false,
+   "text": "કારણ કે તમને એ બરણી બહુ વહાલી હતી, બા. હું નહોતી ઈચ્છતી કે એ તમારા હાથમાં તૂટે.",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "અને તમને? તમને એ આટલી કેમ ગમતી હતી?",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Kamla",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "કારણ કે એણે મને આ ઘરની વહુમાંથી દીકરી બનાવી તી.",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Kamla",
+   "emotion": "loving",
+   "radio": false,
+   "text": "આજથી નવી બરણી આપણા બેઉની. ને તૂટી જશે તો નવી લાવીશું. ઘર નહિ તૂટે.",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Ammaji",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "સાઠ વરસ પછી આજ મન સાવ હળવું થઈ ગ્યું.",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chinki",
+   "emotion": "proud",
+   "radio": false,
+   "text": "અદાલત બરખાસ્ત!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Kamla",
+   "emotion": "happy",
+   "radio": false,
+   "text": "રાઈનું તેલ પે'લા ગરમ કરવાનું, પછી ઠંડું. ઉતાવળ નહિ કરવાની.",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Sunita",
+   "emotion": "curious",
+   "radio": false,
+   "text": "કેમ, બા?",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "વાહ! આજનો પહેલો \"કેમ\"! કેમ કે ગરમ તેલમાં મસાલો બળી જાય.",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Ammaji",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "મીઠું જરીક જાજું નાખજે. મારી સાસુય જાજું નાખતાં.",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Kamla",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "બા, હવે તમારી સાસુની દરેક વાત પર પે'લા પૂછીશ, હું કામ?",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Mahesh",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ને આજ મેં પણ પહેલી વાર એક પક્ષ લીધો સે. અથાણાનો પક્ષ બાપુ!",
+   "request": 2
+  },
+  {
+   "id": 119,
+   "speaker": "Neha",
+   "emotion": "excited",
+   "radio": false,
+   "text": "દોસ્તો, સાસુ-વહુ મહાયુદ્ધ, એપિસોડ બે! અથાણું મહામિલન!",
+   "request": 2
+  },
+  {
+   "id": 120,
+   "speaker": "Golu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "અને સીસીટીવીમાં બધું રેકોર્ડ થાય છે!",
+   "request": 2
+  },
+  {
+   "id": 121,
+   "speaker": "Ammaji",
+   "emotion": "comic_panic",
+   "radio": false,
+   "text": "આ વખતે મેં નથી ફોડી હો! મારા હાથ તો આંયા સે!",
+   "request": 2
+  },
+  {
+   "id": 122,
+   "speaker": "Golu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "એ... સીસીટીવી હમણાં બંધ હતો.",
+   "request": 2
+  },
+  {
+   "id": 123,
+   "speaker": "Chinki",
+   "emotion": "shouting",
+   "radio": false,
+   "text": "અદાલત ફરી શરૂ!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}
