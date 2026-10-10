@@ -1,0 +1,20 @@
+{
+ "_note": "long skirt to the ankles: no leg tubes, feet + short ankle stub under the hem; fill/shade = skirt pink (unused for tubes)",
+ "garment": "skirt",
+ "fill": [
+  236,
+  93,
+  135
+ ],
+ "shade": [
+  200,
+  72,
+  112
+ ],
+ "w_top": 0,
+ "w_knee": 0,
+ "w_ank": 50,
+ "stub": 48,
+ "sway": 6,
+ "waist_y": 600
+}

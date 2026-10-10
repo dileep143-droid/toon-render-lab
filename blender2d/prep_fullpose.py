@@ -15,7 +15,9 @@ head = np.asarray(Image.open(os.path.join(P, "head_closed.png")))[..., 3] > 60
 headm = (cv2.dilate(head.astype(np.uint8), np.ones((25, 25), np.uint8)) * 255).astype(np.uint8)
 orb = cv2.ORB_create(5000); kA, dA = orb.detectAndCompute(cv2.cvtColor(A, cv2.COLOR_RGB2GRAY), headm)
 for name in sys.argv[3:]:
-    V = np.asarray(Image.open(os.path.join(D, f"fullpose_{name}.png")).convert("RGB").resize((W, H), Image.LANCZOS))
+    # fit to the canvas HEIGHT keeping the aspect (a padded canvas, e.g. dadi 1096 wide, must not stretch the drawing sideways)
+    _v = Image.open(os.path.join(D, f"fullpose_{name}.png")).convert("RGB"); _k = H / _v.height; _v = _v.resize((round(_v.width * _k), H), Image.LANCZOS)
+    _c = Image.new("RGB", (W, H), (255, 255, 255)); _c.paste(_v, ((W - _v.width) // 2, 0)); V = np.asarray(_c)
     kV, dV = orb.detectAndCompute(cv2.cvtColor(V, cv2.COLOR_RGB2GRAY), None)
     mt = sorted(cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(dV, dA), key=lambda m: m.distance)[:500]
     M, inl = cv2.estimateAffinePartial2D(np.float32([kV[m.queryIdx].pt for m in mt]), np.float32([kA[m.trainIdx].pt for m in mt]),

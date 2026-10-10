@@ -1,0 +1,66 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid. body.png = body_orig.png warped onto the apose canvas (it was 896x1200, apose 864x1184). kite = BOTH arms (armpose_kite_L + _R from one drawing): show them together, do not bend the halves.",
+ "head": [
+  431,
+  325
+ ],
+ "arm_upper_L": [
+  546,
+  405
+ ],
+ "arm_lower_L": [
+  558,
+  560
+ ],
+ "arm_upper_R": [
+  320,
+  405
+ ],
+ "arm_lower_R": [
+  305,
+  560
+ ],
+ "leg_L": [
+  482,
+  780
+ ],
+ "leg_R": [
+  385,
+  780
+ ],
+ "poses": {
+  "kite_L": {
+   "side": "L",
+   "shoulder": [
+    546,
+    405
+   ],
+   "elbow": [
+    560,
+    560
+   ],
+   "hand": [
+    560,
+    430
+   ]
+  },
+  "kite_R": {
+   "side": "R",
+   "shoulder": [
+    320,
+    405
+   ],
+   "elbow": [
+    330,
+    520
+   ],
+   "hand": [
+    500,
+    420
+   ]
+  }
+ },
+ "prep": {
+  "under": false
+ }
+}

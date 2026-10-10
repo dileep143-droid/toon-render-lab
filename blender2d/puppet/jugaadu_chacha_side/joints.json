@@ -1,0 +1,8 @@
+{"_note": "hand-placed side-view joints (canvas px) on a 50 px grid over apose.png (_grid.png). Faces RIGHT (+x = forward).", "hip": [400, 850],
+ "shoulder": [366, 480],
+ "elbow": [368, 640],
+ "wrist": [390, 780],
+ "knee_back": [330, 980],
+ "ankle_back": [282, 1062],
+ "knee_front": [470, 978],
+ "ankle_front": [496, 1086]}

@@ -46,15 +46,33 @@ for name, pose in POSES.items():
     if parts != 1: fails.append(f"{name}: figure in {parts} pieces (floating part)")
     if holes: fails.append(f"{name}: background shows inside the torso ({holes} spot(s))")
     res[name] = r; Image.fromarray(im).save(os.path.join(OUT, f"{name}.png"))
+def limb_sharp(pose):
+    # sharpness of the LIMB layers themselves (warped exactly as render() does): the silhouette-edge number above also drops when a
+    # hand simply moves from the outline onto the skirt/kurta (gudiya, raju sway_in) although nothing got blurred
+    M = pz.mats(pose); out = []
+    for L in pz.layers:
+        if not L["name"].startswith(("arm", "leg")): continue
+        Vh = np.c_[L["V"], np.ones(len(L["V"]), np.float32)]
+        Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(pz.bones))
+        lay = cv2.resize(np.clip(pz._warp(L, Vd, L["img"], 2), 0, 1), (pz.W, pz.H), interpolation=cv2.INTER_AREA)
+        g = cv2.cvtColor((lay[..., :3] * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY).astype(np.float32)   # premultiplied on black
+        m = cv2.dilate((lay[..., 3] > 0.5).astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+        out.append(float(cv2.Laplacian(g, cv2.CV_32F)[m].var()) if m.sum() > 100 else 0.0)
+    return out
+_limb_rest = None
 for name, r in res.items():
     # swapped drawings have their own line weight, so they are not compared with the rest pose
-    if name != "rest" and not name.startswith("draw_") and r["sharp"] < 0.85 * res["rest"]["sharp"]: fails.append(f"{name}: edges blurred ({r['sharp']:.0f} vs rest {res['rest']['sharp']:.0f})")
+    if name != "rest" and not name.startswith("draw_") and r["sharp"] < 0.85 * res["rest"]["sharp"]:
+        _limb_rest = _limb_rest or limb_sharp({}); ls = limb_sharp(POSES[name]); worst = min(b / max(a, 1e-6) for a, b in zip(_limb_rest, ls))
+        r["limb_sharp_ratio"] = worst
+        if worst < 0.85: fails.append(f"{name}: edges blurred ({r['sharp']:.0f} vs rest {res['rest']['sharp']:.0f}; limbs at {worst:.0%} of rest)")
+        else: print(f"note: {name} silhouette-edge sharpness {r['sharp']:.0f} vs rest {res['rest']['sharp']:.0f}, but every limb layer keeps {worst:.0%} of its rest sharpness -> not blurred")
 # SHAPE test over a whole swing: the arm must keep its area and its width at every angle (catches pinched / noodle arms that
 # the connected-figure test passes)
 def arm_stats(pose, side):
     L = next(l for l in pz.layers if l["name"] == f"arm_{side}")
     M = pz.mats(pose); Vh = np.c_[L["V"], np.ones(len(L["V"]), np.float32)]
-    Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(__import__("mesh_puppet").BONES))
+    Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(pz.bones))
     a = np.clip(pz._warp(L, Vd, L["img"], 1), 0, 1)[..., 3] > 0.5
     dist = cv2.distanceTransform(a.astype(np.uint8), cv2.DIST_L2, 5)
     return a.sum(), float(np.percentile(dist[a], 90)) if a.any() else 0.0

@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/022_Gudiya.wav",
+    "duration": 1.52
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.04, "value": "A" },
+    { "start": 0.04, "end": 0.25, "value": "D" },
+    { "start": 0.25, "end": 0.39, "value": "B" },
+    { "start": 0.39, "end": 0.69, "value": "X" },
+    { "start": 0.69, "end": 0.74, "value": "B" },
+    { "start": 0.74, "end": 0.92, "value": "F" },
+    { "start": 0.92, "end": 1.06, "value": "C" },
+    { "start": 1.06, "end": 1.13, "value": "B" },
+    { "start": 1.13, "end": 1.20, "value": "C" },
+    { "start": 1.20, "end": 1.30, "value": "A" },
+    { "start": 1.30, "end": 1.37, "value": "C" },
+    { "start": 1.37, "end": 1.51, "value": "F" },
+    { "start": 1.51, "end": 1.52, "value": "X" }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+ "results": {
+  "rest": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2906.359619140625,
+   "rest_diff": 0.00032347654101913596
+  },
+  "sway_out": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 5690.2041015625
+  },
+  "sway_in": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2926.24462890625
+  },
+  "stride": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2789.589599609375
+  },
+  "head_tilt": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3420.349609375
+  },
+  "blink": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3895.73095703125
+  },
+  "draw_warning": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3867.10107421875
+  },
+  "draw_warning_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3673.057861328125
+  },
+  "draw_radio_L": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3628.684814453125
+  },
+  "draw_radio_L_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3278.52685546875
+  },
+  "draw_radio_R": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3394.58984375
+  },
+  "draw_radio_R_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3909.75439453125
+  }
+ },
+ "fails": []
+}

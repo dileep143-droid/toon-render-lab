@@ -1,0 +1,104 @@
+{
+ "canvas": [
+  864,
+  1184
+ ],
+ "pieces": {
+  "arm_upper_L": {
+   "pivot": [
+    517.0,
+    487.0
+   ],
+   "parent": "body",
+   "z": 2
+  },
+  "arm_lower_L": {
+   "pivot": [
+    546.0,
+    624.0
+   ],
+   "parent": "arm_upper_L",
+   "z": 3
+  },
+  "arm_upper_R": {
+   "pivot": [
+    313.5,
+    492.0
+   ],
+   "parent": "body",
+   "z": 2
+  },
+  "arm_lower_R": {
+   "pivot": [
+    289.5,
+    627.0
+   ],
+   "parent": "arm_upper_R",
+   "z": 3
+  },
+  "leg_R": {
+   "pivot": [
+    359.0,
+    887.0
+   ],
+   "parent": "body",
+   "z": -1
+  },
+  "leg_L": {
+   "pivot": [
+    473.0,
+    887.0
+   ],
+   "parent": "body",
+   "z": -1
+  },
+  "body": {
+   "pivot": [
+    420.0,
+    899.0
+   ],
+   "parent": null,
+   "z": 0
+  },
+  "head_closed": {
+   "pivot": [
+    420.0,
+    407.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_half": {
+   "pivot": [
+    420.0,
+    407.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_open": {
+   "pivot": [
+    420.0,
+    407.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_o": {
+   "pivot": [
+    420.0,
+    407.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_blink": {
+   "pivot": [
+    420.0,
+    407.0
+   ],
+   "parent": "body",
+   "z": 5
+  }
+ }
+}

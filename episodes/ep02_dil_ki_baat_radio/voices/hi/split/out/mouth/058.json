@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/058_Masterji.wav",
+    "duration": 4.85
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.11, "value": "B" },
+    { "start": 0.11, "end": 0.17, "value": "C" },
+    { "start": 0.17, "end": 0.45, "value": "B" },
+    { "start": 0.45, "end": 0.99, "value": "X" },
+    { "start": 0.99, "end": 1.07, "value": "B" },
+    { "start": 1.07, "end": 1.19, "value": "A" },
+    { "start": 1.19, "end": 1.54, "value": "B" },
+    { "start": 1.54, "end": 1.72, "value": "A" },
+    { "start": 1.72, "end": 1.90, "value": "C" },
+    { "start": 1.90, "end": 2.04, "value": "D" },
+    { "start": 2.04, "end": 2.82, "value": "B" },
+    { "start": 2.82, "end": 3.06, "value": "A" },
+    { "start": 3.06, "end": 3.20, "value": "B" },
+    { "start": 3.20, "end": 3.48, "value": "F" },
+    { "start": 3.48, "end": 3.56, "value": "A" },
+    { "start": 3.56, "end": 3.71, "value": "D" },
+    { "start": 3.71, "end": 3.78, "value": "C" },
+    { "start": 3.78, "end": 3.96, "value": "A" },
+    { "start": 3.96, "end": 4.45, "value": "B" },
+    { "start": 4.45, "end": 4.66, "value": "C" },
+    { "start": 4.66, "end": 4.80, "value": "B" },
+    { "start": 4.80, "end": 4.85, "value": "X" }
+  ]
+}

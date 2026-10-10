@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/011_JugaaduChacha.wav",
+    "duration": 2.84
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.04, "value": "X" },
+    { "start": 0.04, "end": 0.20, "value": "C" },
+    { "start": 0.20, "end": 0.28, "value": "A" },
+    { "start": 0.28, "end": 0.63, "value": "C" },
+    { "start": 0.63, "end": 0.71, "value": "A" },
+    { "start": 0.71, "end": 0.76, "value": "F" },
+    { "start": 0.76, "end": 1.02, "value": "B" },
+    { "start": 1.02, "end": 1.16, "value": "D" },
+    { "start": 1.16, "end": 1.40, "value": "B" },
+    { "start": 1.40, "end": 1.48, "value": "A" },
+    { "start": 1.48, "end": 1.65, "value": "C" },
+    { "start": 1.65, "end": 1.72, "value": "B" },
+    { "start": 1.72, "end": 1.79, "value": "F" },
+    { "start": 1.79, "end": 1.86, "value": "B" },
+    { "start": 1.86, "end": 2.05, "value": "F" },
+    { "start": 2.05, "end": 2.10, "value": "E" },
+    { "start": 2.10, "end": 2.35, "value": "C" },
+    { "start": 2.35, "end": 2.43, "value": "A" },
+    { "start": 2.43, "end": 2.50, "value": "C" },
+    { "start": 2.50, "end": 2.78, "value": "B" },
+    { "start": 2.78, "end": 2.84, "value": "X" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/001_Lallan.wav",
+    "duration": 2.44
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.12, "value": "C" },
+    { "start": 0.12, "end": 0.67, "value": "B" },
+    { "start": 0.67, "end": 1.31, "value": "X" },
+    { "start": 1.31, "end": 1.52, "value": "B" },
+    { "start": 1.52, "end": 1.60, "value": "A" },
+    { "start": 1.60, "end": 1.80, "value": "B" },
+    { "start": 1.80, "end": 1.88, "value": "A" },
+    { "start": 1.88, "end": 2.01, "value": "E" },
+    { "start": 2.01, "end": 2.08, "value": "C" },
+    { "start": 2.08, "end": 2.15, "value": "D" },
+    { "start": 2.15, "end": 2.26, "value": "A" },
+    { "start": 2.26, "end": 2.41, "value": "B" },
+    { "start": 2.41, "end": 2.44, "value": "X" }
+  ]
+}

@@ -1,0 +1,452 @@
+[
+ {
+  "n": 1,
+  "heard_emotion": "loud shouting / sarcastic recital",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Delivered as a loud, dramatic public proclamation."
+ },
+ {
+  "n": 2,
+  "heard_emotion": "shocked / bewildered",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Clear startled reaction."
+ },
+ {
+  "n": 3,
+  "heard_emotion": "panicked / flustered",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Convincing nervous stammer."
+ },
+ {
+  "n": 4,
+  "heard_emotion": "excited / energetic",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Lively, high-energy child delivery."
+ },
+ {
+  "n": 5,
+  "heard_emotion": "proud / confident",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Proud inventor tone with a slight chuckle."
+ },
+ {
+  "n": 6,
+  "heard_emotion": "curious / puzzled",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Inquisitive, natural child voice."
+ },
+ {
+  "n": 7,
+  "heard_emotion": "mischievous / gentle teasing",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Warm, teasing adult tone."
+ },
+ {
+  "n": 8,
+  "heard_emotion": "excited / anticipatory",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "High energy test announcement."
+ },
+ {
+  "n": 9,
+  "heard_emotion": "mischievous / greedy giggle",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Playful and cheeky delivery with chuckling."
+ },
+ {
+  "n": 10,
+  "heard_emotion": "awed / astonished",
+  "emotion_hit": false,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": false,
+  "spoken_stage_direction": false,
+  "note": "Omitted 'हाहाहा'; delivered with an astonished gasp rather than open laughter."
+ },
+ {
+  "n": 11,
+  "heard_emotion": "serious / warning",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Stern, cautionary delivery."
+ },
+ {
+  "n": 12,
+  "heard_emotion": "obedient / smiling voice",
+  "emotion_hit": true,
+  "strength": 3,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Innocent, reassuring child tone."
+ },
+ {
+  "n": 13,
+  "heard_emotion": "conspiratorial whisper",
+  "emotion_hit": false,
+  "strength": 3,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Whispered, but conspiratorial/sneaky rather than frightened."
+ },
+ {
+  "n": 14,
+  "heard_emotion": "conspiratorial / excited whisper",
+  "emotion_hit": false,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Whispered excitedly rather than out of fear."
+ },
+ {
+  "n": 15,
+  "heard_emotion": "proud / boastful",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Confident and bragging tone."
+ },
+ {
+  "n": 16,
+  "heard_emotion": "mischievous / teasing",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Cheeky whispered challenge."
+ },
+ {
+  "n": 17,
+  "heard_emotion": "embarrassed / reluctant",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Begrudging, flustered admission."
+ },
+ {
+  "n": 18,
+  "heard_emotion": "triumphant / confident",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Gloating and proud."
+ },
+ {
+  "n": 19,
+  "heard_emotion": "defensive / embarrassed stammer",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Flustered cover-up attempt."
+ },
+ {
+  "n": 20,
+  "heard_emotion": "calm / authoritative",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Matter-of-fact schoolmaster tone."
+ },
+ {
+  "n": 21,
+  "heard_emotion": "wistful / lazy longing",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Dreamy, nostalgic inner thought."
+ },
+ {
+  "n": 22,
+  "heard_emotion": "shocked / startled",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Sudden shock upon being exposed."
+ },
+ {
+  "n": 23,
+  "heard_emotion": "angry / firm",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Accusatory, stern shout."
+ },
+ {
+  "n": 24,
+  "heard_emotion": "frightened whisper",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Urgent and scared hissed whisper."
+ },
+ {
+  "n": 25,
+  "heard_emotion": "shouting / alarmed anger",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Loud, alarmed demand to stop."
+ },
+ {
+  "n": 26,
+  "heard_emotion": "relieved",
+  "emotion_hit": true,
+  "strength": 5,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Includes an audible, breathy sigh of relief."
+ },
+ {
+  "n": 27,
+  "heard_emotion": "giggling / amused",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Delivered through giggles."
+ },
+ {
+  "n": 28,
+  "heard_emotion": "lonely / wistful",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Subdued, melancholic sigh of an elderly character."
+ },
+ {
+  "n": 29,
+  "heard_emotion": "sad / low",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Heartbroken, frail, and subdued."
+ },
+ {
+  "n": 30,
+  "heard_emotion": "sad / sympathetic",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Soft, saddened delivery by Gudiya."
+ },
+ {
+  "n": 31,
+  "heard_emotion": "guilty / remorseful",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Ashamed confession by Chhotu."
+ },
+ {
+  "n": 32,
+  "heard_emotion": "guilty / remorseful",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": false,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Line is spoken by a child's voice (Gudiya/Chhotu) rather than adult Lallan."
+ },
+ {
+  "n": 33,
+  "heard_emotion": "reflective / tender",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Gentle, thoughtful realization."
+ },
+ {
+  "n": 34,
+  "heard_emotion": "loving / tender",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Warm, emotionally resonant delivery."
+ },
+ {
+  "n": 35,
+  "heard_emotion": "happy / cheerful",
+  "emotion_hit": true,
+  "strength": 5,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Joyful, energetic callout."
+ },
+ {
+  "n": 36,
+  "heard_emotion": "pleasantly surprised / smiling",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Warm, affectionate surprise."
+ },
+ {
+  "n": 37,
+  "heard_emotion": "apologetic / guilty",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": false,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Spoken by an older boy's deeper voice (Raju) instead of Chhotu's voice."
+ },
+ {
+  "n": 38,
+  "heard_emotion": "loving / tender",
+  "emotion_hit": true,
+  "strength": 5,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Deeply affectionate grandmotherly tone."
+ },
+ {
+  "n": 39,
+  "heard_emotion": "excited / eager",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Enthusiastic plea for a story."
+ },
+ {
+  "n": 40,
+  "heard_emotion": "nostalgic / reminiscing",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Classic warm storytelling delivery."
+ },
+ {
+  "n": 41,
+  "heard_emotion": "happy / smiling voice",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Good-natured, cheerful offering."
+ },
+ {
+  "n": 42,
+  "heard_emotion": "fond chuckle",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": false,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Laughter is performed by Dadi leading into her line, not by Chhotu."
+ },
+ {
+  "n": 43,
+  "heard_emotion": "loving / tender",
+  "emotion_hit": true,
+  "strength": 5,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Beautiful, gentle and wise moral delivery."
+ },
+ {
+  "n": 44,
+  "heard_emotion": "pleading / eager",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Cute, eager, hopeful delivery."
+ },
+ {
+  "n": 45,
+  "heard_emotion": "hearty laughter / joyful",
+  "emotion_hit": true,
+  "strength": 4,
+  "character_voice_ok": true,
+  "words_ok": true,
+  "spoken_stage_direction": false,
+  "note": "Warm, full-hearted chuckle and reassurance."
+ }
+]

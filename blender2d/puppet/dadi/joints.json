@@ -1,0 +1,46 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid. Saree: no drawn legs (legs 0), she does not walk with legs. body.png = body_orig.png warped onto the apose canvas (it was 864x1184). Her pallu in body.png hangs over where the left arm is, so the left arm is taken from the apose where it differs from the body (parts.arm_over_body). Canvas padded 100 px left/right (apose_orig.png = unpadded) so a 40-degree arm sway is not clipped at the canvas edge; all joints are on the padded canvas.",
+ "parts": {
+  "arm_over_body": [
+   "L"
+  ],
+  "arm_over_body_y": [
+   380,
+   785
+  ],
+  "arm_over_body_xmin": [
+   [
+    380,
+    700
+   ],
+   [
+    575,
+    724
+   ]
+  ]
+ },
+ "head": [
+  555,
+  335
+ ],
+ "arm_upper_L": [
+  745,
+  445
+ ],
+ "arm_lower_L": [
+  752,
+  585
+ ],
+ "arm_upper_R": [
+  392,
+  388
+ ],
+ "arm_lower_R": [
+  368,
+  558
+ ],
+ "prep": {
+  "fill": false,
+  "under": false
+ }
+}

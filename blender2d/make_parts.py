@@ -36,10 +36,32 @@ def piece(rgb, m, name):
 mA, mB = mask(A), mask(B)
 limbs = ((mA == 1) & (mB == 0)).astype(np.uint8)
 limbs = cv2.morphologyEx(limbs, cv2.MORPH_OPEN, np.ones((7, 7), np.uint8))
+# opt-in (joints.json "parts": {"arm_over_body": ["L"]}): where body.png drew cloth OVER the place the arm was (dadi's pallu hangs
+# straight down where her left arm is), apose-minus-body leaves only a sliver of that arm: add the apose pixels that DIFFER from the
+# body picture and touch that arm, so the piece holds the whole arm
+_jf = os.path.join(D, "joints.json"); PARTS = json.load(open(_jf)).get("parts", {}) if os.path.exists(_jf) else {}
+if PARTS.get("arm_over_body"):
+    _cx = np.nonzero(mB)[1].mean(); _xx = np.arange(W)[None, :]
+    _diff = ((np.abs(A.astype(int) - B.astype(int)).sum(2) > 90) & (mA == 1) & (mB == 1)).astype(np.uint8)
+    _diff = cv2.morphologyEx(cv2.morphologyEx(_diff, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8)), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+    for _sd in PARTS["arm_over_body"]:
+        _side = (_xx > _cx) if _sd == "L" else (_xx < _cx); _arm = limbs.astype(bool) & _side
+        _n, _lab = cv2.connectedComponents(((_diff == 1) & _side | _arm).astype(np.uint8))
+        _keep = np.unique(_lab[_arm]); _add = np.isin(_lab, _keep[_keep > 0]) & (_diff == 1) & _side
+        if PARTS.get("arm_over_body_y"): _add[: int(PARTS["arm_over_body_y"][0])] = False; _add[int(PARTS["arm_over_body_y"][1]):] = False
+        for _y0, _xmin in PARTS.get("arm_over_body_xmin", []): _add[int(_y0):, : int(_xmin)] = False   # [[from_y, min_x], ...] keep saree folds out
+        limbs = (limbs.astype(bool) | _add).astype(np.uint8); print('arm over body', _sd, 'added px', int(_add.sum()))
 n, lab, st, cen = cv2.connectedComponentsWithStats(limbs)
 ys, xs = np.nonzero(mB); body_cx = xs.mean(); hem_y = ys.max()
 big = [i for i in range(1, n) if st[i, 4] > 1500]
 legs_c = sorted([i for i in big if cen[i][1] > hem_y - 20], key=lambda i: -st[i, 4])[:2]
+if len(legs_c) == 1 and st[legs_c[0], 0] < body_cx - 40 and st[legs_c[0], 0] + st[legs_c[0], 2] > body_cx + 40:
+    # ONE blob straddling the centre = both legs joined by a dhoti/pyjama crotch (jugaadu_chacha): split it at the body centre line
+    i = legs_c[0]; j = n; n += 1; xx = np.arange(lab.shape[1])[None, :]; lab[(lab == i) & (xx >= body_cx)] = j
+    st = np.vstack([st, np.zeros((1, 5), st.dtype)]); cen = np.vstack([cen, np.zeros((1, 2))])
+    for k in (i, j):
+        yk, xk = np.nonzero(lab == k); st[k] = [xk.min(), yk.min(), xk.max() - xk.min() + 1, yk.max() - yk.min() + 1, len(xk)]; cen[k] = [xk.mean(), yk.mean()]
+    legs_c = [i, j]; print('one leg blob split at the centre line x =', round(float(body_cx)))
 arms_c = sorted([i for i in big if i not in legs_c], key=lambda i: -st[i, 4])
 # merge every arm fragment into the left or right arm by side
 for side_sign in (1, -1):

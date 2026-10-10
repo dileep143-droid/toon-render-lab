@@ -1,0 +1,47 @@
+{
+ "results": {
+  "rest": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 340.3524475097656,
+   "rest_diff": 0.00024452952519352767
+  },
+  "sway_out": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 641.2567749023438
+  },
+  "sway_in": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 232.0218505859375,
+   "limb_sharp_ratio": 0.8683780621941692
+  },
+  "stride": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 354.3642272949219
+  },
+  "head_tilt": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 411.4507751464844
+  },
+  "blink": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 361.5696716308594
+  },
+  "draw_point": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 447.97454833984375
+  },
+  "draw_point_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 416.9981384277344
+  }
+ },
+ "fails": []
+}

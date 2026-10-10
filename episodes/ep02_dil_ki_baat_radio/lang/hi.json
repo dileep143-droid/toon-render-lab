@@ -1,0 +1,478 @@
+[
+ {
+  "id": 0,
+  "kind": "line",
+  "speaker": "LOUDSPEAKER",
+  "emotion": "booming, comic",
+  "hi": "\"लल्लन की मिठाई में आधी चीनी, आधी चालाकी!\""
+ },
+ {
+  "id": 1,
+  "kind": "line",
+  "speaker": "LALLAN",
+  "emotion": "shocked",
+  "hi": "अरे! ये किसने बोला?"
+ },
+ {
+  "id": 2,
+  "kind": "line",
+  "speaker": "LALLAN",
+  "emotion": "panicked",
+  "hi": "मैं तो… मैं तो बस मन में सोच रहा था!"
+ },
+ {
+  "id": 3,
+  "kind": "card",
+  "speaker": "TITLE CARD",
+  "emotion": "",
+  "hi": "सुबह — मेले से पहले"
+ },
+ {
+  "id": 4,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "excited",
+  "hi": "चाचा! आज कौन-सी मशीन बना रहे हो?"
+ },
+ {
+  "id": 5,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "proud",
+  "hi": "ये है… \"दिल की बात रेडियो\"! जिसकी तरफ़ घुमाओ, उसके दिल की आवाज़ सुनाई देगी।"
+ },
+ {
+  "id": 6,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "proud",
+  "hi": "पर पहले देखो मेरी \"बोलती कुकर\"! ये बताती है कि दाल कब पकेगी।"
+ },
+ {
+  "id": 7,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "curious",
+  "hi": "चाचा, ये बोलती कैसे है?"
+ },
+ {
+  "id": 8,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "giggly",
+  "hi": "<laugh> चाचा, आपकी कुकर तो बोलने से पहले सबको नहला गई!"
+ },
+ {
+  "id": 9,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "embarrassed",
+  "hi": "हें हें… इसका गुस्सा थोड़ा तेज़ है। चलो, असली मशीन देखो!"
+ },
+ {
+  "id": 10,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "doubtful",
+  "hi": "दिल की आवाज़? चाचा, दिल तो धक-धक करता है, बात थोड़ी करता है!"
+ },
+ {
+  "id": 11,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "mysterious",
+  "hi": "करता है, बिटिया। बस कोई सुनता नहीं।"
+ },
+ {
+  "id": 12,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "excited",
+  "hi": "देखो! पहला टेस्ट — शेरू!"
+ },
+ {
+  "id": 13,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Sheru's heart, cheeky",
+  "hi": "मुझे भी लड्डू चाहिए! एक नहीं, दो!"
+ },
+ {
+  "id": 14,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "laughing",
+  "hi": "हाहाहा! चाचा, ये तो सच में काम करता है!"
+ },
+ {
+  "id": 15,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "serious",
+  "hi": "पर ध्यान रहे, अभी ये पूरी तरह तैयार नहीं है। इसे कोई बाहर नहीं ले जाएगा!"
+ },
+ {
+  "id": 16,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "innocent",
+  "hi": "बिल्कुल नहीं, चाचा!"
+ },
+ {
+  "id": 17,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "whisper",
+  "hi": "बस थोड़ी देर के लिए…"
+ },
+ {
+  "id": 18,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "whisper",
+  "hi": "मेले में बड़ा मज़ा आएगा!"
+ },
+ {
+  "id": 19,
+  "kind": "line",
+  "speaker": "RAJU",
+  "emotion": "boastful",
+  "hi": "देखो मेरी पतंग! पूरे गाँव में सबसे ऊँची उड़ेगी!"
+ },
+ {
+  "id": 20,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "mischief",
+  "hi": "अच्छा? रेडियो, ज़रा राजू के दिल की सुनाओ!"
+ },
+ {
+  "id": 21,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Raju's heart, sheepish",
+  "hi": "गुड़िया मुझसे अच्छी पतंग उड़ाती है… पर ये मैं कभी नहीं मानूँगा!"
+ },
+ {
+  "id": 22,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "proud",
+  "hi": "हाँ! सुना सबने?"
+ },
+ {
+  "id": 23,
+  "kind": "line",
+  "speaker": "RAJU",
+  "emotion": "embarrassed",
+  "hi": "अरे! ये… ये तो झूठी मशीन है!"
+ },
+ {
+  "id": 24,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Pandit's heart, worried",
+  "hi": "प्रसाद में काजू कम पड़ गए… हे भगवान, बस किसी को पता न चले!"
+ },
+ {
+  "id": 25,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "giggly",
+  "hi": "पंडित जी भी!"
+ },
+ {
+  "id": 26,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Balloon-wala's heart, tired",
+  "hi": "सुबह से एक भी गुब्बारा नहीं बिका… आज घर क्या ले जाऊँगा?"
+ },
+ {
+  "id": 27,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "sad",
+  "hi": "गुब्बारे वाले भैया उदास हैं…"
+ },
+ {
+  "id": 28,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "determined",
+  "hi": "चलो, हम सब अपने पैसों से एक-एक गुब्बारा लेते हैं!"
+ },
+ {
+  "id": 29,
+  "kind": "line",
+  "speaker": "MASTERJI",
+  "emotion": "formal",
+  "hi": "बच्चो, कल स्कूल समय पर आना। अनुशासन बहुत ज़रूरी है।"
+ },
+ {
+  "id": 30,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Masterji's heart, dreamy",
+  "hi": "काश कल भी छुट्टी होती… और मैं दिन भर सोता रहता।"
+ },
+ {
+  "id": 31,
+  "kind": "line",
+  "speaker": "MASTERJI",
+  "emotion": "stunned",
+  "hi": "ये… ये किसकी आवाज़ है?"
+ },
+ {
+  "id": 32,
+  "kind": "line",
+  "speaker": "LALLAN",
+  "emotion": "angry",
+  "hi": "वो रहे! उनके हाथ में कोई जादुई डिब्बा है!"
+ },
+ {
+  "id": 33,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "scared",
+  "hi": "भागो!"
+ },
+ {
+  "id": 34,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "shouting",
+  "hi": "रुको! वो अभी तैयार नहीं है!"
+ },
+ {
+  "id": 35,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Sheru's heart, excited",
+  "hi": "रेस! मुझे रेस बहुत पसंद है!"
+ },
+ {
+  "id": 36,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "comic panic",
+  "hi": "शेरू, अभी नहीं!"
+ },
+ {
+  "id": 37,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "out of breath",
+  "hi": "बच गए!"
+ },
+ {
+  "id": 38,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "giggling",
+  "hi": "लल्लन चाचा का चेहरा देखा था?"
+ },
+ {
+  "id": 39,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Dadi's heart, soft and sad",
+  "hi": "सब बड़े हो गए… अब कोई कहानी सुनने नहीं आता।"
+ },
+ {
+  "id": 40,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Dadi's heart, softer",
+  "hi": "आज भी बच्चों के लिए लड्डू बनाए थे… पर कोई आया ही नहीं।"
+ },
+ {
+  "id": 41,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "quiet, sad",
+  "hi": "दादी… अकेली बैठी हैं।"
+ },
+ {
+  "id": 42,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "guilty",
+  "hi": "सुबह दादी ने बुलाया था… मैंने कहा, \"बाद में, दादी।\""
+ },
+ {
+  "id": 43,
+  "kind": "line",
+  "speaker": "LALLAN",
+  "emotion": "soft, ashamed",
+  "hi": "हम सब मेले में थे… और दादी यहाँ अकेली।"
+ },
+ {
+  "id": 44,
+  "kind": "line",
+  "speaker": "MASTERJI",
+  "emotion": "moved",
+  "hi": "सच ही कहा था रेडियो ने।"
+ },
+ {
+  "id": 45,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "gentle",
+  "hi": "कुछ बातें रेडियो से नहीं… पास बैठने से सुनाई देती हैं।"
+ },
+ {
+  "id": 46,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "bright",
+  "hi": "दादी! मेला हम आपके पास ले आए!"
+ },
+ {
+  "id": 47,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "surprised, happy",
+  "hi": "अरे! तुम सब यहाँ? मेला छोड़कर?"
+ },
+ {
+  "id": 48,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "sincere",
+  "hi": "सॉरी दादी। सुबह आपने बुलाया था और मैं नहीं आया।"
+ },
+ {
+  "id": 49,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "warm",
+  "hi": "अरे पगले… तू आ गया, यही बहुत है।"
+ },
+ {
+  "id": 50,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "eager",
+  "hi": "दादी, कहानी सुनाइए ना!"
+ },
+ {
+  "id": 51,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "smiling, remembering",
+  "hi": "तो सुनो… मेरी पहली दिवाली की कहानी। तब इस गाँव में बिजली भी नहीं थी…"
+ },
+ {
+  "id": 52,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "nostalgic",
+  "hi": "उस रात पूरे गाँव में सिर्फ़ दीये जल रहे थे। मेरी दादी हम सब बच्चों को अपने पास बिठातीं…"
+ },
+ {
+  "id": 53,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "loving",
+  "hi": "…और कहतीं — दीया तभी जलता है, जब उसमें प्यार का तेल हो।"
+ },
+ {
+  "id": 54,
+  "kind": "line",
+  "speaker": "LALLAN",
+  "emotion": "offering",
+  "hi": "और ये लीजिए दादी — मेरी मिठाई। आज पूरी चीनी वाली!"
+ },
+ {
+  "id": 55,
+  "kind": "line",
+  "speaker": "EVERYONE",
+  "emotion": "laughing",
+  "hi": "हाहाहा!"
+ },
+ {
+  "id": 56,
+  "kind": "line",
+  "speaker": "DADI",
+  "emotion": "moved",
+  "hi": "बच्चो, दिवाली दीयों से नहीं… अपनों के साथ बैठने से रोशन होती है।"
+ },
+ {
+  "id": 57,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "happy",
+  "hi": "मास्टरजी, आज कॉपी नहीं — आज दिवाली!"
+ },
+ {
+  "id": 58,
+  "kind": "line",
+  "speaker": "MASTERJI",
+  "emotion": "moved",
+  "hi": "अरे… मेरे लिए दीया? बरसों बाद किसी ने…"
+ },
+ {
+  "id": 59,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "mischievous",
+  "hi": "और कल छुट्टी? <short pause> रेडियो ने बताया था!"
+ },
+ {
+  "id": 60,
+  "kind": "line",
+  "speaker": "MASTERJI",
+  "emotion": "laughing",
+  "hi": "हाहाहा! ठीक है, ठीक है… कल आधी छुट्टी!"
+ },
+ {
+  "id": 61,
+  "kind": "line",
+  "speaker": "CHHOTU",
+  "emotion": "guilty",
+  "hi": "चाचा, सॉरी… हमने आपकी मशीन बिना पूछे ले ली।"
+ },
+ {
+  "id": 62,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "sad",
+  "hi": "रेडियो की चिंता नहीं थी, बेटा… दिवाली पर मैं भी तो अकेला था।"
+ },
+ {
+  "id": 63,
+  "kind": "line",
+  "speaker": "GUDIYA",
+  "emotion": "loving",
+  "hi": "अब नहीं! चलिए, दादी कहानी सुना रही हैं!"
+ },
+ {
+  "id": 64,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "happy",
+  "hi": "सच? चलो चलो! पर पहले… जलेबी!"
+ },
+ {
+  "id": 65,
+  "kind": "line",
+  "speaker": "RADIO",
+  "emotion": "Sheru's heart, hopeful",
+  "hi": "अब तो लड्डू मिलेगा?"
+ },
+ {
+  "id": 66,
+  "kind": "line",
+  "speaker": "JUGAADU CHACHA",
+  "emotion": "laughing",
+  "hi": "हाहाहा! इसका तो पक्का मिलेगा!"
+ },
+ {
+  "id": 67,
+  "kind": "card",
+  "speaker": "END CARD",
+  "emotion": "",
+  "hi": "बड़ों के साथ समय बिताओ — उन्हें हमारी उतनी ही ज़रूरत है जितनी हमें उनकी।"
+ }
+]

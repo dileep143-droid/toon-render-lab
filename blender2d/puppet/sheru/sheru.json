@@ -1,0 +1,108 @@
+{
+ "character": "sheru",
+ "canvas": [
+  1800,
+  1300
+ ],
+ "baseline_y": 1240,
+ "facing": "right (side views)",
+ "drawings": {
+  "stand_side": {
+   "file": "stand_side_cut.png",
+   "scale": 1.0,
+   "bbox": [
+    520,
+    555,
+    1280,
+    1240
+   ]
+  },
+  "sit_front": {
+   "file": "sit_front_cut.png",
+   "scale": 0.9331,
+   "bbox": [
+    699,
+    581,
+    1101,
+    1240
+   ]
+  },
+  "sit_side": {
+   "file": "sit_side_cut.png",
+   "scale": 1.0259,
+   "bbox": [
+    579,
+    553,
+    1220,
+    1240
+   ]
+  },
+  "run_1": {
+   "file": "run_1_cut.png",
+   "scale": 1.2212,
+   "bbox": [
+    315,
+    465,
+    1484,
+    1240
+   ]
+  },
+  "run_2": {
+   "file": "run_2_cut.png",
+   "scale": 1.3923,
+   "bbox": [
+    234,
+    533,
+    1565,
+    1240
+   ]
+  },
+  "run_3": {
+   "file": "run_3_cut.png",
+   "scale": 1.1453,
+   "bbox": [
+    339,
+    417,
+    1460,
+    1240
+   ]
+  },
+  "wag_tail_up": {
+   "file": "wag_tail_up_cut.png",
+   "scale": 0.8415,
+   "bbox": [
+    679,
+    519,
+    1120,
+    1240
+   ]
+  },
+  "wearing_crown": {
+   "file": "wearing_crown_cut.png",
+   "scale": 0.8594,
+   "bbox": [
+    703,
+    526,
+    1096,
+    1240
+   ]
+  }
+ },
+ "run_cycle": {
+  "order": [
+   "run_1",
+   "run_2",
+   "run_3",
+   "run_2"
+  ],
+  "frames_per_drawing": 3,
+  "fps": 24,
+  "y_offset": {
+   "run_1": 0,
+   "run_2": -28,
+   "run_3": 0
+  },
+  "note": "every drawing has its lowest point on baseline_y; run_2 is the airborne stretch, so lift it by y_offset when playing"
+ },
+ "source": "Gemini edits of E:/KulfiKahani_AI_Studio/03_episode01_art/masters/sheru.png (stand_side = the master), cut with anime-seg isnetis"
+}

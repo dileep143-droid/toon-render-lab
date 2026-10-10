@@ -1,0 +1,687 @@
+{
+ "lang": "gu",
+ "name": "Gujarati",
+ "model": "gemini-3.5-flash",
+ "rows": [
+  {
+   "id": 0,
+   "kind": "line",
+   "speaker": "LOUDSPEAKER",
+   "emotion": "booming, comic",
+   "hi": "\"लल्लन की मिठाई में आधी चीनी, आधी चालाकी!\"",
+   "text": "લલ્લનની મીઠાઈમાં અડધી ખાંડ, અડધી લુચ્ચાઈ!",
+   "back_en": "In Lallan's sweets, half sugar, half slyness!",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 1,
+   "kind": "line",
+   "speaker": "LALLAN",
+   "emotion": "shocked",
+   "hi": "अरे! ये किसने बोला?",
+   "text": "અરે! આ કોણ બોલ્યું?",
+   "back_en": "Oh! Who said this?",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 2,
+   "kind": "line",
+   "speaker": "LALLAN",
+   "emotion": "panicked",
+   "hi": "मैं तो… मैं तो बस मन में सोच रहा था!",
+   "text": "હું તો... હું તો બસ મનમાં વિચારતો'તો!",
+   "back_en": "I was... I was just thinking in my mind!",
+   "len_ratio": 1.03
+  },
+  {
+   "id": 3,
+   "kind": "card",
+   "speaker": "TITLE CARD",
+   "emotion": "",
+   "hi": "सुबह — मेले से पहले",
+   "text": "સવાર — મેળા પહેલાં",
+   "back_en": "Morning — Before the fair",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 4,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "excited",
+   "hi": "चाचा! आज कौन-सी मशीन बना रहे हो?",
+   "text": "કાકા! આજે કયું મશીન બનાવો છો?",
+   "back_en": "Uncle! Which machine are you making today?",
+   "len_ratio": 0.91
+  },
+  {
+   "id": 5,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "proud",
+   "hi": "ये है… \"दिल की बात रेडियो\"! जिसकी तरफ़ घुमाओ, उसके दिल की आवाज़ सुनाई देगी।",
+   "text": "આ છે... \"મનની વાત રેડિયો\"! જેની બાજુ ફેરવશો, એના દિલનો અવાજ સંભળાઈ જશે.",
+   "back_en": "This is... \"Mind's Voice Radio\"! Whichever side you turn it to, the voice of their heart will be heard.",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 6,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "proud",
+   "hi": "पर पहले देखो मेरी \"बोलती कुकर\"! ये बताती है कि दाल कब पकेगी।",
+   "text": "પણ પહેલાં જુઓ આ મારું \"બોલતું કૂકર\"! એ કહેશે કે દાળ ક્યારે ચડશે.",
+   "back_en": "But first look at this, my \"talking cooker\"! It will tell when the dal will be cooked.",
+   "len_ratio": 1.07
+  },
+  {
+   "id": 7,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "curious",
+   "hi": "चाचा, ये बोलती कैसे है?",
+   "text": "કાકા, આ બોલે છે કેમનું?",
+   "back_en": "Uncle, how does this speak?",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 8,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "giggly",
+   "hi": "<laugh> चाचा, आपकी कुकर तो बोलने से पहले सबको नहला गई!",
+   "text": "કાકા, તમારું કૂકર તો બોલ્યા પહેલાં બધાને નવડાવી ગયું!",
+   "back_en": "Uncle, your cooker gave everyone a bath before speaking!",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 9,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "embarrassed",
+   "hi": "हें हें… इसका गुस्सा थोड़ा तेज़ है। चलो, असली मशीन देखो!",
+   "text": "હેં હેં... આનો ગુસ્સો થોડો ગરમ છે. ચાલો, અસલી મશીન જુઓ!",
+   "back_en": "Heh heh... its anger is a bit hot. Come on, see the real machine!",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 10,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "doubtful",
+   "hi": "दिल की आवाज़? चाचा, दिल तो धक-धक करता है, बात थोड़ी करता है!",
+   "text": "દિલનો અવાજ? કાકા, દિલ તો ધક-ધક કરે, કંઈ વાતો થોડું કરે!",
+   "back_en": "Heart's voice? Uncle, the heart goes dhak-dhak, does it talk or something?",
+   "len_ratio": 0.92
+  },
+  {
+   "id": 11,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "mysterious",
+   "hi": "करता है, बिटिया। बस कोई सुनता नहीं।",
+   "text": "કરે છે, બેટા. બસ કોઈ સાંભળતું નથી.",
+   "back_en": "It does, child. It's just that no one listens.",
+   "len_ratio": 0.97
+  },
+  {
+   "id": 12,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "excited",
+   "hi": "देखो! पहला टेस्ट — शेरू!",
+   "text": "જુઓ! પહેલો ટેસ્ટ — શેરુ!",
+   "back_en": "Look! First test — Sheru!",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 13,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Sheru's heart, cheeky",
+   "hi": "मुझे भी लड्डू चाहिए! एक नहीं, दो!",
+   "text": "મનેય લાડવો જોઈએ! એક નહીં, બે!",
+   "back_en": "I also want a laddu! Not one, two!",
+   "len_ratio": 0.88
+  },
+  {
+   "id": 14,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "laughing",
+   "hi": "हाहाहा! चाचा, ये तो सच में काम करता है!",
+   "text": "હાહાહા! કાકા, આ તો સાચે જ કામ કરે છે!",
+   "back_en": "Hahaha! Uncle, this really works!",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 15,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "serious",
+   "hi": "पर ध्यान रहे, अभी ये पूरी तरह तैयार नहीं है। इसे कोई बाहर नहीं ले जाएगा!",
+   "text": "પણ ધ્યાન રાખજો, હજી આ પૂરી રીતે તૈયાર નથી. આને કોઈ બહાર નહીં લઈ જાય!",
+   "back_en": "But take care, it is not fully ready yet. No one should take this outside!",
+   "len_ratio": 0.94
+  },
+  {
+   "id": 16,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "innocent",
+   "hi": "बिल्कुल नहीं, चाचा!",
+   "text": "બિલકુલ નહીં, કાકા!",
+   "back_en": "Not at all, Uncle!",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 17,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "whisper",
+   "hi": "बस थोड़ी देर के लिए…",
+   "text": "બસ થોડી વાર માટે...",
+   "back_en": "Just for a little while...",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 18,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "whisper",
+   "hi": "मेले में बड़ा मज़ा आएगा!",
+   "text": "મેળામાં બહુ મજા આવશે!",
+   "back_en": "It will be a lot of fun at the fair!",
+   "len_ratio": 0.88
+  },
+  {
+   "id": 19,
+   "kind": "line",
+   "speaker": "RAJU",
+   "emotion": "boastful",
+   "hi": "देखो मेरी पतंग! पूरे गाँव में सबसे ऊँची उड़ेगी!",
+   "text": "જુઓ મારી પતંગ! આખા ગામમાં સૌથી ઊંચી ઉડશે!",
+   "back_en": "Look at my kite! It will fly the highest in the whole village!",
+   "len_ratio": 0.87
+  },
+  {
+   "id": 20,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "mischief",
+   "hi": "अच्छा? रेडियो, ज़रा राजू के दिल की सुनाओ!",
+   "text": "એમ? રેડિયો, જરા રાજુના દિલની વાત સંભળાવ!",
+   "back_en": "Really? Radio, let us hear Raju's heart's voice!",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 21,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Raju's heart, sheepish",
+   "hi": "गुड़िया मुझसे अच्छी पतंग उड़ाती है… पर ये मैं कभी नहीं मानूँगा!",
+   "text": "ગુડિયા મારા કરતાં સારી પતંગ ચગાવે છે... પણ હું ક્યારેય નહીં માનું!",
+   "back_en": "Gudiya flies kites better than me... but I will never admit it!",
+   "len_ratio": 1.05
+  },
+  {
+   "id": 22,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "proud",
+   "hi": "हाँ! सुना सबने?",
+   "text": "હા! સાંભળ્યું બધાએ?",
+   "back_en": "Yes! Did everyone hear?",
+   "len_ratio": 1.27
+  },
+  {
+   "id": 23,
+   "kind": "line",
+   "speaker": "RAJU",
+   "emotion": "embarrassed",
+   "hi": "अरे! ये… ये तो झूठी मशीन है!",
+   "text": "અરે! આ... આ તો ખોટું મશીન છે!",
+   "back_en": "Oh! This... this is a fake machine!",
+   "len_ratio": 1.04
+  },
+  {
+   "id": 24,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Pandit's heart, worried",
+   "hi": "प्रसाद में काजू कम पड़ गए… हे भगवान, बस किसी को पता न चले!",
+   "text": "પ્રસાદમાં કાજુ ઓછા પડી ગયા... હે ભગવાન, કોઈને ખબર ન પડે!",
+   "back_en": "The cashews fell short in the prasad... Oh God, let no one find out!",
+   "len_ratio": 0.97
+  },
+  {
+   "id": 25,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "giggly",
+   "hi": "पंडित जी भी!",
+   "text": "પંડિતજી પણ!",
+   "back_en": "Panditji too!",
+   "len_ratio": 0.92
+  },
+  {
+   "id": 26,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Balloon-wala's heart, tired",
+   "hi": "सुबह से एक भी गुब्बारा नहीं बिका… आज घर क्या ले जाऊँगा?",
+   "text": "સવારથી એકેય ફુગ્ગો નથી વેચાયો... આજે ઘરે શું લઈને જઈશ?",
+   "back_en": "Not a single balloon has been sold since morning... what will I take home today?",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 27,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "sad",
+   "hi": "गुब्बारे वाले भैया उदास हैं…",
+   "text": "ફુગ્ગાવાળા ભાઈ ઉદાસ છે...",
+   "back_en": "The balloon seller is sad...",
+   "len_ratio": 0.89
+  },
+  {
+   "id": 28,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "determined",
+   "hi": "चलो, हम सब अपने पैसों से एक-एक गुब्बारा लेते हैं!",
+   "text": "ચાલો, આપણે આપણા પૈસાથી એક-એક ફુગ્ગો લઈએ!",
+   "back_en": "Come on, let's buy one balloon each with our own money!",
+   "len_ratio": 0.82
+  },
+  {
+   "id": 29,
+   "kind": "line",
+   "speaker": "MASTERJI",
+   "emotion": "formal",
+   "hi": "बच्चो, कल स्कूल समय पर आना। अनुशासन बहुत ज़रूरी है।",
+   "text": "બાળકો, કાલે નિશાળે સમયસર આવજો. શિસ્ત બહુ જરૂરી છે.",
+   "back_en": "Children, come to school on time tomorrow. Discipline is very important.",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 30,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Masterji's heart, dreamy",
+   "hi": "काश कल भी छुट्टी होती… और मैं दिन भर सोता रहता।",
+   "text": "કાશ કાલે પણ રજા હોત... ને હું આખો દિવસ સૂતો રહેત.",
+   "back_en": "I wish tomorrow was also a holiday... and I would have slept all day.",
+   "len_ratio": 1.04
+  },
+  {
+   "id": 31,
+   "kind": "line",
+   "speaker": "MASTERJI",
+   "emotion": "stunned",
+   "hi": "ये… ये किसकी आवाज़ है?",
+   "text": "આ... આ કોનો અવાજ છે?",
+   "back_en": "Whose... whose voice is this?",
+   "len_ratio": 0.91
+  },
+  {
+   "id": 32,
+   "kind": "line",
+   "speaker": "LALLAN",
+   "emotion": "angry",
+   "hi": "वो रहे! उनके हाथ में कोई जादुई डिब्बा है!",
+   "text": "પેલા રહ્યા! એમના હાથમાં કોઈ જાદુઈ ડબ્બો છે!",
+   "back_en": "There they are! There is some magical box in their hands!",
+   "len_ratio": 1.05
+  },
+  {
+   "id": 33,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "scared",
+   "hi": "भागो!",
+   "text": "ભાગો!",
+   "back_en": "Run!",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 34,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "shouting",
+   "hi": "रुको! वो अभी तैयार नहीं है!",
+   "text": "ઉભા રહો! એ હજી તૈયાર નથી!",
+   "back_en": "Stop! It is not ready yet!",
+   "len_ratio": 0.93
+  },
+  {
+   "id": 35,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Sheru's heart, excited",
+   "hi": "रेस! मुझे रेस बहुत पसंद है!",
+   "text": "રેસ! મને રેસ બહુ જ ગમે છે!",
+   "back_en": "Race! I like races very much!",
+   "len_ratio": 0.96
+  },
+  {
+   "id": 36,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "comic panic",
+   "hi": "शेरू, अभी नहीं!",
+   "text": "શેરુ, અત્યારે નહીં!",
+   "back_en": "Sheru, not right now!",
+   "len_ratio": 1.27
+  },
+  {
+   "id": 37,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "out of breath",
+   "hi": "बच गए!",
+   "text": "બચી ગયા!",
+   "back_en": "Saved!",
+   "len_ratio": 1.33
+  },
+  {
+   "id": 38,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "giggling",
+   "hi": "लल्लन चाचा का चेहरा देखा था?",
+   "text": "લલ્લન કાકાનું મોઢું જોયું'તું?",
+   "back_en": "Did you see Lallan Kaka's face?",
+   "len_ratio": 1.07
+  },
+  {
+   "id": 39,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Dadi's heart, soft and sad",
+   "hi": "सब बड़े हो गए… अब कोई कहानी सुनने नहीं आता।",
+   "text": "હંધાય મોટા થઈ ગ્યા... હવે કોઈ વારતા હાંભળવા નથ આવતું.",
+   "back_en": "Everyone has grown up... now no one comes to listen to stories.",
+   "len_ratio": 1.23
+  },
+  {
+   "id": 40,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Dadi's heart, softer",
+   "hi": "आज भी बच्चों के लिए लड्डू बनाए थे… पर कोई आया ही नहीं।",
+   "text": "આજ પણ સોકરાં હાટું લાડવા બનાવ્યા'તા... પણ કોઈ આયું જ નૈં.",
+   "back_en": "Even today I made laddus for the children... but no one came at all.",
+   "len_ratio": 1.06
+  },
+  {
+   "id": 41,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "quiet, sad",
+   "hi": "दादी… अकेली बैठी हैं।",
+   "text": "બા... એકલાં બેઠા છે.",
+   "back_en": "Ba... is sitting alone.",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 42,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "guilty",
+   "hi": "सुबह दादी ने बुलाया था… मैंने कहा, \"बाद में, दादी।\"",
+   "text": "સવારે બાએ બોલાવ્યો હતો... મેં કીધું, \"પછી આવીશ, બા.\"",
+   "back_en": "In the morning Ba had called me... I said, \"I will come later, Ba.\"",
+   "len_ratio": 1.02
+  },
+  {
+   "id": 43,
+   "kind": "line",
+   "speaker": "LALLAN",
+   "emotion": "soft, ashamed",
+   "hi": "हम सब मेले में थे… और दादी यहाँ अकेली।",
+   "text": "આપણે બધા મેળામાં હતા... અને બા અહીં એકલાં.",
+   "back_en": "We were all at the fair... and Ba is here alone.",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 44,
+   "kind": "line",
+   "speaker": "MASTERJI",
+   "emotion": "moved",
+   "hi": "सच ही कहा था रेडियो ने।",
+   "text": "સાચું જ કીધું'તું રેડિયોએ.",
+   "back_en": "The radio had said it right.",
+   "len_ratio": 1.13
+  },
+  {
+   "id": 45,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "gentle",
+   "hi": "कुछ बातें रेडियो से नहीं… पास बैठने से सुनाई देती हैं।",
+   "text": "અમુક વાતો રેડિયોથી નહીં... પાસે બેસવાથી સંભળાય છે.",
+   "back_en": "Some things are not heard through the radio... but by sitting close.",
+   "len_ratio": 0.93
+  },
+  {
+   "id": 46,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "bright",
+   "hi": "दादी! मेला हम आपके पास ले आए!",
+   "text": "બા! મેળો અમે તમારી પાસે લઈ આવ્યા!",
+   "back_en": "Ba! We brought the fair to you!",
+   "len_ratio": 1.14
+  },
+  {
+   "id": 47,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "surprised, happy",
+   "hi": "अरे! तुम सब यहाँ? मेला छोड़कर?",
+   "text": "અરે! તમે હંધાય આંય? મેળો મેલીને?",
+   "back_en": "Oh! All of you here? Leaving the fair?",
+   "len_ratio": 1.07
+  },
+  {
+   "id": 48,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "sincere",
+   "hi": "सॉरी दादी। सुबह आपने बुलाया था और मैं नहीं आया।",
+   "text": "સોરી બા. સવારે તમે બોલાવ્યો હતો ને હું ન આવ્યો.",
+   "back_en": "Sorry Ba. You called me in the morning and I didn't come.",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 49,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "warm",
+   "hi": "अरे पगले… तू आ गया, यही बहुत है।",
+   "text": "અરે ગાંડા... તું આવી ગ્યો, ઈ જ ઘણું સે.",
+   "back_en": "Oh silly... you came, that itself is enough.",
+   "len_ratio": 1.22
+  },
+  {
+   "id": 50,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "eager",
+   "hi": "दादी, कहानी सुनाइए ना!",
+   "text": "બા, વારતા સંભળાવો ને!",
+   "back_en": "Ba, tell us a story!",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 51,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "smiling, remembering",
+   "hi": "तो सुनो… मेरी पहली दिवाली की कहानी। तब इस गाँव में बिजली भी नहीं थी…",
+   "text": "તો હાંભળો... મારી પે'લી દિવાળીની વારતા. તયેં આ ગામમાં વીજળીય નહોતી...",
+   "back_en": "So listen... the story of my first Diwali. Back then, there wasn't even electricity in this village...",
+   "len_ratio": 1.01
+  },
+  {
+   "id": 52,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "nostalgic",
+   "hi": "उस रात पूरे गाँव में सिर्फ़ दीये जल रहे थे। मेरी दादी हम सब बच्चों को अपने पास बिठातीं…",
+   "text": "ઈ રાતે આખા ગામમાં ખાલી દીવા જ બળતા'તા. મારી બા અમને હંધાય સોકરાંને પાસે બેસાડતાં...",
+   "back_en": "That night, only lamps were burning in the whole village. My mother would make all of us children sit close...",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 53,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "loving",
+   "hi": "…और कहतीं — दीया तभी जलता है, जब उसमें प्यार का तेल हो।",
+   "text": "...ને કે'તાં — દીવો તયેં જ બળે, જ્યારે એમાં પ્રેમનું તેલ હોય.",
+   "back_en": "...and would say — a lamp burns only when there is the oil of love in it.",
+   "len_ratio": 1.11
+  },
+  {
+   "id": 54,
+   "kind": "line",
+   "speaker": "LALLAN",
+   "emotion": "offering",
+   "hi": "और ये लीजिए दादी — मेरी मिठाई। आज पूरी चीनी वाली!",
+   "text": "અને આ લો બા — મારી મીઠાઈ. આજે આખી ખાંડવાળી!",
+   "back_en": "And take this Ba — my sweets. Today, fully made of sugar!",
+   "len_ratio": 0.88
+  },
+  {
+   "id": 55,
+   "kind": "line",
+   "speaker": "EVERYONE",
+   "emotion": "laughing",
+   "hi": "हाहाहा!",
+   "text": "હાહાહા!",
+   "back_en": "Hahaha!",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 56,
+   "kind": "line",
+   "speaker": "DADI",
+   "emotion": "moved",
+   "hi": "बच्चो, दिवाली दीयों से नहीं… अपनों के साथ बैठने से रोशन होती है।",
+   "text": "સોકરાં, દિવાળી દીવાથી નૈં... પોતાના ભેળા બેસવાથી ઉજળી થાય સે.",
+   "back_en": "Children, Diwali is not brightened by lamps... but by sitting together with our own people.",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 57,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "happy",
+   "hi": "मास्टरजी, आज कॉपी नहीं — आज दिवाली!",
+   "text": "માસ્ટરજી, આજે ચોપડી નહીં — આજે દિવાળી!",
+   "back_en": "Masterji, no books today — today is Diwali!",
+   "len_ratio": 1.09
+  },
+  {
+   "id": 58,
+   "kind": "line",
+   "speaker": "MASTERJI",
+   "emotion": "moved",
+   "hi": "अरे… मेरे लिए दीया? बरसों बाद किसी ने…",
+   "text": "અરે... મારા માટે દીવો? વર્ષો પછી કોઈકે...",
+   "back_en": "Oh... a lamp for me? After years, someone...",
+   "len_ratio": 1.08
+  },
+  {
+   "id": 59,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "mischievous",
+   "hi": "और कल छुट्टी? <short pause> रेडियो ने बताया था!",
+   "text": "અને કાલે રજા? <short pause> રેડિયોએ કીધું'તું!",
+   "back_en": "And a holiday tomorrow? <short pause> The radio had said so!",
+   "len_ratio": 0.98
+  },
+  {
+   "id": 60,
+   "kind": "line",
+   "speaker": "MASTERJI",
+   "emotion": "laughing",
+   "hi": "हाहाहा! ठीक है, ठीक है… कल आधी छुट्टी!",
+   "text": "હાહાહા! સારું, સારું... કાલે અડધી રજા!",
+   "back_en": "Hahaha! Okay, okay... half holiday tomorrow!",
+   "len_ratio": 1.0
+  },
+  {
+   "id": 61,
+   "kind": "line",
+   "speaker": "CHHOTU",
+   "emotion": "guilty",
+   "hi": "चाचा, सॉरी… हमने आपकी मशीन बिना पूछे ले ली।",
+   "text": "કાકા, સોરી... અમે તમારું મશીન પૂછ્યા વગર લઈ લીધું.",
+   "back_en": "Uncle, sorry... we took your machine without asking.",
+   "len_ratio": 1.16
+  },
+  {
+   "id": 62,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "sad",
+   "hi": "रेडियो की चिंता नहीं थी, बेटा… दिवाली पर मैं भी तो अकेला था।",
+   "text": "રેડિયોની ચિંતા નહોતી, બેટા... દિવાળી પર હું પણ એકલો જ હતો.",
+   "back_en": "I wasn't worried about the radio, child... I was also alone on Diwali.",
+   "len_ratio": 0.97
+  },
+  {
+   "id": 63,
+   "kind": "line",
+   "speaker": "GUDIYA",
+   "emotion": "loving",
+   "hi": "अब नहीं! चलिए, दादी कहानी सुना रही हैं!",
+   "text": "હવે નહીં! ચાલો, બા વારતા સંભળાવે છે!",
+   "back_en": "Not anymore! Come on, Ba is telling a story!",
+   "len_ratio": 0.92
+  },
+  {
+   "id": 64,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "happy",
+   "hi": "सच? चलो चलो! पर पहले… जलेबी!",
+   "text": "સાચે? ચાલો ચાલો! પણ પહેલાં... જલેબી!",
+   "back_en": "Really? Let's go, let's go! But first... jalebi!",
+   "len_ratio": 1.29
+  },
+  {
+   "id": 65,
+   "kind": "line",
+   "speaker": "RADIO",
+   "emotion": "Sheru's heart, hopeful",
+   "hi": "अब तो लड्डू मिलेगा?",
+   "text": "હવે તો લાડવો મળશે?",
+   "back_en": "Will I get a laddu now?",
+   "len_ratio": 0.95
+  },
+  {
+   "id": 66,
+   "kind": "line",
+   "speaker": "JUGAADU CHACHA",
+   "emotion": "laughing",
+   "hi": "हाहाहा! इसका तो पक्का मिलेगा!",
+   "text": "હાહાહા! તને તો નક્કી મળશે!",
+   "back_en": "Hahaha! You will definitely get it!",
+   "len_ratio": 0.9
+  },
+  {
+   "id": 67,
+   "kind": "card",
+   "speaker": "END CARD",
+   "emotion": "",
+   "hi": "बड़ों के साथ समय बिताओ — उन्हें हमारी उतनी ही ज़रूरत है जितनी हमें उनकी।",
+   "text": "વડીલો સાથે સમય વિતાવો — તેમને આપણી એટલી જ જરૂર છે જેટલી આપણને તેમની.",
+   "back_en": "Spend time with elders — they need us just as much as we need them.",
+   "len_ratio": 0.94
+  }
+ ]
+}

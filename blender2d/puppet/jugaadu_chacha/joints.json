@@ -1,0 +1,82 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid. body.png = body_orig.png warped onto the apose canvas (it was 896x1200, apose 864x1184). Legs + dhoti were ONE blob: split at the centre line. radio = BOTH arms (armpose_radio_L + _R): show together, do not bend the halves.",
+ "head": [
+  418,
+  410
+ ],
+ "arm_upper_L": [
+  527,
+  492
+ ],
+ "arm_lower_L": [
+  552,
+  625
+ ],
+ "arm_upper_R": [
+  306,
+  492
+ ],
+ "arm_lower_R": [
+  290,
+  625
+ ],
+ "leg_L": [
+  462,
+  860
+ ],
+ "leg_R": [
+  383,
+  860
+ ],
+ "prep": {
+  "fill": false,
+  "under": false
+ },
+ "poses": {
+  "warning": {
+   "side": "L",
+   "shoulder": [
+    527,
+    492
+   ],
+   "elbow": [
+    585,
+    588
+   ],
+   "hand": [
+    638,
+    395
+   ]
+  },
+  "radio_L": {
+   "side": "L",
+   "shoulder": [
+    527,
+    492
+   ],
+   "elbow": [
+    575,
+    640
+   ],
+   "hand": [
+    510,
+    655
+   ]
+  },
+  "radio_R": {
+   "side": "R",
+   "shoulder": [
+    306,
+    492
+   ],
+   "elbow": [
+    265,
+    640
+   ],
+   "hand": [
+    330,
+    655
+   ]
+  }
+ }
+}

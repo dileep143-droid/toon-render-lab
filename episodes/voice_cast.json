@@ -1,0 +1,90 @@
+{
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "cast": {
+  "Narrator": [
+   "Male",
+   "the narrator: a warm, playful grown-up storyteller, deeper and slower than the boys, smiling"
+  ],
+  "Gudiya": [
+   "Female",
+   "Gudiya, a brave confident 9-year-old girl, bright clear childlike voice, quick and cheerful"
+  ],
+  "Pinky": [
+   "Female",
+   "Pinky, an 8-year-old know-it-all girl, fast, slightly nasal and very sure of herself"
+  ],
+  "Dadi": [
+   "Female",
+   "Dadi, a sweet 70-year-old grandmother, warm, slow, slightly shaky with age"
+  ],
+  "Maa": [
+   "Female",
+   "Maa, a 34-year-old mother, kind but busy, medium pace, natural adult voice"
+  ],
+  "Chhotu": [
+   "Male",
+   "Chhotu, a cheeky 6-year-old boy, small high childlike voice, fast and innocent"
+  ],
+  "Bablu": [
+   "Male",
+   "Bablu, a chubby scared 10-year-old boy, trembling, breathy, voice cracking with fear"
+  ],
+  "Raju": [
+   "Male",
+   "Raju, a 13-year-old boy who thinks he is very cool, slightly deeper teen voice, show-off swagger"
+  ],
+  "Lallan": [
+   "Male",
+   "Lallan, a dramatic 40-year-old sweet-shop owner, loud, theatrical, booming adult man"
+  ],
+  "Masterji": [
+   "Male",
+   "Masterji, a strict 50-year-old village teacher, deep, firm, slow, big moustache energy"
+  ]
+ },
+ "lines": [
+  [
+   "Narrator",
+   "ये है सोनपुर गाँव। यहाँ रहती है हमारी मज़ेदार टोली!"
+  ],
+  [
+   "Gudiya",
+   "चलो, प्लान बनाते हैं!"
+  ],
+  [
+   "Pinky",
+   "असल में, मैंने किताब में पढ़ा है कि लड्डू चोर सिर्फ़ मंगलवार को आते हैं।"
+  ],
+  [
+   "Bablu",
+   "भूत! भूऽऽत!"
+  ],
+  [
+   "Raju",
+   "डरो मत! राजू द ग्रेट आ गया है!"
+  ],
+  [
+   "Chhotu",
+   "दादी, मुझे भूख लगी है!"
+  ],
+  [
+   "Dadi",
+   "अरे, मेरा चश्मा कहाँ गया?"
+  ],
+  [
+   "Lallan",
+   "नहीं! मेरी जलेबियों को कोई हाथ नहीं लगाएगा!"
+  ],
+  [
+   "Masterji",
+   "शांति! शांति! सब लोग चुप!"
+  ],
+  [
+   "Maa",
+   "छोटू, जल्दी आओ, खाना ठंडा हो रहा है!"
+  ]
+ ]
+}

@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/023_Raju.wav",
+    "duration": 2.97
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.03, "value": "X" },
+    { "start": 0.03, "end": 0.10, "value": "C" },
+    { "start": 0.10, "end": 0.62, "value": "B" },
+    { "start": 0.62, "end": 0.76, "value": "C" },
+    { "start": 0.76, "end": 1.11, "value": "B" },
+    { "start": 1.11, "end": 1.18, "value": "C" },
+    { "start": 1.18, "end": 1.25, "value": "B" },
+    { "start": 1.25, "end": 1.33, "value": "A" },
+    { "start": 1.33, "end": 1.49, "value": "F" },
+    { "start": 1.49, "end": 1.57, "value": "A" },
+    { "start": 1.57, "end": 1.89, "value": "C" },
+    { "start": 1.89, "end": 2.03, "value": "B" },
+    { "start": 2.03, "end": 2.10, "value": "F" },
+    { "start": 2.10, "end": 2.18, "value": "A" },
+    { "start": 2.18, "end": 2.33, "value": "B" },
+    { "start": 2.33, "end": 2.41, "value": "A" },
+    { "start": 2.41, "end": 2.71, "value": "B" },
+    { "start": 2.71, "end": 2.85, "value": "C" },
+    { "start": 2.85, "end": 2.92, "value": "B" },
+    { "start": 2.92, "end": 2.97, "value": "X" }
+  ]
+}

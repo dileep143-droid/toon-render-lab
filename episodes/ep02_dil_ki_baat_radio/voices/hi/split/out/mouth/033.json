@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/033_Gudiya.wav",
+    "duration": 0.56
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.15, "value": "B" },
+    { "start": 0.15, "end": 0.43, "value": "E" },
+    { "start": 0.43, "end": 0.50, "value": "F" },
+    { "start": 0.50, "end": 0.56, "value": "X" }
+  ]
+}

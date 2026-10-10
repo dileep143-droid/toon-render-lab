@@ -1,0 +1,34 @@
+name: ep02-scenes
+# Ep02 scenes rendered IN PARALLEL on GitHub runners (public repo = free minutes), alongside the same scenes on Kaggle; first finished wins.
+on:
+  workflow_dispatch:
+    inputs:
+      scenes: {description: "JSON list of scenes", default: "[1,2,3,4,5,6]"}
+jobs:
+  scene:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        scene: ${{ fromJSON(github.event.inputs.scenes) }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-core > /dev/null
+      - run: pip install -q numpy opencv-python-headless pillow
+      - name: render
+        run: |
+          mkdir -p out
+          export DEVA_FONT=$(fc-list | grep -i "NotoSansDevanagari-Bold" | head -1 | cut -d: -f1)
+          PYTHONUTF8=1 python -u blender2d/render_episode.py episodes/ep02_dil_ki_baat_radio ${{ matrix.scene }} out 2>&1 | tail -80
+          ffmpeg -y -loglevel error -i out/scene${{ matrix.scene }}.mp4 -vf 'fps=1/3,scale=480:-1,tile=6x6' -frames:v 1 out/sheet${{ matrix.scene }}.jpg || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ep02-scene${{ matrix.scene }}
+          path: out/scene${{ matrix.scene }}.mp4
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ep02-sheet${{ matrix.scene }}
+          path: out/sheet${{ matrix.scene }}.jpg
+          retention-days: 7

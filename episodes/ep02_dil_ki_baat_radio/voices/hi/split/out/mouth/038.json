@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/038_Gudiya.wav",
+    "duration": 3.58
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.79, "value": "B" },
+    { "start": 0.79, "end": 1.00, "value": "F" },
+    { "start": 1.00, "end": 1.07, "value": "C" },
+    { "start": 1.07, "end": 1.14, "value": "H" },
+    { "start": 1.14, "end": 1.21, "value": "A" },
+    { "start": 1.21, "end": 1.27, "value": "B" },
+    { "start": 1.27, "end": 1.39, "value": "C" },
+    { "start": 1.39, "end": 1.46, "value": "B" },
+    { "start": 1.46, "end": 1.60, "value": "C" },
+    { "start": 1.60, "end": 1.67, "value": "B" },
+    { "start": 1.67, "end": 1.88, "value": "C" },
+    { "start": 1.88, "end": 1.96, "value": "A" },
+    { "start": 1.96, "end": 2.23, "value": "C" },
+    { "start": 2.23, "end": 2.34, "value": "A" },
+    { "start": 2.34, "end": 2.52, "value": "B" },
+    { "start": 2.52, "end": 2.87, "value": "X" },
+    { "start": 2.87, "end": 3.12, "value": "B" },
+    { "start": 3.12, "end": 3.33, "value": "G" },
+    { "start": 3.33, "end": 3.40, "value": "C" },
+    { "start": 3.40, "end": 3.57, "value": "A" },
+    { "start": 3.57, "end": 3.58, "value": "X" }
+  ]
+}

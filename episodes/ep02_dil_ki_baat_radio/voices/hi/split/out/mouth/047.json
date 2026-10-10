@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/047_Dadi.wav",
+    "duration": 3.70
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.09, "value": "B" },
+    { "start": 0.09, "end": 0.20, "value": "D" },
+    { "start": 0.20, "end": 0.46, "value": "C" },
+    { "start": 0.46, "end": 0.51, "value": "E" },
+    { "start": 0.51, "end": 0.69, "value": "F" },
+    { "start": 0.69, "end": 0.76, "value": "B" },
+    { "start": 0.76, "end": 1.15, "value": "X" },
+    { "start": 1.15, "end": 1.22, "value": "B" },
+    { "start": 1.22, "end": 1.28, "value": "F" },
+    { "start": 1.28, "end": 1.38, "value": "A" },
+    { "start": 1.38, "end": 1.46, "value": "B" },
+    { "start": 1.46, "end": 1.53, "value": "C" },
+    { "start": 1.53, "end": 1.67, "value": "B" },
+    { "start": 1.67, "end": 1.81, "value": "C" },
+    { "start": 1.81, "end": 1.88, "value": "E" },
+    { "start": 1.88, "end": 2.02, "value": "D" },
+    { "start": 2.02, "end": 2.09, "value": "F" },
+    { "start": 2.09, "end": 2.23, "value": "B" },
+    { "start": 2.23, "end": 2.53, "value": "X" },
+    { "start": 2.53, "end": 2.61, "value": "B" },
+    { "start": 2.61, "end": 2.69, "value": "A" },
+    { "start": 2.69, "end": 2.82, "value": "B" },
+    { "start": 2.82, "end": 2.96, "value": "C" },
+    { "start": 2.96, "end": 3.08, "value": "A" },
+    { "start": 3.08, "end": 3.17, "value": "B" },
+    { "start": 3.17, "end": 3.31, "value": "E" },
+    { "start": 3.31, "end": 3.52, "value": "F" },
+    { "start": 3.52, "end": 3.66, "value": "B" },
+    { "start": 3.66, "end": 3.70, "value": "X" }
+  ]
+}

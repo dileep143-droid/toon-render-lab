@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/065_Sheru.wav",
+    "duration": 2.10
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.12, "value": "A" },
+    { "start": 0.12, "end": 0.25, "value": "G" },
+    { "start": 0.25, "end": 0.32, "value": "B" },
+    { "start": 0.32, "end": 0.43, "value": "A" },
+    { "start": 0.43, "end": 0.48, "value": "C" },
+    { "start": 0.48, "end": 0.60, "value": "B" },
+    { "start": 0.60, "end": 0.68, "value": "A" },
+    { "start": 0.68, "end": 0.87, "value": "C" },
+    { "start": 0.87, "end": 0.94, "value": "B" },
+    { "start": 0.94, "end": 1.08, "value": "A" },
+    { "start": 1.08, "end": 1.24, "value": "B" },
+    { "start": 1.24, "end": 1.31, "value": "H" },
+    { "start": 1.31, "end": 1.38, "value": "E" },
+    { "start": 1.38, "end": 1.52, "value": "F" },
+    { "start": 1.52, "end": 1.62, "value": "A" },
+    { "start": 1.62, "end": 1.71, "value": "B" },
+    { "start": 1.71, "end": 1.78, "value": "C" },
+    { "start": 1.78, "end": 1.99, "value": "D" },
+    { "start": 1.99, "end": 2.06, "value": "B" },
+    { "start": 2.06, "end": 2.10, "value": "X" }
+  ]
+}

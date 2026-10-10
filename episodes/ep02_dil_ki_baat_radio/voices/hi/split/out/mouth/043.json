@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/043_Lallan.wav",
+    "duration": 3.68
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.09, "value": "B" },
+    { "start": 0.09, "end": 0.21, "value": "D" },
+    { "start": 0.21, "end": 0.27, "value": "C" },
+    { "start": 0.27, "end": 0.38, "value": "A" },
+    { "start": 0.38, "end": 0.79, "value": "B" },
+    { "start": 0.79, "end": 1.01, "value": "A" },
+    { "start": 1.01, "end": 1.23, "value": "B" },
+    { "start": 1.23, "end": 1.31, "value": "A" },
+    { "start": 1.31, "end": 1.48, "value": "B" },
+    { "start": 1.48, "end": 1.76, "value": "C" },
+    { "start": 1.76, "end": 1.90, "value": "B" },
+    { "start": 1.90, "end": 2.04, "value": "F" },
+    { "start": 2.04, "end": 2.36, "value": "X" },
+    { "start": 2.36, "end": 2.45, "value": "B" },
+    { "start": 2.45, "end": 2.53, "value": "A" },
+    { "start": 2.53, "end": 2.64, "value": "C" },
+    { "start": 2.64, "end": 2.92, "value": "B" },
+    { "start": 2.92, "end": 3.06, "value": "D" },
+    { "start": 3.06, "end": 3.13, "value": "C" },
+    { "start": 3.13, "end": 3.21, "value": "A" },
+    { "start": 3.21, "end": 3.62, "value": "B" },
+    { "start": 3.62, "end": 3.68, "value": "X" }
+  ]
+}

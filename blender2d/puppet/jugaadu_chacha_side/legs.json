@@ -1,0 +1,31 @@
+{
+ "_note": "cream dhoti to just below the knee, bare skin shins; sampled/measured on apose.png",
+ "garment": "dhoti",
+ "fill": [
+  242,
+  231,
+  198
+ ],
+ "shade": [
+  222,
+  207,
+  172
+ ],
+ "w_top": 112,
+ "w_knee": 98,
+ "w_ank": 30,
+ "hem": 0.22,
+ "w_hem": 92,
+ "w_shin": 36,
+ "skin": [
+  237,
+  178,
+  136
+ ],
+ "skin_shade": [
+  212,
+  152,
+  115
+ ],
+ "foot_up": 14
+}

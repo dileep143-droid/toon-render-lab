@@ -1,0 +1,96 @@
+{
+ "results": {
+  "rest": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3464.720458984375,
+   "rest_diff": 0.00034540924288306053
+  },
+  "sway_out": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 8909.4853515625
+  },
+  "sway_in": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 7264.3349609375
+  },
+  "stride": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3049.2724609375
+  },
+  "head_tilt": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3595.939697265625
+  },
+  "blink": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 3797.64453125
+  },
+  "draw_wave": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2500.119140625
+  },
+  "draw_wave_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2474.0390625
+  },
+  "draw_explain": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2624.64404296875
+  },
+  "draw_explain_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2498.732666015625
+  },
+  "draw_wave2": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2406.673095703125
+  },
+  "draw_wave2_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2359.329833984375
+  },
+  "draw_wave3": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2351.3642578125
+  },
+  "draw_wave3_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2368.906005859375
+  },
+  "draw_radio_L": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2852.703857421875
+  },
+  "draw_radio_L_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2732.0244140625
+  },
+  "draw_radio_R": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2598.5390625
+  },
+  "draw_radio_R_bend": {
+   "pieces": 1,
+   "holes": 0,
+   "sharp": 2591.844482421875
+  }
+ },
+ "fails": []
+}

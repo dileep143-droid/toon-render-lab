@@ -1,5 +1,5 @@
 {
- "_note": "hand-placed joints (canvas px), checked on _joints.png. Main rig + pose-arm drawings.",
+ "_note": "hand-placed joints (canvas px), checked on _joints.png. Main rig + pose-arm drawings. radio = BOTH arms (armpose_radio_L + _R, whole upper body from the drawing): show together, do not bend the halves.",
  "head": [
   461,
   430
@@ -87,6 +87,36 @@
    "hand": [
     745,
     300
+   ]
+  },
+  "radio_L": {
+   "side": "L",
+   "shoulder": [
+    560,
+    475
+   ],
+   "elbow": [
+    605,
+    640
+   ],
+   "hand": [
+    620,
+    715
+   ]
+  },
+  "radio_R": {
+   "side": "R",
+   "shoulder": [
+    340,
+    478
+   ],
+   "elbow": [
+    300,
+    650
+   ],
+   "hand": [
+    390,
+    720
    ]
   }
  }

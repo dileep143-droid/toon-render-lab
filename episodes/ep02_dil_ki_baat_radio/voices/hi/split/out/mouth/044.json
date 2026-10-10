@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/044_Masterji.wav",
+    "duration": 2.12
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.02, "value": "X" },
+    { "start": 0.02, "end": 0.36, "value": "B" },
+    { "start": 0.36, "end": 0.43, "value": "F" },
+    { "start": 0.43, "end": 0.71, "value": "B" },
+    { "start": 0.71, "end": 0.78, "value": "C" },
+    { "start": 0.78, "end": 0.92, "value": "D" },
+    { "start": 0.92, "end": 0.99, "value": "C" },
+    { "start": 0.99, "end": 1.08, "value": "A" },
+    { "start": 1.08, "end": 1.29, "value": "D" },
+    { "start": 1.29, "end": 1.43, "value": "C" },
+    { "start": 1.43, "end": 2.06, "value": "B" },
+    { "start": 2.06, "end": 2.12, "value": "X" }
+  ]
+}

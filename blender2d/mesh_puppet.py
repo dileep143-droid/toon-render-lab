@@ -7,11 +7,13 @@ import json, math, os
 import cv2, numpy as np
 from PIL import Image
 
-BONES = ["body", "head", "arm_upper_L", "arm_lower_L", "arm_upper_R", "arm_lower_R", "leg_L", "leg_R"]   # pose-arm bones get appended
+BONES = ["body", "head", "arm_upper_L", "arm_lower_L", "arm_upper_R", "arm_lower_R", "leg_L", "leg_R"]   # base bones; each Puppet copies
+# them to self.bones and appends ITS pose-arm bones there (a shared module list broke a 2nd Puppet in one process: KeyError pose_x_lower)
 
 
 class Puppet:
     def __init__(self, D, step=10, blur=21):
+        self.bones = list(BONES)
         P = os.path.join(D, "parts"); self.rig = rig = json.load(open(os.path.join(P, "rig.json"))); W, H = self.W, self.H = rig["canvas"]
         load = lambda n: np.asarray(Image.open(os.path.join(P, n + ".png")).convert("RGBA")).astype(np.float32) / 255
         pcs = {n: load(n) for n in rig["pieces"]}
@@ -23,6 +25,7 @@ class Puppet:
         self.img = img; self.heads = {n[5:]: pcs[n] for n in rig["pieces"] if n.startswith("head_")}
         piv = {n: np.array(p["pivot"], np.float32) for n, p in rig["pieces"].items()}
         piv["head"] = piv.pop("head_closed")
+        for b in ("leg_L", "leg_R"): piv.setdefault(b, piv["body"].copy())   # saree (dadi): no drawn legs -> bones exist, no layer
         jf = os.path.join(D, "joints.json"); self.poses = {}
         if os.path.exists(jf):                                   # HAND-PLACED joints (checked by eye) beat any guess
             J = json.load(open(jf))
@@ -35,9 +38,9 @@ class Puppet:
         own = np.full((H, W), -1, np.int32)
         for n, p in sorted(rig["pieces"].items(), key=lambda kv: kv[1]["z"]):
             if n.startswith("head_") and n != "head_closed": continue
-            b = "head" if n == "head_closed" else n; own[pcs[n][..., 3] > 0.5] = BONES.index(b)
-        self.zorder = {b: (5 if b == "head" else rig["pieces"][b]["z"]) for b in BONES}
-        wts = np.stack([cv2.GaussianBlur((own == i).astype(np.float32), (blur, blur), 0) for i in range(len(BONES))], -1)
+            b = "head" if n == "head_closed" else n; own[pcs[n][..., 3] > 0.5] = self.bones.index(b)
+        self.zorder = {b: (5 if b == "head" else rig["pieces"][b]["z"]) for b in self.bones if b == "head" or b in rig["pieces"]}
+        wts = np.stack([cv2.GaussianBlur((own == i).astype(np.float32), (blur, blur), 0) for i in range(len(self.bones))], -1)
         # one bendable mesh PER LAYER (like the layers of a Cartoon Animator PSD): body, each whole arm (upper+lower: the elbow
         # bends smoothly inside it), each leg, head. Shared blurred weights keep every layer attached where it meets the next.
         A_ = np.asarray(Image.open(os.path.join(D, "apose.png")).convert("RGB").resize((W, H))).astype(int)
@@ -46,6 +49,7 @@ class Puppet:
         self.drawn_diff = cv2.dilate(cv2.morphologyEx(dd, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)), np.ones((3, 3), np.uint8)) > 0
         groups = [("leg_R", ["leg_R"]), ("leg_L", ["leg_L"]), ("body", ["body"]), ("arm_R", ["arm_upper_R", "arm_lower_R"]),
                   ("arm_L", ["arm_upper_L", "arm_lower_L"]), ("head", ["head_closed"])]
+        groups = [g for g in groups if all(n in rig["pieces"] for n in g[1])]
         groups.sort(key=lambda g: rig["pieces"][g[1][0]]["z"])
         self.layers = []
         for gname, names in groups:
@@ -71,15 +75,15 @@ class Puppet:
             f = os.path.join(P, f"armpose_{name}.png")
             if not os.path.exists(f): continue
             img = np.asarray(Image.open(f).convert("RGBA")).astype(np.float32) / 255
-            b = f"pose_{name}_lower"; BONES.append(b) if b not in BONES else None
+            b = f"pose_{name}_lower"; self.bones.append(b) if b not in self.bones else None
             self.pivot[b] = np.array(pp["elbow"], np.float32); self.parent[b] = "body"
             V, T, _ = self._mesh(img[..., 3], step, "body")
             el, hd = np.array(pp["elbow"], np.float32), np.array(pp["hand"], np.float32); d = (hd - el) / np.linalg.norm(hd - el)
             t = np.clip(((V - el) @ d + 15) / 30, 0, 1); wl = t * t * (3 - 2 * t)
-            w = np.zeros((len(V), len(BONES)), np.float32); w[:, BONES.index("body")] = 1 - wl; w[:, BONES.index(b)] = wl
+            w = np.zeros((len(V), len(self.bones)), np.float32); w[:, self.bones.index("body")] = 1 - wl; w[:, self.bones.index(b)] = wl
             self.layers_alt[name] = {"name": f"arm_{pp['side']}", "img": img, "V": V, "T": T, "W": w, "side": pp["side"]}
         for L in self.layers + list(self.layers_alt.values()):     # widen every weight table to the final bone count
-            if L["W"].shape[1] < len(BONES): L["W"] = np.pad(L["W"], ((0, 0), (0, len(BONES) - L["W"].shape[1])))
+            if L["W"].shape[1] < len(self.bones): L["W"] = np.pad(L["W"], ((0, 0), (0, len(self.bones) - L["W"].shape[1])))
 
     def _mesh(self, alpha, step, g):
         H, W = alpha.shape
@@ -93,7 +97,7 @@ class Puppet:
                 a, b, c, d = j * nx + i, j * nx + i + 1, (j + 1) * nx + i, (j + 1) * nx + i + 1; tris += [(a, b, c), (b, d, c)]
         # weights ALONG the bones (not blurred across the picture): rigid inside each bone, smooth blend only at the joint
         sm = lambda x, a, b: np.clip((x - a) / (b - a), 0, 1) ** 2 * (3 - 2 * np.clip((x - a) / (b - a), 0, 1))
-        w = np.zeros((len(V), len(BONES)), np.float32); ix = BONES.index
+        w = np.zeros((len(V), len(self.bones)), np.float32); ix = self.bones.index
         if g in ("arm_L", "arm_R"):
             sd = g[-1]; sh, el = self.pivot[f"arm_upper_{sd}"], self.pivot[f"arm_lower_{sd}"]
             d = (el - sh) / np.linalg.norm(el - sh); s_el = (V - el) @ d                     # distance past the elbow along the arm
@@ -118,7 +122,7 @@ class Puppet:
                           [math.sin(a), math.cos(a), py - math.sin(a) * px - math.cos(a) * py], [0, 0, 1]], np.float32)
             par = self.parent[b]; M[b] = (get(par) @ R) if par else R; return M[b]
         root = np.array([[1, 0, pose.get("dx", 0)], [0, 1, pose.get("dy", 0)], [0, 0, 1]], np.float32)
-        return {b: root @ get(b) for b in BONES}
+        return {b: root @ get(b) for b in self.bones}
 
     def _warp(self, L, Vd, src, ss):
         W, H = self.W * ss, self.H * ss; tid = np.full((H, W), -1, np.int32)
@@ -135,13 +139,20 @@ class Puppet:
         return cv2.remap(pm, mapx, mapy, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
 
     def render(self, pose, ss=2):
+        # a pose drawing belongs to ONE side (joints.json poses.<name>.side; L = character's left = viewer's right): a call that names
+        # the other side ({'arm_R': 'warning'} for a left-arm drawing) is moved to the drawing's own side instead of erasing the wrong arm
+        pose = dict(pose); drawn = [pose.pop(k) for k in ("arm_L", "arm_R") if pose.get(k) in self.layers_alt]
+        for n in drawn:
+            own = f"arm_{self.layers_alt[n]['side']}"
+            if own in pose: raise ValueError(f"two pose drawings for {own}: {pose[own]!r} and {n!r}")
+            pose[own] = n
         M = self.mats(pose); out = np.zeros((self.H * ss, self.W * ss, 4), np.float32)
         for L0 in self.layers:
             L = L0
             sw = pose.get(L0["name"]) if L0["name"] in ("arm_L", "arm_R") else None
             if sw: L = self.layers_alt[sw]
             Vh = np.c_[L["V"], np.ones(len(L["V"]), np.float32)]
-            Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(BONES))
+            Vd = sum(L["W"][:, i:i + 1] * (Vh @ M[b].T)[:, :2] for i, b in enumerate(self.bones))
             src = L["img"]
             if L["name"] == "head" and pose.get("face", "closed") != "closed": src = self.heads[pose["face"]]   # mouth / blink swap
             if L0["name"] == "body" and self.body_nounder is not None and (pose.get("arm_L") or pose.get("arm_R")):

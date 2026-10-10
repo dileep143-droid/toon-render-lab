@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/046_Chhotu.wav",
+    "duration": 2.83
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.17, "value": "C" },
+    { "start": 0.17, "end": 0.25, "value": "A" },
+    { "start": 0.25, "end": 0.80, "value": "B" },
+    { "start": 0.80, "end": 1.01, "value": "C" },
+    { "start": 1.01, "end": 1.08, "value": "B" },
+    { "start": 1.08, "end": 1.18, "value": "A" },
+    { "start": 1.18, "end": 1.26, "value": "B" },
+    { "start": 1.26, "end": 1.40, "value": "E" },
+    { "start": 1.40, "end": 1.50, "value": "D" },
+    { "start": 1.50, "end": 1.54, "value": "C" },
+    { "start": 1.54, "end": 1.62, "value": "A" },
+    { "start": 1.62, "end": 1.76, "value": "B" },
+    { "start": 1.76, "end": 1.84, "value": "A" },
+    { "start": 1.84, "end": 2.12, "value": "D" },
+    { "start": 2.12, "end": 2.17, "value": "C" },
+    { "start": 2.17, "end": 2.35, "value": "B" },
+    { "start": 2.35, "end": 2.63, "value": "C" },
+    { "start": 2.63, "end": 2.77, "value": "B" },
+    { "start": 2.77, "end": 2.83, "value": "X" }
+  ]
+}

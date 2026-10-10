@@ -1,0 +1,52 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid (_joints.png). Feet only show under the long skirt; hips placed under the skirt. body.png = body_orig.png with arm stubs erased + apose midriff pasted (crop-top); prep stops side fill / under-arm strip at the waist.",
+ "head": [
+  450,
+  352
+ ],
+ "arm_upper_L": [
+  557,
+  415
+ ],
+ "arm_lower_L": [
+  585,
+  575
+ ],
+ "arm_upper_R": [
+  338,
+  415
+ ],
+ "arm_lower_R": [
+  312,
+  575
+ ],
+ "leg_L": [
+  492,
+  700
+ ],
+ "leg_R": [
+  405,
+  700
+ ],
+ "poses": {
+  "point": {
+   "side": "L",
+   "shoulder": [
+    555,
+    415
+   ],
+   "elbow": [
+    690,
+    382
+   ],
+   "hand": [
+    830,
+    375
+   ]
+  }
+ },
+ "prep": {
+  "fill_to_y": 545,
+  "under": false
+ }
+}

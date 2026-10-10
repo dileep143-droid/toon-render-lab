@@ -3,6 +3,12 @@ ankle, and the character's own drawn foot is attached at the ankle. Leg shape th
 looked 'worst' - owner, 9 Oct). Foot targets follow the spine_anim_mcp foot-plant idea (MIT): planted on the ground for 60 % of the
 cycle (slides back under the body while the body moves forward), lifted on an arc for 40 %; the knee is solved by 2-bone IK.
 Body + arm come from the side-view puppet (SidePuppet), legs are drawn behind the kurta.
+PER-CHARACTER LEGS (optional <char_side_dir>/legs.json; without it everything is exactly Chhotu's approved look):
+  {"fill":[r,g,b], "shade":[r,g,b], "w_top":px, "w_knee":px, "w_ank":px, "garment":"pyjama|dhoti|skirt",
+   dhoti only: "skin":[r,g,b], "skin_shade":[r,g,b], "hem":0..1 (where the dhoti ends along the shin), "w_hem", "w_shin":px,
+   skirt only: "sway":px (hem sway amplitude), "waist_y":px (sway starts here), "stub":px (ankle stub length under the hem)}
+  skirt = no leg tubes: only the feet (+ a short skin ankle stub hidden under the hem) step with the same foot-plant timing,
+  the stride is capped to the hem width so a foot never pokes out with a gap, and the skirt sways with a small shear.
   python walk_legs.py <char_side_dir> <out_preview.jpg>"""
 import json, math, os, sys
 import cv2, numpy as np
@@ -21,6 +27,12 @@ class DrawnLegs:
         self.hip = J["hip"].copy(); self.ground = float(J["ankle_front"][1]) + 2
         Dv = self.ground - float(self.hip[1]); self.Dv = Dv
         self.w_top, self.w_knee, self.w_ank = 96.0, 74.0, 66.0                          # pyjama widths measured on the drawing
+        self.fill, self.shade, self.garment, self.cfg = PYJ, PYJ_SHADE, "pyjama", None
+        lp = os.path.join(D, "legs.json")
+        if os.path.exists(lp):                                                          # per-character legs (Chhotu has none)
+            c = self.cfg = json.load(open(lp)); self.garment = c.get("garment", "pyjama")
+            self.fill, self.shade = np.array(c["fill"]), np.array(c["shade"])
+            self.w_top, self.w_knee, self.w_ank = float(c["w_top"]), float(c["w_knee"]), float(c["w_ank"])
         self.stance = 0.6; self.lean = 0.0; self.arm = 18.0; self.period = 0.8
         if style == "run":                                                              # MOTION_GUIDE run: flight phase, longer stride, lean
             self.l1 = self.l2 = 0.506 * Dv; self.drop = 0.07 * Dv; self.stance = 0.38; self.lean = -7.0; self.arm = 34.0; self.period = 0.5
@@ -31,17 +43,34 @@ class DrawnLegs:
         else:
             self.l1 = self.l2 = 0.506 * Dv; self.drop = 0.0                             # legs straight when standing
             self.reach = (self.l1 + self.l2) * 0.996; self.stride = 0.74 * Dv; self.lift = 0.075 * Dv
+        if self.garment == "skirt":                                                     # feet must stay under the hem
+            ba = np.asarray(Image.open(os.path.join(D, "parts", "body.png")))[..., 3] > 128
+            xs = np.nonzero(ba[int(self.ground - 25)])[0]; hx = float(self.hip[0]); margin = 0.12 * Dv
+            self.stride = min(self.stride, 2 * (min(hx - xs.min(), xs.max() - hx) - margin))
+            self.lift = min(self.lift, (0.08 if style == "run" else 0.05) * Dv)
         # the character's own FOOT: skin + outline pixels of the near leg below the pyjama hem, anchored at the ankle
         P = os.path.join(D, "parts"); leg = np.asarray(Image.open(os.path.join(P, "leg_front.png")).convert("RGBA"))
         a = leg[..., 3] > 40; rgb = leg[..., :3].astype(int); y = np.arange(leg.shape[0])[:, None]
         skin = (rgb[..., 0] - rgb[..., 2] > 35) & (rgb[..., 0] > 120)                    # warm skin only (no grey pyjama hem)
+        if self.cfg is not None:                                                        # + hue bound: not pink cloth, not cream dhoti
+            skin &= (rgb[..., 1] > 0.55 * rgb[..., 0]) & (rgb[..., 1] < 0.85 * rgb[..., 0])
         skin = cv2.morphologyEx(skin.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8)) > 0
         dark = rgb.max(2) < 90                                                           # the foot's own outline next to the skin
-        foot = a & (skin | (dark & cv2.dilate(skin.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool))) & (y > J["ankle_front"][1] - 30)
+        if self.cfg is None:
+            foot = a & (skin | (dark & cv2.dilate(skin.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool))) & (y > J["ankle_front"][1] - 30)
+        else:                                                                           # sandals too: everything that is not the garment
+            near = lambda col: np.abs(rgb - np.array(col)).sum(2) < 45
+            cloth = near(self.fill) | near(self.shade) | ((rgb.min(2) > 225) & (rgb.max(2) - rgb.min(2) < 20))
+            foot = a & ~cloth & (y > J["ankle_front"][1] - self.cfg.get("foot_up", 30))
+            foot = cv2.morphologyEx(foot.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8)) > 0
         n, lab, st, _ = cv2.connectedComponentsWithStats(foot.astype(np.uint8)); foot = lab == 1 + int(np.argmax(st[1:, 4])) if n > 1 else foot
         ys, xs = np.nonzero(foot); x0, x1, y0, y1 = xs.min() - 4, xs.max() + 5, ys.min() - 4, ys.max() + 5
         crop = leg[y0:y1, x0:x1].copy(); crop[..., 3] = np.where(foot[y0:y1, x0:x1], crop[..., 3], 0)
         self.foot = crop.astype(np.float32) / 255; self.foot_anchor = np.array([J["ankle_front"][0] - x0, J["ankle_front"][1] - y0], np.float32)
+        if self.garment in ("skirt", "dhoti"):                                          # skin colour for the ankle stub / bare shin
+            sk = crop[..., :3][foot[y0:y1, x0:x1] & skin[y0:y1, x0:x1]].astype(float)
+            self.skin = np.array(self.cfg.get("skin", sk.mean(0).round().tolist() if len(sk) else [236, 170, 130]))
+            self.skin_shade = np.array(self.cfg.get("skin_shade", (self.skin * 0.88).round().tolist()))
 
     def foot_target(self, t_norm, phase, hip_x):
         u = (t_norm + phase) % 1.0; S = self.stride
@@ -59,8 +88,59 @@ class DrawnLegs:
         if perp[0] < 0: perp = -perp
         return base + perp * h, H + u * dist
 
+    def _paint(self, canvas, m, fill, shade, dark, ss, shade_px=15):
+        """Composite one outlined, back-shaded shape (mask m at ss resolution) onto the premultiplied canvas."""
+        Hh, Wd = canvas.shape[:2]
+        k = int(shade_px * ss); sh = m.copy(); sh[:, k:] &= ~m[:, :-k]
+        ink = cv2.morphologyEx(m, cv2.MORPH_GRADIENT, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(5 * ss), int(5 * ss))))
+        col = np.zeros((Hh, Wd, 3), np.float32); col[:] = fill; col[sh > 0] = shade; col[ink > 0] = INK
+        if dark: col *= 0.9
+        a = (m > 0).astype(np.float32)[..., None]
+        canvas[..., :3] = col / 255 * a + canvas[..., :3] * (1 - a); canvas[..., 3:] = a + canvas[..., 3:] * (1 - a)
+
+    def _capsule(self, m, p, q, wp, wq, ss):
+        d = q - p; n = np.array([-d[1], d[0]]) / (np.linalg.norm(d) + 1e-6)
+        poly = np.array([p + n * wp / 2 * ss, q + n * wq / 2 * ss, q - n * wq / 2 * ss, p - n * wp / 2 * ss]).astype(np.int32)
+        cv2.fillPoly(m, [poly], 255)
+
+    def _paste_foot(self, canvas, A_ank, toe_deg, dark, ss):
+        Hh, Wd = canvas.shape[:2]; f = self.foot.copy()
+        if dark: f[..., :3] *= 0.9
+        M = cv2.getRotationMatrix2D(tuple(self.foot_anchor.tolist()), -toe_deg, 1.0); M[:, 2] += A_ank - self.foot_anchor; M *= ss
+        pm = f.copy(); pm[..., :3] *= pm[..., 3:]
+        warped = cv2.warpAffine(pm, M, (Wd, Hh), flags=cv2.INTER_LINEAR, borderValue=0)
+        canvas[:] = warped + canvas * (1 - warped[..., 3:])
+
+    def _draw_garment_leg(self, canvas, H, A, toe_deg, dark, ss):
+        """legs.json characters: skirt = ankle stub + foot only; dhoti = bare skin shin, baggy dhoti tube over thigh + knee;
+        pyjama = Chhotu's tubes in this character's colours/widths."""
+        Hh, Wd = canvas.shape[:2]; c = self.cfg
+        if self.garment == "skirt":
+            stub = c.get("stub", 0.22 * self.Dv); m = np.zeros((Hh, Wd), np.uint8)
+            self._capsule(m, (A + np.array([0.0, 12.0])) * ss, (A - np.array([0.0, stub])) * ss, self.w_ank, self.w_ank * 1.05, ss)  # dips into the foot
+            self._paint(canvas, m, self.skin, self.skin_shade, dark, ss, c.get("skin_shade_px", 6)); self._paste_foot(canvas, A, toe_deg, dark, ss)
+            return canvas
+        K, A = self.knee(H, A)
+        Hc, Kc, Ac = H * ss, K * ss, A * ss
+        if self.garment == "dhoti":                                                    # bare shin first, the foot covers its end
+            m = np.zeros((Hh, Wd), np.uint8); self._capsule(m, Kc, Ac, c["w_shin"], self.w_ank, ss)
+            self._paint(canvas, m, self.skin, self.skin_shade, dark, ss, c.get("skin_shade_px", 6))
+            self._paste_foot(canvas, A, toe_deg, dark, ss)
+            E = Kc + (Ac - Kc) * c.get("hem", 0.25); m = np.zeros((Hh, Wd), np.uint8)
+            self._capsule(m, Hc + (Hc - Kc) * 0.25, Kc, self.w_top, self.w_knee, ss)
+            self._capsule(m, Kc, E, self.w_knee, c.get("w_hem", self.w_knee), ss)
+            cv2.circle(m, tuple(Kc.astype(int)), int(self.w_knee / 2 * ss), 255, -1)
+            self._paint(canvas, m, self.fill, self.shade, dark, ss); return canvas
+        self._paste_foot(canvas, A, toe_deg, dark, ss)
+        m = np.zeros((Hh, Wd), np.uint8); u = (Ac - Kc) / (np.linalg.norm(Ac - Kc) + 1e-6)
+        Ac = Ac + u * c.get("cuff", 0) * ss                                             # cuff overlaps the foot top (no gap at the hem)
+        self._capsule(m, Hc + (Hc - Kc) * 0.25, Kc, self.w_top, self.w_knee, ss); self._capsule(m, Kc, Ac, self.w_knee, self.w_ank, ss)
+        cv2.circle(m, tuple(Kc.astype(int)), int(self.w_knee / 2 * ss), 255, -1)
+        self._paint(canvas, m, self.fill, self.shade, dark, ss); return canvas
+
     def draw_leg(self, canvas, H, A, toe_deg, dark, ss=2):
         """Draw one pyjama leg (two tapered capsules + knee disc) with ink outline and back-side shading, then the foot."""
+        if self.cfg is not None: return self._draw_garment_leg(canvas, H, A, toe_deg, dark, ss)
         K, A = self.knee(H, A); A_ank = A; Hh, Wd = canvas.shape[:2]
         # foot: rotate the drawn foot about its ankle anchor, paste at the ankle
         f = self.foot.copy()
@@ -107,6 +187,13 @@ def render_walk(sp, legs, t, period=0.8, ss=2, hip_dx=0.0):
     # body + arm from the puppet (legs drawn separately)
     keep = [L for L in sp.layers if L["name"] in ("body", "arm")]; saved = sp.layers; sp.layers = keep
     top = np.asarray(sp.render(pose, ss=ss)).astype(np.float32) / 255; sp.layers = saved
+    if legs.garment == "skirt":                                                       # skirt sway: shear below the waist
+        c = legs.cfg; y0 = float(c.get("waist_y", legs.hip[1] - 0.6 * legs.Dv)) + pose["dy"]; y1 = legs.ground
+        amp = c.get("sway", 6.0) * (1.6 if legs.style == "run" else 1.0)
+        yy = np.arange(sp.H, dtype=np.float32); wgt = np.clip((yy - y0) / (y1 - y0), 0, 1) ** 2
+        dx = (amp * math.sin(2 * math.pi * tn - 0.6) * wgt)[:, None]
+        mx = (np.arange(sp.W, dtype=np.float32)[None, :] - dx).astype(np.float32); my = np.repeat(yy[:, None], sp.W, 1)
+        top = cv2.remap(top, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
     Hh, Wd = sp.H * ss, sp.W * ss; canvas = np.zeros((Hh, Wd, 4), np.float32)
     H = np.array([legs.hip[0], legs.hip[1] + pose["dy"]])
     for phase, dark in ((0.5, True), (0.0, False)):                                   # far leg first (darker), then near leg

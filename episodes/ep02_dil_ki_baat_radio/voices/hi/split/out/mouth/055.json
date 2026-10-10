@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "soundFile": "/kaggle/working/out/clips/055_Chhotu.wav",
+    "duration": 1.50
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.12, "value": "B" },
+    { "start": 0.12, "end": 0.18, "value": "C" },
+    { "start": 0.18, "end": 0.32, "value": "B" },
+    { "start": 0.32, "end": 0.46, "value": "F" },
+    { "start": 0.46, "end": 0.54, "value": "A" },
+    { "start": 0.54, "end": 0.64, "value": "C" },
+    { "start": 0.64, "end": 0.72, "value": "A" },
+    { "start": 0.72, "end": 0.92, "value": "C" },
+    { "start": 0.92, "end": 0.99, "value": "B" },
+    { "start": 0.99, "end": 1.50, "value": "X" }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+ "_about": "EMOTION BIBLE (9 Oct 2026). One entry per emotion: a SHORT delivery phrase for Gemini TTS speech_metadata.style (official 3.8 guidance: short, fixed, no long director's notes; text is spoken verbatim so NEVER put stage directions in the text), pace/pitch/volume intent, and the inline non-verbal tags allowed inside the line (<laugh> <sigh> <gasp> <breath> <short pause> <long pause>). Intensity 1 = light, 2 = clear, 3 = strong. The voice builder writes: style = '<character tone>; <emotion phrase at intensity>'. The automatic listening check scores every generated line against 'judge' and re-records misses.",
+ "intensity_words": {
+  "1": "slightly",
+  "2": "clearly",
+  "3": "very strongly"
+ },
+ "emotions": {
+  "neutral": {
+   "style": "calm, natural conversational",
+   "pace": "normal",
+   "tags": [],
+   "judge": "calm, matter-of-fact"
+  },
+  "happy": {
+   "style": "happy, smiling while speaking, warm and bright",
+   "pace": "a little quick",
+   "tags": [],
+   "judge": "happy, smiling voice"
+  },
+  "excited": {
+   "style": "excited, energetic, rising pitch, can't wait",
+   "pace": "quick",
+   "tags": [],
+   "judge": "excited, high energy"
+  },
+  "giggly": {
+   "style": "amused, giggling through the words",
+   "pace": "quick, bubbly",
+   "tags": [
+    "<laugh>"
+   ],
+   "judge": "laughing / giggling"
+  },
+  "laughing": {
+   "style": "laughing out loud, joyful",
+   "pace": "broken by laughter",
+   "tags": [
+    "<laugh>"
+   ],
+   "judge": "open laughter"
+  },
+  "proud": {
+   "style": "proud and confident, chest out, savouring the words",
+   "pace": "measured",
+   "tags": [],
+   "judge": "proud, confident"
+  },
+  "mischievous": {
+   "style": "mischievous, playful whisper-grin, plotting",
+   "pace": "light, teasing",
+   "tags": [
+    "<short pause>"
+   ],
+   "judge": "mischievous, teasing"
+  },
+  "curious": {
+   "style": "curious and wondering, gently rising questions",
+   "pace": "unhurried",
+   "tags": [],
+   "judge": "curious, questioning"
+  },
+  "surprised": {
+   "style": "surprised, sudden lift in pitch",
+   "pace": "quick start",
+   "tags": [
+    "<gasp>"
+   ],
+   "judge": "surprised"
+  },
+  "shocked": {
+   "style": "shocked, stunned, sharp intake of breath",
+   "pace": "halting",
+   "tags": [
+    "<gasp>",
+    "<short pause>"
+   ],
+   "judge": "shocked, stunned"
+  },
+  "scared_whisper": {
+   "style": "scared, whispering, breathy and tense",
+   "pace": "quick, hushed",
+   "tags": [
+    "<breath>"
+   ],
+   "judge": "frightened whisper"
+  },
+  "panicked": {
+   "style": "panicked, rushed, voice rising and cracking",
+   "pace": "very fast",
+   "tags": [
+    "<breath>"
+   ],
+   "judge": "panic"
+  },
+  "sad": {
+   "style": "sad and quiet, heavy, low energy",
+   "pace": "slow",
+   "tags": [
+    "<sigh>",
+    "<short pause>"
+   ],
+   "judge": "sad, low"
+  },
+  "crying": {
+   "style": "crying, tearful, voice breaking",
+   "pace": "slow, uneven",
+   "tags": [
+    "<breath>",
+    "<short pause>"
+   ],
+   "judge": "crying, tearful"
+  },
+  "lonely": {
+   "style": "lonely and wistful, soft, far away",
+   "pace": "slow",
+   "tags": [
+    "<sigh>",
+    "<long pause>"
+   ],
+   "judge": "lonely, wistful"
+  },
+  "guilty": {
+   "style": "guilty and ashamed, small voice, looking down",
+   "pace": "slow, hesitant",
+   "tags": [
+    "<short pause>"
+   ],
+   "judge": "guilty, ashamed"
+  },
+  "embarrassed": {
+   "style": "embarrassed, flustered, nervous little laugh",
+   "pace": "quick, uneven",
+   "tags": [
+    "<laugh>"
+   ],
+   "judge": "embarrassed"
+  },
+  "angry": {
+   "style": "angry but controlled, firm and clipped",
+   "pace": "deliberate",
+   "tags": [],
+   "judge": "angry, firm"
+  },
+  "shouting": {
+   "style": "SHOUTING at full volume across a crowd, voice straining and loud",
+   "pace": "forceful",
+   "tags": [],
+   "judge": "shouting, loud anger"
+  },
+  "sarcastic": {
+   "style": "sarcastic taunt, sweet on top, sharp underneath",
+   "pace": "drawn out",
+   "tags": [],
+   "judge": "sarcastic, taunting"
+  },
+  "loving": {
+   "style": "loving and tender, warm, gentle smile",
+   "pace": "slow, soft",
+   "tags": [],
+   "judge": "loving, tender"
+  },
+  "nostalgic": {
+   "style": "nostalgic, remembering fondly, soft smile",
+   "pace": "slow",
+   "tags": [
+    "<sigh>"
+   ],
+   "judge": "nostalgic, reminiscing"
+  },
+  "tired": {
+   "style": "tired and drained, flat, low",
+   "pace": "slow",
+   "tags": [
+    "<sigh>"
+   ],
+   "judge": "tired, exhausted"
+  },
+  "relieved": {
+   "style": "relieved, a long exhale then lighter",
+   "pace": "slowing",
+   "tags": [
+    "<sigh>"
+   ],
+   "judge": "relieved"
+  },
+  "pleading": {
+   "style": "pleading, begging softly, earnest",
+   "pace": "quick, soft",
+   "tags": [],
+   "judge": "pleading"
+  },
+  "determined": {
+   "style": "determined, steady and resolved",
+   "pace": "firm",
+   "tags": [],
+   "judge": "determined"
+  },
+  "serious": {
+   "style": "serious, grave, careful",
+   "pace": "slow",
+   "tags": [],
+   "judge": "serious"
+  },
+  "stern_warning": {
+   "style": "stern warning, wagging-finger firmness",
+   "pace": "slow, emphatic",
+   "tags": [],
+   "judge": "stern warning"
+  },
+  "comic_panic": {
+   "style": "comic over-the-top panic, cartoon fluster",
+   "pace": "very fast",
+   "tags": [
+    "<gasp>"
+   ],
+   "judge": "comic panic"
+  }
+ },
+ "aliases": {
+  "shocked/surprised": "shocked",
+  "excited": "excited",
+  "booming, comic": "shouting",
+  "panicked": "panicked",
+  "doubtful": "curious",
+  "mysterious": "mischievous",
+  "cheeky": "mischievous",
+  "laughing": "laughing",
+  "serious": "serious",
+  "innocent": "happy",
+  "whisper": "scared_whisper",
+  "boastful": "proud",
+  "sheepish": "embarrassed",
+  "proud": "proud",
+  "formal": "neutral",
+  "dreamy": "nostalgic",
+  "stunned": "shocked",
+  "angry": "angry",
+  "scared": "scared_whisper",
+  "shouting": "shouting",
+  "out of breath": "relieved",
+  "giggling": "giggly",
+  "soft and sad": "lonely",
+  "softer": "sad",
+  "quiet, sad": "sad",
+  "guilty": "guilty",
+  "soft, ashamed": "guilty",
+  "moved": "loving",
+  "gentle": "loving",
+  "bright": "happy",
+  "surprised, happy": "happy",
+  "sincere": "guilty",
+  "warm": "loving",
+  "eager": "excited",
+  "smiling, remembering": "nostalgic",
+  "offering": "happy",
+  "hopeful": "pleading",
+  "tired": "tired",
+  "cold": "sarcastic",
+  "chatty": "happy",
+  "joking": "giggly",
+  "hurt": "sad",
+  "distracted": "tired",
+  "determined": "determined",
+  "hopeful, whispering": "pleading",
+  "pleased": "happy",
+  "stiff": "angry",
+  "quiet": "serious",
+  "nervous": "embarrassed",
+  "tattling": "mischievous",
+  "warning": "stern_warning",
+  "mischief": "mischievous"
+ }
+}
