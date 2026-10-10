@@ -1,7 +1,7 @@
 bn: 116/116 lines placed, track 641.65s (target 641.65s), -14.1 LUFS / -3.1 dBTP (premaster -13.3, gain -0.70 dB)
 sped up: 50 (max tempo 1.150, cap 1.15)
 spill into the pause (later lines wait): 33; lines starting late: 22; max drift 2.16s
-speech dub/hindi: 562.0s / 539.7s
+speech dub/hindi: 561.4s / 539.7s
 tail lines moved earlier to end inside the video: 0 (max 0.00s)
 words cut: 0
 missing lines: []

@@ -38,7 +38,7 @@ def speech_bounds(x):
 
 def polish(src, dst):
     """Same chain as the Hindi build (EA.polish_voice) + the same latency check (align polished to raw)."""
-    if not os.path.exists(dst): EA.polish_voice(src, dst)
+    if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(src): EA.polish_voice(src, dst)   # re-polish a re-cut clip
     raw = rd(src)[:, 0]; s = rd(dst)[:, 0]; k = min(len(raw), SR * 2)
     if len(s) > k + 2000:
         c = np.correlate(s[:k + 2000], raw[:k], "valid"); s = s[int(np.argmax(c)):]

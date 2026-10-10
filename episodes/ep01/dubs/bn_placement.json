@@ -1842,17 +1842,17 @@
  {
   "unit": 118,
   "start": 638.521,
-  "end": 640.971,
+  "end": 640.341,
   "hindi_on": 638.504,
   "hindi_off": 640.964,
-  "dur": 2.45,
+  "dur": 1.82,
   "tempo": 1.0,
   "drift": 0.017,
   "spill": 0.0,
   "early": 0.0,
   "text": "কাকু, আমার খুব খিদে পেয়েছে!",
   "reused_from": 59,
-  "spoken_text": null,
+  "spoken_text": "আমার খুব খিদে পেয়েছে!",
   "cut": false
  }
 ]
