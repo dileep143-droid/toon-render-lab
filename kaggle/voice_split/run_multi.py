@@ -2,15 +2,17 @@
 script line, trim (80 ms pad), loudness-normalise to -16 LUFS (peak clamp), Rhubarb (phonetic) mouth cues.
 Generalised from kaggle/voice_split/run.py (the Hindi job, kept untouched).
   * Whisper word timestamps (large-v3 on GPU) give line-start anchors; a DP snaps cuts to silences / RMS minima.
-  * Odia ('or') is not a Whisper language: cuts come from ffmpeg silencedetect gaps matched IN ORDER to the 66 lines, with a
-    pause-aware proportional-by-text-length estimate as the fallback (method recorded in split_debug.json; asr/asr_sim = null).
-  * For every Whisper language the silence-only method is ALSO run and its agreement with the Whisper cuts is recorded, which is
-    the evidence for how far the Odia cuts can be trusted.
-Output per language -> /kaggle/working/out/<code>/{clips/<id3>_<Speaker>.wav, mouth/<id3>.json, lines_timed.json, split_debug.json},
-then zipped to /kaggle/working/out/<code>.zip (loose files removed)."""
+  * Odia ('or') is not a Whisper language: aligned with Meta MMS (facebook/mms-1b-all + Odia adapter, greedy CTC word timestamps)
+    feeding the same anchor DP. A pure silence DP (ffmpeg silencedetect gaps matched in order, pause-aware proportional estimate)
+    was tried first on 10 Oct: on the English take, where Whisper is ground truth, it put only 13/65 cuts in the right gap, so it is
+    only the fallback if MMS fails. The method used is recorded in split_debug.json.
+  * For every take the silence-only cuts are ALSO computed and their agreement with the ASR-anchored cuts recorded.
+Output per language -> /kaggle/working/out/<name>/{clips/<id3>_<Speaker>.wav, mouth/<id3>.json, lines_timed.json, split_debug.json},
+then zipped to /kaggle/working/out/<name>.zip (loose files removed)."""
 LANGS = ["te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "or", "as", "en"]   # __LANGS__ (the launcher may override this line)
-NO_WHISPER = {"or"}                                                              # not in Whisper's language list
-PROXY = {"or": ("bn", 0x0B00, 0x0980)}   # cross-check only: Odia text mapped letter-for-letter (parallel Unicode blocks) to Bengali script, Whisper "bn"
+EXTRA = []        # __EXTRA__ extra validation jobs: (code, out_name, engine), e.g. ("bn", "bn_mms", "mms")
+ENGINE = {"or": "mms"}                     # aligner per language: whisper (default) | mms | silence
+MMS_CODE = {"or": "ory", "bn": "ben", "hi": "hin", "te": "tel", "en": "eng", "as": "asm", "pa": "pan"}
 import os, sys, json, re, glob, subprocess, time, difflib, unicodedata, urllib.request, shutil, zipfile, traceback
 from concurrent.futures import ThreadPoolExecutor
 T0 = time.time()
@@ -40,18 +42,69 @@ def get_rhubarb():
     raise SystemExit("no rhubarb")
 RH = get_rhubarb()
 
-import numpy as np, soundfile as sf, pyloudnorm as pyln, torch, whisper
+import numpy as np, soundfile as sf, pyloudnorm as pyln, torch
 x = torch.randn(64, 64, device="cuda"); (x @ x).sum().item()                    # no silent CPU fallback: fail loudly
 dev = "cuda"; MODEL = "large-v3"
-log("whisper", MODEL, "on", torch.cuda.get_device_name(0))
-WM = whisper.load_model(MODEL, device=dev)
+log("GPU", torch.cuda.get_device_name(0))
+_W = {}
+def WMget():
+    if "m" not in _W:
+        import whisper
+        log("loading whisper", MODEL); _W["m"] = whisper.load_model(MODEL, device=dev)
+    return _W["m"]
+
+_M = {}
+def mms_get(code):
+    c3 = MMS_CODE[code]
+    if "model" not in _M:
+        from transformers import Wav2Vec2ForCTC, AutoProcessor
+        _M["proc"] = AutoProcessor.from_pretrained("facebook/mms-1b-all")
+        _M["model"] = Wav2Vec2ForCTC.from_pretrained("facebook/mms-1b-all").to(dev).eval()
+        keys = list(_M["proc"].tokenizer.vocab.keys()); log("mms adapters:", len(keys), "has", c3, c3 in keys)
+    if _M.get("lang") != c3:
+        _M["proc"].tokenizer.set_target_lang(c3); _M["model"].load_adapter(c3); _M["lang"] = c3; log("mms adapter", c3)
+    return _M["proc"], _M["model"]
+
+def load16(path):
+    r = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000", "-f", "f32le", "-"], capture_output=True)
+    return np.frombuffer(r.stdout, np.float32).copy()
+
+def mms_words(path, code, sil=None):
+    """Greedy CTC over ~20 s chunks cut at silences -> [(start, end, word)], full text."""
+    proc, model = mms_get(code); y = load16(path); sr = 16000; T = len(y) / sr
+    mids = [(a + b) / 2 for a, b in (sil or [])]
+    bounds, t = [0.0], 0.0
+    while T - t > 25:
+        near = [m for m in mids if t + 12 <= m <= t + 24]
+        t = min(near, key=lambda m: abs(m - (t + 20))) if near else t + 20; bounds.append(t)
+    bounds.append(T)
+    tok = proc.tokenizer; vocab = {v: k for k, v in tok.get_vocab().items()}
+    blank = tok.pad_token_id; delim = tok.word_delimiter_token; special = set(tok.all_special_tokens)
+    words, cur, cs, ce = [], "", None, None
+    for a, b in zip(bounds[:-1], bounds[1:]):
+        seg = y[int(a * sr):int(b * sr)]
+        if len(seg) < 800: continue
+        inp = proc(seg, sampling_rate=sr, return_tensors="pt").input_values.to(dev)
+        with torch.no_grad(): ids = model(inp).logits[0].argmax(-1).cpu().numpy()
+        fd = (b - a) / len(ids); prev = -1
+        for f, i in enumerate(ids):
+            if i != prev and i != blank:
+                ch = vocab.get(int(i), ""); tt = a + f * fd
+                if ch == delim or ch == " ":
+                    if cur: words.append((cs, ce, cur)); cur = ""
+                elif ch not in special:
+                    if not cur: cs = tt
+                    cur += ch; ce = tt + fd
+            prev = i
+        if cur: words.append((cs, ce, cur)); cur = ""
+    return words, " ".join(w for _, _, w in words)
 
 # ---- script-agnostic text handling ----
 TAG = re.compile(r"<[^>]+>")
 def skel(s):   # letters only (Indic consonants + independent vowels; Latin letters), lower-cased; matras/virama/punctuation dropped
-    return "".join(ch.lower() for ch in TAG.sub(" ", s) if unicodedata.category(ch)[0] == "L")
+    return "".join(ch.lower() for ch in unicodedata.normalize("NFC", TAG.sub(" ", s)) if unicodedata.category(ch)[0] == "L")
 def norm(s):   # letters + marks (for asr_sim)
-    return "".join(ch.lower() for ch in TAG.sub(" ", s) if unicodedata.category(ch)[0] in "LM")
+    return "".join(ch.lower() for ch in unicodedata.normalize("NFC", TAG.sub(" ", s)) if unicodedata.category(ch)[0] in "LM")
 
 def silences(path, noise="-35dB", d=0.2):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", f"silencedetect=noise={noise}:d={d}", "-f", "null", "-"],
@@ -110,7 +163,7 @@ def silence_est(texts, sil, speech0, speech1, N):
     for k in range(N): est.append(t); t += L[k] * r + gap
     return est, interior[:N - 1]
 
-def split_take(wav, texts, tag, lang):          # lang = Whisper language, or None for silence-only
+def split_take(wav, texts, tag, lang, engine="whisper"):
     """Return exactly len(texts) (start,end,start_ext,end_ext) spans in the take, in order."""
     y, sr = sf.read(wav, dtype="float32")
     if y.ndim > 1: y = y.mean(1)
@@ -125,13 +178,17 @@ def split_take(wav, texts, tag, lang):          # lang = Whisper language, or No
     topset = set(round(v, 3) for v in top)
     s_top_hits = sum(1 for j in s_chosen if s_cands[j][2] == 0 and round(s_cands[j][1] - s_cands[j][0], 3) in topset)
     ratio, res, wh = None, {}, [None] * N
-    if lang is None:
+    if engine == "silence":
         method = "silence_dp (ffmpeg silencedetect -35dB/0.2s gaps matched in order to the lines; pause-aware proportional-by-text-length estimate; RMS-minimum fallback cut where no gap fits)"
         est, cands, chosen = s_est, s_cands, s_chosen
     else:
-        method = "whisper_anchor_dp (Whisper large-v3 word timestamps -> line-start anchors; DP snaps cuts to silences / RMS minima)"
-        res = WM.transcribe(wav, language=lang, word_timestamps=True, condition_on_previous_text=False, temperature=0.0)
-        words = [(w["start"], w["end"], w["word"].strip()) for s in res["segments"] for w in s.get("words", [])]
+        if engine == "mms":
+            method = f"mms_anchor_dp (facebook/mms-1b-all adapter {MMS_CODE[lang]}, greedy CTC word timestamps -> line-start anchors; DP snaps cuts to silences / RMS minima)"
+            words, txt = mms_words(wav, lang, sil); res = {"text": txt}
+        else:
+            method = "whisper_anchor_dp (Whisper large-v3 word timestamps -> line-start anchors; DP snaps cuts to silences / RMS minima)"
+            res = WMget().transcribe(wav, language=lang, word_timestamps=True, condition_on_previous_text=False, temperature=0.0)
+            words = [(w["start"], w["end"], w["word"].strip()) for s in res["segments"] for w in s.get("words", [])]
         ws, wt, we = "", [], []
         for a, b, t in words:
             sk = skel(t)
@@ -171,21 +228,22 @@ def split_take(wav, texts, tag, lang):          # lang = Whisper language, or No
         b_ext = min(T, b + (0.25 if nb is None else min(0.25, (nb - b) / 2)))
         spans.append((a, b, a_ext, b_ext))
     cuts = [(cands[j][0] + cands[j][1]) / 2 for j in chosen]
-    agree = None if lang is None else round(sum(1 for c, s in zip(cuts, s_cuts) if abs(c - s) < 0.3) / max(1, len(cuts)), 3)
-    dbg = dict(tag=tag, lang=lang, method=method, T=round(T, 2), n=N, speech=[round(speech0, 2), round(speech1, 2)],
+    agree = None if engine == "silence" else round(sum(1 for j, s in zip(chosen, s_cuts) if cands[j][0] - 0.15 <= s <= cands[j][1] + 0.15) / max(1, len(chosen)), 3)
+    dbg = dict(tag=tag, lang=lang, engine=engine, method=method, T=round(T, 2), n=N, speech=[round(speech0, 2), round(speech1, 2)],
                whisper_match=None if ratio is None else round(ratio, 3), n_sil=len(sil), n_cands=len(cands),
+               anchored_lines=sum(1 for v in wh if v is not None),
                fallback_cuts=sum(1 for j in chosen if cands[j][2] > 0),
                silence_only_cuts_in_top_gaps=f"{s_top_hits}/{N - 1}",
-               silence_only_agreement_with_whisper=agree,
+               silence_only_agreement_with_asr=agree,
                est=[round(e, 2) for e in est], whisper_line_start=[None if v is None else round(v, 2) for v in wh],
                cuts=[[round(cands[j][0], 2), round(cands[j][1], 2), cands[j][2]] for j in chosen],
                silence_only_cuts=[round(c, 2) for c in s_cuts], transcript=res.get("text", ""))
-    if lang is None:
-        dbg["note"] = ("Odia is not a Whisper language: no ASR alignment and no asr/asr_sim check. Cuts are silence gaps chosen in "
-                       "order by a DP against a proportional-by-text-length estimate; silence_only_agreement_with_whisper in the "
-                       "other languages shows how reliable this method is.")
-    log(f"{tag}: T={T:.1f}s lines={N} sil={len(sil)} method={method.split()[0]} whisper_match={ratio} "
-        f"fallback_cuts={dbg['fallback_cuts']} silence_vs_whisper={agree} top_gap_hits={s_top_hits}/{N-1}")
+    if engine == "silence":
+        dbg["note"] = "No ASR alignment: cuts are silence gaps chosen in order by a DP against a proportional-by-text-length estimate."
+    if engine == "mms":
+        dbg["note"] = "Aligned with Meta MMS (mms-1b-all + language adapter) instead of Whisper; whisper_match = MMS transcript match; asr/asr_sim come from MMS too."
+    log(f"{tag}/{lang}: T={T:.1f}s lines={N} sil={len(sil)} engine={engine} match={ratio} anchored={dbg['anchored_lines']} "
+        f"fallback_cuts={dbg['fallback_cuts']} silence_vs_asr={agree} top_gap_hits={s_top_hits}/{N-1}")
     return y, sr, spans, dbg
 
 def finish_clip(y, sr, span, path):
@@ -210,25 +268,19 @@ def finish_clip(y, sr, span, path):
 
 def safe(s): return re.sub(r"\W+", "", s) or "x"
 
-def translit(s, src, dst): return "".join(chr(ord(c) - src + dst) if src <= ord(c) < src + 0x80 else c for c in s)
-
-def do_lang(code, out_name=None, proxy=False):
-    """proxy=False: the real output (Whisper anchors; silence-only for NO_WHISPER languages).
-       proxy=True : alternate Odia split anchored by Whisper 'bn' on the Bengali-script transliteration (written to out/<code>_bnproxy)."""
-    out_name = out_name or code
+def do_lang(code, out_name=None, engine=None):
+    out_name = out_name or code; engine = engine or ENGINE.get(code, "whisper")
     OUT = f"{OUT0}/{out_name}"; shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT + "/clips", exist_ok=True); os.makedirs(OUT + "/mouth", exist_ok=True)
     units = json.load(open(f"{EPV}/{code}/units.json", encoding="utf-8"))["units"]
     ids = [u["id"] for u in units]; assert len(set(ids)) == len(ids), "duplicate ids"
     empty = [u["id"] for u in units if not skel(u["text"])]; assert not empty, f"empty skeleton for ids {empty}"
-    px = PROXY.get(code)
-    tmap = (lambda t: translit(t, px[1], px[2])) if px else (lambda t: t)
-    if proxy: wl, texts = px[0], [tmap(u["text"]) for u in units]
-    else: wl, texts = (None if code in NO_WHISPER else code), [u["text"] for u in units]
-    y, sr, spans, dbg = split_take(f"{EPV}/{code}/req_01.wav", texts, "req_01", wl)
-    if proxy:
-        dbg["method"] = "PROXY " + dbg["method"] + f" -- Odia text transliterated to {px[0]} script, Whisper language={px[0]}"
-        dbg["note"] = "Alternate cut for comparison only; the main Odia output is the silence-based one."
+    wav = f"{EPV}/{code}/req_01.wav"; texts = [u["text"] for u in units]
+    try: y, sr, spans, dbg = split_take(wav, texts, "req_01", code, engine)
+    except Exception as e:
+        if engine != "mms": raise
+        traceback.print_exc(); log(code, "MMS FAILED -> silence fallback", e); engine = "silence"
+        y, sr, spans, dbg = split_take(wav, texts, "req_01", code, "silence"); dbg["mms_error"] = repr(e)[:300]
     assert len(spans) == len(units)
     rows = []
     for u, sp in zip(units, spans):
@@ -245,29 +297,27 @@ def do_lang(code, out_name=None, proxy=False):
     with ThreadPoolExecutor(4) as ex:
         for i, rc, err in ex.map(rhub, rows):
             if rc: log(out_name, "RHUBARB FAIL", i, err)
-    def run_asr(path, lang, ref):
-        t = WM.transcribe(path, language=lang, condition_on_previous_text=False, temperature=0.0)["text"].strip()
+    def run_asr(path, ref):
+        if engine == "mms": t = mms_words(path, code)[1].strip()
+        else: t = WMget().transcribe(path, language=code, condition_on_previous_text=False, temperature=0.0)["text"].strip()
         return t, round(difflib.SequenceMatcher(None, norm(ref), norm(t), autojunk=False).ratio(), 2)
     for r in rows:
         path = f"{OUT}/{r['clip']}"
-        if code in NO_WHISPER: r["asr"], r["asr_sim"] = None, None
+        if engine == "silence": r["asr"], r["asr_sim"] = None, None
         else:
-            try: r["asr"], r["asr_sim"] = run_asr(path, code, r["text"])
+            try: r["asr"], r["asr_sim"] = run_asr(path, r["text"])
             except Exception as e: r["asr"], r["asr_sim"] = f"ERR {e}", None
-        if px:   # proxy check: Whisper in the related language vs the transliterated text
-            try: r[f"asr_proxy_{px[0]}"], r[f"asr_proxy_{px[0]}_sim"] = run_asr(path, px[0], tmap(r["text"]))
-            except Exception as e: r[f"asr_proxy_{px[0]}"], r[f"asr_proxy_{px[0]}_sim"] = f"ERR {e}", None
+        r["asr_engine"] = {"silence": None, "whisper": "whisper-large-v3", "mms": "mms-1b-all"}[engine]
         try: r["mouth_cues"] = len(json.load(open(f"{OUT}/{r['mouth']}"))["mouthCues"])
         except Exception: r["mouth_cues"] = None
-        sim = r["asr_sim"] if r["asr_sim"] is not None else (r.get(f"asr_proxy_{px[0]}_sim") if px else None)
         flag = " <-- DUR" if r["duration_s"] < 0.4 or r["duration_s"] > 12 else ""
-        flag += " <-- ASR" if sim is not None and sim < 0.5 else ""
-        print(f"{out_name} {r['id']:3d} {r['speaker']:8s} {r['duration_s']:5.2f}s sim={sim} cues={r['mouth_cues']}{flag} | {r['text'][:40]}", flush=True)
+        flag += " <-- ASR" if r["asr_sim"] is not None and r["asr_sim"] < 0.5 else ""
+        print(f"{out_name} {r['id']:3d} {r['speaker']:8s} {r['duration_s']:5.2f}s sim={r['asr_sim']} cues={r['mouth_cues']}{flag} | {r['text'][:40]} || {(r['asr'] or '')[:40]}", flush=True)
     json.dump(rows, open(OUT + "/lines_timed.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    json.dump(dict(debug=[dbg], retake_applied_ids=[], lang=code), open(OUT + "/split_debug.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(dict(debug=[dbg], retake_applied_ids=[], lang=code, engine=engine), open(OUT + "/split_debug.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     n_wav = len(glob.glob(OUT + "/clips/*.wav")); n_m = len(glob.glob(OUT + "/mouth/*.json"))
     sims = [r["asr_sim"] for r in rows if r["asr_sim"] is not None]
-    log(f"{out_name} DONE clips={n_wav} mouth={n_m} rows={len(rows)} expected={len(units)} "
+    log(f"{out_name} DONE engine={engine} clips={n_wav} mouth={n_m} rows={len(rows)} expected={len(units)} "
         f"asr_sim_median={np.median(sims) if sims else None} total_dur={sum(r['duration_s'] for r in rows):.1f}s")
     with zipfile.ZipFile(f"{OUT0}/{out_name}.zip", "w", zipfile.ZIP_DEFLATED) as z:
         for p in glob.glob(OUT + "/**/*", recursive=True):
@@ -275,9 +325,9 @@ def do_lang(code, out_name=None, proxy=False):
     shutil.rmtree(OUT, ignore_errors=True)
 
 status = {}
-jobs = [(c, c, False) for c in LANGS] + [(c, c + "_bnproxy", True) for c in LANGS if c in PROXY]
-for code, name, proxy in jobs:
-    try: do_lang(code, name, proxy); status[name] = "ok"
+jobs = [(c, c, None) for c in LANGS] + list(EXTRA)
+for code, name, eng in jobs:
+    try: do_lang(code, name, eng); status[name] = "ok"
     except Exception as e:
         traceback.print_exc(); status[name] = f"FAILED {e!r}"[:300]
     json.dump(status, open(OUT0 + "/status.json", "w"), indent=1)
