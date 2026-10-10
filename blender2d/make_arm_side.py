@@ -34,6 +34,9 @@ def polyline_mask(shape, pts, widths):
     return m
 
 
+FILL = []                     # _arm_tight: pixels inside the hand hull to paint skin colour (set by arm_mask)
+
+
 def arm_mask(A, mA, J, w, hand_len):
     S, E, Wr = (np.array(J[k], float) for k in ("shoulder", "elbow", "wrist"))
     d = (Wr - E) / (np.linalg.norm(Wr - E) + 1e-6); T = Wr + d * hand_len
@@ -48,7 +51,32 @@ def arm_mask(A, mA, J, w, hand_len):
     ids = np.unique(lab[(core > 0) & (free > 0)]); ids = ids[ids > 0]
     reg = np.isin(lab, ids).astype(np.uint8)
     reg |= (ink & (band > 0) & (cv2.dilate(reg, np.ones((9, 9), np.uint8)) > 0)).astype(np.uint8)
-    return cv2.morphologyEx(reg, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)) & mA, S, T
+    reg = cv2.morphologyEx(reg, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)) & mA
+    if J.get("_arm_tight"):
+        # opt-in (joints.json "_arm_tight": true): a sleeve in the SAME colour as the kurta behind it (raju, orange on orange) is not
+        # closed by ink at the shoulder or around the hand, so the region fill took a strip of kurta in front of the sleeve and a kurta
+        # paddle under the hand. Rows between shoulder and wrist keep only what lies between the outer ink lines of the band;
+        # past the wrist only the hand (skin + the ink touching it) stays
+        bandm = cv2.dilate(band, np.ones((1, 21), np.uint8)) > 0; y0 = int(S[1] + 0.25 * (E[1] - S[1]))   # +10 px: outer lines sit on the band edge
+        for y in range(y0, int(Wr[1]) + 9):
+            xs = np.nonzero(ink[y] & bandm[y])[0]
+            if len(xs) >= 2 and xs.max() - xs.min() > 0.6 * w: reg[y, :xs.min()] = 0; reg[y, xs.max() + 1:] = 0
+        past = ((np.stack(np.mgrid[0:A.shape[0], 0:A.shape[1]][::-1], -1) - Wr) @ d) > 4
+        skin2 = skin & (b > 70)                                                          # orange kurta passes the skin test: b ~ 40
+        hand = cv2.dilate(skin2.astype(np.uint8), np.ones((7, 7), np.uint8)) > 0
+        # the hand = the convex hull of its skin (kurta pixels between the fingers are part of the hull and get painted skin colour
+        # in __main__ via FILL, so no background holes / dotted finger outlines show between the fingers)
+        hs = (skin2 & past & (reg > 0)).astype(np.uint8); n3, l3, s3, _ = cv2.connectedComponentsWithStats(hs)
+        hull = np.zeros_like(hs)
+        if n3 > 1:
+            hs = (l3 == 1 + int(np.argmax(s3[1:, 4]))).astype(np.uint8)
+            cv2.fillConvexPoly(hull, cv2.convexHull(np.argwhere(hs)[:, ::-1].astype(np.int32)), 1)
+            hull = cv2.dilate(hull, np.ones((9, 9), np.uint8))
+        keep = (hull > 0) & (skin2 | ink | (cv2.erode(hull, np.ones((5, 5), np.uint8)) > 0))
+        reg[past & ~keep] = 0
+        FILL[:] = []; FILL.append(past & keep & ~skin2 & ~ink & (reg > 0)); FILL.append(past)
+        n2, lab2, st2, _ = cv2.connectedComponentsWithStats(reg); reg = (lab2 == 1 + int(np.argmax(st2[1:, 4]))).astype(np.uint8)
+    return reg, S, T
 
 
 if __name__ == "__main__":
@@ -57,6 +85,11 @@ if __name__ == "__main__":
     sess = ort.InferenceSession(MODEL, providers=["CPUExecutionProvider"])
     A = np.asarray(Image.open(os.path.join(D, "apose.png")).convert("RGB")); mA = seg_mask(sess, A)
     J = json.load(open(os.path.join(D, "joints.json"))); m, S, T = arm_mask(A, mA, J, w, hand_len)
+    if FILL and FILL[0].any():
+        r_, g_, b_ = (A[..., i].astype(int) for i in range(3)); sk = (r_ - b_ > 35) & (r_ > 150) & (b_ > 70) & (m > 0)
+        A = A.copy(); A[FILL[0]] = np.median(A[sk], 0).astype(np.uint8); print("hand gaps painted skin px", int(FILL[0].sum()))
+        # the hull edge has no drawn line where kurta used to touch the hand: ink a 3 px outline round the hand (inside the cut)
+        mm = m.astype(np.uint8); rim = (mm > 0) & (cv2.erode(mm, np.ones((7, 7), np.uint8)) == 0) & FILL[1]; A[rim] = (40, 22, 12)
     save_piece(A, m, os.path.join(D, "parts", "arm.png"))
     rp = os.path.join(D, "parts", "rig.json"); rig = json.load(open(rp))
     rig["pieces"]["arm"] = {"pivot": [float(S[0]), float(S[1])], "parent": "body", "z": 2,

@@ -1,0 +1,52 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid. body.png already matched apose (896x1200, no warp). Canvas padded 160 px left/right (apose_orig.png / body_orig.png = unpadded) so a 40-degree arm sway is not clipped; all joints are on the padded canvas. No visible neck (chin sits on the vest): parts.head_chin adds the chin to the head piece, head pivot at the chin. Hips under the dhoti. take = full-body pose drawing (fullpose_take, swapped). White vest: prep fill/under off (they painted white blobs beside the belly). blink.png redrew the moustache: parts.blink_y keeps the blink to the eye band. Shoulder stubs erased from body.png (body_orig.png = original); prep.ink outlines the body side the arms hide.",
+ "parts": {
+  "head_chin": {
+   "seed": [
+    610,
+    325
+   ],
+   "y": [
+    295,
+    362
+   ]
+  },
+  "blink_y": [
+   130,
+   222
+  ]
+ },
+ "head": [
+  610,
+  345
+ ],
+ "arm_upper_L": [
+  775,
+  380
+ ],
+ "arm_lower_L": [
+  837,
+  545
+ ],
+ "arm_upper_R": [
+  448,
+  380
+ ],
+ "arm_lower_R": [
+  392,
+  545
+ ],
+ "leg_L": [
+  660,
+  900
+ ],
+ "leg_R": [
+  565,
+  900
+ ],
+ "prep": {
+  "fill": false,
+  "under": false,
+  "ink": true
+ }
+}

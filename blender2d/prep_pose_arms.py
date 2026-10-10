@@ -55,6 +55,9 @@ edge = (bmc == 1) & (cv2.erode(bmc, np.ones((7, 7), np.uint8)) == 0) & (cv2.dila
 edge[: int(neck + 25)] = False
 body_cut[edge, :3] = (28, 22, 22)
 Image.fromarray(body_cut).save(os.path.join(P, "body_nounder.png"))   # used while an arm is swapped to a pose drawing (no strip showing)
+# opt-in "prep": {"ink": true}: with the under-arm strip off (white vest, lallan) the plain body shows its unoutlined side as soon as an
+# arm sways out: ink that hidden edge on body.png too (it lies under the resting arm, so the rest pose does not change)
+if PREP.get("ink"): bodyp[edge, :3] = (28, 22, 22); Image.fromarray(bodyp).save(os.path.join(P, "body.png")); print("inked body.png too")
 print("inked hidden body edge px:", int(edge.sum()))
 # UNDERLAY: extend the kurta ~14 px under where the arms rest (hidden at rest) so a small arm sway never opens a background slit
 bm = (bodyp[..., 3] > 127).astype(np.uint8)

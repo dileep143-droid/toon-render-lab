@@ -1,0 +1,8 @@
+06:46:55 ya IMAGE try1 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\young_dadi/apose.png words=75
+06:48:29 ys IMAGE try1 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\young_dadi/sit_diya.png words=65
+06:48:40 yb IMAGE try1 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\young_dadi/blink.png words=43
+06:49:04 ga IMAGE try1 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\great_grandmother/apose.png words=62
+06:49:15 gs HTTP 429 try1
+06:49:22 gs HTTP 429 try2
+06:49:46 gs IMAGE try3 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\great_grandmother/sit_explain.png words=52
+06:49:59 gb IMAGE try1 C:\Users\goddu\repos\toon-render-lab\pipeline2d\..\blender2d\puppet\great_grandmother/blink.png words=43

@@ -17,7 +17,28 @@ B = np.asarray(Image.open(os.path.join(D, "body.png")).convert("RGB").resize((W,
 mA, mB = seg_mask(sess, A), seg_mask(sess, B); J = json.load(open(os.path.join(D, "joints.json")))
 hip = np.array(J["hip"], float); hem_y = int(np.nonzero(mB.any(1))[0].max())
 rig = {"canvas": [W, H], "view": "side", "garment": "skirt", "hem_y": hem_y, "pieces": {}}
-save_piece(B, mB, os.path.join(OUT, "body.png")); rig["pieces"]["body"] = {"pivot": [float(hip[0]), float(hip[1])], "parent": None, "z": 0}
+save_piece(B, mB, os.path.join(OUT, "body.png"))
+# joints.json "_clear_white_x": X -> un-keyed page white ENCLOSED by the braid and the back (anime-seg keeps it as figure) showed as a
+# white patch behind gudiya whenever the arm swung forward (10 Oct). Clear white blobs left of X: big ones (>1000 px) or thin slivers,
+# plus specks not next to a flower; the flowers (white blobs of 100+ px) stay. Fringe pixels go too; colour bleeds in from the solid side.
+if J.get("_clear_white_x"):
+    from scipy.ndimage import distance_transform_edt
+    _p = os.path.join(OUT, "body.png"); _a = np.asarray(Image.open(_p).convert("RGBA")).astype(np.float32); _rgb, _al = _a[..., :3], _a[..., 3]
+    _kill = np.zeros((H, W), bool)
+    for _lo, _sat, _amin, _mode in ((170, 30, 60, "big"), (160, 35, 40, "speck")):
+        _w = (_rgb.min(2) > _lo) & (_rgb.max(2) - _rgb.min(2) < _sat) & (_al > _amin) & ~_kill; _w[:, int(J["_clear_white_x"]):] = False
+        _n, _lab, _st, _ = cv2.connectedComponentsWithStats(_w.astype(np.uint8))
+        _near = cv2.dilate(np.isin(_lab, [j for j in range(1, _n) if _st[j, 4] >= 100]).astype(np.uint8), np.ones((31, 31), np.uint8)).astype(bool)
+        for j in range(1, _n):
+            sx, sy, sw, sh, ar = _st[j]
+            if (_mode == "big" and (ar > 1000 or (ar > 60 and sh / max(sw, 1) > 2.5))) or (_mode == "speck" and ar < 100 and not _near[_lab == j].any()):
+                _kill |= _lab == j
+    _light = (_rgb.min(2) > 120) & (_rgb.max(2) - _rgb.min(2) < 40)
+    for _ in range(3): _kill |= cv2.dilate(_kill.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & _light
+    _al[_kill] = 0; _sol = _al > 127; _, (_iy, _ix) = distance_transform_edt(~_sol, return_indices=True)
+    _rgb = np.where(_sol[..., None], _rgb, _rgb[_iy, _ix]); Image.fromarray(np.dstack([_rgb, _al]).astype(np.uint8)).save(_p)
+    print("cleared enclosed white px", int(_kill.sum()))
+rig["pieces"]["body"] = {"pivot": [float(hip[0]), float(hip[1])], "parent": None, "z": 0}
 am, S, T = arm_mask(A, mA, J, w, hand_len); save_piece(A, am, os.path.join(OUT, "arm.png"))
 rig["pieces"]["arm"] = {"pivot": [float(S[0]), float(S[1])], "parent": "body", "z": 2, "rest": float(math.degrees(math.atan2(T[0] - S[0], T[1] - S[1])))}
 # feet: figure pixels of apose below (ankle - 45), split into the two largest blobs, back = left

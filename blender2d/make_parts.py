@@ -101,6 +101,18 @@ widths = mA.sum(1); fy = np.nonzero(widths)[0]; top_y = fy.min()
 band = range(int(top_y + 0.22 * (hem_y - top_y)), int(top_y + 0.42 * (hem_y - top_y)))
 neck_y = min(band, key=lambda y: widths[y] if widths[y] > 0 else 1e9)
 head_m = mA.copy(); head_m[neck_y + 18:] = 0
+# opt-in (joints.json "parts": {"head_chin": {"seed": [x, y], "y": [y0, y1]}}): a character with NO visible neck (lallan: fat chin
+# sits on the vest) gets its neck row in the middle of the face, so the head piece stopped at the mouth and the chin rode on the body.
+# Add the face region below that row: the pale (non-outline) area connected to the seed inside rows y0..y1, closed and grown 3 px
+# so the chin outline comes with it
+if PARTS.get("head_chin"):
+    _hc = PARTS["head_chin"]; _g = cv2.cvtColor(A, cv2.COLOR_RGB2GRAY); _y0, _y1 = int(_hc["y"][0]), int(_hc["y"][1])
+    _free = ((_g > 90) & (mA == 1)).astype(np.uint8); _free[:_y0] = 0; _free[_y1:] = 0
+    _n, _lab = cv2.connectedComponents(_free); _sx, _sy = map(int, _hc["seed"]); _face = (_lab == _lab[_sy, _sx]) & (_lab[_sy, _sx] > 0)
+    _face = cv2.morphologyEx(_face.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+    _face = cv2.dilate(_face, np.ones((7, 7), np.uint8)) & mA
+    head_m[_y0:] = 0                                   # below y0 ONLY the face (the plain row cut also took the vest-strap tips)
+    head_m = (head_m.astype(bool) | _face.astype(bool)).astype(np.uint8); print("head_chin added px", int(_face.sum()))
 nx = np.nonzero(mA[neck_y])[0].mean()
 body_m = mB.copy(); body_m[:max(0, neck_y - 30)] = 0
 add("body", body_m, B, (nx, hem_y), None, 0)
@@ -119,6 +131,9 @@ for v in ("closed", "mouth_half", "mouth_open", "mouth_o", "blink"):
         diff = (np.abs(src.astype(int) - A.astype(int)).sum(2) > 70) & (head_m == 1)
         hy = np.nonzero(head_m.any(1))[0]; face_top = hy.min() + 0.35 * (hy.max() - hy.min())
         diff[: int(face_top)] = False                                   # never take hair from the variant
+        # opt-in (joints.json "parts": {"blink_y": [y0, y1]}): a blink drawing that also redrew the moustache (lallan) gave its
+        # moustache as one of the two biggest changes and only ONE eye closed: take the blink only from the eye band
+        if v == "blink" and PARTS.get("blink_y"): diff[: int(PARTS["blink_y"][0])] = False; diff[int(PARTS["blink_y"][1]):] = False
         n2, lab2, st2, _ = cv2.connectedComponentsWithStats(diff.astype(np.uint8))
         keep = np.zeros_like(diff)
         if n2 > 1:

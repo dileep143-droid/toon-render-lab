@@ -1,0 +1,42 @@
+{
+ "_note": "hand-placed joints (canvas px), checked on the 50 px grid. body.png = body_orig.png warped onto the apose canvas (it was 896x1200, apose 864x1184). White kurta sleeves on a white page hide from the drawn-difference test, so prep fill/under are off (like jugaadu_chacha); prep.ink outlines the hidden body side. namaste = full-body pose drawing (fullpose_namaste, swapped). blink.png closed only one eye in the 2-biggest-changes pick: parts.blink_y keeps it to the eye band.",
+ "head": [
+  430,
+  305
+ ],
+ "arm_upper_L": [
+  576,
+  388
+ ],
+ "arm_lower_L": [
+  585,
+  560
+ ],
+ "arm_upper_R": [
+  286,
+  388
+ ],
+ "arm_lower_R": [
+  276,
+  560
+ ],
+ "leg_L": [
+  478,
+  780
+ ],
+ "leg_R": [
+  385,
+  780
+ ],
+ "prep": {
+  "fill": false,
+  "under": false,
+  "ink": true
+ },
+ "parts": {
+  "blink_y": [
+   140,
+   228
+  ]
+ }
+}

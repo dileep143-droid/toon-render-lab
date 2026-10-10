@@ -1,0 +1,36 @@
+{
+ "_note": "hand-placed side-view joints (canvas px) on a 50 px grid over apose.png (_grid.png). Faces RIGHT (+x = forward). Built 10 Oct from raju/side/{apose,body}.png (prep_side_char.py, make_parts_side.py, make_arm_side.py 66 95).",
+ "hip": [
+  450,
+  730
+ ],
+ "shoulder": [
+  440,
+  405
+ ],
+ "elbow": [
+  445,
+  560
+ ],
+ "wrist": [
+  455,
+  700
+ ],
+ "knee_back": [
+  345,
+  940
+ ],
+ "ankle_back": [
+  280,
+  1050
+ ],
+ "knee_front": [
+  525,
+  940
+ ],
+ "ankle_front": [
+  535,
+  1070
+ ],
+ "_arm_tight": true
+}

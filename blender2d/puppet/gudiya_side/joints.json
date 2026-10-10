@@ -1,8 +1,36 @@
-{"_note": "hand-placed side-view joints (canvas px) on a 50 px grid over apose.png (_grid.png). Faces RIGHT. Legs are under the skirt: hip/knee guessed from the skirt, ankles on the drawn feet.", "hip": [430, 850],
- "shoulder": [410, 405],
- "elbow": [402, 560],
- "wrist": [425, 708],
- "knee_back": [380, 960],
- "ankle_back": [332, 1062],
- "knee_front": [468, 965],
- "ankle_front": [496, 1064]}
+{
+ "_note": "hand-placed side-view joints (canvas px) on a 50 px grid over apose.png (_grid.png). Faces RIGHT. Legs are under the skirt: hip/knee guessed from the skirt, ankles on the drawn feet. _clear_white_x: make_parts_skirt clears the page white enclosed by braid + back (left of x=420) from parts/body.png.",
+ "hip": [
+  430,
+  850
+ ],
+ "shoulder": [
+  410,
+  405
+ ],
+ "elbow": [
+  402,
+  560
+ ],
+ "wrist": [
+  425,
+  708
+ ],
+ "knee_back": [
+  380,
+  960
+ ],
+ "ankle_back": [
+  332,
+  1062
+ ],
+ "knee_front": [
+  468,
+  965
+ ],
+ "ankle_front": [
+  496,
+  1064
+ ],
+ "_clear_white_x": 420
+}
