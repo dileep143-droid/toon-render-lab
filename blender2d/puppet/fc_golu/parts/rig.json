@@ -1,0 +1,89 @@
+{
+ "canvas": [
+  1136,
+  1200
+ ],
+ "pieces": {
+  "arm_upper_L": {
+   "pivot": [
+    737.5,
+    497.0
+   ],
+   "parent": "body",
+   "z": 2
+  },
+  "arm_lower_L": {
+   "pivot": [
+    755.0,
+    636.0
+   ],
+   "parent": "arm_upper_L",
+   "z": 3
+  },
+  "arm_upper_R": {
+   "pivot": [
+    491.0,
+    500.0
+   ],
+   "parent": "body",
+   "z": 2
+  },
+  "arm_lower_R": {
+   "pivot": [
+    474.5,
+    637.0
+   ],
+   "parent": "arm_upper_R",
+   "z": 3
+  },
+  "body": {
+   "pivot": [
+    615.5,
+    1153.0
+   ],
+   "parent": null,
+   "z": 0
+  },
+  "head_closed": {
+   "pivot": [
+    615.5,
+    417.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_half": {
+   "pivot": [
+    615.5,
+    417.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_open": {
+   "pivot": [
+    615.5,
+    417.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_mouth_o": {
+   "pivot": [
+    615.5,
+    417.0
+   ],
+   "parent": "body",
+   "z": 5
+  },
+  "head_blink": {
+   "pivot": [
+    615.5,
+    417.0
+   ],
+   "parent": "body",
+   "z": 5
+  }
+ },
+ "fold_fix": true
+}

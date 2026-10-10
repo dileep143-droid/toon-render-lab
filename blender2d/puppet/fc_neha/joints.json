@@ -1,0 +1,84 @@
+{
+ "_note": "hand-placed joints (canvas px) on the 50 px grid (_joints.png); semi-realistic proportions, joints NOT squashed. Canvas = A-pose padded 120 px left+right (famcourt/fc5/stage.py).",
+ "head": [
+  648,
+  305
+ ],
+ "arm_upper_R": [
+  532,
+  355
+ ],
+ "arm_lower_R": [
+  488,
+  495
+ ],
+ "arm_upper_L": [
+  730,
+  365
+ ],
+ "arm_lower_L": [
+  775,
+  500
+ ],
+ "poses": {
+  "phone_up": {
+   "side": "R",
+   "elbow": [
+    455,
+    466
+   ],
+   "hand": [
+    300,
+    466
+   ],
+   "shoulder": [
+    532,
+    355
+   ],
+   "_hand_note": "hand = a WEIGHTING point (mesh_puppet blends the forearm along elbow->hand); for a sharply flexed arm it points sideways so the upper arm is not counted as forearm"
+  },
+  "point": {
+   "side": "L",
+   "elbow": [
+    910.0,
+    351
+   ],
+   "hand": [
+    1080.0,
+    345
+   ],
+   "shoulder": [
+    730.0,
+    365
+   ],
+   "_mirrored_from": "point_r"
+  }
+ },
+ "prep": {
+  "fill": false,
+  "under": false,
+  "ink": true
+ },
+ "_prep_note": "arms hang clear of the body (A-pose with a gap) and the Gemini body is drawn sleeveless with its own outline: the convex side fill / under-arm strip only painted double outlines (10 Oct)",
+ "_mirror_note": "armpose_point_r.png = the drawn pose (other side); the rig uses the mirrored copy (famcourt/fc5/mirror_armpose.py) so the held prop stays in one hand",
+ "poses_src": {
+  "point_r": {
+   "side": "R",
+   "elbow": [
+    352,
+    341
+   ],
+   "hand": [
+    182,
+    335
+   ],
+   "shoulder": [
+    532,
+    355
+   ]
+  }
+ },
+ "render": {
+  "unpremult": true
+ }
+}

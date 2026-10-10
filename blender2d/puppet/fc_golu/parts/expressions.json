@@ -1,0 +1,46 @@
+{
+ "happy": {
+  "lp_recipe": "happy",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "sad": {
+  "lp_recipe": "sad",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "angry": {
+  "lp_recipe": "angry",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "surprised": {
+  "lp_recipe": "r2:surprised_b",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "brows_raised": {
+  "lp_recipe": "r2:brows_raised_22",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "eyes_left": {
+  "lp_recipe": "eyes_left",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "eyes_right": {
+  "lp_recipe": "eyes_right",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "wink": {
+  "lp_recipe": "wink",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "crying": {
+  "lp_recipe": "r2:crying_c",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "worried": {
+  "lp_recipe": "r2:worried_c",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ },
+ "smug": {
+  "lp_recipe": "smug_b",
+  "source": "LivePortrait slider edit (no InsightFace), changed pixels only"
+ }
+}

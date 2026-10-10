@@ -1,0 +1,29 @@
+{
+ "_note": "hand-placed joints (canvas px) on the 50 px grid (_joints.png); saree to the floor, no leg layers. Semi-realistic proportions (taller), joints NOT squashed.",
+ "head": [
+  580,
+  310
+ ],
+ "arm_upper_R": [
+  418,
+  403
+ ],
+ "arm_lower_R": [
+  382,
+  553
+ ],
+ "arm_upper_L": [
+  720,
+  408
+ ],
+ "arm_lower_L": [
+  756,
+  558
+ ],
+ "_pad": "canvas padded 120 px left+right (10 Oct) so a swung-out hand never leaves the canvas; all joint x include the pad",
+ "prep": {
+  "fill": false,
+  "under": false
+ },
+ "_armfix": "10 Oct: R arm = mirrored clean L arm (x'=1138-x, y-5); R joints mirrored with it; famcourt/mirror_arm_kamla.py"
+}

@@ -1,0 +1,79 @@
+{
+ "_note": "hand-placed joints (canvas px) on the 50 px grid (_joints.png); semi-realistic proportions, joints NOT squashed. Canvas = A-pose padded 120 px left+right (famcourt/fc5/stage.py).",
+ "head": [
+  587,
+  327
+ ],
+ "arm_upper_R": [
+  474,
+  385
+ ],
+ "arm_lower_R": [
+  444,
+  530
+ ],
+ "arm_upper_L": [
+  705,
+  395
+ ],
+ "arm_lower_L": [
+  740,
+  530
+ ],
+ "poses": {
+  "plate_low": {
+   "side": "L",
+   "elbow": [
+    775,
+    562
+   ],
+   "hand": [
+    681,
+    698
+   ],
+   "shoulder": [
+    705,
+    395
+   ]
+  },
+  "plate_up": {
+   "side": "L",
+   "elbow": [
+    738,
+    400
+   ],
+   "hand": [
+    848,
+    204
+   ],
+   "shoulder": [
+    705,
+    395
+   ]
+  },
+  "point": {
+   "side": "R",
+   "elbow": [
+    359,
+    388
+   ],
+   "hand": [
+    181,
+    361
+   ],
+   "shoulder": [
+    474,
+    385
+   ]
+  }
+ },
+ "prep": {
+  "fill": false,
+  "under": false,
+  "ink": true
+ },
+ "_prep_note": "arms hang clear of the body (A-pose with a gap) and the Gemini body is drawn sleeveless with its own outline: the convex side fill / under-arm strip only painted double outlines (10 Oct)",
+ "render": {
+  "unpremult": true
+ }
+}
