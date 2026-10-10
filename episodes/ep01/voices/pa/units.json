@@ -1,0 +1,938 @@
+{
+ "lang": "pa",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਇਹ ਹੈ ਸੋਨਪੁਰ ਪਿੰਡ। ਤੇ ਇਹ ਹੈ ਬੇਬੇ ਦਾ ਵਿਹੜਾ। ਅੱਜ ਸ਼ਾਮ ਨੂੰ ਏਥੇ ਪੂਜਾ ਹੈ, ਤੇ ਬੇਬੇ ਬਣਾ ਰਹੀ ਹੈ ਆਪਣੇ ਮਸ਼ਹੂਰ ਵੇਸਣ ਦੇ ਲੱਡੂ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਇੱਕ, ਦੋ, ਤਿੰਨ... ਗਿਆਰਾਂ ਲੱਡੂ! ਬੱਸ, ਪੂਜਾ ਵਾਸਤੇ ਪੂਰੇ ਹੋ ਗਏ ਆ।",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ਆਹਾ... ਕਿੰਨੀ ਸੋਹਣੀ ਖ਼ੁਸ਼ਬੂ! ਬੇਬੇ, ਮੈਨੂੰ ਭੁੱਖ ਲੱਗੀ ਹੈ!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਹੁਣੇ ਤਾਂ ਤੂੰ ਚਾਰ ਪ੍ਰੌਂਠੇ ਛਕੇ ਆ, ਛੋਟੂ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ਉਹ ਤਾਂ ਸਵੇਰ ਵਾਲੀ ਭੁੱਖ ਸੀ। ਇਹ ਹੁਣ ਵਾਲੀ ਭੁੱਖ ਹੈ।",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "ਇਹ ਲੱਡੂ ਭਗਵਾਨ ਜੀ ਵਾਸਤੇ ਆ। ਪੂਜਾ ਤੋਂ ਬਾਅਦ ਸਭ ਨੂੰ ਮਿਲਣਗੇ। ਉਦੋਂ ਤੱਕ ਕੋਈ ਹੱਥ ਨੀ ਲਾਊਗਾ। ਸਮਝੇ?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "ਸਮਝ ਗਿਆ, ਬੇਬੇ! ਹੱਥ ਨੀ ਲਾਉਂਦਾ।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "ਓਏ, ਮੇਰੀ ਐਨਕ ਕਿੱਥੇ ਗਈ? ਹੁਣੇ ਤਾਂ ਐਥੇ ਈ ਸੀ!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ਚਮਕੀ, ਤੂੰ ਵੀ ਨੀ ਦੱਸੇਂਗੀ। ਚੱਲ, ਮੈਂ ਥੋੜ੍ਹਾ ਲੰਮੀ ਪੈ ਜਾਨੀ ਆਂ।",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "ਦੁਪਹਿਰ ਹੋ ਗਈ। ਬੇਬੇ ਸੌਂ ਗਈ। ਸ਼ੇਰੂ ਸੌਂ ਗਿਆ। ਤੇ ਛੋਟੂ ਦਾ ਢਿੱਡ... ਜਮ੍ਹਾਂ ਨੀ ਸੁੱਤਾ!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ਸ਼ੂਸ਼, ਢਿੱਡ ਜੀ! ਚੁੱਪ ਕਰੋ! ਬੇਬੇ ਜਾਗ ਜਾਊਗੀ।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "ਬੇਬੇ ਨੇ ਕਿਹਾ ਸੀ, ਹੱਥ ਨੀ ਲਾਉਂਗਾ। ਤਾਂ ਮੈਂ... ਮੂੰਹ ਲਾਉਂਗਾ!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "ਅੰਮ! ਬੱਸ ਇੱਕ। ਸਿਰਫ਼ ਇੱਕ।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ਬੱਸ ਇੱਕ\" ਕਹਿੰਦੇ-ਕਹਿੰਦੇ ਛੋਟੂ ਨੇ ਗਿਣਨਾ ਈ ਛੱਡ ਦਿੱਤਾ।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ਇਹ ਬਾਅਦ ਵਾਸਤੇ। ਬਾਅਦ ਵਾਲੀ ਭੁੱਖ ਵਾਸਤੇ!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "ਨਹੀਓਂ ਸ਼ੇਰੂ, ਸੌਂ ਜਾ! ਤੂੰ ਕੁੱਝ ਨੀ ਵੇਖ ਰਿਹਾ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਹਾਏ ਰੱਬਾ! ਮੇਰੇ ਲੱਡੂ! ਥਾਲੀ ਖ਼ਾਲੀ ਆ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "ਕੀ? ਗਿਆਰਾਂ ਦੇ ਗਿਆਰਾਂ ਲੱਡੂ ਗ਼ਾਇਬ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "ਕੀ ਹੋਇਆ, ਬੇਬੇ? ਕੋਈ ਗੱਲ ਹੋ ਗਈ ਕੀ?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ਛੋਟੂ... ਤੇਰੇ ਮੂੰਹ 'ਤੇ ਇਹ ਪੀਲਾ-ਪੀਲਾ ਕੀ ਹੈ?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ਇਹ? ਇਹ ਤਾਂ... ਮੇਰੀ ਨਵੀਂ ਮੁੱਛ ਹੈ! ਮਾਸਟਰ ਜੀ ਵਰਗੀ।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "ਮੈਨੂੰ ਤਾਂ ਐਨਕ ਤੋਂ ਬਿਨਾਂ ਕੁੱਝ ਦਿਸਦਾ ਈ ਨੀ।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "ਬੇਬੇ! ਮੈਂ ਵੇਖਿਆ! ਇੱਕ... ਇੱਕ ਜਾਦੂਈ ਲੱਡੂ ਚੋਰ ਆਇਆ ਸੀ!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ਜਾਦੂਈ ਲੱਡੂ ਚੋਰ?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "ਹਾਂ! ਉਹ ਉੱਡ ਕੇ ਆਇਆ, ਬਾਰੀ 'ਚੋਂ। ਫੁਰ੍ਰ ਕਰਕੇ ਥਾਲੀ 'ਚ ਵੜਿਆ, ਤੇ ਗੱਪ-ਗੱਪ ਸਾਰੇ ਲੱਡੂ ਖਾ ਗਿਆ!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "ਅੱਛਾ? ਤੇ ਉਹ ਦਿਸਦਾ ਕਿਮੇਂ ਦਾ ਸੀ?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "ਉਹ... ਉਹ... ਦਿਸਦਾ ਈ ਨੀ ਸੀ! ਉਹ ਜਾਦੂਈ ਹੈ ਨਾ, ਇਸ ਲਈ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "ਪਰ ਛੋਟੂ, ਬਾਰੀ ਤਾਂ ਸਵੇਰ ਦੀ ਬੰਦ ਹੈ।",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "ਤਾਂ ਉਹ ਬੰਦ ਬਾਰੀ 'ਚੋਂ ਵੀ ਲੰਘ ਜਾਂਦਾ ਹੈ! ਹਵਾ ਵਾਂਗੂ! ਫੁਰ੍ਰ!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ਤੇ ਤੂੰ ਉਦੋਂ ਕਿੱਥੇ ਸੀ, ਛੋਟੂ?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "ਮੈਂ? ਮੈਂ ਤਾਂ... ਸ਼ੇਰੂ ਨਾਲ ਸੁੱਤਾ ਪਿਆ ਸੀ! ਹੈ ਨਾ, ਸ਼ੇਰੂ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "ਵੇਖਿਆ? ਸ਼ੇਰੂ ਵੀ \"ਹਾਂ\" ਬੋਲ ਰਿਹਾ ਹੈ।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "ਤੇ ਏਥੋਂ ਈ ਸ਼ੁਰੂ ਹੋਇਆ ਛੋਟੂ ਦਾ ਪਹਿਲਾ ਝੂਠ। ਵਿਚਾਰੇ ਨੂੰ ਪਤਾ ਨੀ ਸੀ ਕਿ ਝੂਠ ਵੀ ਲੱਡੂ ਵਰਗਾ ਹੁੰਦਾ ਹੈ — ਇੱਕ ਖਾਓ, ਤਾਂ ਦੂਜਾ ਮੰਗਦਾ ਹੈ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ਦੋਸਤੋ, ਸੋਨਪੁਰ 'ਚ ਇੱਕ ਜਾਦੂਈ ਲੱਡੂ ਚੋਰ ਘੁੰਮ ਰਿਹਾ ਹੈ। ਸ਼ਾਮ ਨੂੰ ਪੂਜਾ ਹੈ। ਸਾਨੂੰ ਉਹਨੂੰ ਫੜਨਾ ਪਊਗਾ। ਚੱਲੋ, ਪਲੈਨ ਬਣਾਉਂਦੇ ਹਾਂ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "ਅਸਲ 'ਚ, ਮੈਂ ਕਿਤਾਬ 'ਚ ਪੜ੍ਹਿਆ ਹੈ ਕਿ ਲੱਡੂ ਚੋਰ ਸਿਰਫ਼ ਮੰਗਲਵਾਰ ਨੂੰ ਆਉਂਦੇ ਨੇ।",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "ਪਿੰਕੀ, ਅੱਜ ਤਾਂ ਬੁੱਧਵਾਰ ਹੈ।",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ਤਾਂ... ਅਸਲ 'ਚ, ਇਹ ਪੱਕਾ ਓਵਰਟਾਈਮ ਕਰ ਰਿਹਾ ਹੋਊਗਾ।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "ਜਾਦੂਈ? ਦਿਸਦਾ ਨੀ? ਮਤਲਬ... ਭੂਤ!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "ਬਬਲੂ ਭਈਆ, ਮੇਰੇ ਪਿੱਛੇ ਤੁਸੀਂ ਪੂਰੇ ਨੀ ਆਉਂਦੇ!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "ਡਰੋ ਨਾ! ਰਾਜੂ ਦ ਗ੍ਰੇਟ ਆ ਗਿਆ ਹੈ! ਕੋਈ ਵੀ ਚੋਰ ਹੋਵੇ, ਇਹ ਜਾਲ ਉਹਨੂੰ ਫੜ ਲਊਗਾ।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "ਇਹ... ਇਹ ਤਾਂ ਪ੍ਰੈਕਟਿਸ ਸੀ। ਜਾਲ ਠੀਕ ਕੰਮ ਕਰ ਰਿਹਾ ਹੈ।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ਛੋਟੂ, ਤੂੰ ਚੋਰ ਵੇਖਿਆ ਹੈ। ਸਾਨੂੰ ਦੱਸ, ਉਹਦੀ ਹੋਰ ਕੀ ਨਿਸ਼ਾਨੀ ਹੈ?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਨਿਸ਼ਾਨੀ? ਅੰਮ... ਉਹਦੀ... ਇੱਕ ਨੀਲੀ ਪੂਛ ਹੈ!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "ਨੀਲੀ ਪੂਛ। ਤੇ?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "ਤੇ ਉਹ ਗੋਲ-ਗੋਲ ਚੀਜ਼ਾਂ ਈ ਖਾਂਦਾ ਹੈ। ਲੱਡੂ, ਗੋਲਗੱਪੇ, ਗੇਂਦ...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ਗੇਂਦ ਵੀ? ਮੇਰੀ ਕ੍ਰਿਕਟ ਬਾਲ!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "ਤੇ ਜਦੋਂ ਉਹ ਖਾਂਦਾ ਹੈ, ਤਾਂ ਗਾਣਾ ਗਾਉਂਦਾ ਹੈ — \"ਲੱਡੂ-ਲੱਡੂ, ਗੱਪੂ-ਗੱਪੂ!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "ਜੇ ਉਹ ਗੋਲ ਚੀਜ਼ਾਂ ਖਾਂਦਾ ਹੈ, ਤਾਂ ਅਸੀਂ ਉਹਨੂੰ ਗੋਲ ਚੀਜ਼ ਨਾਲ ਈ ਫੜਾਂਗੇ। ਲੱਲਨ ਚਾਚੇ ਤੋਂ ਲੱਡੂ ਲਿਆਉਂਦੇ ਹਾਂ, ਪਿੱਪਲ ਥੱਲੇ ਰੱਖਦੇ ਹਾਂ, ਤੇ ਉੱਤੇ ਜਾਲ ਲਾਉਂਦੇ ਹਾਂ!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "ਵਧੀਆ ਪਲੈਨ! ਪਰ ਪਹਿਲਾਂ ਕੋਈ ਮੈਨੂੰ ਏਸ ਜਾਲ 'ਚੋਂ ਬਾਹਰ ਕੱਢੋ।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਵੇਖਿਆ? ਇੱਕ ਝੂਠ ਤੋਂ ਨੀਲੀ ਪੂਛ ਬਣੀ, ਪੂਛ ਤੋਂ ਗਾਣਾ ਬਣਿਆ। ਛੋਟੂ ਦਾ ਝੂਠ ਹੁਣ ਪਿੱਪਲ ਦੇ ਰੁੱਖ ਨਾਲੋਂ ਵੀ ਲੰਮਾ ਹੋ ਰਿਹਾ ਸੀ।",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "ਅਰੇ ਮੇਰੇ ਗੋਲ-ਗੋਲ ਬੱਚਿਓ! ਧੁੱਪ 'ਚ ਨਾ ਬੈਠੋ, ਕਾਲੇ ਹੋ ਜਾਓਗੇ। ਚੱਲੋ, ਚਾਸ਼ਨੀ 'ਚ ਚੁੱਭੀ ਲਾਓ।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "ਲੱਲਨ ਚਾਚਾ, ਸਾਨੂੰ ਚਾਰ ਲੱਡੂ ਚਾਹੀਦੇ ਨੇ। ਅਸੀਂ ਜਾਦੂਈ ਲੱਡੂ ਚੋਰ ਲਈ ਜਾਲ ਵਿਛਾ ਰਹੇ ਹਾਂ।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "ਕੀ? ਲੱਡੂ ਚੋਰ? ਪਿੰਡ ਵਿੱਚ?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "ਨਹੀਓਂ! ਮੇਰੇ ਬੱਚਿਆਂ ਨੂੰ ਕੋਈ ਹੱਥ ਨੀ ਲਾਊਗਾ! ਜਲੇਬੀ ਰਾਣੀ, ਡਰੀਂ ਨਾ, ਚਾਚਾ ਹੈਗਾ ਨਾ!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "ਚਿੰਤਾ ਨਾ ਕਰੋ, ਚਾਚਾ। ਰਾਜੂ ਦ ਗ੍ਰੇਟ ਹੈਗਾ ਨਾ।",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "ਇਹ... ਇਹ ਵੀ ਪਲੈਨ ਦਾ ਹਿੱਸਾ ਸੀ। ਹੱਥ ਮਿੱਠਾ ਹੋਵੇ, ਤਾਂ ਚੋਰ ਨੇੜੇ ਆਊਗਾ।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "ਇਹ ਲਵੋ ਚਾਰ ਲੱਡੂ। ਪਰ ਇਹਨਾਂ ਨੂੰ ਪਿਆਰ ਨਾਲ ਰੱਖਣਾ। ਇਹ ਮੇਰੇ ਸਭ ਤੋਂ ਸ਼ਰੀਫ਼ ਬੱਚੇ ਨੇ। ਕਦੇ ਕੜਾਹੀ 'ਚੋਂ ਬਾਹਰ ਨੀ ਟੱਪਦੇ।",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ਪੱਕਾ, ਚਾਚਾ। ਚੋਰ ਫੜਦਿਆਂ ਈ ਵਾਪਸ ਲੈ ਆਵਾਂਗੇ।",
+   "request": 2
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "ਚਾਚਾ, ਮੈਨੂੰ ਭੁੱਖ ਲੱਗੀ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "ਛੋਟੂ! ਇਹ ਚੋਰ ਵਾਸਤੇ ਨੇ, ਤੇਰੇ ਲਈ ਨਹੀਂ!",
+   "request": 2
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "ਪਲੈਨ ਇਹ ਹੈ — ਚੋਰ ਲੱਡੂ ਖਾਣ ਆਊਗਾ, ਮੈਂ ਰੱਸੀ ਖਿੱਚੂੰਗੀ, ਜਾਲ ਡਿੱਗੇਗਾ, ਤੇ ਚੋਰ ਫੜਿਆ ਜਾਊਗਾ!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ਗੁੜੀਆ, ਪਰ ਚੋਰ ਤਾਂ ਦਿਸਦਾ ਈ ਨਹੀਂ। ਜਾਲ ਡਿੱਗੂਗਾ ਤਾਂ ਪਤਾ ਕਿਵੇਂ ਲੱਗੂਗਾ ਕਿ ਅੰਦਰ ਕੋਈ ਹੈ?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਅੰਮ... ਉਹ... ਪਲੈਨ ਦਾ ਇਹ ਹਿੱਸਾ ਮੈਂ ਕੱਲ੍ਹ ਬਣਾਊਂਗੀ।",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "ਸੁਣੋ! ਕੁਤਰ-ਕੁਤਰ! ਚੋਰ ਆ ਗਿਆ!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "ਫੜ ਲਿਆ! ਰਾਜੂ ਦ ਗ੍ਰੇਟ ਨੇ ਚੋਰ ਫੜ ਲਿਆ!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "ਅਸਲ 'ਚ... ਚੋਰ ਦੀ ਪੂਛ ਨੀਲੀ ਨਹੀਂ, ਭੂਰੀ ਹੈ। ਤੇ ਇਹ ਭੌਂਕਦਾ ਹੈ।",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ਪਿੰਕੀ, ਇਹ ਚੋਰ ਨਹੀਂ, ਸ਼ੇਰੂ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "ਭੂਤ! ਭੂऽऽਤ!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ਓਏ ਜਵਾਕੋ, ਮੈਂ ਆਂ। ਆਪਣੀ ਐਨਕ ਲੱਭ ਰਹੀ ਸੀ। ਕਿਸੇ ਨੇ ਵੇਖੀ?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "ਬੱਚਿਓ! ਮੈਂ ਵੀ ਆ ਗਿਆ! ਜੇ ਚੋਰ ਮੇਰੀਆਂ ਜਲੇਬੀਆਂ ਤੱਕ ਪਹੁੰਚਿਆ, ਤਾਂ ਇਹ ਵੇਲਣਾ... ਇਹ ਵੇਲਣਾ ਉਹਨੂੰ ਪਿਆਰ ਨਾਲ ਸਮਝਾਊਗਾ!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "ਚਾਚਾ, ਸਾਨੂੰ ਚੋਰ ਮਿਲਿਆ ਈ ਨਹੀਂ।",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "ਉਹ... ਉਹ ਨਾ, ਹੁਣ ਲੱਲਨ ਚਾਚੇ ਦੀ ਦੁਕਾਨ ਵੱਲ ਗਿਆ ਹੋਊਗਾ! ਮੈਂ ਉਹਦੀ ਨੀਲੀ ਪੂਛ ਉੱਧਰ ਜਾਂਦੀ ਵੇਖੀ!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "ਹਾਏ! ਮੇਰੀਆਂ ਜਲੇਬੀਆਂ ਇਕੱਲੀਆਂ ਨੇ! ਮੈਂ ਆਇਆ, ਮੇਰੇ ਬੱਚਿਓ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "ਹੁਣ ਮੈਂ ਰਾਤ ਨੂੰ ਸੌਂ ਵੀ ਨੀ ਸਕਾਂਗਾ। ਨੀਲੀ ਪੂਛ ਵਾਲਾ ਭੂਤ ਗਾਣਾ ਗਾਊਗਾ, \"ਲੱਡੂ-ਲੱਡੂ, ਗੱਪੂ-ਗੱਪੂ\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "ਤੇ ਮੇਰੀ ਕਮਰ! ਰਾਜੂ ਦ ਗ੍ਰੇਟ ਅੱਜ ਤਿੰਨ ਵਾਰ ਡਿੱਗਿਆ ਹੈ। ਇਹ ਚੋਰ ਬਹੁਤ ਖ਼ਤਰਨਾਕ ਹੈ।",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "ਤੇ ਪੂਜਾ ਵਾਸਤੇ ਲੱਡੂ ਵੀ ਨਹੀਂ ਨੇ। ਬੇਬੇ ਕਿੰਨੀ ਦੁਖੀ ਹੈ। ਉਹ ਕਹਿ ਰਹੀ ਸੀ, ਏਸ ਵਾਰ ਪੂਜਾ ਅਧੂਰੀ ਰਹਿ ਜਾਊਗੀ।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "ਕੋਈ ਨਾ। ਕੱਲ੍ਹ ਸਵੇਰੇ ਫਿਰ ਨਵਾਂ ਪਲੈਨ ਬਣਾਵਾਂਗੇ। ਅਸੀਂ ਪੂਰੀ ਰਾਤ ਜਾਗਾਂਗੇ, ਜਦੋਂ ਤੱਕ ਚੋਰ ਨੀ ਮਿਲਦਾ!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ਛੋਟੂ ਦਾ ਢਿੱਡ ਤਾਂ ਭਰਿਆ ਸੀ। ਪਰ ਹੁਣ ਉਹਦੇ ਦਿਲ 'ਚ ਕੁੱਝ ਭਾਰੀ-ਭਾਰੀ ਜਿਹਾ ਲੱਗ ਰਿਹਾ ਸੀ। ਲੱਡੂ ਨਾਲੋਂ ਵੀ ਭਾਰੀ।",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ਨਹੀਂ ਚਮਕੀ, ਨਹੀਂ! ਉਹ ਮੇਰੀ ਬਾਅਦ ਵਾਲੀ ਭੁੱਖ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ਛੋਟੂ... ਇਹ ਤਾਂ ਬੇਬੇ ਵਾਲਾ ਲੱਡੂ ਹੈ।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ਤਾਂ ਨੀਲੀ ਪੂਛ ਵਾਲਾ ਚੋਰ...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "ਅਸਲ 'ਚ... ਚੋਰ ਦੀ ਪੂਛ ਨਹੀਂ, ਜੇਬ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "ਹਾਂ! ਮੈਂ ਈ ਸਾਰੇ ਲੱਡੂ ਖਾਧੇ! ਕੋਈ ਜਾਦੂਈ ਚੋਰ ਨਹੀਂ ਹੈ। ਨਾ ਨੀਲੀ ਪੂਛ, ਨਾ ਗਾਣਾ। ਮੈਨੂੰ ਭੁੱਖ ਲੱਗੀ ਸੀ, ਫਿਰ ਡਰ ਲੱਗਿਆ, ਫਿਰ ਝੂਠ ਬੋਲਦਾ ਗਿਆ... ਸੌਰੀ! ਸਭ ਨੂੰ ਸੌਰੀ!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ਮਤਲਬ... ਕੋਈ ਭੂਤ ਨਹੀਂ ਹੈ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "ਨਹੀਂ, ਬਬਲੂ ਭਈਆ। ਭੂਤ ਨਹੀਂ। ਬੱਸ ਮੈਂ।",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "ਉਫ਼! ਥੈਂਕ ਯੂ, ਛੋਟੂ! ਹੁਣ ਮੈਂ ਸੌਂ ਸਕਾਂਗਾ!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "ਬੇਬੇ, ਲੱਡੂ ਮੈਂ ਖਾਧੇ ਸੀ। ਤੇ ਫਿਰ ਝੂਠ ਬੋਲਿਆ। ਸੌਰੀ।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "ਮੈਨੂੰ ਪਤਾ ਸੀ, ਛੋਟੂ।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ਪਤਾ ਸੀ? ਪਰ ਤੁਹਾਡੀ ਐਨਕ ਤਾਂ...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "ਐਨਕ ਨੀ ਸੀ, ਪਰ ਨੱਕ ਤਾਂ ਸੀ। ਤੇਰੇ ਮੂੰਹ 'ਚੋਂ ਵੇਸਣ ਦੀ ਖ਼ੁਸ਼ਬੂ ਆਈ ਜਾਂਦੀ ਸੀ। ਮੈਂ ਬੱਸ ਉਡੀਕ ਰਹੀ ਸੀ ਕਿ ਤੂੰ ਆਪ ਸੱਚ ਬੋਲੇਂ।",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "ਹੁਣ ਕਦੇ ਝੂਠ ਨੀ ਬੋਲੂੰਗਾ, ਬੇਬੇ। ਝੂਠ ਬਹੁਤ ਥਕਾਉਂਦਾ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "ਚੱਲੋ, ਹੁਣ ਸਭ ਰਲ ਕੇ ਨਵੇਂ ਲੱਡੂ ਬਣਾਉਂਦੇ ਆਂ। ਪੂਜਾ 'ਚ ਅਜੇ ਟਾਈਮ ਹੈ।",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ਮਤਲਬ ਹੁਣ ਮੈਨੂੰ ਜਾਲ ਲੈ ਕੇ ਹੋਰ ਨੀ ਡਿੱਗਣਾ ਪਊਗਾ?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਨਾ ਰਾਜੂ, ਹੁਣ ਬੱਸ ਵੇਸਣ 'ਚ ਹੱਥ ਪਾਉਣਾ ਆ।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ਚੱਲੋ, ਪਲੈਨ ਬਣਾਉਂਦੇ ਹਾਂ! ਲੱਡੂ ਬਣਾਉਣ ਦਾ ਪਲੈਨ! ਏਸ ਵਾਰ ਪਲੈਨ 'ਚ ਕੋਈ ਮੋਰੀ ਨੀ ਹੋਊਗੀ!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "ਅਸਲ 'ਚ, ਗੁੜੀਆ, ਤੁਹਾਡੇ ਹਰ ਪਲੈਨ 'ਚ ਇੱਕ ਮੋਰੀ ਹੁੰਦੀ ਹੈ।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "ਤਾਂ ਏਸ ਵਾਰ ਮੋਰੀ 'ਚ ਵੇਸਣ ਭਰ ਦਿਆਂਗੇ!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਤੇ ਫਿਰ ਸ਼ੁਰੂ ਹੋਈ ਸੋਨਪੁਰ ਦੀ ਸਭ ਤੋਂ ਮਜ਼ੇਦਾਰ ਲੱਡੂ ਫ਼ੈਕਟਰੀ!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "ਅਸਲ 'ਚ, ਲੱਡੂ ਚੌਰਸ ਬਣਾਉਣੇ ਚਾਹੀਦੇ ਨੇ। ਉਹ ਬਹੁਤਾ ਚਿਰ ਟਿਕਦੇ ਨੇ।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਪਿੰਕੀ ਧੀਏ, ਲੱਡੂ ਗੋਲ ਈ ਚੰਗੇ ਲੱਗਦੇ ਆ। ਗੋਲ-ਗੋਲ ਘੁਮਾਓ, ਐਵੇਂ।",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "ਵੇਖੋ, ਰਾਜੂ ਦ ਗ੍ਰੇਟ ਦਾ ਸੁਪਰ ਲੱਡੂ! ਸਭ ਤੋਂ ਵੱਡਾ!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ਇਹ... ਇਹ ਚੂਰਾ-ਲੱਡੂ ਹੈ। ਨਵਾਂ ਡਿਜ਼ਾਈਨ।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "ਮੇਰੇ ਲੱਡੂ ਜਮ੍ਹਾਂ ਗੋਲ ਬਣੇ ਨੇ!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "ਭੂਤ! ਮੇਰਾ ਲੱਡੂ ਭੂਤ ਲੈ ਗਿਆ!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਬਬਲੂ, ਉਹ ਚਮਕੀ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "ਢਿੱਡ ਜੀ, ਇਹ ਪੂਜਾ ਦੇ ਲੱਡੂ ਨੇ। ਸਬਰ ਕਰੋ!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "ਵਾਹ ਛੋਟੂ! ਅੱਜ ਤਾਂ ਤੂੰ ਸੱਚਮੁੱਚ ਵੱਡਾ ਹੋ ਗਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ਮੇਰੀਆਂ ਜਲੇਬੀਆਂ ਸਹੀ-ਸਲਾਮਤ ਨੇ! ਚੋਰ ਆਇਆ ਈ ਨਹੀਂ। ਖ਼ੁਸ਼ੀ 'ਚ ਪੂਜਾ ਲਈ ਇਹ ਜਲੇਬੀਆਂ ਮੇਰੇ ਵੱਲੋਂ!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ਹੁਣ ਸਭ ਨੂੰ ਪ੍ਰਸਾਦ। ਤੇ ਪਹਿਲਾ ਲੱਡੂ... ਛੋਟੂ ਨੂੰ, ਜਿਹਨੇ ਸੱਚ ਬੋਲਿਆ।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "ਝੂਠ ਵਾਲਾ ਲੱਡੂ ਢਿੱਡ 'ਚ ਭਾਰੀ ਲੱਗਦਾ ਸੀ। ਸੱਚ ਵਾਲਾ ਲੱਡੂ ਹੌਲਾ-ਹੌਲਾ ਤੇ ਮਿੱਠਾ-ਮਿੱਠਾ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "ਸੱਚ ਬੋਲਣ ਵਾਲੇ ਦਾ ਮਨ ਵੀ ਲੱਡੂ ਵਰਗਾ ਮਿੱਠਾ ਰਹਿੰਦੈ।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ਵੇਖੋ, ਸ਼ੇਰੂ ਜਾਗ ਪਿਆ! ਖਾਣ ਦੇ ਟਾਈਮ 'ਤੇ ਹਮੇਸ਼ਾ ਜਾਗ ਪੈਂਦਾ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ਓਏ, ਮੇਰੀ ਐਨਕ ਫੇਰ ਕਿੱਥੇ ਗਈ?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ਬੇਬੇ, ਉਹਨੂੰ ਜਾਦੂਈ ਐਨਕ ਚੋਰ ਲੈ ਗਿਆ!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "ਨਹੀਂ-ਨਹੀਂ, ਸੱਚ ਬੋਲੂੰਗਾ — ਉਹ ਤੁਹਾਡੇ ਸਿਰ 'ਤੇ ਹੈ!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ਹੁਣ ਤਾਂ ਮੈਨੂੰ ਸੱਚਮੁੱਚ ਭੁੱਖ ਲੱਗੀ ਹੈ!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

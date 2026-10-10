@@ -1,0 +1,938 @@
+{
+ "lang": "or",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଏ ହେଉଛି ସୋନପୁର ଗାଁ। ଆଉ ଏଇଟା ଜେଜେମାଙ୍କ ଅଗଣା। ଆଜି ସଞ୍ଜବେଳେ ଏଠି ପୂଜା ଅଛି, ଆଉ ଜେଜେମା ତିଆରି କରୁଛନ୍ତି ତାଙ୍କ ପ୍ରସିଦ୍ଧ ବେସନ ଲଡ଼ୁ!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ଗୁଟେ, ଦୁଇ, ତିନି... ଏଗାର୍ ଲଡୁ! ବସ୍, ପୂଜା ଲାଗି ସବୁ ପୁରା ହେଇଗଲା।",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "ଆହା... କେତେ ବଢ଼ିଆ ବାସ୍ନା! ଜେଜେମା, ମୋତେ ଭାରି ଭୋକ ଲାଗୁଛି!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ଆଜ୍‌ହେଁ ତୁଇଁ ଚାର୍‌ଟା ପରୋଟା ଖାଇଛୁ, ଛୋଟୁ!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ସେଇଟା ତ ସକାଳ ଭୋକ ଥିଲା। ଏଇଟା ଏବେକାର ଭୋକ!",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "ଇ ଲଡୁ ଭଗବାନ୍‌ଙ୍କର ଲାଗି। ପୂଜା ପରେ ସଭିଙ୍କେ ମିଲ୍‌ବା। ସେତେନ୍ ତକ୍ କେହି ହାତ୍ ନି ଲଗାବ। ବୁଝ୍‌ଲୁ?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "ବୁଝିଗଲି, ଜେଜେମା! ହାତ ଲଗାଇବିନି।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "ଆରେ, ମୋର୍ ଚଷମା କେନ୍ତା ଗଲା? ଇହାଦେ ଇଠାନେ ଥିଲା!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ଚମ୍‌କି, ତୁଇଁ ବି ନି କହୁ। ଚାଲ୍, ମୁଇଁ ଟିକେ ସୁଇପଡୁଛେ।",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "ଉପରଓଳି ହେଲା। ଜେଜେମା ଶୋଇଗଲେ। ଶେରୁ ଶୋଇଗଲା। ଆଉ ଛୋଟୁର ପେଟ... ଆଦୌ ଶୋଇନି!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ଚୁପ୍, ପେଟ ଭାଇ! ଚୁପ୍ ରହ! ଜେଜେମା ଉଠିପଡ଼ିବେ।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "ଜେଜେମା କହିଥିଲେ, ହାତ ଲଗାଇବିନି। ତେଣୁ ମୁଁ... ପାଟି ଲଗାଇବି!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "ମ୍ମ୍ମ! ବସ୍ ଗୋଟିଏ। ଖାଲି ଗୋଟିଏ।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ଖାଲି ଗୋଟିଏ\" କହୁ କହୁ ଛୋଟୁ ଗଣିବା ହିଁ ଛାଡ଼ିଦେଲା।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "ଏଇଟା ପରେ ଖାଇବା ପାଇଁ। ପରେ ଲାଗିବା ଭୋକ ପାଇଁ!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "ନାହିଁ ଶେରୁ, ଶୋଇପଡ଼! ତୁ କିଛି ଦେଖୁନୁ!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ବାପ୍ ରେ ବାପ୍! ମୋର୍ ଲଡୁ! ଥାଲି ଖାଲି ଆଛେ!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "କ'ଣ? ଏଗାରଟାରୁ ଏଗାରଟା ଲଡ଼ୁ ଗାଏବ?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "କ'ଣ ହେଲା, ଜେଜେମା? କିଛି କଥା ହେଇଛି କି?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ଛୋଟୁ... ତୋ ପାଟିରେ ଏ ହଳଦିଆ ହଳଦିଆ କ'ଣ?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ଏଇଟା? ଏଇଟା ତ... ମୋ ନୂଆ ନିଶ! ମାଷ୍ଟରଜୀଙ୍କ ଭଳି।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "ମୋତେ ଚଷମା ବିନା କିଛି ଦିଶୁ ବି ନି ନା।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "ଜେଜେମା! ମୁଁ ଦେଖିଲି! ଗୋଟେ... ଗୋଟେ ଗୁଣିଆ ଲଡ଼ୁ ଚୋର ଆସିଥିଲା!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ଗୁଣିଆ ଲଡ଼ୁ ଚୋର?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "ହଁ! ସେ ଉଡ଼ି ଆସିଲା, ଝରକା ଦେଇ। ଫୁର୍ରି କି ଥାଳିରେ ପଶିଲା, ଆଉ ଗପଗପ୍ ସବୁ ଲଡ଼ୁ ଖାଇଦେଲା!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "ଆଚ୍ଛା? ଆର୍ ସେ କେନ୍ତା ଦିଶୁଥିଲା?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "ସେ... ସେ... ଦିଶୁ ବି ନଥିଲା! ସେ ତ ଗୁଣିଆ ଚୋର, ସେଥିପାଇଁ!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "ହେଲେ ଛୋଟୁ, ଝରକା ତ ସକାଳୁ ବନ୍ଦ ଅଛି।",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "ତେଣୁ ସେ ବନ୍ଦ ଝରକା ଦେଇ ବି ଗଳିଯାଏ! ପବନ ପରି! ଫୁର୍ରି!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ଆର୍ ତୁଇଁ ସେତେନ୍ କେନ୍‌ଠାନେ ଥିଲୁ, ଛୋଟୁ?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "ମୁଁ? ମୁଁ ତ... ଶେରୁ ସାଙ୍ଗରେ ଶୋଇଥିଲି! ନାହିଁ କି, ଶେରୁ?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "ଦେଖିଲ? ଶେରୁ ବି \"ହଁ\" କହୁଛି।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "ଆଉ ଏଇଠୁ ଆରମ୍ଭ ହେଲା ଛୋଟୁର ପ୍ରଥମ ମିଛ। ବିଚାରା ଜାଣିନଥିଲା ଯେ ମିଛ ବି ଲଡ଼ୁ ପରି — ଗୋଟିଏ ଖାଇଲେ, ଆଉ ଗୋଟିଏ ମାଗେ!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "ସାଙ୍ଗମାନେ, ସୋନପୁରରେ ଗୋଟେ ଗୁଣିଆ ଲଡ଼ୁ ଚୋର ବୁଲୁଛି। ସଞ୍ଜବେଳେ ପୂଜା। ଆମକୁ ତାକୁ ଧରିବାକୁ ହେବ। ଚାଲ, ଉପାୟ ଚିନ୍ତା କରିବା!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "ସତରେ, ମୁଁ ବହିରେ ପଢ଼ିଛି ଯେ ଲଡ଼ୁ ଚୋର ଖାଲି ମଙ୍ଗଳବାରଦିନ ଆସନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "ପିଙ୍କି, ଆଜି ତ ବୁଧବାର।",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "ତା'ହେଲେ... ସତରେ, ଏ ନିଶ୍ଚୟ ଓଭରଟାଇମ୍ କରୁଥିବ।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "ଗୁଣିଆ? ଦିଶୁନି? ମାନେ... ଭୂତ!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "ବବ୍‌ଲୁ ଭାଇ, ମୋ ପଛରେ ଆପଣ ପୁରା ଲୁଚିପାରିବେନି!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "ଡରନାହିଁ! ରାଜୁ ଦି ଗ୍ରେଟ୍ ଆସିଗଲା! ଯେତେ ବଡ଼ ଚୋର ହେଉ, ଏ ଜାଲ ତାକୁ ଧରିନେବ।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "ଏଇଟା... ଏଇଟା ତ ଅଭ୍ୟାସ ଥିଲା। ଜାଲ ଠିକ୍ କାମ କରୁଛି।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ଛୋଟୁ, ତୁ ଚୋରକୁ ଦେଖିଛୁ। ଆମକୁ କହ, ତା'ର ଆଉ କ'ଣ ଚିହ୍ନ ଅଛି?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ଚିହ୍ନ? ଅଁ... ତା'ର... ଗୋଟିଏ ନୀଳ ଲାଞ୍ଜ ଅଛି!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "ନୀଳ ଲାଞ୍ଜ। ଆଉ?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "ଆଉ ସେ ଖାଲି ଗୋଲ ଗୋଲ ଜିନିଷ ଖାଏ। ଲଡ଼ୁ, ଗୁପ୍‌ଚୁପ୍, ବଲ୍...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "ବଲ୍ ବି? ମୋ କ୍ରିକେଟ୍ ବଲ୍!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "ଆଉ ସେ ଯେତେବେଳେ ଖାଏ, ଗୀତ ଗାଏ — \"ଲଡ଼ୁ-ଲଡ଼ୁ, ଗପୁ-ଗପୁ!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "ଯଦି ସେ ଗୋଲ ଜିନିଷ ଖାଏ, ତେବେ ଆମେ ତାକୁ ଗୋଲ ଜିନିଷ ଦେଇ ଧରିବା। ଲଲ୍‌ନ କାକାଙ୍କ ପାଖରୁ ଲଡ଼ୁ ଆଣିବା, ଓସ୍ତଗଛ ତଳେ ରଖିବା, ଆଉ ଉପରେ ଜାଲ ବିଛାଇବା!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "ବଢ଼ିଆ ଉପାୟ! ହେଲେ ଆଗ କିଏ ମୋତେ ଏ ଜାଲରୁ ବାହାର କର।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଦେଖିଲ? ଗୋଟିଏ ମିଛରୁ ନୀଳ ଲାଞ୍ଜ ହେଲା, ଲାଞ୍ଜରୁ ଗୀତ ହେଲା। ଛୋଟୁର ମିଛ ଏବେ ଓସ୍ତଗଛଠାରୁ ବି ଡେଙ୍ଗା ହେଉଥିଲା।",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "ଆରେ ମୋ ଗୋଲ ଗୋଲ ପିଲାଏ! ଖରାରେ ବସନି, କଳା ପଡ଼ିଯିବ। ଚାଲ, ସିରାରେ ବୁଡ଼ ପକାଅ।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "ଲଲ୍‌ନ କାକା, ଆମକୁ ଚାରିଟା ଲଡ଼ୁ ଦରକାର। ଆମେ ଗୁଣିଆ ଲଡ଼ୁ ଚୋର ପାଇଁ ଜାଲ ବିଛାଉଛୁ।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "କ'ଣ? ଲଡ଼ୁ ଚୋର? ଗାଁରେ?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "ନାହିଁ! ମୋ ପିଲାଙ୍କୁ କେହି ହାତ ଲଗାଇବେନି! ଜିଲାପି ରାଣୀ, ଡରନାହିଁ, କାକା ଅଛି ନା!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "ଚିନ୍ତା କରନ୍ତୁନି, କାକା। ରାଜୁ ଦି ଗ୍ରେଟ୍ ଅଛି ନା।",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "ଏଇଟା... ଏଇଟା ବି ଉପାୟର ଅଂଶ ଥିଲା। ହାତ ମିଠା ହେଲେ ଚୋର ପାଖକୁ ଆସିବ।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "ଏଇ ନିଅ ଚାରିଟା ଲଡ଼ୁ। ହେଲେ ଇହାଙ୍କୁ ସ୍ନେହରେ ରଖିବ। ଏ ମୋର ସବୁଠୁ ଧୀରପାଣି ପିଲା। କେବେ କଡ଼େଇରୁ ବାହାରକୁ ଡେଇଁନାହାନ୍ତି।",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "ପକ୍କା, କାକା। ଚୋର ଧରାପଡ଼ିଲେ ଫେରାଇ ଆଣିବୁ।",
+   "request": 2
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "କାକା, ମୋତେ ଭୋକ ଲାଗୁଛି!",
+   "request": 2
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "ଛୋଟୁ! ଏଇଟା ଚୋର ପାଇଁ, ତୋ ପାଇଁ ନୁହେଁ!",
+   "request": 2
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "ଉପାୟ ହେଉଛି — ଚୋର ଲଡ଼ୁ ଖାଇବାକୁ ଆସିବ, ମୁଁ ଦଡ଼ି ଟାଣିବି, ଜାଲ ପଡ଼ିବ, ଆଉ ଚୋର ଧରାପଡ଼ିବ!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ଗୁଡ଼ିଆ, ହେଲେ ଚୋର ତ ଦିଶୁନାହିଁ। ଜାଲ ପଡ଼ିଲେ ଜାଣିବା କେମିତି ଯେ ଭିତରେ କିଏ ଅଛି?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ଅଁ... ସେୟା... ଉପାୟର ଏଇ ଅଂଶଟା ମୁଁ କାଲି ଭାବିବି।",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "ଶୁଣ! କୁତୁର୍‌-କୁତୁର୍‌! ଚୋର ଆସିଗଲା!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "ଧରିନେଲି! ରାଜୁ ଦି ଗ୍ରେଟ୍ ଚୋରକୁ ଧରିନେଲା!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "ସତରେ... ଚୋରର ଲାଞ୍ଜ ନୀଳ ନୁହେଁ, ବାଦାମୀ। ଆଉ ଏଇଟା ଭୁକୁଛି।",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ପିଙ୍କି, ଏ ଚୋର ନୁହେଁ, ଶେରୁ!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "ଭୂତ! ଭୂऽऽତ!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ଆରେ ପିଲାଏ, ମୁଇଁ ଆଛେ। ମୋର୍ ଚଷମା ଖୋଜୁଥିଲି। କେହି ଦେଖିଛ ନା?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "ପିଲାମାନେ! ମୁଁ ବି ଆସିଗଲି! ଯଦି ଚୋର ମୋ ଜିଲାପି ପାଖକୁ ଗଲା, ତେବେ ଏ ବେଲଣା... ଏ ବେଲଣା ତାକୁ ସ୍ନେହରେ ବୁଝାଇଦେବ!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "କାକା, ଆମକୁ ଚୋର ମିଳିଲାନି।",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "ସେ... ସେ ନା, ଏବେ ଲଲ୍‌ନ କାକାଙ୍କ ଦୋକାନ ଆଡ଼େ ଯାଇଥିବ! ମୁଁ ତା' ନୀଳ ଲାଞ୍ଜ ସେଆଡ଼େ ଯିବା ଦେଖିଲି!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "ହାୟ ରେ! ମୋ ଜିଲାପିଗୁଡ଼ା ଏକା ଅଛନ୍ତି! ମୁଁ ଗଲି, ମୋ ପିଲାଏ!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "ଏବେ ମୁଁ ରାତିରେ ଶୋଇବି ବି ପାରିବିନି। ନୀଳ ଲାଞ୍ଜବାଲା ଭୂତ ଗୀତ ଗାଇବ, \"ଲଡ଼ୁ-ଲଡ଼ୁ, ଗପୁ-ଗପୁ\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "ଆଉ ମୋ କଣ୍ଟାକଟା! ରାଜୁ ଦି ଗ୍ରେଟ୍ ଆଜି ତିନି ଥର ପଡ଼ିଲାଣି। ଏ ଚୋର ଭାରି ବିପଜ୍ଜନକ।",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "ଆଉ ପୂଜା ପାଇଁ ଲଡ଼ୁ ବି ନାହିଁ। ଜେଜେମା କେତେ ଦୁଃଖୀ ଅଛନ୍ତି। ସେ କହୁଥିଲେ, ଏଥର ପୂଜା ଅଧୁରା ରହିଯିବ।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "କିଛି କଥା ନାହିଁ। କାଲି ସକାଳେ ପୁଣି ନୂଆ ଉପାୟ କରିବା। ଆମେ ସାରାରାତି ଅନିଦ୍ରା ରହିବା, ଯେତେଯାଏ ଚୋର ନମିଳିଛି!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ଛୋଟୁର ପେଟ ତ ପୁରିଥିଲା। ହେଲେ ଏବେ ତା' ଛାତିରେ କିଛି ଓଜନିଆ ଲାଗୁଥିଲା। ଲଡ଼ୁଠାରୁ ବି ଓଜନିଆ।",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "ନାହିଁ ଚମ୍‌କି, ନାହିଁ! ସେଇଟା ମୋ ପର ଭୋକ ପାଇଁ!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ଛୋଟୁ... ଏଇଟା ତ ଜେଜେମାଙ୍କ ଲଡ଼ୁ।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "ତା'ହେଲେ ନୀଳ ଲାଞ୍ଜବାଲା ଚୋର...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "ସତରେ... ଚୋରର ଲାଞ୍ଜ ନୁହେଁ, ପକେଟ୍!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "ହଁ! ମୁଁ ହିଁ ସବୁ ଲଡ଼ୁ ଖାଇଥିଲି! କୌଣସି ଗୁଣିଆ ଚୋର ନାହିଁ। ନା ନୀଳ ଲାଞ୍ଜ, ନା ଗୀତ। ମୋତେ ଭୋକ ଲାଗିଲା, ପରେ ଡର ଲାଗିଲା, ଆଉ ମୁଁ ମିଛ କହିଚାଲିଲି... ସରି! ସମସ୍ତଙ୍କୁ ସରି!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ମାନେ... କୌଣସି ଭୂତ ନାହିଁ?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "ନାହିଁ, ବବ୍‌ଲୁ ଭାଇ। ଭୂତ ନୁହେଁ। ଖାଲି ମୁଁ।",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "ଉଫ୍! ଥ୍ୟାଙ୍କ ୟୁ, ଛୋଟୁ! ଏବେ ମୁଁ ଶୋଇପାରିବି!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "ଜେଜେମା, ଲଡ଼ୁ ମୁଁ ଖାଇଥିଲି। ଆଉ ପରେ ମିଛ କହିଲି। ସରି।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "ମୋତେ ଜଣା ଥିଲା, ଛୋଟୁ।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "ଜଣାଥିଲା? ହେଲେ ଆପଣଙ୍କ ଚଷମା ତ...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "ଚଷମା ନି ଥିଲା, ହେଲେ ନାକ୍ ତ ଥିଲା। ତୋର୍ ପାଟିରୁ ବେସନ୍ ବାସ୍ନା ଆସୁଥିଲା। ମୁଇଁ ଖାଲି ବାଟ୍ ଚାହିଁଥିଲି ତୁଇଁ ନିଜେ ସତ କହ୍‌ବୁ।",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "ଆଉ କେବେ ମିଛ କହିବିନି, ଜେଜେମା। ମିଛ ଭାରି ଥକାଇଦିଏ!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "ଚାଲ୍, ଏବେ ସଭେ ମିଶି ନୂଆ ଲଡୁ ବନାମା। ପୂଜାକେ ଆଜ୍‌ହେଁ ସମୟ ଆଛେ।",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ମାନେ ଏବେ ମୋତେ ଜାଲ ଧରି ଆଉ ପଡ଼ିବାକୁ ପଡ଼ିବନି?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ନି ରାଜୁ, ଏବେ ଖାଲି ବେସନ୍‌ନେ ହାତ୍ ଦେବାର୍ ଆଛେ।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ଚାଲ, ଉପାୟ କରିବା! ଲଡ଼ୁ ବନେଇବା ଉପାୟ! ଏଥର ଉପାୟରେ କୌଣସି ଫାଙ୍କ ରହିବନି!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "ସତରେ, ଗୁଡ଼ିଆ, ତୋର ପ୍ରତ୍ୟେକ ଉପାୟରେ ଗୋଟିଏ ଫାଙ୍କ ଥାଏ।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "ତେଣୁ ଏଥର ଫାଙ୍କରେ ବେସନ ଭରିଦେବା!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଆଉ ତା'ପରେ ଆରମ୍ଭ ହେଲା ସୋନପୁରର ସବୁଠୁ ମଜାଦାର ଲଡ଼ୁ ଫ୍ୟାକ୍ଟ୍ରି!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "ସତରେ, ଲଡ଼ୁ ଚୌକୋଣିଆ ବନାଇବା କଥା। ସେଗୁଡ଼ିକ ବହୁତ ସମୟ ରହେ।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ପିଙ୍କି ଝିଅ, ଲଡୁ ଗୋଲ୍ ହିଁ ଭଲ୍ ଲାଗ୍‌ସି। ଗୋଲ୍ ଗୋଲ୍ ବୁଲା, ଏନ୍ତା।",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "ଦେଖ, ରାଜୁ ଦି ଗ୍ରେଟ୍‌ର ସୁପର ଲଡ଼ୁ! ସବୁଠୁ ବଡ଼!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "ଏଇଟା... ଏଇଟା ଗୁଣ୍ଡ-ଲଡ଼ୁ। ନୂଆ ନକ୍ସା।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "ମୋ ଲଡ଼ୁ ପୁରା ଗୋଲ୍ ହେଇଛି!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "ଭୂତ! ମୋ ଲଡ଼ୁ ଭୂତ ନେଇଗଲା!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ବବ୍‌ଲୁ, ସେଇଟା ଚମ୍‌କି!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "ପେଟ ଭାଇ, ଏଇଟା ପୂଜା ଲଡ଼ୁ। ଧୈର୍ଯ୍ୟ ଧର!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "ୱାଃ ଛୋଟୁ! ଆଜି ତୁ ସତରେ ବଡ଼ ହେଇଗଲୁ।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "ମୋ ଜିଲାପିଗୁଡ଼ା ସହି-ସଲାମତ ଅଛନ୍ତି! ଚୋର ଆସିନାହିଁ। ଖୁସିରେ ପୂଜା ପାଇଁ ଏ ଜିଲାପି ମୋ ତରଫରୁ!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "ଏବେ ସଭିଙ୍କେ ପ୍ରସାଦ୍। ଆର୍ ପହିଲା ଲଡୁ... ଛୋଟୁକେ, ଯେନ୍ ସତ୍ କହ୍‌ଲା।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "ମିଛ ଲଡ଼ୁ ପେଟରେ ଓଜନିଆ ଲାଗୁଥିଲା। ସତ ଲଡ଼ୁ ହାଲୁକା ହାଲୁକା ଆଉ ମିଠା ମିଠା!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "ସତ୍ କହ୍‌ବାର୍ ମାନ୍‌ଷର୍ ମନ୍ ବି ଲଡୁ ଲେଖେନ୍ ମିଠା ରହେସି।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "ଦେଖ, ଶେରୁ ଉଠିପଡ଼ିଲା! ଖାଇବା ବେଳ ହେଲେ ସବୁବେଳେ ଉଠିପଡ଼େ!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ଆରେ, ମୋର୍ ଚଷମା ଫେର୍ କେନ୍‌ଠାନେ ଗଲା?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ଜେଜେମା, ତାକୁ ଗୁଣିଆ ଚଷମା ଚୋର ନେଇଗଲା!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "ନାହିଁ-ନାହିଁ, ସତ କହିବି — ସେଇଟା ଆପଣଙ୍କ ମୁଣ୍ଡରେ ଅଛି!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ଏବେ ତ ମୋତେ ସତରେ ଭୋକ ଲାଗିଲାଣି!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

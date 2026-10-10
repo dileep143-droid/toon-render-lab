@@ -1,0 +1,938 @@
+{
+ "lang": "bn",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "এই হলো সোনপুর গ্রাম। আর এই আমাদের ঠাকুমার উঠোন। আজ সাঁঝে এখানে পুজো, আর ঠাকুমা বানাচ্ছেন নিজের স্পেশাল বেসনের লাড্ডু!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "এক, দুই, তিন... এগারোটা লাড্ডু! ব্যস, পূজার লেইগা এক্কেবারে ঠিকঠাক।",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "আহা... কী দারুণ গন্ধ! ঠাকুমা, আমার খিদে পেয়ে গেছে!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "এই মাত্র তো তুই চারখান পরোটা খাইলি, ছোটু!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "ওটা তো সকালের খিদে ছিল। এটা হলো এখনকার খিদে।",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "এই লাড্ডু ঠাকুরজির লেইগা। পূজা শেষ হইলে সবাই পাইবো। তখন তক কেউ হাত দিবা না কিন্তু। বুঝছোস?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "বুঝে গেছি, ঠাকুমা! হাত এক্কেবারে দেব না।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "আরে, আমার চশমাখান গেল কই? এই তো এহানেই আসিল!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "চমকি, তুইও কইবি না। চল, আমি একটু জিরানি লই।",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "দুপুর গড়িয়ে গেল। ঠাকুমা ঘুমিয়ে পড়লেন। শেরুও ঘুমোলো। আর ছোটুর পেট... মোটেই ঘুমোলো না!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "শ্শ্শ, ও পেট মশাই! চুপটি করে থাকো! ঠাকুমা জেগে যাবেন।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "ঠাকুমা বলেছিল, হাত দেওয়া বারণ। তাহলে আমি... মুখ দেব!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "উম্ফ্! ব্যস একটা। শুধু একটাই।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"ব্যস একটা\" বলতে বলতে ছোটু আর গোনাগুনতিই রাখল না।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "এটা পরের জন্য। পরের বারের খিদের জন্য!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "না শেরু, ঘুমিয়ে পড়ো! তুমি কিচ্ছু দেখছ না কিন্তু!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "হায় হায় রে! আমার লাড্ডু! থালা যে খালি!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "কী? এগারোটাই লাড্ডু গায়েব?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "কী হয়েছে, ঠাকুমা? কোনো গণ্ডগোল নাকি?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ছোটু... তোর মুখে এই হলুদ হলুদ কী লেগে?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "এটা? এটা তো... আমার নতুন গোঁফ! মাস্টারমশায়ের মতো।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "চশমা ছাড়া তো আমি কিসুই দেখবার পাই না।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "ঠাকুমা! আমি দেখেছি! একটা... একটা জাদুকরী লাড্ডু চোর এসেছিল!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "জাদুকরী লাড্ডু চোর?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "হ্যাঁ! উড়ে এল জানলা দিয়ে। সুড়ুৎ করে থালায় ঢুকল, আর গপাগপ সব লাড্ডু সাবাড় করে দিল!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "আচ্ছা? দেখতে ক্যামন আসিল সে?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "সে... সে তো... দেখাই যায় না! জাদুকরী তো, তাই!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "কিন্তু ছোটু, জানলা তো সকাল থেকেই বন্ধ।",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "তাহলে ও বন্ধ জানলা গলেও বেরোতে পারে! ঠিক বাতাসের মতো! ফুর্র করে!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "আর তুই তহন কই আসিলি, ছোটু?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "আমি? আমি তো... শেরুর পাশে ঘুমোচ্ছিলাম! তাই না রে, শেরু?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "দেখলে? শেরুও মাথা নেড়ে \"হ্যাঁ\" বলছে।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "আর এখান থেকেই শুরু হলো ছোটুর প্রথম মিথ্যে। ও জানত না মিথ্যেও লাড্ডুর মতো — একটা খেলে, আরেকটার খিদে পায়!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "বন্ধুরা, সোনপুরে এক জাদুকরী লাড্ডু চোর ঘুরছে। সন্ধ্যায় পুজো। আমাদের ওটাকে ধরতেই হবে। চল, প্ল্যান করি!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "আসলে, আমি বইয়ে পড়েছি যে লাড্ডু চোরেরা শুধু মঙ্গলবারেই আসে।",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "পিঙ্কি, আজ তো বুধবার।",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "তাহলে... আসলে, ও নিশ্চয়ই ওভারটাইম করছে।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "জাদুকরী? দেখাই যায় না? মানে... ভূত!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "বাবলু ভাইয়া, আমার পেছনে তুমি মোটেই আঁটবে না!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "ভয় পেয়ো না! রাজু দ্য গ্রেট চলে এসেছে! চোর যে-ই হোক, এই জাল তাকে পাকড়াও করবেই।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "এটা... এটা প্র্যাকটিস ছিল। জাল একদম ফার্স্টক্লাস কাজ করছে।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "হি হি হি! ছোটু, তুই তো চোরকে দেখেছিস। বল না, ওর আর কী কী লক্ষণ ছিল?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "লক্ষণ? উম্... মানে... ওর একটা... নীল রঙের লেজ আছে!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "নীল লেজ। আর?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "আর ও শুধু গোল গোল জিনিসই খায়। লাড্ডু, ফুচকা, বল...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "বলও খায়? মা গো, আমার ক্রিকেট বলটা!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "আর খাবার সময় ও গান গায় — \"লাড্ডু-লাড্ডু, গাপ্পু-গাপ্পু!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "যদি ও গোল জিনিসই খায়, তাহলে গোল জিনিস দিয়েই ধরব। লল্লন কাকুর থেকে লাড্ডু এনে বটতলায় রাখব, আর ওপর থেকে জাল ফেলব!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "ফাটাফাটি প্ল্যান! কিন্তু আগে কেউ আমায় এই জাল থেকে বের করো।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "দেখলে তো? একটা মিথ্যে থেকে এল নীল লেজ, লেজ থেকে এল গান। ছোটুর মিথ্যেটা এবার বটগাছের চেয়েও লম্বা হয়ে উঠল।",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "আরে আমার গোল গোল সোনার টুকরোরা! রোদে বোসো না, কালো হয়ে যাবে। চলো, রসে একটু ডুব দিয়ে নাও।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "লল্লন কাকু, আমাদের চারটে লাড্ডু দিন না। আমরা জাদুকরী লাড্ডু চোর ধরার জন্য ফাঁদ পাতছি।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "কী বলিস? লাড্ডু চোর? আমাদের গাঁয়ে?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "না না! আমার বাচ্চাদের কেউ ছোঁবে না! জিলিপি রানি, ভয় পাস নে, কাকু আছে তো!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "চিন্তা করবেন না কাকু। রাজু দ্য গ্রেট থাকতে কোনো ভয় নেই।",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "এটা... এটাও প্ল্যানের অঙ্গ। হাতে মিষ্টি গন্ধ থাকলে তবেই তো চোর আসবে।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "এই নে চারটে লাড্ডু। কিন্তু খুব সাবধানে রাখিস। এরা আমার সবচেয়ে শান্তশিষ্ট বাচ্চা। কড়াই ছেড়ে কখনো পালায় না।",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "একদম কথা দিচ্ছি কাকু। চোর ধরা পড়লেই ফিরিয়ে দিয়ে যাব।",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "কাকু, আমার খুব খিদে পেয়েছে!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "এই ছোটু! এটা চোরের টোপ, তোর খাওয়ার জন্য নয়!",
+   "request": 2
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "প্ল্যানটা শোন — চোর লাড্ডু খেতে আসবে, আমি দড়ি টানব, জাল পড়বে, ব্যস চোর ধরা!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "কিন্তু গুড়িয়া, চোরকে তো দেখাই যায় না। জাল পড়লে কী করে বুঝবি ভেতরে কেউ আছে?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "উম্... মানে... প্ল্যানের এই পার্টটা আমি কাল ভাবব।",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "শোনো! খুট-খাট শব্দ! চোর এসে গেছে!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "ধরে ফেলেছি! রাজু দ্য গ্রেট চোর ধরে ফেলেছে!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "আসলে... চোরের লেজটা নীল নয়, বাদামি। আর এটা ডাকছে ঘেউ ঘেউ করে।",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "ইশ পিঙ্কি, এটা কোনো চোর নয়, শেরু!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "ভূত! ভূ-উ-ত!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "আরে পোলাপান, আমি গো। চশমাখান খুঁজতে আছিলাম। কেউ দেখসো নাকি?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "বাচ্চারা! আমিও এসে গেছি! চোর যদি আমার জিলিপির গায়ে হাত দেয়, তবে এই বেলন... এই বেলন দিয়ে বুঝিয়ে দেব!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "কাকু, চোরের কোনো পাত্তাই নেই।",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "সে... সে তো বোধহয় লল্লন কাকুর দোকানের দিকে গেছে! আমি নীল লেজটা ওদিকেই যেতে দেখলাম!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "হায় হায়! আমার জিলিপিগুলো একা একা রয়েছে! আমি আসছি বাছারা!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "আজ রাতে আর ঘুম হবে না। নীল লেজের ভূত গান গাইবে, \"লাড্ডু-লাড্ডু, গাপ্পু-গাপ্পু\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "আর আমার কোমর! রাজু দ্য গ্রেট আজ তিনবার আছাড় খেয়েছে। চোরটা বড্ড সাংঘাতিক।",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "আর পুজোর জন্যও কোনো লাড্ডু নেই। ঠাকুমার খুব মন খারাপ। বলছিলেন, এ বার পুজোটা আধখেঁচড়া হয়ে থাকবে।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "কুছ পরোয়া নেই। কাল ভোরে আবার নতুন প্ল্যান করব। চোর না ধরা পড়া অবধি আমরা সারারাত জেগে থাকব!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ছোটুর পেট ভরতি ছিল ঠিকই। কিন্তু বুকের ভেতরটা কেমন যেন ভারী লাগছিল। লাড্ডুর চেয়েও বেশি ভারী।",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "না চমকি, একদম না! ওটা আমার পরের বারের খিদের লাড্ডু!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ছোটু... এটা তো ঠাকুমার হাতের লাড্ডু।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "তাহলে কি সেই নীল লেজের চোর...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "আসলে... চোরের কোনো লেজ নেই, পকেট আছে!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "হ্যাঁ! আমিই সব কটা লাড্ডু খেয়েছি! কোনো জাদুকরী চোর নেই। নীল লেজও নেই, গানও নেই। খিদে পেয়েছিল, তারপর ভয় পেলাম, আর একটার পর একটা মিথ্যে বলে গেলাম... সরি! সবাইকে সরি!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "তার মানে... কোনো ভূত নেই?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "না, বাবলু ভাইয়া। ভূত নয়। শুধু আমি।",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "উফ! থ্যাঙ্ক ইউ রে ছোটু! এ বার আমি শান্তিতে ঘুমোতে পারব!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "ঠাকুমা, লাড্ডুগুলো আমিই খেয়েছিলাম। আর তার পর মিথ্যে বলেছি। সরি ঠাকুমা।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "আমি তো জাইনা গেসিলাম রে, ছোটু।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "জানতে? কিন্তু তোমার চশমা তো ছিল না...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "চশমা না আসিলে কী হইসে, নাক তো আসিল! তোর মুখ দিয়া বেসনের সুবাস ছুটতাসিল। আমি শুধু তর নিজের মুখে সত্যি শোনার অপেক্ষায় আছিলাম।",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "আর কখনো মিথ্যে বলব না, ঠাকুমা। মিথ্যে বললে খুব হাঁপিয়ে যাই!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "চল, এহন সবাই মিল্যা নতুন লাড্ডু বানাই। পূজার তো এহনো দেরি আসে।",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "তার মানে আমায় আর জাল নিয়ে আছাড় খেতে হবে না?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "না রাজু, এহন শুধু বেসনে হাত লাগাইবা।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "চলো, প্ল্যান করি! লাড্ডু বানানোর প্ল্যান! এ বারের প্ল্যানে কোনো ফুটো থাকবে না!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "আসলে গুড়িয়া, তোর সব প্ল্যানেই একটা করে ফুটো থাকে।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "তাহলে এ বার ফুটোটাতে বেসন ভরে দেব!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আর তার পরেই শুরু হয়ে গেল সোনপুরের সবচেয়ে মজাদার লাড্ডুর কারখানা!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "আসলে, লাড্ডু চারকোনা বানানো উচিত। ওগুলো অনেক দিন টেকে।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "পিঙ্কি মাইয়া, লাড্ডু গোল অইলেই সোন্দর লাগে। গোল গোল ঘুরাও, এই রহম।",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "দেখো, রাজু দ্য গ্রেটের সুপার লাড্ডু! সব চেয়ে বড়!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "এটা... এটা লাড্ডুর গুঁড়ো। নিউ ডিজাইন আর কি।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "আমার লাড্ডুটা এক্কেবারে গোল হয়েছে!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "বাবা গো! ভূত আমার লাড্ডু নিয়ে গেল!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "খিকখিক! বাবলু, ওটা তো চমকি!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "ও পেট মশাই, এগুলো ঠাকুরের লাড্ডু। একটু ধৈর্য ধরো!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "বাহ্ ছোটু! আজ তো তুই সত্যিই বড় হয়ে গেছিস।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "আমার জিলিপিগুলো একদম সুরক্ষিত আছে! চোর আসেইনি। এই আনন্দে পুজোর জন্য জিলিপিগুলো আমার তরফ থেকে!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "এহন সবাইরে প্রসাদ দিমু। আর পয়লা লাড্ডু... ছোটুরে, যে সত্যি কতা কইসে।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "মিথ্যের লাড্ডু পেটে বড্ড ভারী লাগত। আর সত্যি কথার লাড্ডু হালকা আর মিষ্টি মিষ্টি!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "হ, সত্যি কথা কইলে মনটাও লাড্ডুর মতন মিষ্টি অইয়া থাকে।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "দেখো, শেরু উঠে পড়েছে! খাওয়ার সময় হলে ও ঠিক উঠে পড়ে!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ওমা, আমার চশমাখান আবার কই গেল রে?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "ঠাকুমা, ওটা জাদুকরী চশমা চোর নিয়ে গেছে!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "না না, সত্যি বলব — ওটা তো তোমার মাথায় রয়েছে!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "এ বার কিন্তু সত্যি সত্যি আমার বড্ড খিদে পেয়েছে!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}

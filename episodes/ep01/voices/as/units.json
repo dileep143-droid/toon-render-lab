@@ -1,0 +1,938 @@
+{
+ "lang": "as",
+ "base": {
+  "Female": "Gacrux",
+  "Male": "Puck"
+ },
+ "units": [
+  {
+   "id": 0,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "এইখন সোণপুৰ গাঁও। আৰু এইয়া আইতাৰ চোতাল। আজি গধূলি ইয়াত পূজা আছে, আৰু আইতাই বনাইছে নিজৰ বিখ্যাত বেচনৰ লাৰু!",
+   "request": 1
+  },
+  {
+   "id": 1,
+   "speaker": "Dadi",
+   "emotion": "happy",
+   "radio": false,
+   "text": "এক, দুই, তিনি... এঘাৰটা লাৰু! বাছ, পূজাৰ বাবে হৈ গেলাক।",
+   "request": 1
+  },
+  {
+   "id": 2,
+   "speaker": "Chhotu",
+   "emotion": "nostalgic",
+   "radio": false,
+   "text": "আহা... কি যে ধুনীয়া গোন্ধ! আইতা, মোৰ ভোক লাগিছে!",
+   "request": 1
+  },
+  {
+   "id": 3,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "এইমাত্ৰ তুঁই চাৰিখন পৰঠা খালাক নহয়, ছোটু!",
+   "request": 1
+  },
+  {
+   "id": 4,
+   "speaker": "Chhotu",
+   "emotion": "happy",
+   "radio": false,
+   "text": "সেইটো ৰাতিপুৱাৰ ভোক আছিল। এইটো এতিয়াৰ ভোক।",
+   "request": 1
+  },
+  {
+   "id": 5,
+   "speaker": "Dadi",
+   "emotion": "firm but sweet",
+   "radio": false,
+   "text": "এই লাৰুগিলা ভগৱানক দিম। পূজাৰ পাছতহে সৱে পাবা। তেতিয়ালৈকে কোনেও হাত নিদিবা। বুজি পালা?",
+   "request": 1
+  },
+  {
+   "id": 6,
+   "speaker": "Chhotu",
+   "emotion": "saluting",
+   "radio": false,
+   "text": "বুজি পালোঁ, আইতা! হাত নিদিওঁ।",
+   "request": 1
+  },
+  {
+   "id": 7,
+   "speaker": "Dadi",
+   "emotion": "confused",
+   "radio": false,
+   "text": "ঐ ৰাম, মোৰ চশমাযোৰ কুত গেলাক? এইখিনিতে আছিল নহয়!",
+   "request": 1
+  },
+  {
+   "id": 9,
+   "speaker": "Dadi",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "চমকী, তইয়ো নক’ৱ। বাৰু, মই অলপ জিৰাই লওঁ।",
+   "request": 1
+  },
+  {
+   "id": 10,
+   "speaker": "Narrator",
+   "emotion": "whispering, playful",
+   "radio": false,
+   "text": "দুপৰীয়া হ’ল। আইতা শুলে। শেৰুও শুলে। কিন্তু সৰু ছোটুৰ পেটটো... মুঠেই নুশুলে!",
+   "request": 1
+  },
+  {
+   "id": 11,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "চুউপ, পেট মহাশয়! মনে মনে থাকা! আইতা সাৰ পাব।",
+   "request": 1
+  },
+  {
+   "id": 12,
+   "speaker": "Chhotu",
+   "emotion": "to himself",
+   "radio": false,
+   "text": "আইতাই কৈছিল, হাত নিদিবি। গতিকে মই... মুখেৰেই খাম!",
+   "request": 1
+  },
+  {
+   "id": 13,
+   "speaker": "Chhotu",
+   "emotion": "blissful",
+   "radio": false,
+   "text": "উমম! মাথোঁ এটা। কেৱল এটাই।",
+   "request": 1
+  },
+  {
+   "id": 14,
+   "speaker": "Narrator",
+   "emotion": "amused",
+   "radio": false,
+   "text": "\"কেৱল এটা\" বুলি কওঁতে কওঁতেই ছোটুৱে লেখিবলৈকে এৰি দিলে।",
+   "request": 1
+  },
+  {
+   "id": 15,
+   "speaker": "Chhotu",
+   "emotion": "proud",
+   "radio": false,
+   "text": "এইটো পিছৰ বাবে। পিছত লগা ভোকৰ কাৰণে!",
+   "request": 1
+  },
+  {
+   "id": 16,
+   "speaker": "Chhotu",
+   "emotion": "panicking",
+   "radio": false,
+   "text": "নহয় শেৰু, শুই থাক! তই একো দেখা নাই দেই!",
+   "request": 1
+  },
+  {
+   "id": 17,
+   "speaker": "Dadi",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "হায় ৰাম! মোৰ লাৰুগিলা! কাঁহীখন দেখোন খালি!",
+   "request": 1
+  },
+  {
+   "id": 18,
+   "speaker": "Gudiya",
+   "emotion": "gasping",
+   "radio": false,
+   "text": "কি? এঘাৰটাই লাৰু নোহোৱা হ’ল?",
+   "request": 1
+  },
+  {
+   "id": 19,
+   "speaker": "Chhotu",
+   "emotion": "too innocent",
+   "radio": false,
+   "text": "কি হ’ল আইতা? কিবা কথা হৈছে নেকি?",
+   "request": 1
+  },
+  {
+   "id": 20,
+   "speaker": "Gudiya",
+   "emotion": "suspicious",
+   "radio": false,
+   "text": "ছোটু... তোৰ মুখত এই হালধীয়া কি লাগিছে?",
+   "request": 1
+  },
+  {
+   "id": 21,
+   "speaker": "Chhotu",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "এইটো? এইটো দেখোন... মোৰ নতুন মোচ! পণ্ডিত চাৰৰ নিচিনা।",
+   "request": 1
+  },
+  {
+   "id": 22,
+   "speaker": "Dadi",
+   "emotion": "squinting",
+   "radio": false,
+   "text": "চশমা নোহোৱাকৈ দেখোন চকুৰেও একো নমনা হ’লোঁ।",
+   "request": 1
+  },
+  {
+   "id": 23,
+   "speaker": "Chhotu",
+   "emotion": "dramatic",
+   "radio": false,
+   "text": "আইতা! মই দেখিলোঁ! এজন... এজন যাদুৰ লাৰুচোৰ আহিছিল!",
+   "request": 1
+  },
+  {
+   "id": 24,
+   "speaker": "Gudiya",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "যাদুৰ লাৰুচোৰ?",
+   "request": 1
+  },
+  {
+   "id": 25,
+   "speaker": "Chhotu",
+   "emotion": "nodding fast",
+   "radio": false,
+   "text": "অ’! সি উৰি উৰি আহিল, খিৰিকীৰে। ফুৰ্ কৰি কাঁহীখনত পৰিল, আৰু গপাগপ সৱ লাৰু খাই পেলালে!",
+   "request": 1
+  },
+  {
+   "id": 26,
+   "speaker": "Dadi",
+   "emotion": "raising eyebrow",
+   "radio": false,
+   "text": "অহৌ? তাক কেনেকা দেখিবলৈ?",
+   "request": 1
+  },
+  {
+   "id": 27,
+   "speaker": "Chhotu",
+   "emotion": "thinking hard",
+   "radio": false,
+   "text": "সি... সি... দেখাই নাযায়! সি যাদুকৰী নহয়, সেইবাবে!",
+   "request": 1
+  },
+  {
+   "id": 28,
+   "speaker": "Gudiya",
+   "emotion": "puzzled",
+   "radio": false,
+   "text": "কিন্তু ছোটু, খিৰিকীখন দেখোন পুৱাৰ পৰাই বন্ধ আছিল।",
+   "request": 1
+  },
+  {
+   "id": 29,
+   "speaker": "Chhotu",
+   "emotion": "fast",
+   "radio": false,
+   "text": "সি বন্ধ খিৰিকীৰেও ওলাই যায়! বতাহৰ দৰে! ফুৰ্ কৰি!",
+   "request": 1
+  },
+  {
+   "id": 30,
+   "speaker": "Dadi",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "আৰু তই সেইসময়ত কুত আছিলাক, ছোটু?",
+   "request": 1
+  },
+  {
+   "id": 31,
+   "speaker": "Chhotu",
+   "emotion": "pointing at Sheru",
+   "radio": false,
+   "text": "মই? মই দেখোন... শেৰুৰ লগত শুই আছিলোঁ! নহয়নে শেৰু?",
+   "request": 1
+  },
+  {
+   "id": 32,
+   "speaker": "Chhotu",
+   "emotion": "nodding",
+   "radio": false,
+   "text": "দেখিলা? শেৰুৱেও \"হয়\" বুলি কৈছে।",
+   "request": 1
+  },
+  {
+   "id": 33,
+   "speaker": "Narrator",
+   "emotion": "warm, teasing",
+   "radio": false,
+   "text": "আৰু ইয়াৰ পৰাই আৰম্ভ হ’ল ছোটুৰ প্ৰথমটো মিছা কথা। সিটো গমেই নাপালে যে মিছা কথাও লাৰুৰ নিচিনা—এটা খালেই আন এটা খাবৰ মন যায়!",
+   "request": 1
+  },
+  {
+   "id": 34,
+   "speaker": "Gudiya",
+   "emotion": "determined",
+   "radio": false,
+   "text": "বন্ধুসকল, সোণপুৰত এতিয়া যাদুৰ লাৰুচোৰ ঘূৰি ফুৰিছে। গধূলি পূজা আছে। আমি তাক ধৰিবই লাগিব। ব’লা, আঁচনি বনাওঁ!",
+   "request": 1
+  },
+  {
+   "id": 35,
+   "speaker": "Pinky",
+   "emotion": "adjusting glasses",
+   "radio": false,
+   "text": "আচলতে, মই কিতাপত পঢ়িছোঁ যে লাৰুচোৰবোৰ কেৱল মঙলবাৰেহে আহে।",
+   "request": 1
+  },
+  {
+   "id": 36,
+   "speaker": "Gudiya",
+   "emotion": "patient",
+   "radio": false,
+   "text": "পিংকী, আজি দেখোন বুধবাৰহে।",
+   "request": 1
+  },
+  {
+   "id": 37,
+   "speaker": "Pinky",
+   "emotion": "quickly",
+   "radio": false,
+   "text": "তেন্তে... আচলতে, সি হয়তো অভাৰটাইম কৰিছে।",
+   "request": 1
+  },
+  {
+   "id": 38,
+   "speaker": "Bablu",
+   "emotion": "trembling",
+   "radio": false,
+   "text": "যাদুকৰী? দেখাই নাপায়? মানে... ভূত!",
+   "request": 1
+  },
+  {
+   "id": 39,
+   "speaker": "Chhotu",
+   "emotion": "squashed",
+   "radio": false,
+   "text": "বাবলু ককাইদেউ, মোৰ পিছে পিছে আপুনি নোজোৰে দেই!",
+   "request": 1
+  },
+  {
+   "id": 40,
+   "speaker": "Raju",
+   "emotion": "posing",
+   "radio": false,
+   "text": "ভয় নকৰিবা! ৰাজু দ্য গ্ৰেট আহি গ’ল! যেনেকুৱাই চোৰ নহওক, এইখন জালে তাক ধৰিবই।",
+   "request": 1
+  },
+  {
+   "id": 41,
+   "speaker": "Raju",
+   "emotion": "muffled, from inside the net",
+   "radio": false,
+   "text": "এইটো... এইটো অনুশীলনহে আছিল। জালে ঠিকেই কাম কৰিছে।",
+   "request": 1
+  },
+  {
+   "id": 42,
+   "speaker": "Gudiya",
+   "emotion": "giggly",
+   "radio": false,
+   "text": "ছোটু, তই চোৰক দেখিছ। আমাক ক, তাৰ আৰু কি চিন-মোকাম আছিল?",
+   "request": 1
+  },
+  {
+   "id": 43,
+   "speaker": "Chhotu",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "চিন? এঁ... তাৰ... তাৰ এডাল নীলা নেজ আছে!",
+   "request": 1
+  },
+  {
+   "id": 44,
+   "speaker": "Pinky",
+   "emotion": "writing",
+   "radio": false,
+   "text": "নীলা নেজ। আৰু?",
+   "request": 1
+  },
+  {
+   "id": 45,
+   "speaker": "Chhotu",
+   "emotion": "sweating",
+   "radio": false,
+   "text": "আৰু সি কেৱল ঘূৰণীয়া বস্তুবোৰহে খায়। লাৰু, ফুচকা, বল...",
+   "request": 1
+  },
+  {
+   "id": 46,
+   "speaker": "Bablu",
+   "emotion": "scared_whisper",
+   "radio": false,
+   "text": "বলো খায়? মোৰ ক্ৰিকেট বলটো!",
+   "request": 1
+  },
+  {
+   "id": 47,
+   "speaker": "Chhotu",
+   "emotion": "getting carried away",
+   "radio": false,
+   "text": "আৰু সি খাওঁতে খাওঁতে গান গায়—\"লাৰু-লাৰু, গাপ্পু-গাপ্পু!\"",
+   "request": 1
+  },
+  {
+   "id": 48,
+   "speaker": "Gudiya",
+   "emotion": "thinking",
+   "radio": false,
+   "text": "যদি সি ঘূৰণীয়া বস্তু খায়, তেন্তে আমি তাক ঘূৰণীয়া বস্তুৰেই ফান্দত পেলাম। লল্লন খুড়াৰ পৰা লাৰু আনোঁ, আঁহত গছৰ তলত থওঁ, আৰু ওপৰত জাল পাতোঁ!",
+   "request": 1
+  },
+  {
+   "id": 49,
+   "speaker": "Raju",
+   "emotion": "from inside the net, thumbs up",
+   "radio": false,
+   "text": "বঢ়িয়া প্লেন! কিন্তু প্ৰথমে কোনোবাই মোক জালৰ পৰা উলিওৱাচোন।",
+   "request": 1
+  },
+  {
+   "id": 50,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "দেখিলে? এটা মিছাৰ পৰা ওলাল নীলা নেজ, নেজৰ পৰা আকৌ গান। ছোটুৰ মিছা কথা এতিয়া আঁহত জোপাতকৈও ওখ হ’বলৈ ধৰিলে।",
+   "request": 1
+  },
+  {
+   "id": 51,
+   "speaker": "Lallan",
+   "emotion": "loving, to jalebis",
+   "radio": false,
+   "text": "ঐ মোৰ ঘূৰণীয়া পোনাটিহঁত! ৰ’দত নাথাকিবি, ক’লা পৰি যাবি। আহাঁ, চিৰাত ডুবি ল’।",
+   "request": 1
+  },
+  {
+   "id": 52,
+   "speaker": "Gudiya",
+   "emotion": "polite",
+   "radio": false,
+   "text": "লল্লন খুড়া, আমাক চাৰিটা লাৰু লাগে। আমি যাদুৰ লাৰুচোৰটো ধৰিবলৈ ফান্দ পাতিছোঁ।",
+   "request": 1
+  },
+  {
+   "id": 53,
+   "speaker": "Lallan",
+   "emotion": "horrified",
+   "radio": false,
+   "text": "কি? লাৰুচোৰ? গাঁৱৰ মাজত?",
+   "request": 1
+  },
+  {
+   "id": 54,
+   "speaker": "Lallan",
+   "emotion": "crying dramatically",
+   "radio": false,
+   "text": "কেতিয়াও নহয়! মোৰ পোনাটিহঁতক কোনেও চুব নোৱাৰে! জিলেপী ৰাণী, ভয় নকৰিবি, খুড়া আছোঁ নহয়!",
+   "request": 1
+  },
+  {
+   "id": 55,
+   "speaker": "Raju",
+   "emotion": "cool",
+   "radio": false,
+   "text": "চিন্তা নকৰিব খুড়া। ৰাজু দ্য গ্ৰেট আছে নহয়।",
+   "request": 1
+  },
+  {
+   "id": 56,
+   "speaker": "Raju",
+   "emotion": "sticky",
+   "radio": false,
+   "text": "এইটো... এইটোও আঁচনিৰে অংশ আছিল। হাতখন মিঠা হ’লে চোৰ ওচৰলৈ আহিব।",
+   "request": 1
+  },
+  {
+   "id": 57,
+   "speaker": "Lallan",
+   "emotion": "handing laddoos, sniffling",
+   "radio": false,
+   "text": "এইয়া লোৱা চাৰিটা লাৰু। কিন্তু মৰমেৰে ৰাখিবা দেই। এইকেইটা মোৰ বৰ শান্ত ল’ৰা-ছোৱালী। কেতিয়াও কেৰাহীৰ পৰা বাহিৰলৈ জাপ নামাৰে।",
+   "request": 1
+  },
+  {
+   "id": 58,
+   "speaker": "Gudiya",
+   "emotion": "serious",
+   "radio": false,
+   "text": "একদম পকা, খুড়া। চোৰক ধৰিয়েই ওভতাই আনিম।",
+   "request": 1
+  },
+  {
+   "id": 59,
+   "speaker": "Chhotu",
+   "emotion": "staring at laddoos",
+   "radio": false,
+   "text": "খুড়া, মোৰ বৰ ভোক লাগিছে!",
+   "request": 1
+  },
+  {
+   "id": 60,
+   "speaker": "Gudiya",
+   "emotion": "pulling his ear gently",
+   "radio": false,
+   "text": "ছোটু! এইকেইটা চোৰৰ কাৰণেহে, তোৰ কাৰণে নহয়!",
+   "request": 1
+  },
+  {
+   "id": 61,
+   "speaker": "Gudiya",
+   "emotion": "whispering, proud",
+   "radio": false,
+   "text": "আঁচনিখন হ’ল—চোৰে লাৰু খাবলৈ আহিব, মই ৰচী টানিম, জালখন পৰিব, আৰু চোৰ ফান্দত সোমাব!",
+   "request": 2
+  },
+  {
+   "id": 62,
+   "speaker": "Pinky",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "গুড়িয়া, কিন্তু চোৰক দেখাই নাযায় নহয়। জালখন পৰিলেও ভিতৰত কোনোবা থকাটো কেনেকৈ গম পাম?",
+   "request": 2
+  },
+  {
+   "id": 63,
+   "speaker": "Gudiya",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "এঁ... সেইটো... আঁচনিৰ সেইভাগটো মই কাইলৈ ভাবিম।",
+   "request": 2
+  },
+  {
+   "id": 64,
+   "speaker": "Bablu",
+   "emotion": "whispering, terrified",
+   "radio": false,
+   "text": "শুনা! কুটুৰ-কাটুৰ! চোৰ আহি গ’ল!",
+   "request": 2
+  },
+  {
+   "id": 65,
+   "speaker": "Raju",
+   "emotion": "jumping out",
+   "radio": false,
+   "text": "ধৰি পেলালোঁ! ৰাজু দ্য গ্ৰেটে চোৰ ধৰি পেলালে!",
+   "request": 2
+  },
+  {
+   "id": 66,
+   "speaker": "Pinky",
+   "emotion": "peering",
+   "radio": false,
+   "text": "আচলতে... চোৰৰ নেজডাল নীলা নহয়, মুগাৰঙীহে। আৰু ই ভুকিও আছে।",
+   "request": 2
+  },
+  {
+   "id": 67,
+   "speaker": "Gudiya",
+   "emotion": "sighing",
+   "radio": false,
+   "text": "পিংকী, এইটো চোৰ নহয়, শেৰুহে!",
+   "request": 2
+  },
+  {
+   "id": 68,
+   "speaker": "Bablu",
+   "emotion": "screaming",
+   "radio": false,
+   "text": "ভূত! ভূউউট!",
+   "request": 2
+  },
+  {
+   "id": 69,
+   "speaker": "Dadi",
+   "emotion": "calm, holding torch",
+   "radio": false,
+   "text": "ঐ ল’ৰাগিলা, মইহে হঁও। চশমাযোৰ বিচাৰি ফুৰিছিলোঁ। কোনেবা দেখিলাক নেকি?",
+   "request": 2
+  },
+  {
+   "id": 70,
+   "speaker": "Lallan",
+   "emotion": "panting",
+   "radio": false,
+   "text": "মইনাঁহত! ময়ো আহি গ’লোঁ! চোৰ যদি মোৰ জিলেপীৰ ওচৰ পায়গৈ, এই বেলনাডালে... মৰমেৰে তাক ঠিক কৰি দিব!",
+   "request": 2
+  },
+  {
+   "id": 71,
+   "speaker": "Gudiya",
+   "emotion": "tired",
+   "radio": false,
+   "text": "খুড়া, আমি চোৰক বিচাৰিয়েই নাপালোঁ।",
+   "request": 2
+  },
+  {
+   "id": 72,
+   "speaker": "Chhotu",
+   "emotion": "quickly, nervous",
+   "radio": false,
+   "text": "সি... সিয়েই চাগে এতিয়া লল্লন খুড়াৰ দোকানৰ পিনে গ’ল! মই তাৰ নীলা নেজডাল সিফালে যোৱা দেখিলোঁ!",
+   "request": 2
+  },
+  {
+   "id": 73,
+   "speaker": "Lallan",
+   "emotion": "wailing",
+   "radio": false,
+   "text": "হায় হায়! মোৰ জিলেপীহঁত অকলে আছে! মই গৈছোঁ ৰ’ মোৰ পোনাটিহঁত!",
+   "request": 2
+  },
+  {
+   "id": 74,
+   "speaker": "Bablu",
+   "emotion": "sad, scared",
+   "radio": false,
+   "text": "এতিয়া মই ৰাতি শুবও নোৱাৰিম। নীলা নেজ থকা ভূতে গান গাব, \"লাৰু-লাৰু, গাপ্পু-গাপ্পু\"...",
+   "request": 2
+  },
+  {
+   "id": 75,
+   "speaker": "Raju",
+   "emotion": "rubbing his back",
+   "radio": false,
+   "text": "আৰু মোৰ কঁকালখন! ৰাজু দ্য গ্ৰেট আজি তিনিবাৰকৈ পৰিল। চোৰটো বৰ সাংঘাটিক দেই।",
+   "request": 2
+  },
+  {
+   "id": 76,
+   "speaker": "Pinky",
+   "emotion": "worried",
+   "radio": false,
+   "text": "আৰু পূজাৰ বাবে লাৰুও নাই। আইতাৰ বৰ মনটো বেয়া লাগিছে। তেখেতে কৈছিল, এইবাৰ পূজাখন আধৰুৱা হৈ ৰ’ব।",
+   "request": 2
+  },
+  {
+   "id": 77,
+   "speaker": "Gudiya",
+   "emotion": "determined, but tired",
+   "radio": false,
+   "text": "একো কথা নাই। কাইলৈ ৰাতিপুৱা নতুন আঁচনি বনাম। চোৰ নোপোৱালৈকে আমি গোটেই ৰাতি উজাগৰে থাকিম!",
+   "request": 2
+  },
+  {
+   "id": 78,
+   "speaker": "Narrator",
+   "emotion": "soft",
+   "radio": false,
+   "text": "ছোটুৰ পেটটো ভৰি আছিল সঁচা। কিন্তু এতিয়া তাৰ মনটো বৰ গধুৰ লাগিছিল। লাৰুতকৈও বেছি গধুৰ।",
+   "request": 2
+  },
+  {
+   "id": 80,
+   "speaker": "Chhotu",
+   "emotion": "whispering",
+   "radio": false,
+   "text": "নহয় চমকী, নহয়! সেইটো মোৰ পিছত লগা ভোকৰ কাৰণেহে!",
+   "request": 2
+  },
+  {
+   "id": 81,
+   "speaker": "Gudiya",
+   "emotion": "slowly",
+   "radio": false,
+   "text": "ছোটু... এইটো দেখোন আইতাৰ সেই লাৰুটো।",
+   "request": 2
+  },
+  {
+   "id": 82,
+   "speaker": "Raju",
+   "emotion": "surprised",
+   "radio": false,
+   "text": "তেন্তে নীলা নেজ থকা চোৰটো...",
+   "request": 2
+  },
+  {
+   "id": 83,
+   "speaker": "Pinky",
+   "emotion": "pointing",
+   "radio": false,
+   "text": "আচলতে... চোৰৰ নেজ নহয়, জেপহে আছে!",
+   "request": 2
+  },
+  {
+   "id": 84,
+   "speaker": "Chhotu",
+   "emotion": "crying, honest",
+   "radio": false,
+   "text": "হয়! ময়েই সৱ লাৰু খাই দিলোঁ! কোনো যাদুৰ চোৰ নাই। নীলা নেজো নাই, গানো নাই। মোৰ ভোক লাগিছিল, তাৰপাছত ভয় লাগিল, আৰু এটাৰ পিছত এটা মিছা ক’লোঁ... মোক ক্ষমা কৰি দিয়া! সকলোৱে ক্ষমা কৰা!",
+   "request": 2
+  },
+  {
+   "id": 85,
+   "speaker": "Bablu",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "মানে... কোনো ভূত নাই?",
+   "request": 2
+  },
+  {
+   "id": 86,
+   "speaker": "Chhotu",
+   "emotion": "sniffling",
+   "radio": false,
+   "text": "নাই, বাবলু ককাইদেউ। ভূত নাই। কেৱল মইহে।",
+   "request": 2
+  },
+  {
+   "id": 87,
+   "speaker": "Bablu",
+   "emotion": "hugging him",
+   "radio": false,
+   "text": "উফ্! ধন্যবাদ ছোটু! এতিয়াহে মই শুব পাৰিম!",
+   "request": 2
+  },
+  {
+   "id": 88,
+   "speaker": "Chhotu",
+   "emotion": "small voice",
+   "radio": false,
+   "text": "আইতা, লাৰুবোৰ ময়েই খাইছিলোঁ। আৰু তাৰ পিছত মিছা ক’লোঁ। ক্ষমা কৰি দিয়া।",
+   "request": 2
+  },
+  {
+   "id": 89,
+   "speaker": "Dadi",
+   "emotion": "gentle smile",
+   "radio": false,
+   "text": "মই জানিছিলোঁ নহয়, ছোটু।",
+   "request": 2
+  },
+  {
+   "id": 90,
+   "speaker": "Chhotu",
+   "emotion": "shocked",
+   "radio": false,
+   "text": "জানিছিলা? কিন্তু তোমাৰ চশমাযোৰ দেখোন...",
+   "request": 2
+  },
+  {
+   "id": 91,
+   "speaker": "Dadi",
+   "emotion": "twinkling",
+   "radio": false,
+   "text": "চশমা নাছিল কি হ’ল, নাকটো তো আছিলাক। তোৰ মুখৰপৰা বেচনৰ গোন্ধ উলাই আছিলাক। মই খালি ৰৈ আছিলোঁ তই নিজে হসা কথা কৱনে নাই।",
+   "request": 2
+  },
+  {
+   "id": 92,
+   "speaker": "Chhotu",
+   "emotion": "hugging her",
+   "radio": false,
+   "text": "আৰু কেতিয়াও মিছা নকওঁ আইতা। মিছা কথা ক’লে বৰ ভাগৰ লাগে!",
+   "request": 2
+  },
+  {
+   "id": 93,
+   "speaker": "Dadi",
+   "emotion": "cheerful",
+   "radio": false,
+   "text": "ব’লা, এতিয়া সৱে মিলি নতুন লাৰু বনাওঁ। পূজাক এতিয়াও সময় আছে।",
+   "request": 2
+  },
+  {
+   "id": 94,
+   "speaker": "Raju",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "মানে এতিয়া মই জাল লৈ আৰু বাগৰি পৰিব নালাগে?",
+   "request": 2
+  },
+  {
+   "id": 95,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "নালাগে ৰাজু, এতিয়া মাথোঁ বেচনত হাত দিবি।",
+   "request": 2
+  },
+  {
+   "id": 96,
+   "speaker": "Gudiya",
+   "emotion": "excited",
+   "radio": false,
+   "text": "ব’লা, আঁচনি যুগুত কৰোঁ! লাৰু বনোৱাৰ আঁচনি! এইবাৰ আঁচনিত কোনো ভুল নাথাকিব!",
+   "request": 2
+  },
+  {
+   "id": 97,
+   "speaker": "Pinky",
+   "emotion": "teasing",
+   "radio": false,
+   "text": "আচলতে, গুড়িয়া, তোমাৰ প্ৰতিটো আঁচনিতেই এটা নহয় এটা ফুটুকা ওলায়।",
+   "request": 2
+  },
+  {
+   "id": 98,
+   "speaker": "Gudiya",
+   "emotion": "grinning",
+   "radio": false,
+   "text": "তেন্তে এইবাৰ আমি ফুটুকাটোত বেচন ভৰাই দিম!",
+   "request": 2
+  },
+  {
+   "id": 99,
+   "speaker": "Narrator",
+   "emotion": "loving",
+   "radio": false,
+   "text": "আৰু তাৰ পিছত আৰম্ভ হ’ল সোণপুৰৰ আটাইতকৈ আনন্দৰ লাৰু কাৰখানা!",
+   "request": 2
+  },
+  {
+   "id": 100,
+   "speaker": "Pinky",
+   "emotion": "confident",
+   "radio": false,
+   "text": "আচলতে, লাৰুবোৰ চাৰিচুকীয়া কৰিব লাগে। তেতিয়া বেছি সময় ঠিকে থাকে।",
+   "request": 2
+  },
+  {
+   "id": 101,
+   "speaker": "Dadi",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "পিংকী মাজনী, লাৰু ঘূৰণীয়া হ’লেহে ভাল লাগে। এনেকে ঘূৰাই দে, চা।",
+   "request": 2
+  },
+  {
+   "id": 102,
+   "speaker": "Raju",
+   "emotion": "showing off",
+   "radio": false,
+   "text": "চোৱা, ৰাজু দ্য গ্ৰেটৰ ছুপাৰ লাৰু! সকলোতকৈ ডাঙৰ!",
+   "request": 2
+  },
+  {
+   "id": 103,
+   "speaker": "Raju",
+   "emotion": "embarrassed",
+   "radio": false,
+   "text": "এইটো... এইটো গুড়ি-লাৰুহে। নতুন নমুনা।",
+   "request": 2
+  },
+  {
+   "id": 104,
+   "speaker": "Bablu",
+   "emotion": "proudly",
+   "radio": false,
+   "text": "মোৰ লাৰুটো একদম ঘূৰণীয়া হৈছে!",
+   "request": 2
+  },
+  {
+   "id": 106,
+   "speaker": "Bablu",
+   "emotion": "startled",
+   "radio": false,
+   "text": "ভূত! মোৰ লাৰুটো ভূতে লৈ গ’ল!",
+   "request": 2
+  },
+  {
+   "id": 107,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "বাবলু, সেইজনী চমকীহে!",
+   "request": 2
+  },
+  {
+   "id": 108,
+   "speaker": "Chhotu",
+   "emotion": "to his tummy, firm",
+   "radio": false,
+   "text": "পেট মহাশয়, এইয়া পূজাৰ লাৰু। অলপ ধৈৰ্য্য ধৰা!",
+   "request": 2
+  },
+  {
+   "id": 109,
+   "speaker": "Gudiya",
+   "emotion": "impressed",
+   "radio": false,
+   "text": "বাহ্ ছোটু! আজি দেখোন তই সঁচাকৈ ডাঙৰ হৈ গ’লি।",
+   "request": 2
+  },
+  {
+   "id": 110,
+   "speaker": "Lallan",
+   "emotion": "relieved",
+   "radio": false,
+   "text": "মোৰ জিলেপীহঁত ভালে-কুশলে আছে! চোৰ নাহিল। আনন্দতে পূজাৰ বাবে এই জিলেপীবোৰ মোৰ ফালৰ পৰা দিলোঁ!",
+   "request": 2
+  },
+  {
+   "id": 111,
+   "speaker": "Dadi",
+   "emotion": "loving",
+   "radio": false,
+   "text": "এতিয়া সকলোৱে প্ৰসাদ পাবাহঁক। আৰু প্ৰথম লাৰুটো... ছোটুক দিলোঁ, যে হসা কথা ক’লাক।",
+   "request": 2
+  },
+  {
+   "id": 112,
+   "speaker": "Chhotu",
+   "emotion": "beaming",
+   "radio": false,
+   "text": "মিছা কথাৰ লাৰুটো পেটত গধুৰ লাগিছিল। সঁচা কথাৰ লাৰুটো কিমান পাতল আৰু মিঠা মিঠা!",
+   "request": 2
+  },
+  {
+   "id": 113,
+   "speaker": "Dadi",
+   "emotion": "smiling",
+   "radio": false,
+   "text": "হসা কথা কোৱাজনৰ মনটোও লাৰুৰ নিচিনাই মিঠা হৈ থাকে।",
+   "request": 2
+  },
+  {
+   "id": 114,
+   "speaker": "Gudiya",
+   "emotion": "laughing",
+   "radio": false,
+   "text": "চোৱা, শেৰু সাৰ পালে! খোৱাৰ সময় হ’লেই তাৰ টোপনি ভাগে!",
+   "request": 2
+  },
+  {
+   "id": 115,
+   "speaker": "Dadi",
+   "emotion": "playful",
+   "radio": false,
+   "text": "ঐ ৰাম, মোৰ চশমাযোৰ আকৌ কুত গেলাক?",
+   "request": 2
+  },
+  {
+   "id": 116,
+   "speaker": "Chhotu",
+   "emotion": "mischievous",
+   "radio": false,
+   "text": "আইতা, তাক যাদুৰ চশমাচোৰে লৈ গ’ল!",
+   "request": 2
+  },
+  {
+   "id": 117,
+   "speaker": "Chhotu",
+   "emotion": "quickly, grinning",
+   "radio": false,
+   "text": "নহয় নহয়, সঁচা কওঁ—সেইযোৰ তোমাৰ মূৰতে আছে!",
+   "request": 2
+  },
+  {
+   "id": 118,
+   "speaker": "Chhotu",
+   "emotion": "playful",
+   "radio": false,
+   "text": "এতিয়াহে মোৰ সঁচাকৈ বৰ ভোক লাগিছে!",
+   "request": 2
+  }
+ ],
+ "groups": 2
+}
