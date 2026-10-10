@@ -69,15 +69,31 @@ def load16(path):
     r = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000", "-f", "f32le", "-"], capture_output=True)
     return np.frombuffer(r.stdout, np.float32).copy()
 
+def chunk_bounds(T, sil, target=20):
+    """~target-second chunks whose boundaries sit in silences (so no word is cut and Whisper cannot skip a long stretch)."""
+    mids = [(a + b) / 2 for a, b in (sil or [])]
+    bounds, t = [0.0], 0.0
+    while T - t > target + 5:
+        near = [m for m in mids if t + 0.6 * target <= m <= t + 1.2 * target]
+        t = min(near, key=lambda m: abs(m - (t + target))) if near else t + target; bounds.append(t)
+    bounds.append(T)
+    return bounds
+
+def whisper_words(path, lang, sil):
+    """Whisper large-v3 per ~20 s chunk (one-pass transcription of a 5-minute take skipped whole stretches in Telugu)."""
+    y = load16(path); sr = 16000; T = len(y) / sr; words, txt = [], []
+    for a, b in zip(chunk_bounds(T, sil)[:-1], chunk_bounds(T, sil)[1:]):
+        seg = y[int(a * sr):int(b * sr)]
+        if len(seg) < 1600: continue
+        r = WMget().transcribe(seg, language=lang, word_timestamps=True, condition_on_previous_text=False, temperature=0.0)
+        words += [(a + w["start"], a + w["end"], w["word"].strip()) for s in r["segments"] for w in s.get("words", [])]
+        txt.append(r["text"].strip())
+    return words, " ".join(txt)
+
 def mms_words(path, code, sil=None):
     """Greedy CTC over ~20 s chunks cut at silences -> [(start, end, word)], full text."""
     proc, model = mms_get(code); y = load16(path); sr = 16000; T = len(y) / sr
-    mids = [(a + b) / 2 for a, b in (sil or [])]
-    bounds, t = [0.0], 0.0
-    while T - t > 25:
-        near = [m for m in mids if t + 12 <= m <= t + 24]
-        t = min(near, key=lambda m: abs(m - (t + 20))) if near else t + 20; bounds.append(t)
-    bounds.append(T)
+    bounds = chunk_bounds(T, sil)
     tok = proc.tokenizer; vocab = {v: k for k, v in tok.get_vocab().items()}
     blank = tok.pad_token_id; delim = tok.word_delimiter_token; special = set(tok.all_special_tokens)
     words, cur, cs, ce = [], "", None, None
@@ -185,10 +201,13 @@ def split_take(wav, texts, tag, lang, engine="whisper"):
         if engine == "mms":
             method = f"mms_anchor_dp (facebook/mms-1b-all adapter {MMS_CODE[lang]}, greedy CTC word timestamps -> line-start anchors; DP snaps cuts to silences / RMS minima)"
             words, txt = mms_words(wav, lang, sil); res = {"text": txt}
-        else:
-            method = "whisper_anchor_dp (Whisper large-v3 word timestamps -> line-start anchors; DP snaps cuts to silences / RMS minima)"
+        elif engine == "whisper1":
+            method = "whisper_anchor_dp (Whisper large-v3 word timestamps, ONE pass over the whole take -> line-start anchors; DP snaps cuts to silences / RMS minima)"
             res = WMget().transcribe(wav, language=lang, word_timestamps=True, condition_on_previous_text=False, temperature=0.0)
             words = [(w["start"], w["end"], w["word"].strip()) for s in res["segments"] for w in s.get("words", [])]
+        else:
+            method = "whisper_chunked_anchor_dp (Whisper large-v3 word timestamps per ~20 s silence-bounded chunk -> line-start anchors from matches of >=3 letters; DP snaps cuts to silences / RMS minima)"
+            words, txt = whisper_words(wav, lang, sil); res = {"text": txt}
         ws, wt, we = "", [], []
         for a, b, t in words:
             sk = skel(t)
@@ -196,10 +215,12 @@ def split_take(wav, texts, tag, lang, engine="whisper"):
         us, ust = "", []
         for t in texts: ust.append(len(us)); us += skel(t)
         ust.append(len(us))
-        mp = {}
+        mp, n_all = {}, 0
         for a, b, size in difflib.SequenceMatcher(None, us, ws, autojunk=False).get_matching_blocks():
-            for k in range(size): mp[a + k] = b + k
-        ratio = len(mp) / max(1, len(us))
+            n_all += size
+            if size >= (1 if engine == "whisper1" else 3):            # 1-2 letter coincidences made false anchors (Telugu, 10 Oct)
+                for k in range(size): mp[a + k] = b + k
+        ratio = n_all / max(1, len(us))
         anchors = [(0, speech0)]
         for k in range(N):
             for c in range(ust[k], min(ust[k + 1], ust[k] + 3)):
@@ -307,7 +328,7 @@ def do_lang(code, out_name=None, engine=None):
         else:
             try: r["asr"], r["asr_sim"] = run_asr(path, r["text"])
             except Exception as e: r["asr"], r["asr_sim"] = f"ERR {e}", None
-        r["asr_engine"] = {"silence": None, "whisper": "whisper-large-v3", "mms": "mms-1b-all"}[engine]
+        r["asr_engine"] = {"silence": None, "mms": "mms-1b-all"}.get(engine, "whisper-large-v3")
         try: r["mouth_cues"] = len(json.load(open(f"{OUT}/{r['mouth']}"))["mouthCues"])
         except Exception: r["mouth_cues"] = None
         flag = " <-- DUR" if r["duration_s"] < 0.4 or r["duration_s"] > 12 else ""
